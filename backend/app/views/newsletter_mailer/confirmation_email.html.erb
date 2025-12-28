@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #667eea; color: white; padding: 20px; text-align: center; }
+    .content { padding: 20px; background-color: #f9f9f9; }
+    .button { display: inline-block; padding: 12px 24px; background-color: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Confirm Your Subscription</h1>
+    </div>
+
+    <div class="content">
+      <h2>Hi<% if @subscription.name.present? %> <%= @subscription.name %><% end %>!</h2>
+
+      <p>Thank you for subscribing to the TalkieToys newsletter!</p>
+
+      <p>To complete your subscription and start receiving our updates, tips, and exclusive content about speech development, please confirm your email address by clicking the button below:</p>
+
+      <center>
+        <a href="<%= @confirmation_url %>" class="button">Confirm My Subscription</a>
+      </center>
+
+      <p style="margin-top: 20px; font-size: 12px; color: #666;">
+        If the button doesn't work, you can also copy and paste this link into your browser:<br>
+        <%= @confirmation_url %>
+      </p>
+
+      <p>Once confirmed, you'll receive:</p>
+      <ul>
+        <li>Expert tips for speech development</li>
+        <li>Product guides and recommendations</li>
+        <li>Milestone tracking insights</li>
+        <li>Exclusive resources and worksheets</li>
+      </ul>
+
+      <p>If you didn't sign up for this newsletter, you can safely ignore this email.</p>
+
+      <p>Looking forward to supporting your child's speech journey!</p>
+
+      <p>
+        Best regards,<br>
+        The TalkieToys Team
+      </p>
+    </div>
+
+    <div class="footer">
+      <p>&copy; <%= Time.current.year %> TalkieToys. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
