@@ -1,0 +1,345 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Talkie Toyz Brand Colors */
+  /* Primary - Soft Teal/Aqua (Train Engine) */
+  --color-teal-light: #B2EBF2;
+  --color-teal: #4DD0E1;
+  --color-teal-DEFAULT: #26C6DA;
+  --color-teal-dark: #00ACC1;
+
+  /* Secondary - Warm Pink/Coral (Train Wagon) */
+  --color-coral-light: #FFCCBC;
+  --color-coral: #FF8A80;
+  --color-coral-DEFAULT: #FF6F61;
+  --color-coral-dark: #E64A19;
+
+  /* Accent - Sunny Yellow (ABC Blocks) */
+  --color-sunshine-light: #FFF9C4;
+  --color-sunshine: #FFD54F;
+  --color-sunshine-DEFAULT: #FFC107;
+  --color-sunshine-dark: #FFA000;
+
+  /* Accent - Sky Blue (ABC Blocks) */
+  --color-sky-light: #B3E5FC;
+  --color-sky: #4FC3F7;
+  --color-sky-DEFAULT: #29B6F6;
+  --color-sky-dark: #0277BD;
+
+  /* Neutrals - Soft, Parent-Friendly */
+  --color-cream-light: #FFFEF7;
+  --color-cream: #FFF9E6;
+  --color-cream-DEFAULT: #FFF4D9;
+
+  --color-warmgray-50: #FAFAF9;
+  --color-warmgray-100: #F5F5F4;
+  --color-warmgray-200: #E7E5E4;
+  --color-warmgray-300: #D6D3D1;
+  --color-warmgray-400: #A8A29E;
+  --color-warmgray-500: #78716C;
+  --color-warmgray-600: #57534E;
+  --color-warmgray-700: #44403C;
+  --color-warmgray-800: #292524;
+  --color-warmgray-900: #1C1917;
+
+  /* Custom Font Families - Rounded & Friendly */
+  --font-family-sans: 'Quicksand', 'Fredoka', system-ui, sans-serif;
+  --font-family-fun: 'Fredoka', 'Quicksand', system-ui, sans-serif;
+
+  /* Custom Border Radius - Playful & Rounded */
+  --radius-sm: 0.75rem;
+  --radius-DEFAULT: 1rem;
+  --radius-md: 1.25rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --radius-2xl: 2.5rem;
+  --radius-3xl: 3rem;
+  --radius-pill: 9999px;
+
+  /* Custom Shadows - Soft & Gentle */
+  --shadow-soft-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-soft-md: 0 6px 16px rgba(0, 0, 0, 0.1);
+  --shadow-soft-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-soft-xl: 0 12px 32px rgba(0, 0, 0, 0.14);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-family-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(135deg, #FFFEF7 0%, #FFF9E6 25%, #B2EBF2 50%, #FFCCBC 75%, #FFF9C4 100%);
+    background-size: 400% 400%;
+    animation: gentle-gradient 20s ease infinite;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-fun);
+    letter-spacing: -0.02em;
+  }
+
+  input, textarea, select {
+    font-family: var(--font-family-sans);
+  }
+}
+
+@keyframes gentle-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@layer utilities {
+  /* Talkie Toyz Animations - Gentle & Playful */
+  @keyframes bounce-gentle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes wiggle-soft {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-2deg); }
+    75% { transform: rotate(2deg); }
+  }
+
+  @keyframes float-calm {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% {
+      box-shadow: 0 0 15px rgba(38, 198, 218, 0.2);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 25px rgba(38, 198, 218, 0.4);
+      transform: scale(1.02);
+    }
+  }
+
+  @keyframes slide-in-gentle {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2.5s ease-in-out infinite;
+  }
+
+  .animate-wiggle-soft {
+    animation: wiggle-soft 1.5s ease-in-out infinite;
+  }
+
+  .animate-float-calm {
+    animation: float-calm 3.5s ease-in-out infinite;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  .animate-slide-in {
+    animation: slide-in-gentle 0.3s ease-out forwards;
+  }
+
+  /* Talkie Toyz Gradients */
+  .bg-teal-gradient {
+    background: linear-gradient(135deg, #B2EBF2 0%, #4DD0E1 50%, #26C6DA 100%);
+  }
+
+  .bg-coral-gradient {
+    background: linear-gradient(135deg, #FFCCBC 0%, #FF8A80 50%, #FF6F61 100%);
+  }
+
+  .bg-sunshine-gradient {
+    background: linear-gradient(135deg, #FFF9C4 0%, #FFD54F 50%, #FFC107 100%);
+  }
+
+  .bg-sky-gradient {
+    background: linear-gradient(135deg, #B3E5FC 0%, #4FC3F7 50%, #29B6F6 100%);
+  }
+
+  .bg-playful-gradient {
+    background: linear-gradient(135deg, #4DD0E1 0%, #FF8A80 50%, #FFD54F 100%);
+  }
+
+  /* Soft Shadows - Parent-Friendly */
+  .shadow-soft-sm {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .shadow-soft {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-soft-md {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .shadow-soft-lg {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .shadow-soft-xl {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+  }
+
+  /* Hover Effects - Gentle Lift */
+  .hover-lift {
+    transition: all 0.25s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .hover-warm:hover {
+    filter: brightness(1.05);
+  }
+
+  /* Rounded Corners - Playful */
+  .rounded-playful {
+    border-radius: 1.5rem;
+  }
+
+  .rounded-pill {
+    border-radius: 9999px;
+  }
+
+  /* Card Styles - Clean & Friendly */
+  .card-talkie {
+    background-color: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+  }
+
+  .card-talkie-hover {
+    background-color: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .card-talkie-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Button Styles - Pill-Shaped & Friendly */
+  .btn-primary {
+    background: linear-gradient(135deg, #B2EBF2 0%, #4DD0E1 50%, #26C6DA 100%);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.25s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .btn-secondary {
+    background: linear-gradient(135deg, #FFCCBC 0%, #FF8A80 50%, #FF6F61 100%);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.25s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-secondary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .btn-accent {
+    background: linear-gradient(135deg, #FFF9C4 0%, #FFD54F 50%, #FFC107 100%);
+    color: #292524;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.25s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-accent:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .btn-outline {
+    background-color: white;
+    color: #26C6DA;
+    border: 2px solid #26C6DA;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.25s ease;
+    cursor: pointer;
+  }
+
+  .btn-outline:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Input Styles - Soft & Rounded */
+  .input-talkie {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 2px solid #E7E5E4;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: all 0.2s ease;
+  }
+
+  .input-talkie:focus {
+    border-color: #26C6DA;
+    box-shadow: 0 0 0 3px rgba(38, 198, 218, 0.2);
+  }
+
+  /* Hide scrollbar but allow scrolling */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Custom selection color - Talkie Toyz Brand */
+::selection {
+  background-color: #FFD54F;
+  color: #292524;
+}
+
+::-moz-selection {
+  background-color: #FFD54F;
+  color: #292524;
+}

@@ -1,0 +1,14 @@
+:concurrency: 5
+
+:queues:
+  - default
+  - mailers
+  - active_storage_analysis
+  - active_storage_purge
+
+:schedule:
+  # Example scheduled job
+  # cleanup_job:
+  #   cron: '0 2 * * *' # Runs daily at 2am
+  #   class: CleanupJob
+  #   queue: default

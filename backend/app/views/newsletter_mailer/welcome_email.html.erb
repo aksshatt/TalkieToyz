@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #667eea; color: white; padding: 20px; text-align: center; }
+    .content { padding: 20px; background-color: #f9f9f9; }
+    .highlight-box { background-color: white; padding: 15px; margin: 20px 0; border-left: 4px solid #667eea; border-radius: 5px; }
+    .button { display: inline-block; padding: 12px 24px; background-color: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Welcome to TalkieToys! 🎉</h1>
+    </div>
+
+    <div class="content">
+      <h2>Hi<% if @subscription.name.present? %> <%= @subscription.name %><% end %>!</h2>
+
+      <p>Welcome to the TalkieToys community! We're thrilled to have you on board.</p>
+
+      <p>You're now subscribed to receive expert insights, practical tips, and valuable resources to support your child's speech development journey.</p>
+
+      <div class="highlight-box">
+        <h3>What to Expect:</h3>
+        <ul>
+          <li><strong>Weekly Tips:</strong> Practical speech therapy activities you can do at home</li>
+          <li><strong>Product Guides:</strong> Recommendations for age-appropriate speech toys</li>
+          <li><strong>Milestone Updates:</strong> Track your child's progress with expert guidance</li>
+          <li><strong>Exclusive Resources:</strong> Free worksheets, checklists, and guides</li>
+          <li><strong>Success Stories:</strong> Inspiring journeys from other parents</li>
+        </ul>
+      </div>
+
+      <p>Here are some resources to get you started:</p>
+
+      <center>
+        <a href="<%= ENV['FRONTEND_URL'] %>/blog" class="button">Explore Our Blog</a>
+        <a href="<%= ENV['FRONTEND_URL'] %>/resources" class="button">Browse Resources</a>
+      </center>
+
+      <p>Have questions or need help? Simply reply to this email and our team will be happy to assist you!</p>
+
+      <div class="highlight-box">
+        <p style="margin: 0; font-size: 12px;">
+          <strong>Manage Your Preferences:</strong><br>
+          You can update your subscription preferences or unsubscribe at any time by clicking <a href="<%= @unsubscribe_url %>">here</a>.
+        </p>
+      </div>
+
+      <p>Thank you for trusting us to be part of your child's speech development journey!</p>
+
+      <p>
+        Warm regards,<br>
+        The TalkieToys Team
+      </p>
+    </div>
+
+    <div class="footer">
+      <p>&copy; <%= Time.current.year %> TalkieToys. All rights reserved.</p>
+      <p><a href="<%= @unsubscribe_url %>" style="color: #666;">Unsubscribe</a></p>
+    </div>
+  </div>
+</body>
+</html>

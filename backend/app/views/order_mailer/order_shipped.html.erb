@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #48bb78; color: white; padding: 20px; text-align: center; }
+    .content { padding: 20px; background-color: #f9f9f9; }
+    .tracking { background-color: white; padding: 20px; margin: 20px 0; border-radius: 5px; text-align: center; }
+    .tracking-number { font-size: 24px; font-weight: bold; color: #48bb78; margin: 10px 0; }
+    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🚚 Your Order Has Been Shipped!</h1>
+    </div>
+
+    <div class="content">
+      <h2>Great news, <%= @user.email %>!</h2>
+      <p>Your order <strong><%= @order.order_number %></strong> has been shipped and is on its way to you.</p>
+
+      <% if @order.tracking_number.present? %>
+        <div class="tracking">
+          <p>You can track your shipment using the tracking number below:</p>
+          <div class="tracking-number"><%= @order.tracking_number %></div>
+        </div>
+      <% end %>
+
+      <p>Estimated delivery: 3-5 business days</p>
+
+      <p>If you have any questions, please contact our customer support.</p>
+
+      <p>Thank you for choosing TalkieToys!</p>
+    </div>
+
+    <div class="footer">
+      <p>&copy; <%= Time.current.year %> TalkieToys. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

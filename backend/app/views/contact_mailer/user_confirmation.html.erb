@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #667eea; color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+    .header h1 { margin: 0; font-size: 28px; }
+    .header p { margin: 10px 0 0 0; font-size: 14px; opacity: 0.9; }
+    .content { padding: 30px 20px; background-color: #f9f9f9; }
+    .greeting { font-size: 18px; color: #333; margin-bottom: 20px; }
+    .message-summary { background-color: white; padding: 20px; margin: 20px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .message-summary h3 { margin-top: 0; color: #667eea; }
+    .summary-field { margin-bottom: 15px; }
+    .summary-label { font-weight: bold; color: #667eea; }
+    .summary-text { color: #333; margin-top: 5px; }
+    .info-box { background-color: #e8f4f8; padding: 20px; border-left: 4px solid #26C6DA; border-radius: 4px; margin: 20px 0; }
+    .info-box h4 { margin-top: 0; color: #26C6DA; }
+    .info-box ul { margin: 10px 0; padding-left: 20px; }
+    .info-box li { margin: 8px 0; }
+    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; border-top: 2px solid #e0e0e0; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>✨ Thank You for Contacting TalkieToys!</h1>
+      <p>We've received your message</p>
+    </div>
+
+    <div class="content">
+      <div class="greeting">
+        <strong>Hi <%= @submission.name %>,</strong>
+      </div>
+
+      <p>Thank you for reaching out to us! We've received your message and our team will review it shortly.</p>
+
+      <p>We strive to respond to all inquiries within <strong>24-48 hours</strong>. If your matter is urgent, please see the alternative contact options below.</p>
+
+      <div class="message-summary">
+        <h3>📧 Your Message Summary:</h3>
+
+        <div class="summary-field">
+          <div class="summary-label">Subject:</div>
+          <div class="summary-text"><%= @submission.subject %></div>
+        </div>
+
+        <div class="summary-field">
+          <div class="summary-label">Message:</div>
+          <div class="summary-text"><%= simple_format(@submission.message) %></div>
+        </div>
+
+        <div class="summary-field">
+          <div class="summary-label">Submitted:</div>
+          <div class="summary-text"><%= @submission.created_at.strftime('%B %d, %Y at %I:%M %p') %></div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <h4>Need immediate assistance?</h4>
+        <p>If you have urgent questions, you can also reach us through:</p>
+        <ul>
+          <li><strong>Phone:</strong> +91 (800) 123-4567 (Mon-Fri, 9 AM - 6 PM)</li>
+          <li><strong>WhatsApp:</strong> Click the WhatsApp button on our website</li>
+          <li><strong>Live Chat:</strong> Available on our website during business hours</li>
+        </ul>
+      </div>
+
+      <p style="margin-top: 30px;">Thank you for choosing TalkieToys - where fun meets learning!</p>
+
+      <p><strong>Best regards,</strong><br>
+      The TalkieToys Team</p>
+    </div>
+
+    <div class="footer">
+      <p>&copy; <%= Time.current.year %> TalkieToys. All rights reserved.</p>
+      <p style="margin-top: 10px;">
+        <a href="<%= ENV['FRONTEND_URL'] || 'http://localhost:5173' %>" style="color: #667eea; text-decoration: none;">Visit our website</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

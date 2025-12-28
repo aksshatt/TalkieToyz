@@ -1,0 +1,21 @@
+{
+  "name": "talkietoys",
+  "version": "1.0.0",
+  "description": "TalkieToys - Full Stack Application",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,magenta\"",
+    "dev:backend": "cd backend && bundle exec rails server",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:sidekiq": "cd backend && bundle exec sidekiq",
+    "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:sidekiq\" --names \"BACKEND,FRONTEND,SIDEKIQ\" --prefix-colors \"blue,magenta,green\"",
+    "install:all": "cd backend && bundle install && cd ../frontend && npm install",
+    "setup": "npm run install:all && cd backend && rails db:create db:migrate db:seed",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose up --build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
