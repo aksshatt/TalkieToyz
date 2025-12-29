@@ -1,6 +1,6 @@
 module Api
   module V1
-    class ShippingRatesController < ApplicationController
+    class ShippingRatesController < BaseController
       skip_before_action :authenticate_user!, only: [:create]
 
       # POST /api/v1/shipping_rates
