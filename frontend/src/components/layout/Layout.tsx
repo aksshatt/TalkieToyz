@@ -13,7 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const cart = useAppSelector((state) => state.cart.cart);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const cartItemsCount = cart?.total_items || 0;
+  const cartItemsCount = cart?.items_count || 0;
 
   return (
     <div className="min-h-screen">

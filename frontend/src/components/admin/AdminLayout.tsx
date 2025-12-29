@@ -13,7 +13,11 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
-const AdminLayout: React.FC = () => {
+interface AdminLayoutProps {
+  children?: React.ReactNode;
+}
+
+const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -125,7 +129,7 @@ const AdminLayout: React.FC = () => {
 
         {/* Page Content */}
         <main className="p-6">
-          <Outlet />
+          {children || <Outlet />}
         </main>
       </div>
     </div>
