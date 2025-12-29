@@ -5,7 +5,8 @@ RUN apk add --no-cache \
     postgresql-dev \
     nodejs \
     yarn \
-    tzdata
+    tzdata \
+    yaml-dev
 
 WORKDIR /app
 
