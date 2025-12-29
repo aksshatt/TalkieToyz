@@ -73,8 +73,9 @@ gem 'aws-sdk-s3'
 # Search
 gem 'pg_search'
 
-# Payment Gateway
+# Payment Gateway & Shipping
 gem 'razorpay'
+gem 'httparty'  # For Shiprocket API integration
 
 # PDF Generation
 gem 'matrix'         # Required by prawn for Ruby 3.2+

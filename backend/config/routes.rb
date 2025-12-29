@@ -105,10 +105,20 @@ Rails.application.routes.draw do
       resources :orders, only: [:index, :show, :create, :update] do
         member do
           post :cancel
+          post :retry_payment
           post :create_razorpay_order
           post 'payment/verify', to: 'orders#verify_payment'
         end
       end
+
+      # Webhooks (public - no authentication)
+      namespace :webhooks do
+        post 'razorpay', to: 'webhooks#razorpay'
+        post 'shiprocket', to: 'webhooks#shiprocket'
+      end
+
+      # Shipping Rates (public)
+      resources :shipping_rates, only: [:create]
 
       # Coupons (public - validate endpoint)
       resources :coupons, only: [] do
@@ -134,6 +144,10 @@ Rails.application.routes.draw do
         resources :orders, only: [:index, :show] do
           member do
             patch :update_status
+            post :refund
+            post :create_shipment
+            post :cancel_shipment
+            get :shipping_label
           end
           collection do
             post :bulk_update_status

@@ -2,7 +2,7 @@ module Api
   module V1
     module Admin
       class OrdersController < BaseController
-        before_action :set_order, only: [:show, :update_status]
+        before_action :set_order, only: [:show, :update_status, :refund, :create_shipment, :cancel_shipment, :shipping_label]
 
         # GET /api/v1/admin/orders
         def index
@@ -107,6 +107,142 @@ module Api
           }
 
           render_success(stats, 'Order statistics retrieved successfully')
+        end
+
+        # POST /api/v1/admin/orders/:id/refund
+        def refund
+          # Validate order can be refunded
+          unless @order.can_refund?
+            return render_error(
+              'Order cannot be refunded',
+              ["Order status: #{@order.status}, Payment status: #{@order.payment_status}"],
+              status: :unprocessable_entity
+            )
+          end
+
+          # Get refund amount (full or partial)
+          refund_amount = params[:amount]&.to_f || @order.total.to_f
+          reason = params[:reason] || 'Admin initiated refund'
+
+          # Validate refund amount
+          if refund_amount <= 0 || refund_amount > @order.total.to_f
+            return render_error(
+              'Invalid refund amount',
+              ["Amount must be between 0 and #{@order.total}"],
+              status: :bad_request
+            )
+          end
+
+          # Initiate refund through Razorpay
+          result = @order.initiate_refund(refund_amount, reason)
+
+          if result[:success]
+            log_activity('refund', 'Order', @order.id, {
+              order_number: @order.order_number,
+              amount: refund_amount,
+              reason: reason
+            })
+
+            render_success(
+              admin_order_details(@order),
+              'Refund initiated successfully'
+            )
+          else
+            render_error('Refund failed', [result[:error]])
+          end
+        rescue => e
+          Rails.logger.error("Refund error: #{e.message}")
+          render_error('Refund processing failed', [e.message])
+        end
+
+        # POST /api/v1/admin/orders/:id/create_shipment
+        def create_shipment
+          # Validate order can be shipped
+          unless @order.can_create_shipment?
+            return render_error(
+              'Cannot create shipment for this order',
+              ["Order status: #{@order.status}, Payment status: #{@order.payment_status}"],
+              status: :unprocessable_entity
+            )
+          end
+
+          # Check if shipment already exists
+          if @order.shipment.present?
+            return render_error(
+              'Shipment already exists for this order',
+              ["Shipment ID: #{@order.shipment.id}, AWB: #{@order.shipment.awb_code}"],
+              status: :unprocessable_entity
+            )
+          end
+
+          # Get optional courier_id from params
+          courier_id = params[:courier_id]
+
+          # Create shipment
+          result = @order.create_shiprocket_shipment(courier_id)
+
+          if result[:success]
+            log_activity('create_shipment', 'Order', @order.id, {
+              order_number: @order.order_number,
+              awb_code: result[:shipment].awb_code,
+              courier: result[:shipment].courier_name
+            })
+
+            render_success(
+              {
+                order: admin_order_details(@order.reload),
+                shipment: ShipmentSerializer.new(result[:shipment]).as_json
+              },
+              'Shipment created successfully'
+            )
+          else
+            render_error('Shipment creation failed', [result[:error]])
+          end
+        rescue => e
+          Rails.logger.error("Shipment creation error: #{e.message}")
+          render_error('Shipment creation failed', [e.message])
+        end
+
+        # POST /api/v1/admin/orders/:id/cancel_shipment
+        def cancel_shipment
+          unless @order.shipment.present?
+            return render_error('No shipment found for this order', nil, status: :not_found)
+          end
+
+          if @order.shipment.cancel
+            log_activity('cancel_shipment', 'Order', @order.id, {
+              order_number: @order.order_number,
+              awb_code: @order.shipment.awb_code
+            })
+
+            render_success(
+              admin_order_details(@order.reload),
+              'Shipment cancelled successfully'
+            )
+          else
+            render_error('Failed to cancel shipment', ['Shipment may already be cancelled or in transit'])
+          end
+        rescue => e
+          Rails.logger.error("Shipment cancellation error: #{e.message}")
+          render_error('Shipment cancellation failed', [e.message])
+        end
+
+        # GET /api/v1/admin/orders/:id/shipping_label
+        def shipping_label
+          unless @order.shipment.present?
+            return render_error('No shipment found for this order', nil, status: :not_found)
+          end
+
+          label_url = @order.shipment.generate_label
+
+          if label_url
+            render_success({ label_url: label_url }, 'Shipping label retrieved successfully')
+          else
+            render_error('Failed to generate shipping label', ['Label may not be available yet'])
+          end
+        rescue => e
+          Rails.logger.error("Shipping label error: #{e.message}")
+          render_error('Shipping label retrieval failed', [e.message])
         end
 
         private

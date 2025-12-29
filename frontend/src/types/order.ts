@@ -1,4 +1,5 @@
 import type { Product, ProductVariant } from './product';
+import type { Shipment } from './shipment';
 
 export type OrderStatus =
   | 'pending'
@@ -17,6 +18,13 @@ export type PaymentStatus =
   | 'paid'
   | 'failed'
   | 'refunded';
+
+export type RefundStatus =
+  | 'none'
+  | 'pending'
+  | 'processing'
+  | 'completed'
+  | 'failed';
 
 export interface OrderItem {
   id: number;
@@ -48,11 +56,19 @@ export interface Order {
   shipping_address: Address;
   billing_address: Address;
   tracking_number?: string;
+  tracking_url?: string;
+  estimated_delivery?: string;
   notes?: string;
   cancelled_at?: string;
   cancelled_reason?: string;
+  shipped_at?: string;
+  delivered_at?: string;
+  refund_status: RefundStatus;
+  refund_amount?: string;
+  refunded_at?: string;
   order_items: OrderItem[];
   coupon_code?: string;
+  shipment?: Shipment;
   created_at: string;
   updated_at: string;
 }
