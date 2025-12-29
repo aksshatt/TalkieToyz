@@ -38,7 +38,8 @@ port ENV.fetch("PORT") { 3000 }
 environment rails_env
 
 # Specifies the `pidfile` that Puma will use.
-pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
+# Disabled for Docker/Railway deployment
+# pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
