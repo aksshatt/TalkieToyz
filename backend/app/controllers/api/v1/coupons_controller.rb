@@ -1,7 +1,7 @@
 module Api
   module V1
     class CouponsController < BaseController
-      skip_before_action :authenticate_user!, only: [:validate]
+      # skip_before_action :authenticate_user!, only: [:validate]
 
       # POST /api/v1/coupons/validate
       def validate
