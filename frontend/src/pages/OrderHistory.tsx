@@ -38,7 +38,7 @@ const OrderHistory = () => {
       }),
   });
 
-  const orders = data?.data || [];
+  const orders = data?.data?.orders || [];
 
   const toggleOrderExpand = (orderId: number) => {
     const newExpanded = new Set(expandedOrders);
@@ -397,7 +397,7 @@ const OrderHistory = () => {
                         )}
 
                         {/* Refund Info */}
-                        {order.refund_status && order.refund_status !== 'none' && (
+                        {order.refund_status && order.refund_status !== 'no_refund' && (
                           <div className="mb-6">
                             <h4 className="font-bold text-gray-800 mb-3">
                               Refund Information
@@ -406,13 +406,13 @@ const OrderHistory = () => {
                               <div className="flex items-center justify-between">
                                 <span className="text-sm text-gray-700">Status:</span>
                                 <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                                  order.refund_status === 'completed'
+                                  order.refund_status === 'refund_completed'
                                     ? 'bg-green-100 text-green-800'
-                                    : order.refund_status === 'failed'
+                                    : order.refund_status === 'refund_failed'
                                     ? 'bg-red-100 text-red-800'
                                     : 'bg-yellow-100 text-yellow-800'
                                 }`}>
-                                  {order.refund_status.charAt(0).toUpperCase() + order.refund_status.slice(1)}
+                                  {order.refund_status.replace('refund_', '').replace('_', ' ').charAt(0).toUpperCase() + order.refund_status.replace('refund_', '').replace('_', ' ').slice(1)}
                                 </span>
                               </div>
                               {order.refund_amount && (

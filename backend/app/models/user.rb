@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_one :cart, dependent: :destroy
   has_many :orders, dependent: :destroy
   has_many :addresses, dependent: :destroy
+  has_many :user_addresses, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_many :assessment_results, dependent: :destroy
   has_many :progress_logs, dependent: :destroy

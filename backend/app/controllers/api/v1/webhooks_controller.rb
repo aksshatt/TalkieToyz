@@ -176,7 +176,7 @@ module Api
             refund_created_at: Time.current,
             webhook_payload: payload
           ),
-          refund_status: :processing
+          refund_status: :refund_processing
         )
 
         Rails.logger.info("Refund created for order #{order.order_number}")
@@ -194,7 +194,7 @@ module Api
             refund_processed_at: Time.current,
             webhook_payload: payload
           ),
-          refund_status: :completed,
+          refund_status: :refund_completed,
           refund_amount: refund_amount / 100.0, # Convert from paise to rupees
           refunded_at: Time.current
         )

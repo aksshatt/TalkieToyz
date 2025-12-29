@@ -69,22 +69,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 Resources
               </Link>
               <Link
-                to="/faq"
+                to="/orders"
                 className="text-warmgray-700 font-semibold hover:text-teal transition-colors"
               >
-                FAQ
-              </Link>
-              <Link
-                to="/contact"
-                className="text-warmgray-700 font-semibold hover:text-teal transition-colors"
-              >
-                Contact
-              </Link>
-              <Link
-                to="/about"
-                className="text-warmgray-700 font-semibold hover:text-teal transition-colors"
-              >
-                About
+                Orders
               </Link>
             </nav>
 
@@ -202,25 +190,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   Resources
                 </Link>
                 <Link
-                  to="/faq"
+                  to="/orders"
                   className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  FAQ
-                </Link>
-                <Link
-                  to="/contact"
-                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Contact
-                </Link>
-                <Link
-                  to="/about"
-                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  About
+                  Orders
                 </Link>
               </nav>
             </div>

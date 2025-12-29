@@ -10,14 +10,17 @@ import {
   ChevronLeft,
   ChevronRight,
   Loader2,
+  Plus,
 } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import StateCitySelector from '../components/common/StateCitySelector';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { fetchCart, resetCart } from '../store/slices/cartSlice';
 import orderService from '../services/orderService';
+import { addressService } from '../services/addressService';
 import toast from 'react-hot-toast';
 import type { Address, PaymentMethod } from '../types/order';
+import type { Address as UserAddress } from '../types/address';
 
 // Declare Razorpay on window
 declare global {
@@ -45,6 +48,11 @@ const Checkout = () => {
   );
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('razorpay');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [savedAddresses, setSavedAddresses] = useState<UserAddress[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
+  const [addressMode, setAddressMode] = useState<'select' | 'new'>('select');
+  const [saveAddress, setSaveAddress] = useState(false);
+  const [isLoadingPincode, setIsLoadingPincode] = useState(false);
 
   const couponCode = location.state?.couponCode;
   const discount = location.state?.discount || 0;
@@ -58,6 +66,53 @@ const Checkout = () => {
       navigate('/cart');
     }
   }, [cart, navigate]);
+
+  // Load saved addresses
+  useEffect(() => {
+    const loadAddresses = async () => {
+      try {
+        const addresses = await addressService.getAddresses();
+        setSavedAddresses(addresses);
+
+        // If there are saved addresses, default to select mode
+        // If no saved addresses, default to new mode
+        if (addresses.length > 0) {
+          setAddressMode('select');
+          // Auto-select default address if exists
+          const defaultAddress = addresses.find(addr => addr.is_default);
+          if (defaultAddress) {
+            setSelectedAddressId(defaultAddress.id);
+          }
+        } else {
+          setAddressMode('new');
+        }
+      } catch (error) {
+        console.error('Failed to load addresses:', error);
+        setAddressMode('new');
+      }
+    };
+
+    loadAddresses();
+  }, []);
+
+  // Handle PIN code lookup
+  const handlePincodeLookup = async (pincode: string) => {
+    if (pincode.length === 6) {
+      setIsLoadingPincode(true);
+      try {
+        const pincodeData = await addressService.lookupPincode(pincode);
+        formik.setFieldValue('city', pincodeData.city);
+        formik.setFieldValue('state', pincodeData.state);
+        formik.setFieldValue('country', pincodeData.country);
+        toast.success('City and state auto-detected!');
+      } catch (error) {
+        console.error('PIN code lookup failed:', error);
+        // Don't show error to user, let them enter city/state manually
+      } finally {
+        setIsLoadingPincode(false);
+      }
+    }
+  };
 
   const addressSchema = Yup.object({
     name: Yup.string().required('Name is required'),
@@ -85,12 +140,46 @@ const Checkout = () => {
       postal_code: '',
       country: 'India',
     },
-    validationSchema: addressSchema,
+    validationSchema: addressMode === 'new' ? addressSchema : undefined,
+    validateOnChange: addressMode === 'new',
+    validateOnBlur: addressMode === 'new',
     onSubmit: async (values) => {
-      if (currentStep < 4) {
+      if (currentStep === 1) {
+        // Validate address on step 1
+        if (addressMode === 'select') {
+          if (!selectedAddressId) {
+            toast.error('Please select an address');
+            return;
+          }
+        }
+        setCurrentStep(currentStep + 1);
+      } else if (currentStep < 4) {
         setCurrentStep(currentStep + 1);
       } else {
-        await handlePlaceOrder(values);
+        // Final submission - use selected address or new address
+        let shippingAddress: Address;
+        if (addressMode === 'select' && selectedAddressId) {
+          const selectedAddr = savedAddresses.find(
+            (addr) => addr.id === selectedAddressId
+          );
+          if (selectedAddr) {
+            shippingAddress = {
+              name: selectedAddr.name,
+              phone: selectedAddr.phone,
+              address_line_1: selectedAddr.address_line_1,
+              address_line_2: selectedAddr.address_line_2,
+              city: selectedAddr.city,
+              state: selectedAddr.state,
+              postal_code: selectedAddr.postal_code,
+              country: selectedAddr.country,
+            };
+          } else {
+            shippingAddress = values;
+          }
+        } else {
+          shippingAddress = values;
+        }
+        await handlePlaceOrder(shippingAddress);
       }
     },
   });
@@ -104,6 +193,7 @@ const Checkout = () => {
         shipping_address: shippingAddress,
         billing_address: shippingAddress,
         coupon_code: couponCode,
+        save_address: addressMode === 'new' && saveAddress,
       });
 
       const order = orderResponse.data;
@@ -113,15 +203,16 @@ const Checkout = () => {
         const razorpayResponse = await orderService.createRazorpayOrder(
           order.id
         );
+        const razorpayData = razorpayResponse.data;
 
         // Initialize Razorpay
         const options = {
-          key: razorpayResponse.razorpay_key_id,
-          amount: razorpayResponse.amount,
+          key: razorpayData.razorpay_key_id,
+          amount: razorpayData.amount,
           currency: 'INR',
           name: 'TalkieToys',
           description: `Order #${order.order_number}`,
-          order_id: razorpayResponse.razorpay_order_id,
+          order_id: razorpayData.razorpay_order_id,
           handler: async function (response: any) {
             try {
               // Verify payment
@@ -176,6 +267,17 @@ const Checkout = () => {
 
   const handleNext = async () => {
     if (currentStep === 1) {
+      // If selecting existing address, just check if one is selected
+      if (addressMode === 'select') {
+        if (!selectedAddressId) {
+          toast.error('Please select an address');
+          return;
+        }
+        setCurrentStep(2);
+        return;
+      }
+
+      // If adding new address, validate form
       const errors = await formik.validateForm();
       if (Object.keys(errors).length === 0) {
         setCurrentStep(2);
@@ -264,7 +366,88 @@ const Checkout = () => {
                     Shipping Address
                   </h2>
 
-                  <div className="grid md:grid-cols-2 gap-6">
+                  {/* Address Mode Toggle */}
+                  {savedAddresses.length > 0 && (
+                    <div className="mb-6 flex gap-4">
+                      <button
+                        type="button"
+                        onClick={() => setAddressMode('select')}
+                        className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all ${
+                          addressMode === 'select'
+                            ? 'bg-purple-600 text-white shadow-md'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        Select Saved Address
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAddressMode('new')}
+                        className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
+                          addressMode === 'new'
+                            ? 'bg-purple-600 text-white shadow-md'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        <Plus className="h-5 w-5" />
+                        Add New Address
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Saved Addresses List */}
+                  {addressMode === 'select' && (
+                    <div className="space-y-4 mb-6">
+                      {savedAddresses.map((address) => (
+                        <label
+                          key={address.id}
+                          className={`block p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                            selectedAddressId === address.id
+                              ? 'border-purple-500 bg-purple-50'
+                              : 'border-gray-200 hover:border-purple-300'
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <input
+                              type="radio"
+                              name="saved-address"
+                              checked={selectedAddressId === address.id}
+                              onChange={() => setSelectedAddressId(address.id)}
+                              className="mt-1 w-4 h-4 text-purple-600"
+                            />
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <p className="font-semibold text-gray-800">
+                                  {address.name}
+                                </p>
+                                {address.is_default && (
+                                  <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full font-semibold">
+                                    Default
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-sm text-gray-600">
+                                {address.phone}
+                              </p>
+                              <p className="text-sm text-gray-700 mt-1">
+                                {address.address_line_1}
+                                {address.address_line_2 &&
+                                  `, ${address.address_line_2}`}
+                              </p>
+                              <p className="text-sm text-gray-700">
+                                {address.city}, {address.state} -{' '}
+                                {address.postal_code}
+                              </p>
+                            </div>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* New Address Form */}
+                  {addressMode === 'new' && (
+                    <div className="grid md:grid-cols-2 gap-6">
                     <div className="md:col-span-2">
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Full Name *
@@ -308,15 +491,23 @@ const Checkout = () => {
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
                         PIN Code *
                       </label>
-                      <input
-                        type="text"
-                        name="postal_code"
-                        value={formik.values.postal_code}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        placeholder="6-digit PIN"
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors"
-                      />
+                      <div className="relative">
+                        <input
+                          type="text"
+                          name="postal_code"
+                          value={formik.values.postal_code}
+                          onChange={formik.handleChange}
+                          onBlur={(e) => {
+                            formik.handleBlur(e);
+                            handlePincodeLookup(e.target.value);
+                          }}
+                          placeholder="6-digit PIN"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors"
+                        />
+                        {isLoadingPincode && (
+                          <Loader2 className="absolute right-3 top-3 h-6 w-6 animate-spin text-purple-600" />
+                        )}
+                      </div>
                       {formik.touched.postal_code &&
                         formik.errors.postal_code && (
                           <p className="text-red-600 text-sm mt-1">
@@ -390,7 +581,22 @@ const Checkout = () => {
                         </p>
                       )}
                     </div>
+
+                    <div className="md:col-span-2">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={saveAddress}
+                          onChange={(e) => setSaveAddress(e.target.checked)}
+                          className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                        />
+                        <span className="text-sm font-medium text-gray-700">
+                          Save this address for future orders
+                        </span>
+                      </label>
+                    </div>
                   </div>
+                  )}
                 </div>
               )}
 

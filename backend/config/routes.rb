@@ -111,6 +111,16 @@ Rails.application.routes.draw do
         end
       end
 
+      # Addresses (authenticated)
+      resources :addresses, only: [:index, :show, :create, :update, :destroy] do
+        member do
+          post :set_default
+        end
+        collection do
+          get 'pincode/:pincode', action: :pincode_lookup, as: :pincode_lookup
+        end
+      end
+
       # Webhooks (public - no authentication)
       namespace :webhooks do
         post 'razorpay', to: 'webhooks#razorpay'
