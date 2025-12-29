@@ -11,12 +11,12 @@ class Order < ApplicationRecord
   }
 
   enum refund_status: {
-    none: 0,
-    pending: 1,
-    processing: 2,
-    completed: 3,
-    failed: 4
-  }
+    no_refund: 0,
+    refund_pending: 1,
+    refund_processing: 2,
+    refund_completed: 3,
+    refund_failed: 4
+  }, _prefix: :refund
 
   # Associations
   belongs_to :user
@@ -33,7 +33,7 @@ class Order < ApplicationRecord
 
   # Callbacks
   before_validation :generate_order_number, if: -> { order_number.blank? }
-  before_save :calculate_total
+  before_validation :calculate_total
   after_create :increment_coupon_usage
   after_create :send_order_confirmation_email
   after_update :send_status_update_email, if: :saved_change_to_status?
@@ -44,7 +44,7 @@ class Order < ApplicationRecord
   scope :by_status, ->(status) { where(status: status) }
 
   # Class method to create from cart
-  def self.create_from_cart(cart, payment_method:, shipping_address:, billing_address: nil, coupon: nil)
+  def self.create_from_cart(cart, payment_method:, shipping_address:, billing_address: nil, coupon: nil, clear_cart: true)
     raise 'Cart is empty' if cart.empty?
 
     Order.transaction do
@@ -74,7 +74,11 @@ class Order < ApplicationRecord
       end
 
       order.save!
-      cart.clear
+
+      # Only clear cart if explicitly requested (for COD orders)
+      # For payment gateway orders, cart will be cleared after payment verification
+      cart.clear if clear_cart
+
       order
     end
   end
@@ -118,7 +122,7 @@ class Order < ApplicationRecord
   # Refund Methods
   def can_refund?
     # Order must be paid and not already refunded
-    payment_status == 'paid' && refund_status.in?(['none', 'failed']) && !cancelled?
+    payment_status == 'paid' && (refund_no_refund? || refund_refund_failed?) && !cancelled?
   end
 
   def initiate_refund(amount, reason = 'Customer request')
@@ -140,7 +144,7 @@ class Order < ApplicationRecord
       if refund
         # Update order with refund details
         update(
-          refund_status: :processing,
+          refund_status: :refund_processing,
           refund_details: (refund_details || {}).merge(
             razorpay_refund_id: refund.id,
             amount: amount,
@@ -152,12 +156,12 @@ class Order < ApplicationRecord
 
         { success: true, refund: refund }
       else
-        update(refund_status: :failed)
+        update(refund_status: :refund_failed)
         { success: false, error: 'Failed to create refund' }
       end
     rescue => e
       Rails.logger.error("Refund error for order #{order_number}: #{e.message}")
-      update(refund_status: :failed)
+      update(refund_status: :refund_failed)
       { success: false, error: e.message }
     end
   end

@@ -20,11 +20,11 @@ export type PaymentStatus =
   | 'refunded';
 
 export type RefundStatus =
-  | 'none'
-  | 'pending'
-  | 'processing'
-  | 'completed'
-  | 'failed';
+  | 'no_refund'
+  | 'refund_pending'
+  | 'refund_processing'
+  | 'refund_completed'
+  | 'refund_failed';
 
 export interface OrderItem {
   id: number;

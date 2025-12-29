@@ -7,7 +7,7 @@ module Api
       # GET /api/v1/orders
       def index
         @orders = current_user.orders
-                              .includes(:order_items, :coupon)
+                              .includes(order_items: [:product, :product_variant], coupon: [], shipment: [])
                               .recent
                               .page(params[:page])
                               .per(params[:per_page] || 20)
@@ -17,7 +17,11 @@ module Api
 
         render_success(
           {
-            orders: @orders.map { |order| OrderSerializer.new(order).as_json },
+            orders: ActiveModelSerializers::SerializableResource.new(
+              @orders,
+              each_serializer: OrderSerializer,
+              include: ['order_items', 'order_items.product', 'order_items.product_variant', 'coupon', 'shipment']
+            ).as_json,
             pagination: {
               current_page: @orders.current_page,
               total_pages: @orders.total_pages,
@@ -65,16 +69,23 @@ module Api
         end
 
         # Create order from cart
+        # Only clear cart for COD orders - for payment gateway orders, cart will be cleared after payment verification
         @order = Order.create_from_cart(
           cart,
           payment_method: params[:payment_method],
           shipping_address: params[:shipping_address],
           billing_address: params[:billing_address],
-          coupon: coupon
+          coupon: coupon,
+          clear_cart: params[:payment_method] == 'cod'
         )
 
         if params[:customer_notes].present?
           @order.update(customer_notes: params[:customer_notes])
+        end
+
+        # Save shipping address for future use if requested
+        if params[:save_address].present? && params[:save_address] == true
+          save_shipping_address(params[:shipping_address])
         end
 
         # For COD orders, mark as confirmed immediately
@@ -248,6 +259,9 @@ module Api
 
           order.payment_successful!
 
+          # Clear cart after successful payment
+          current_user.cart.clear
+
           # TODO: Trigger email notification job
           # OrderMailer.order_confirmation(order.id).deliver_later
 
@@ -280,6 +294,35 @@ module Api
         unless current_user.admin?
           render_error('Admin access required', nil, status: :forbidden)
         end
+      end
+
+      def save_shipping_address(address_data)
+        # Check if an identical address already exists
+        existing_address = current_user.user_addresses.find_by(
+          address_line_1: address_data['address_line_1'],
+          address_line_2: address_data['address_line_2'],
+          city: address_data['city'],
+          state: address_data['state'],
+          postal_code: address_data['postal_code']
+        )
+
+        return if existing_address.present?
+
+        # Create new address
+        current_user.user_addresses.create(
+          name: address_data['name'],
+          phone: address_data['phone'],
+          address_line_1: address_data['address_line_1'],
+          address_line_2: address_data['address_line_2'],
+          city: address_data['city'],
+          state: address_data['state'],
+          postal_code: address_data['postal_code'],
+          country: address_data['country'] || 'India',
+          is_default: current_user.user_addresses.empty?
+        )
+      rescue => e
+        # Log error but don't fail the order creation
+        Rails.logger.error("Failed to save shipping address: #{e.message}")
       end
     end
   end

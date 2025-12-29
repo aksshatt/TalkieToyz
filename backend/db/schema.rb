@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_29_214242) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_29_222721) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -592,6 +592,23 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_29_214242) do
     t.index ["slug"], name: "index_speech_goals_on_slug", unique: true
   end
 
+  create_table "user_addresses", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name", null: false
+    t.string "phone", null: false
+    t.string "address_line_1", null: false
+    t.string "address_line_2"
+    t.string "city", null: false
+    t.string "state", null: false
+    t.string "postal_code", null: false
+    t.string "country", default: "India", null: false
+    t.boolean "is_default", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "is_default"], name: "index_user_addresses_on_user_id_and_is_default"
+    t.index ["user_id"], name: "index_user_addresses_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -645,4 +662,5 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_29_214242) do
   add_foreign_key "reviews", "users"
   add_foreign_key "reviews", "users", column: "admin_responder_id"
   add_foreign_key "shipments", "orders"
+  add_foreign_key "user_addresses", "users"
 end
