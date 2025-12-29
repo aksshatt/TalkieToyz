@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_27_210703) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_28_043652) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -528,6 +528,24 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_27_210703) do
     t.index ["rating"], name: "index_reviews_on_rating"
     t.index ["user_id", "product_id"], name: "index_reviews_on_user_id_and_product_id", unique: true
     t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
+  create_table "site_contents", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "content_type", default: "text", null: false
+    t.text "value"
+    t.string "page", null: false
+    t.jsonb "metadata", default: {}
+    t.boolean "active", default: true
+    t.integer "display_order", default: 0
+    t.string "label"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_site_contents_on_active"
+    t.index ["display_order"], name: "index_site_contents_on_display_order"
+    t.index ["page", "key"], name: "index_site_contents_on_page_and_key", unique: true
+    t.index ["page"], name: "index_site_contents_on_page"
   end
 
   create_table "speech_goals", force: :cascade do |t|

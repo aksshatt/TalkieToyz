@@ -157,18 +157,19 @@ const Cart = () => {
       <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-12">
         <div className="max-w-7xl mx-auto px-4">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-4xl md:text-5xl font-[var(--font-family-fun)] font-bold text-gray-800 flex items-center gap-3">
-              <span className="text-5xl">🛒</span>
-              Shopping Cart
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-[var(--font-family-fun)] font-bold text-gray-800 flex items-center gap-2 sm:gap-3">
+              <span className="text-4xl sm:text-5xl">🛒</span>
+              <span className="break-words">Shopping Cart</span>
             </h1>
             <button
               onClick={handleClearCart}
               disabled={isUpdating}
-              className="text-red-600 hover:text-red-700 font-semibold flex items-center gap-2 px-4 py-2 hover:bg-red-50 rounded-lg transition-colors"
+              className="text-red-600 hover:text-red-700 font-semibold flex items-center gap-2 px-3 sm:px-4 py-2 hover:bg-red-50 rounded-lg transition-colors text-sm sm:text-base whitespace-nowrap"
             >
-              <Trash2 className="h-5 w-5" />
-              Clear Cart
+              <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="hidden sm:inline">Clear Cart</span>
+              <span className="sm:hidden">Clear</span>
             </button>
           </div>
 
@@ -178,9 +179,9 @@ const Cart = () => {
               {cart.cart_items.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-2xl p-6 shadow-playful"
+                  className="bg-white rounded-2xl p-4 sm:p-6 shadow-playful"
                 >
-                  <div className="flex gap-6">
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                     {/* Product Image */}
                     <div className="flex-shrink-0">
                       <img
@@ -189,7 +190,7 @@ const Cart = () => {
                           '/placeholder-product.png'
                         }
                         alt={item.product.name}
-                        className="w-24 h-24 object-cover rounded-xl"
+                        className="w-full sm:w-24 h-48 sm:h-24 object-cover rounded-xl"
                       />
                     </div>
 
@@ -197,7 +198,7 @@ const Cart = () => {
                     <div className="flex-1 min-w-0">
                       <Link
                         to={`/products/${item.product.slug}`}
-                        className="text-xl font-bold text-gray-800 hover:text-purple-600 transition-colors block mb-2"
+                        className="text-lg sm:text-xl font-bold text-gray-800 hover:text-purple-600 transition-colors block mb-2 line-clamp-2"
                       >
                         {item.product.name}
                       </Link>
@@ -208,7 +209,7 @@ const Cart = () => {
                         </p>
                       )}
 
-                      <div className="flex items-center gap-6 mt-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mt-4">
                         {/* Quantity Controls */}
                         <div className="flex items-center gap-3">
                           <button
@@ -235,12 +236,12 @@ const Cart = () => {
                         </div>
 
                         {/* Price */}
-                        <div className="flex-1 text-right">
+                        <div className="flex-1 sm:text-right">
                           <p className="text-sm text-gray-600">
-                            ₹{parseFloat(item.item_price).toFixed(2)} each
+                            ₹ {parseFloat(item.item_price).toFixed(2)} each
                           </p>
                           <p className="text-xl font-bold text-purple-600">
-                            ₹{parseFloat(item.total_price).toFixed(2)}
+                            ₹ {parseFloat(item.total_price).toFixed(2)}
                           </p>
                         </div>
 
@@ -248,7 +249,7 @@ const Cart = () => {
                         <button
                           onClick={() => handleRemoveItem(item.id)}
                           disabled={isUpdating}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed self-start sm:self-center"
                         >
                           <Trash2 className="h-5 w-5" />
                         </button>
@@ -261,8 +262,8 @@ const Cart = () => {
 
             {/* Cart Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-2xl p-6 shadow-playful sticky top-24">
-                <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-6">
+              <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-playful lg:sticky lg:top-24">
+                <h2 className="text-xl sm:text-2xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-4 sm:mb-6">
                   Order Summary
                 </h2>
 
@@ -346,11 +347,11 @@ const Cart = () => {
 
                 {/* Total */}
                 <div className="flex justify-between items-center mb-6">
-                  <span className="text-xl font-bold text-gray-800">
+                  <span className="text-lg sm:text-xl font-bold text-gray-800">
                     Total
                   </span>
-                  <span className="text-3xl font-[var(--font-family-fun)] font-bold text-purple-600">
-                    ₹{calculateFinalTotal().toFixed(2)}
+                  <span className="text-2xl sm:text-3xl font-[var(--font-family-fun)] font-bold text-purple-600">
+                    ₹ {calculateFinalTotal().toFixed(2)}
                   </span>
                 </div>
 
@@ -364,14 +365,14 @@ const Cart = () => {
                       },
                     })
                   }
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-6 rounded-2xl shadow-playful hover:shadow-playful-hover transform hover:scale-105 transition-all"
+                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-2xl shadow-playful hover:shadow-playful-hover transform hover:scale-105 transition-all text-sm sm:text-base"
                 >
                   Proceed to Checkout
                 </button>
 
                 <Link
                   to="/products"
-                  className="block text-center text-purple-600 font-semibold mt-4 hover:text-purple-700 transition-colors"
+                  className="block text-center text-purple-600 font-semibold mt-4 hover:text-purple-700 transition-colors text-sm sm:text-base"
                 >
                   ← Continue Shopping
                 </Link>

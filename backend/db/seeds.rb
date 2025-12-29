@@ -359,6 +359,7 @@ load Rails.root.join('db', 'seeds', 'assessments_seed.rb')
 load Rails.root.join('db', 'seeds', 'milestones_seed.rb')
 load Rails.root.join('db', 'seeds', 'blog_posts_seed.rb')
 load Rails.root.join('db', 'seeds', 'resources_seed.rb')
+load Rails.root.join('db', 'seeds', 'site_content_seed.rb')
 
 puts '✅ Database seeded successfully!'
 puts ''
@@ -373,6 +374,7 @@ puts "  Milestones: #{Milestone.count}"
 puts "  Blog Posts: #{BlogPost.count}"
 puts "  Resource Categories: #{ResourceCategory.count}"
 puts "  Resources: #{Resource.count}"
+puts "  Site Contents: #{SiteContent.count}"
 puts ''
 puts '🔐 Test Credentials:'
 puts '  Admin: admin@talkietoys.com / password123'

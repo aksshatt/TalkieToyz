@@ -37,7 +37,15 @@ class Cart < ApplicationRecord
       product: product,
       product_variant: product_variant
     )
-    item.quantity = (item.quantity || 0) + quantity
+
+    # If new record, set quantity directly (avoid adding to default value)
+    # If existing record, add to current quantity
+    if item.new_record?
+      item.quantity = quantity
+    else
+      item.quantity += quantity
+    end
+
     item.save
     item
   end
