@@ -1,7 +1,7 @@
 module Api
   module V1
     class OrdersController < BaseController
-      before_action :set_order, only: [:show, :update, :cancel]
+      before_action :set_order, only: [:show, :update, :cancel, :retry_payment]
       before_action :require_admin, only: [:update]
 
       # GET /api/v1/orders
@@ -139,6 +139,56 @@ module Api
         else
           render_error('Failed to cancel order', @order.errors.full_messages)
         end
+      end
+
+      # POST /api/v1/orders/:id/retry_payment
+      def retry_payment
+        # Only allow users to retry payment for their own orders
+        unless @order.user_id == current_user.id
+          return render_error('You can only retry payment for your own orders', nil, status: :forbidden)
+        end
+
+        # Only allow retry for Razorpay orders
+        unless @order.payment_method == 'razorpay'
+          return render_error(
+            'Payment retry is only available for Razorpay orders',
+            nil,
+            status: :unprocessable_entity
+          )
+        end
+
+        # Check if order is in a state where payment can be retried
+        unless @order.can_retry_payment?
+          return render_error(
+            'Payment cannot be retried for this order',
+            {
+              status: @order.status,
+              payment_status: @order.payment_status,
+              reason: 'Order must be in awaiting_payment or failed payment status'
+            },
+            status: :unprocessable_entity
+          )
+        end
+
+        # Create new Razorpay order
+        razorpay_order = RazorpayService.create_order(@order)
+
+        if razorpay_order
+          render_success(
+            {
+              order: OrderSerializer.new(@order.reload).as_json,
+              razorpay_order_id: razorpay_order.id,
+              razorpay_key_id: ENV['RAZORPAY_KEY_ID'],
+              amount: razorpay_order.amount
+            },
+            'Payment retry initiated successfully'
+          )
+        else
+          render_error('Failed to initiate payment retry', nil, status: :unprocessable_entity)
+        end
+      rescue => e
+        Rails.logger.error("Payment retry error: #{e.message}")
+        render_error('Failed to retry payment', [e.message])
       end
 
       # POST /api/v1/orders/:id/create_razorpay_order

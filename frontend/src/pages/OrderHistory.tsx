@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, Eye, X, RefreshCw, ChevronDown } from 'lucide-react';
+import { Package, Eye, X, RefreshCw, ChevronDown, Truck, ExternalLink, Calendar } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import Layout from '../components/layout/Layout';
 import orderService from '../services/orderService';
@@ -324,6 +324,112 @@ const OrderHistory = () => {
                           </div>
                         </div>
 
+                        {/* Tracking & Shipment Info */}
+                        {(order.tracking_url || order.tracking_number || order.shipment) && (
+                          <div className="mb-6">
+                            <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                              <Truck className="h-5 w-5 text-purple-600" />
+                              Tracking & Shipment
+                            </h4>
+                            <div className="bg-white rounded-lg p-4 space-y-3">
+                              {order.tracking_url ? (
+                                <a
+                                  href={order.tracking_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-2 text-purple-600 hover:text-purple-700 font-semibold"
+                                >
+                                  <ExternalLink className="h-4 w-4" />
+                                  Track Your Order
+                                </a>
+                              ) : order.tracking_number ? (
+                                <div className="flex items-center gap-2 text-sm">
+                                  <Eye className="h-4 w-4 text-gray-500" />
+                                  <span className="text-gray-600">Tracking:</span>
+                                  <span className="font-mono font-semibold">{order.tracking_number}</span>
+                                </div>
+                              ) : null}
+
+                              {order.shipment && (
+                                <>
+                                  <div className="flex items-center gap-2 text-sm">
+                                    <Truck className="h-4 w-4 text-gray-500" />
+                                    <span className="text-gray-600">Courier:</span>
+                                    <span className="font-semibold">{order.shipment.courier_name}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-sm">
+                                    <Package className="h-4 w-4 text-gray-500" />
+                                    <span className="text-gray-600">Status:</span>
+                                    <span className="font-semibold">{order.shipment.status}</span>
+                                  </div>
+                                </>
+                              )}
+
+                              {order.estimated_delivery && (
+                                <div className="flex items-center gap-2 text-sm">
+                                  <Calendar className="h-4 w-4 text-gray-500" />
+                                  <span className="text-gray-600">Estimated Delivery:</span>
+                                  <span className="font-semibold">{order.estimated_delivery}</span>
+                                </div>
+                              )}
+
+                              {order.shipped_at && (
+                                <div className="text-sm text-gray-600">
+                                  Shipped on {new Date(order.shipped_at).toLocaleDateString('en-IN', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                  })}
+                                </div>
+                              )}
+
+                              {order.delivered_at && (
+                                <div className="text-sm text-green-600 font-semibold">
+                                  ✓ Delivered on {new Date(order.delivered_at).toLocaleDateString('en-IN', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Refund Info */}
+                        {order.refund_status && order.refund_status !== 'none' && (
+                          <div className="mb-6">
+                            <h4 className="font-bold text-gray-800 mb-3">
+                              Refund Information
+                            </h4>
+                            <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm text-gray-700">Status:</span>
+                                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                                  order.refund_status === 'completed'
+                                    ? 'bg-green-100 text-green-800'
+                                    : order.refund_status === 'failed'
+                                    ? 'bg-red-100 text-red-800'
+                                    : 'bg-yellow-100 text-yellow-800'
+                                }`}>
+                                  {order.refund_status.charAt(0).toUpperCase() + order.refund_status.slice(1)}
+                                </span>
+                              </div>
+                              {order.refund_amount && (
+                                <div className="flex items-center justify-between">
+                                  <span className="text-sm text-gray-700">Amount:</span>
+                                  <span className="font-bold text-green-600">₹{parseFloat(order.refund_amount).toFixed(2)}</span>
+                                </div>
+                              )}
+                              {order.refunded_at && (
+                                <div className="text-sm text-gray-600">
+                                  Processed on {new Date(order.refunded_at).toLocaleDateString('en-IN')}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
                         {/* Price Breakdown */}
                         <div className="mb-6">
                           <h4 className="font-bold text-gray-800 mb-3">
@@ -382,13 +488,6 @@ const OrderHistory = () => {
                               <X className="h-4 w-4" />
                               Cancel Order
                             </button>
-                          )}
-
-                          {order.tracking_number && (
-                            <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 font-semibold rounded-lg">
-                              <Eye className="h-4 w-4" />
-                              Tracking: {order.tracking_number}
-                            </div>
                           )}
                         </div>
                       </div>

@@ -86,6 +86,16 @@ const orderService = {
   },
 
   /**
+   * Retry payment for failed/awaiting payment orders
+   */
+  retryPayment: async (orderId: number): Promise<RazorpayOrderResponse> => {
+    const response = await axiosInstance.post(
+      `/orders/${orderId}/retry_payment`
+    );
+    return response.data;
+  },
+
+  /**
    * Validate coupon code
    */
   validateCoupon: async (

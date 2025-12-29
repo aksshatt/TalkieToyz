@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_28_043652) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_29_214242) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -343,11 +343,19 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_28_043652) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "coupon_id"
+    t.integer "refund_status", default: 0, null: false
+    t.decimal "refund_amount", precision: 10, scale: 2
+    t.datetime "refunded_at"
+    t.jsonb "refund_details", default: {}
+    t.decimal "weight_kg", precision: 8, scale: 3, default: "0.5"
+    t.jsonb "dimensions_cm", default: {"height"=>5, "length"=>10, "breadth"=>10}
     t.index ["billing_address"], name: "index_orders_on_billing_address", using: :gin
     t.index ["coupon_id"], name: "index_orders_on_coupon_id"
     t.index ["created_at"], name: "index_orders_on_created_at"
     t.index ["order_number"], name: "index_orders_on_order_number", unique: true
     t.index ["payment_status"], name: "index_orders_on_payment_status"
+    t.index ["refund_status"], name: "index_orders_on_refund_status"
+    t.index ["refunded_at"], name: "index_orders_on_refunded_at"
     t.index ["shipping_address"], name: "index_orders_on_shipping_address", using: :gin
     t.index ["status"], name: "index_orders_on_status"
     t.index ["user_id", "created_at"], name: "index_orders_on_user_created"
@@ -530,6 +538,29 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_28_043652) do
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
+  create_table "shipments", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.string "shiprocket_order_id"
+    t.string "shiprocket_shipment_id"
+    t.string "awb_code"
+    t.string "courier_name"
+    t.integer "courier_id"
+    t.string "status"
+    t.datetime "pickup_scheduled_date"
+    t.datetime "delivered_date"
+    t.string "tracking_url"
+    t.string "label_url"
+    t.string "manifest_url"
+    t.jsonb "shipment_details", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["awb_code"], name: "index_shipments_on_awb_code", unique: true, where: "(awb_code IS NOT NULL)"
+    t.index ["order_id"], name: "index_shipments_on_order_id", unique: true
+    t.index ["shiprocket_order_id"], name: "index_shipments_on_shiprocket_order_id"
+    t.index ["shiprocket_shipment_id"], name: "index_shipments_on_shiprocket_shipment_id"
+    t.index ["status"], name: "index_shipments_on_status"
+  end
+
   create_table "site_contents", force: :cascade do |t|
     t.string "key", null: false
     t.string "content_type", default: "text", null: false
@@ -613,4 +644,5 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_28_043652) do
   add_foreign_key "reviews", "products"
   add_foreign_key "reviews", "users"
   add_foreign_key "reviews", "users", column: "admin_responder_id"
+  add_foreign_key "shipments", "orders"
 end

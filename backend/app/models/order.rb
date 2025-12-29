@@ -10,11 +10,20 @@ class Order < ApplicationRecord
     refunded: 6
   }
 
+  enum refund_status: {
+    none: 0,
+    pending: 1,
+    processing: 2,
+    completed: 3,
+    failed: 4
+  }
+
   # Associations
   belongs_to :user
   belongs_to :coupon, optional: true
   has_many :order_items, dependent: :destroy
   has_many :products, through: :order_items
+  has_one :shipment, dependent: :destroy
 
   # Validations
   validates :order_number, presence: true, uniqueness: true
@@ -28,6 +37,7 @@ class Order < ApplicationRecord
   after_create :increment_coupon_usage
   after_create :send_order_confirmation_email
   after_update :send_status_update_email, if: :saved_change_to_status?
+  after_update :auto_create_shipment, if: :should_auto_create_shipment?
 
   # Scopes
   scope :recent, -> { order(created_at: :desc) }
@@ -105,6 +115,102 @@ class Order < ApplicationRecord
     update(payment_status: 'failed')
   end
 
+  # Refund Methods
+  def can_refund?
+    # Order must be paid and not already refunded
+    payment_status == 'paid' && refund_status.in?(['none', 'failed']) && !cancelled?
+  end
+
+  def initiate_refund(amount, reason = 'Customer request')
+    unless can_refund?
+      return { success: false, error: 'Order cannot be refunded' }
+    end
+
+    # Get payment ID from payment_details
+    payment_id = payment_details&.dig('razorpay_payment_id')
+
+    unless payment_id
+      return { success: false, error: 'Payment ID not found' }
+    end
+
+    begin
+      # Create refund via RazorpayService
+      refund = RazorpayService.create_refund(payment_id, amount)
+
+      if refund
+        # Update order with refund details
+        update(
+          refund_status: :processing,
+          refund_details: (refund_details || {}).merge(
+            razorpay_refund_id: refund.id,
+            amount: amount,
+            reason: reason,
+            initiated_at: Time.current,
+            status: refund.status
+          )
+        )
+
+        { success: true, refund: refund }
+      else
+        update(refund_status: :failed)
+        { success: false, error: 'Failed to create refund' }
+      end
+    rescue => e
+      Rails.logger.error("Refund error for order #{order_number}: #{e.message}")
+      update(refund_status: :failed)
+      { success: false, error: e.message }
+    end
+  end
+
+  # Shipment Methods
+  def can_create_shipment?
+    # Order must be paid (or COD) and in confirmed or processing status
+    (payment_status == 'paid' || payment_method == 'cod') &&
+    status.in?(['confirmed', 'processing']) &&
+    !cancelled?
+  end
+
+  def create_shiprocket_shipment(courier_id = nil)
+    unless can_create_shipment?
+      return { success: false, error: 'Order is not ready for shipment' }
+    end
+
+    if shipment.present?
+      return { success: false, error: 'Shipment already exists' }
+    end
+
+    begin
+      # Create shipment via ShiprocketService
+      shipment_data = ShiprocketService.create_shipment(self, courier_id)
+
+      # Create shipment record
+      new_shipment = create_shipment!(
+        shiprocket_order_id: shipment_data[:shiprocket_order_id],
+        shiprocket_shipment_id: shipment_data[:shiprocket_shipment_id],
+        awb_code: shipment_data[:awb_code],
+        courier_name: shipment_data[:courier_name],
+        courier_id: shipment_data[:courier_id],
+        tracking_url: shipment_data[:tracking_url],
+        label_url: shipment_data[:label_url],
+        status: 'Pickup Scheduled',
+        shipment_details: shipment_data
+      )
+
+      # Update order tracking number
+      update(tracking_number: shipment_data[:awb_code], status: :processing)
+
+      { success: true, shipment: new_shipment }
+    rescue => e
+      Rails.logger.error("Shipment creation error for order #{order_number}: #{e.message}")
+      { success: false, error: e.message }
+    end
+  end
+
+  # Payment Retry Methods
+  def can_retry_payment?
+    payment_method == 'razorpay' && payment_status.in?(['awaiting_payment', 'failed']) && !cancelled?
+  end
+
   private
 
   def generate_order_number
@@ -135,5 +241,23 @@ class Order < ApplicationRecord
     when :cancelled
       OrderMailer.order_cancelled(id).deliver_later(queue: 'mailers')
     end
+  end
+
+  def should_auto_create_shipment?
+    # Auto-create shipment when status changes to processing
+    saved_change_to_status? && processing? && shipment.nil? && can_create_shipment?
+  end
+
+  def auto_create_shipment
+    Rails.logger.info("Auto-creating shipment for order #{order_number}")
+    result = create_shiprocket_shipment
+
+    if result[:success]
+      Rails.logger.info("Shipment created successfully for order #{order_number}")
+    else
+      Rails.logger.error("Failed to auto-create shipment for order #{order_number}: #{result[:error]}")
+    end
+  rescue => e
+    Rails.logger.error("Auto-create shipment error for order #{order_number}: #{e.message}")
   end
 end
