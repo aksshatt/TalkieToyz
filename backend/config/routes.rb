@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       post 'auth/login', to: 'auth#login'
       delete 'auth/logout', to: 'auth#logout'
       get 'auth/me', to: 'auth#me'
+      patch 'auth/profile', to: 'auth#update_profile'
 
       # Products (full CRUD)
       resources :products, param: :id do
@@ -79,6 +80,10 @@ Rails.application.routes.draw do
 
       # Contact Submissions (public)
       resources :contact_submissions, only: [:create]
+
+      # Site Contents (CMS - public)
+      get 'site_contents/:page', to: 'site_contents#show', as: :site_content_page
+      get 'site_contents/:page/keys', to: 'site_contents#keys', as: :site_content_keys
 
       # Newsletter Subscriptions
       resources :newsletter_subscriptions, only: [:create] do
@@ -181,6 +186,13 @@ Rails.application.routes.draw do
         resources :contact_submissions, only: [:index, :show, :update] do
           collection do
             get :statistics
+          end
+        end
+
+        # Site Contents Management (CMS)
+        resources :site_contents do
+          collection do
+            get :pages
           end
         end
       end

@@ -6,6 +6,7 @@ import {
   ShoppingBag,
   Users,
   HelpCircle,
+  FileText,
   LogOut,
   Menu,
   X,
@@ -23,6 +24,7 @@ const AdminLayout: React.FC = () => {
     { name: 'Orders', href: '/admin/orders', icon: ShoppingBag },
     { name: 'Customers', href: '/admin/customers', icon: Users },
     { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
+    { name: 'Content', href: '/admin/content', icon: FileText },
   ];
 
   const isActive = (href: string) => {
@@ -42,12 +44,12 @@ const AdminLayout: React.FC = () => {
       >
         <div className="h-full flex flex-col">
           {/* Logo */}
-          <div className="p-6 border-b-2 border-warmgray-100">
+          <div className="p-3 border-b-2 border-warmgray-100">
             <Link to="/" className="flex items-center space-x-2">
               <img
                 src="/logo.png"
                 alt="TalkieToyz"
-                className="h-10 w-auto"
+                className="h-18 sm:h-20 w-auto transition-all"
               />
             </Link>
             <p className="text-sm text-warmgray-500 mt-1 font-medium">

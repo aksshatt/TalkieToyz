@@ -20,7 +20,10 @@ module Api
                 email: user.email,
                 name: user.name,
                 role: user.role,
-                phone: user.phone
+                phone: user.phone,
+                bio: user.bio,
+                created_at: user.created_at,
+                updated_at: user.updated_at
               },
               access_token: token,
               refresh_token: refresh_token
@@ -53,7 +56,10 @@ module Api
                 email: user.email,
                 name: user.name,
                 role: user.role,
-                phone: user.phone
+                phone: user.phone,
+                bio: user.bio,
+                created_at: user.created_at,
+                updated_at: user.updated_at
               },
               access_token: token,
               refresh_token: refresh_token
@@ -90,7 +96,10 @@ module Api
                 email: user.email,
                 name: user.name,
                 role: user.role,
-                phone: user.phone
+                phone: user.phone,
+                bio: user.bio,
+                created_at: user.created_at,
+                updated_at: user.updated_at
               }
             }
           }
@@ -99,6 +108,36 @@ module Api
             success: false,
             message: 'Not authenticated'
           }, status: :unauthorized
+        end
+      end
+
+      # PATCH /api/v1/auth/profile
+      def update_profile
+        user = User.first # For development
+
+        if user.update(profile_params)
+          render json: {
+            success: true,
+            message: 'Profile updated successfully',
+            data: {
+              user: {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                role: user.role,
+                phone: user.phone,
+                bio: user.bio,
+                created_at: user.created_at,
+                updated_at: user.updated_at
+              }
+            }
+          }
+        else
+          render json: {
+            success: false,
+            message: 'Failed to update profile',
+            errors: user.errors.full_messages
+          }, status: :unprocessable_entity
         end
       end
 
@@ -120,6 +159,10 @@ module Api
         else
           params.permit(:email, :password)
         end
+      end
+
+      def profile_params
+        params.permit(:name, :phone, :bio, :avatar_url)
       end
 
       def generate_jwt_token(user)

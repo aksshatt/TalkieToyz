@@ -38,6 +38,7 @@ import ResourcesPage from './pages/ResourcesPage';
 // Communication Pages
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
+import About from './pages/About';
 
 // Admin Pages
 import AdminLayout from './components/admin/AdminLayout';
@@ -51,6 +52,7 @@ import ResourceManagement from './pages/admin/ResourceManagement';
 import ResourceFormPage from './pages/admin/ResourceFormPage';
 import ReviewModeration from './components/admin/ReviewModeration';
 import FAQManagement from './pages/admin/FAQManagement';
+import ContentManagement from './pages/admin/ContentManagement';
 
 // Communication Components
 import WhatsAppButton from './components/common/WhatsAppButton';
@@ -169,6 +171,7 @@ function App() {
 
           {/* Communication Routes */}
           <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
           <Route path="/faq" element={<FAQ />} />
 
           {/* Admin Routes */}
@@ -192,6 +195,7 @@ function App() {
             <Route path="resources/new" element={<ResourceFormPage />} />
             <Route path="resources/edit/:slug" element={<ResourceFormPage />} />
             <Route path="faqs" element={<FAQManagement />} />
+            <Route path="content" element={<ContentManagement />} />
           </Route>
 
           {/* Catch all - redirect to home */}

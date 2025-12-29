@@ -44,9 +44,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           // Verify token is still valid by fetching current user
           try {
             const response = await authService.getCurrentUser();
-            setUser(response.data);
+            setUser(response.data.user);
             // Update stored user with fresh data
-            localStorage.setItem('user', JSON.stringify(response.data));
+            localStorage.setItem('user', JSON.stringify(response.data.user));
           } catch (error) {
             // Token is invalid, clear storage
             console.error('Token validation failed:', error);

@@ -76,7 +76,7 @@ const authService = {
   /**
    * Get current user profile
    */
-  getCurrentUser: async (): Promise<{ success: boolean; data: User }> => {
+  getCurrentUser: async (): Promise<{ success: boolean; data: { user: User } }> => {
     const response = await axiosInstance.get('/auth/me');
     return response.data;
   },
@@ -84,7 +84,7 @@ const authService = {
   /**
    * Update user profile
    */
-  updateProfile: async (data: UpdateProfileData): Promise<{ success: boolean; data: User }> => {
+  updateProfile: async (data: UpdateProfileData): Promise<{ success: boolean; message: string; data: { user: User } }> => {
     const response = await axiosInstance.patch('/auth/profile', data);
     return response.data;
   },

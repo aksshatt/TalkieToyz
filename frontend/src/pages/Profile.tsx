@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import authService from '../services/authService';
 import { validateName, validatePhone } from '../utils/validation';
+import Layout from '../components/layout/Layout';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -13,6 +14,11 @@ const Profile: React.FC = () => {
   const [serverError, setServerError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
+  // Debug: log isEditing state changes
+  useEffect(() => {
+    console.log('Profile: isEditing state changed to:', isEditing);
+  }, [isEditing]);
+
   const [formData, setFormData] = useState({
     name: user?.name || '',
     phone: user?.phone || '',
@@ -20,6 +26,17 @@ const Profile: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  // Update form data when user data loads
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        phone: user.phone || '',
+        bio: user.bio || '',
+      });
+    }
+  }, [user]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -49,18 +66,26 @@ const Profile: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('handleSubmit called! isEditing:', isEditing);
     setServerError('');
     setSuccessMessage('');
 
-    if (!validateForm()) {
+    if (!isEditing) {
+      console.log('Form submitted but not in edit mode, ignoring');
       return;
     }
 
+    if (!validateForm()) {
+      console.log('Validation failed');
+      return;
+    }
+
+    console.log('Submitting profile update...');
     setIsLoading(true);
 
     try {
       const response = await authService.updateProfile(formData);
-      updateUser(response.data);
+      updateUser(response.data.user);
       setSuccessMessage('Profile updated successfully!');
       setIsEditing(false);
     } catch (error: any) {
@@ -123,7 +148,8 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 py-12 px-4">
+    <Layout>
+      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 py-12 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -244,7 +270,10 @@ const Profile: React.FC = () => {
                 {!isEditing ? (
                   <button
                     type="button"
-                    onClick={() => setIsEditing(true)}
+                    onClick={() => {
+                      console.log('Edit Profile clicked, setting isEditing to true');
+                      setIsEditing(true);
+                    }}
                     className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
                   >
                     Edit Profile
@@ -252,7 +281,11 @@ const Profile: React.FC = () => {
                 ) : (
                   <>
                     <button
-                      type="submit"
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSubmit(e);
+                      }}
                       disabled={isLoading}
                       className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                     >
@@ -283,12 +316,18 @@ const Profile: React.FC = () => {
 
             {/* Account Info */}
             <div className="mt-6 text-center text-sm text-gray-500">
-              <p>Member since {new Date(user.created_at).toLocaleDateString()}</p>
+              <p>
+                Member since{' '}
+                {user.created_at
+                  ? new Date(user.created_at).toLocaleDateString()
+                  : 'N/A'}
+              </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </Layout>
   );
 };
 

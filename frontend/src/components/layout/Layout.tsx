@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import { ShoppingCart, User, LogOut } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAppSelector } from '../../store/hooks';
+import { useState } from 'react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,21 +11,22 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { user, isAuthenticated, logout } = useAuth();
   const cart = useAppSelector((state) => state.cart.cart);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const cartItemsCount = cart?.items_count || 0;
+  const cartItemsCount = cart?.total_items || 0;
 
   return (
     <div className="min-h-screen">
       {/* Header */}
       <header className="bg-white/90 backdrop-blur-md shadow-soft sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-5">
+        <div className="max-w-7xl mx-auto px-4 py-1.5">
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3 group">
               <img
                 src="/logo.png"
                 alt="TalkieToyz"
-                className="h-12 w-auto"
+                className="h-20 sm:h-24 w-auto transition-all"
               />
             </Link>
 
@@ -77,6 +79,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 className="text-warmgray-700 font-semibold hover:text-teal transition-colors"
               >
                 Contact
+              </Link>
+              <Link
+                to="/about"
+                className="text-warmgray-700 font-semibold hover:text-teal transition-colors"
+              >
+                About
               </Link>
             </nav>
 
@@ -131,8 +139,92 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </Link>
                 </div>
               )}
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2.5 hover:bg-warmgray-100 rounded-full transition-all"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="h-6 w-6 text-warmgray-700" />
+                ) : (
+                  <Menu className="h-6 w-6 text-warmgray-700" />
+                )}
+              </button>
             </div>
           </div>
+
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden border-t border-warmgray-200 bg-white">
+              <nav className="flex flex-col space-y-1 px-4 py-4">
+                <Link
+                  to="/products"
+                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Products
+                </Link>
+                <Link
+                  to="/assessments"
+                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Assessments
+                </Link>
+                <Link
+                  to="/milestones"
+                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Milestones
+                </Link>
+                <Link
+                  to="/progress"
+                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Progress
+                </Link>
+                <Link
+                  to="/blog"
+                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Blog
+                </Link>
+                <Link
+                  to="/resources"
+                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Resources
+                </Link>
+                <Link
+                  to="/faq"
+                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  FAQ
+                </Link>
+                <Link
+                  to="/contact"
+                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Contact
+                </Link>
+                <Link
+                  to="/about"
+                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  About
+                </Link>
+              </nav>
+            </div>
+          )}
         </div>
       </header>
 
@@ -201,6 +293,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     className="text-warmgray-600 hover:text-teal transition-colors font-medium"
                   >
                     Contact
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/about"
+                    className="text-warmgray-600 hover:text-teal transition-colors font-medium"
+                  >
+                    About
                   </Link>
                 </li>
               </ul>

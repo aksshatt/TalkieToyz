@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Star, ShoppingCart } from 'lucide-react';
 import type { ProductSummary } from '../../types/product';
@@ -12,6 +12,7 @@ interface ProductCardProps {
 const ProductCard = ({ product }: ProductCardProps) => {
   const dispatch = useAppDispatch();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const addingRef = useRef(false);
   const imageUrl = product.image_urls?.[0]?.thumbnail_url || product.image_urls?.[0]?.url || '/placeholder-product.png';
 
   const categoryColors = [
@@ -106,11 +107,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-2xl font-[var(--font-family-fun)] font-bold text-teal">
-                ₹{parseFloat(product.price).toFixed(2)}
+                ₹ {parseFloat(product.price).toFixed(2)}
               </span>
               {product.compare_at_price && (
                 <span className="text-sm text-warmgray-500 line-through">
-                  ₹{parseFloat(product.compare_at_price).toFixed(2)}
+                  ₹ {parseFloat(product.compare_at_price).toFixed(2)}
                 </span>
               )}
             </div>
@@ -125,7 +126,16 @@ const ProductCard = ({ product }: ProductCardProps) => {
             }`}
             onClick={async (e) => {
               e.preventDefault();
+              e.stopPropagation();
+
+              // Prevent double-clicks
+              if (addingRef.current || isAddingToCart) {
+                return;
+              }
+
+              addingRef.current = true;
               setIsAddingToCart(true);
+
               try {
                 await dispatch(
                   addToCart({
@@ -137,6 +147,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 // Error already handled in slice
               } finally {
                 setIsAddingToCart(false);
+                addingRef.current = false;
               }
             }}
           >
