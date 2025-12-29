@@ -449,7 +449,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   faker
-  image_processing
+  image_processing (~> 1.2)
   kaminari
   matrix
   pg (~> 1.1)
