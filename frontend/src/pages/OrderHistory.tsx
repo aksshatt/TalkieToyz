@@ -4,7 +4,7 @@ import { Package, Eye, X, RefreshCw, ChevronDown, Truck, ExternalLink, Calendar 
 import { useQuery } from '@tanstack/react-query';
 import Layout from '../components/layout/Layout';
 import orderService from '../services/orderService';
-import type { Order, OrderStatus } from '../types/order';
+import type { Order, OrderStatus, OrderItem } from '../types/order';
 import toast from 'react-hot-toast';
 import { useAppDispatch } from '../store/hooks';
 import { addToCart } from '../store/slices/cartSlice';
@@ -180,9 +180,9 @@ const OrderHistory = () => {
             </div>
           ) : (
             <div className="space-y-6">
-              {orders.map((order) => {
+              {orders.map((order: Order) => {
                 const isExpanded = expandedOrders.has(order.id);
-                const statusStyle = statusColors[order.status];
+                const statusStyle = statusColors[order.status as OrderStatus];
 
                 return (
                   <div
@@ -263,7 +263,7 @@ const OrderHistory = () => {
                             Order Items
                           </h4>
                           <div className="space-y-3">
-                            {order.order_items.map((item) => (
+                            {order.order_items.map((item: OrderItem) => (
                               <div
                                 key={item.id}
                                 className="flex items-center gap-4 bg-white rounded-lg p-4"
