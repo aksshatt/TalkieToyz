@@ -90,18 +90,21 @@ export interface CreateOrderData {
   billing_address?: Address;
   coupon_code?: string;
   notes?: string;
+  save_address?: boolean;
 }
 
 export interface OrdersResponse {
   success: boolean;
-  data: Order[];
-  message: string;
-  meta: {
-    current_page: number;
-    total_pages: number;
-    total_count: number;
-    per_page: number;
+  data: {
+    orders: Order[];
+    meta: {
+      current_page: number;
+      total_pages: number;
+      total_count: number;
+      per_page: number;
+    };
   };
+  message: string;
 }
 
 export interface OrderResponse {
@@ -111,10 +114,14 @@ export interface OrderResponse {
 }
 
 export interface RazorpayOrderResponse {
-  order: Order;
-  razorpay_order_id: string;
-  razorpay_key_id: string;
-  amount: number;
+  success: boolean;
+  data: {
+    order: Order;
+    razorpay_order_id: string;
+    razorpay_key_id: string;
+    amount: number;
+  };
+  message: string;
 }
 
 export interface VerifyPaymentData {
