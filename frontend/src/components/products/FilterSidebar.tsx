@@ -1,4 +1,5 @@
-import { X } from 'lucide-react';
+import { useState } from 'react';
+import { X, ChevronDown, ChevronUp } from 'lucide-react';
 import { useCategories, useSpeechGoals } from '../../hooks/useProducts';
 import PriceFilter from './PriceFilter';
 import AgeRangeSelector from './AgeRangeSelector';
@@ -20,14 +21,26 @@ const FilterSidebar = ({
 }: FilterSidebarProps) => {
   const { data: categoriesData, isLoading: categoriesLoading } = useCategories();
   const { data: speechGoalsData, isLoading: speechGoalsLoading } = useSpeechGoals();
+  const [expandedCategories, setExpandedCategories] = useState<number[]>([]);
 
-  const categories = categoriesData?.data || [];
+  const allCategories = categoriesData?.data || [];
   const speechGoals = speechGoalsData?.data || [];
+
+  // Filter only top-level categories (parent_id is null)
+  const categories = allCategories.filter(cat => cat.parent_id === null);
 
   const isLoading = categoriesLoading || speechGoalsLoading;
 
   const handleCategoryChange = (categoryId: number | undefined) => {
     onFiltersChange({ ...filters, category_id: categoryId, page: 1 });
+  };
+
+  const toggleCategoryExpand = (categoryId: number) => {
+    setExpandedCategories(prev =>
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
   };
 
   const handleAgeChange = (age: number | undefined) => {
@@ -152,23 +165,67 @@ const FilterSidebar = ({
             </span>
           </label>
 
-          {categories.map((category) => (
-            <label
-              key={category.id}
-              className="flex items-center gap-2 cursor-pointer group"
-            >
-              <input
-                type="radio"
-                name="category"
-                checked={filters.category_id === category.id}
-                onChange={() => handleCategoryChange(category.id)}
-                className="w-4 h-4 text-teal border-warmgray-300 focus:ring-teal"
-              />
-              <span className="text-sm text-warmgray-700 group-hover:text-teal transition-colors font-medium">
-                {category.name}
-              </span>
-            </label>
-          ))}
+          {categories.map((category) => {
+            const hasSubcategories = category.subcategories && category.subcategories.length > 0;
+            const isExpanded = expandedCategories.includes(category.id);
+
+            return (
+              <div key={category.id}>
+                {/* Parent Category */}
+                <div className="flex items-center gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer group flex-1">
+                    <input
+                      type="radio"
+                      name="category"
+                      checked={filters.category_id === category.id}
+                      onChange={() => handleCategoryChange(category.id)}
+                      className="w-4 h-4 text-teal border-warmgray-300 focus:ring-teal"
+                    />
+                    <span className="text-sm text-warmgray-700 group-hover:text-teal transition-colors font-medium">
+                      {category.name}
+                    </span>
+                  </label>
+
+                  {hasSubcategories && (
+                    <button
+                      onClick={() => toggleCategoryExpand(category.id)}
+                      className="p-1 hover:bg-warmgray-100 rounded transition-colors"
+                      aria-label={isExpanded ? 'Collapse subcategories' : 'Expand subcategories'}
+                    >
+                      {isExpanded ? (
+                        <ChevronUp className="w-4 h-4 text-warmgray-500" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4 text-warmgray-500" />
+                      )}
+                    </button>
+                  )}
+                </div>
+
+                {/* Subcategories */}
+                {hasSubcategories && isExpanded && (
+                  <div className="ml-6 mt-2 space-y-2 border-l-2 border-warmgray-200 pl-3">
+                    {category.subcategories?.map((subcat) => (
+                      <label
+                        key={subcat.id}
+                        className="flex items-center gap-2 cursor-pointer group"
+                      >
+                        <input
+                          type="radio"
+                          name="category"
+                          checked={filters.category_id === subcat.id}
+                          onChange={() => handleCategoryChange(subcat.id)}
+                          className="w-4 h-4 text-teal border-warmgray-300 focus:ring-teal"
+                        />
+                        <span className="text-sm text-warmgray-600 group-hover:text-teal transition-colors">
+                          {subcat.name}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 

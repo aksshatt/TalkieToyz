@@ -8,7 +8,8 @@ import {
   Lightbulb,
   MessageCircle,
   Eye,
-  Users,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import { productService } from '../../services/productService';
 import type { Category } from '../../types/product';
@@ -16,16 +17,14 @@ import type { Category } from '../../types/product';
 const DevelopmentalDomains = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [expandedDomain, setExpandedDomain] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await productService.getCategories();
-        console.log('Categories API response:', response);
-        console.log('All categories:', response.data);
         // Filter only top-level categories (parent_id is null)
         const topLevelCategories = response.data.filter((cat: Category) => cat.parent_id === null);
-        console.log('Top-level categories (parent_id === null):', topLevelCategories);
         setCategories(topLevelCategories);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -47,20 +46,26 @@ const DevelopmentalDomains = () => {
       'adaptive-domain': <Lightbulb className="w-8 h-8" />,
       'sensory-integration-domain': <Eye className="w-8 h-8" />,
     };
-    return iconMap[slug] || <Users className="w-8 h-8" />;
+    return iconMap[slug] || <Hand className="w-8 h-8" />;
   };
 
   // Color mapping for different domains
   const getColorForDomain = (index: number) => {
     const colors = [
-      { color: 'text-teal', bgColor: 'bg-teal-light/30' },
-      { color: 'text-coral', bgColor: 'bg-coral-light/30' },
-      { color: 'text-purple-500', bgColor: 'bg-purple-100' },
-      { color: 'text-pink-500', bgColor: 'bg-pink-100' },
-      { color: 'text-sunshine', bgColor: 'bg-sunshine-light/30' },
-      { color: 'text-sky', bgColor: 'bg-sky-light/30' },
+      { color: 'text-teal', bgColor: 'bg-teal-light/30', borderColor: 'border-teal' },
+      { color: 'text-coral', bgColor: 'bg-coral-light/30', borderColor: 'border-coral' },
+      { color: 'text-purple-500', bgColor: 'bg-purple-100', borderColor: 'border-purple-500' },
+      { color: 'text-pink-500', bgColor: 'bg-pink-100', borderColor: 'border-pink-500' },
+      { color: 'text-sunshine', bgColor: 'bg-sunshine-light/30', borderColor: 'border-sunshine' },
+      { color: 'text-sky', bgColor: 'bg-sky-light/30', borderColor: 'border-sky' },
     ];
     return colors[index % colors.length];
+  };
+
+  const handleDomainClick = (categoryId: number, hasSubcategories: boolean) => {
+    if (hasSubcategories) {
+      setExpandedDomain(expandedDomain === categoryId ? null : categoryId);
+    }
   };
 
   if (loading) {
@@ -72,7 +77,7 @@ const DevelopmentalDomains = () => {
               Developmental Domains
             </h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="card-talkie animate-pulse h-48"></div>
             ))}
@@ -96,46 +101,108 @@ const DevelopmentalDomains = () => {
         </div>
 
         {/* Domains Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((category, index) => {
             const colors = getColorForDomain(index);
+            const hasSubcategories = category.subcategories && category.subcategories.length > 0;
+            const isExpanded = expandedDomain === category.id;
+
             return (
-              <Link
-                key={category.id}
-                to={`/products?category=${category.slug}`}
-                className="group"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="card-talkie-hover text-center p-6 h-full flex flex-col items-center">
-                  {/* Circular Icon */}
-                  <div
-                    className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full ${colors.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-soft`}
-                  >
-                    <div className={colors.color}>{getIconForDomain(category.slug)}</div>
-                  </div>
+              <div key={category.id} className="animate-slide-in" style={{ animationDelay: `${index * 100}ms` }}>
+                {/* Main Domain Card */}
+                <div
+                  className={`card-talkie-hover cursor-pointer transition-all duration-300 ${
+                    isExpanded ? `border-l-4 ${colors.borderColor}` : ''
+                  }`}
+                  onClick={() => hasSubcategories ? handleDomainClick(category.id, hasSubcategories) : null}
+                >
+                  {hasSubcategories ? (
+                    <div className="p-6">
+                      <div className="flex items-start gap-4">
+                        {/* Icon */}
+                        <div className={`flex-shrink-0 w-16 h-16 rounded-full ${colors.bgColor} flex items-center justify-center shadow-soft`}>
+                          <div className={colors.color}>{getIconForDomain(category.slug)}</div>
+                        </div>
 
-                  {/* Title */}
-                  <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 text-lg mb-2 group-hover:text-teal transition-colors">
-                    {category.name}
-                  </h3>
+                        {/* Content */}
+                        <div className="flex-1">
+                          <div className="flex items-start justify-between gap-2">
+                            <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 text-xl mb-2">
+                              {category.name}
+                            </h3>
+                            {isExpanded ? (
+                              <ChevronUp className={`w-5 h-5 ${colors.color} flex-shrink-0`} />
+                            ) : (
+                              <ChevronDown className={`w-5 h-5 ${colors.color} flex-shrink-0`} />
+                            )}
+                          </div>
+                          <p className="text-sm text-warmgray-600 leading-relaxed">
+                            {category.description}
+                          </p>
+                        </div>
+                      </div>
 
-                  {/* Description */}
-                  <p className="text-sm text-warmgray-600 leading-relaxed">
-                    {category.description}
-                  </p>
+                      {/* Subcategories - Expandable */}
+                      {isExpanded && hasSubcategories && (
+                        <div className="mt-4 pt-4 border-t border-warmgray-200 space-y-2 animate-slide-in">
+                          {category.subcategories?.map((subcat) => (
+                            <Link
+                              key={subcat.id}
+                              to={`/products?category=${subcat.slug}`}
+                              className={`block p-3 rounded-lg hover:${colors.bgColor} transition-all group`}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <div className="flex items-center justify-between">
+                                <span className="text-warmgray-700 font-medium group-hover:text-warmgray-900">
+                                  {subcat.name}
+                                </span>
+                                <svg
+                                  className={`w-4 h-4 ${colors.color} opacity-0 group-hover:opacity-100 transition-opacity`}
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Link to={`/products?category=${category.slug}`} className="block p-6">
+                      <div className="flex items-start gap-4">
+                        {/* Icon */}
+                        <div className={`flex-shrink-0 w-16 h-16 rounded-full ${colors.bgColor} flex items-center justify-center shadow-soft group-hover:scale-110 transition-transform duration-300`}>
+                          <div className={colors.color}>{getIconForDomain(category.slug)}</div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1">
+                          <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 text-xl mb-2 group-hover:text-teal transition-colors">
+                            {category.name}
+                          </h3>
+                          <p className="text-sm text-warmgray-600 leading-relaxed">
+                            {category.description}
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  )}
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>
 
         {/* View All Link */}
-        <div className="text-center mt-10">
+        <div className="text-center mt-12">
           <Link
-            to="/domains"
+            to="/products"
             className="inline-flex items-center gap-2 text-teal font-semibold hover:text-coral transition-colors text-lg"
           >
-            Explore All Domains
+            Explore All Products
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
