@@ -7,7 +7,7 @@ const HeroSection = () => {
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src="/hero-image.jpg"
+          src="/hero-image1.jpg"
           alt="Diverse toddlers playing with educational toys on a soft mat"
           className="w-full h-full object-cover"
           onError={(e) => {
