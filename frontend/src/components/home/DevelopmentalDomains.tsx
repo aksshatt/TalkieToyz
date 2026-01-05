@@ -21,8 +21,11 @@ const DevelopmentalDomains = () => {
     const fetchCategories = async () => {
       try {
         const response = await productService.getCategories();
+        console.log('Categories API response:', response);
+        console.log('All categories:', response.data);
         // Filter only top-level categories (parent_id is null)
         const topLevelCategories = response.data.filter((cat: Category) => cat.parent_id === null);
+        console.log('Top-level categories (parent_id === null):', topLevelCategories);
         setCategories(topLevelCategories);
       } catch (error) {
         console.error('Error fetching categories:', error);
