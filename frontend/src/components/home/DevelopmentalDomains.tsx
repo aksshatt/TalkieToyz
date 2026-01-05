@@ -62,10 +62,8 @@ const DevelopmentalDomains = () => {
     return colors[index % colors.length];
   };
 
-  const handleDomainClick = (categoryId: number, hasSubcategories: boolean) => {
-    if (hasSubcategories) {
-      setExpandedDomain(expandedDomain === categoryId ? null : categoryId);
-    }
+  const toggleDomain = (categoryId: number) => {
+    setExpandedDomain(expandedDomain === categoryId ? null : categoryId);
   };
 
   if (loading) {
@@ -111,85 +109,78 @@ const DevelopmentalDomains = () => {
               <div key={category.id} className="animate-slide-in" style={{ animationDelay: `${index * 100}ms` }}>
                 {/* Main Domain Card */}
                 <div
-                  className={`card-talkie-hover cursor-pointer transition-all duration-300 ${
+                  className={`card-talkie-hover transition-all duration-300 ${
                     isExpanded ? `border-l-4 ${colors.borderColor}` : ''
                   }`}
-                  onClick={() => hasSubcategories ? handleDomainClick(category.id, hasSubcategories) : null}
                 >
-                  {hasSubcategories ? (
-                    <div className="p-6">
-                      <div className="flex items-start gap-4">
-                        {/* Icon */}
-                        <div className={`flex-shrink-0 w-16 h-16 rounded-full ${colors.bgColor} flex items-center justify-center shadow-soft`}>
-                          <div className={colors.color}>{getIconForDomain(category.slug)}</div>
-                        </div>
+                  <div className="p-6">
+                    <div className="flex items-start gap-4">
+                      {/* Icon */}
+                      <Link
+                        to={`/products?category=${category.slug}`}
+                        className={`flex-shrink-0 w-16 h-16 rounded-full ${colors.bgColor} flex items-center justify-center shadow-soft hover:scale-110 transition-transform duration-300`}
+                      >
+                        <div className={colors.color}>{getIconForDomain(category.slug)}</div>
+                      </Link>
 
-                        {/* Content */}
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between gap-2">
-                            <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 text-xl mb-2">
+                      {/* Content */}
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <Link
+                            to={`/products?category=${category.slug}`}
+                            className="flex-1"
+                          >
+                            <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 text-xl mb-2 hover:text-teal transition-colors">
                               {category.name}
                             </h3>
-                            {isExpanded ? (
-                              <ChevronUp className={`w-5 h-5 ${colors.color} flex-shrink-0`} />
-                            ) : (
-                              <ChevronDown className={`w-5 h-5 ${colors.color} flex-shrink-0`} />
-                            )}
-                          </div>
-                          <p className="text-sm text-warmgray-600 leading-relaxed">
-                            {category.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Subcategories - Expandable */}
-                      {isExpanded && hasSubcategories && (
-                        <div className="mt-4 pt-4 border-t border-warmgray-200 space-y-2 animate-slide-in">
-                          {category.subcategories?.map((subcat) => (
-                            <Link
-                              key={subcat.id}
-                              to={`/products?category=${subcat.slug}`}
-                              className={`block p-3 rounded-lg hover:${colors.bgColor} transition-all group`}
-                              onClick={(e) => e.stopPropagation()}
+                          </Link>
+                          {hasSubcategories && (
+                            <button
+                              onClick={() => toggleDomain(category.id)}
+                              className="flex-shrink-0 p-1 hover:bg-warmgray-100 rounded-lg transition-colors"
+                              aria-label={isExpanded ? 'Collapse subcategories' : 'Expand subcategories'}
                             >
-                              <div className="flex items-center justify-between">
-                                <span className="text-warmgray-700 font-medium group-hover:text-warmgray-900">
-                                  {subcat.name}
-                                </span>
-                                <svg
-                                  className={`w-4 h-4 ${colors.color} opacity-0 group-hover:opacity-100 transition-opacity`}
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                              </div>
-                            </Link>
-                          ))}
+                              {isExpanded ? (
+                                <ChevronUp className={`w-5 h-5 ${colors.color}`} />
+                              ) : (
+                                <ChevronDown className={`w-5 h-5 ${colors.color}`} />
+                              )}
+                            </button>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  ) : (
-                    <Link to={`/products?category=${category.slug}`} className="block p-6">
-                      <div className="flex items-start gap-4">
-                        {/* Icon */}
-                        <div className={`flex-shrink-0 w-16 h-16 rounded-full ${colors.bgColor} flex items-center justify-center shadow-soft group-hover:scale-110 transition-transform duration-300`}>
-                          <div className={colors.color}>{getIconForDomain(category.slug)}</div>
-                        </div>
-
-                        {/* Content */}
-                        <div className="flex-1">
-                          <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 text-xl mb-2 group-hover:text-teal transition-colors">
-                            {category.name}
-                          </h3>
-                          <p className="text-sm text-warmgray-600 leading-relaxed">
-                            {category.description}
-                          </p>
-                        </div>
+                        <p className="text-sm text-warmgray-600 leading-relaxed">
+                          {category.description}
+                        </p>
                       </div>
-                    </Link>
-                  )}
+                    </div>
+
+                    {/* Subcategories - Expandable */}
+                    {isExpanded && hasSubcategories && (
+                      <div className="mt-4 pt-4 border-t border-warmgray-200 space-y-2 animate-slide-in">
+                        {category.subcategories?.map((subcat) => (
+                          <Link
+                            key={subcat.id}
+                            to={`/products?category=${subcat.slug}`}
+                            className={`block p-3 rounded-lg hover:${colors.bgColor} transition-all group`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-warmgray-700 font-medium group-hover:text-warmgray-900">
+                                {subcat.name}
+                              </span>
+                              <svg
+                                className={`w-4 h-4 ${colors.color} opacity-0 group-hover:opacity-100 transition-opacity`}
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             );

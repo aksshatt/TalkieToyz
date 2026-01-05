@@ -23,14 +23,29 @@ const ProductList = () => {
   const { data: categoriesData } = useCategories();
   const categories = categoriesData?.data || [];
 
+  // Helper to find category by slug in hierarchical structure
+  const findCategoryBySlug = (slug: string) => {
+    for (const category of categories) {
+      if (category.slug === slug) {
+        return category;
+      }
+      // Search in subcategories
+      if (category.subcategories) {
+        const found = category.subcategories.find(sub => sub.slug === slug);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
   // Initialize filters from URL parameters on mount
   useEffect(() => {
     const categorySlug = searchParams.get('category');
     const categoryIdParam = searchParams.get('category_id');
 
     if (categorySlug && categories.length > 0) {
-      // Find category by slug
-      const category = categories.find(cat => cat.slug === categorySlug);
+      // Find category by slug (including subcategories)
+      const category = findCategoryBySlug(categorySlug);
       if (category) {
         setFilters(prev => ({
           ...prev,
