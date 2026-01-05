@@ -3,10 +3,10 @@ export interface Category {
   name: string;
   slug: string;
   description: string;
-  icon: string;
-  color: string;
   position: number;
+  image_url: string | null;
   parent_id: number | null;
+  product_count: number;
   subcategories?: Category[];
 }
 
