@@ -1,124 +1,81 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Award, Target } from 'lucide-react';
+import { Sparkles, BookOpen } from 'lucide-react';
 
 const HeroSection = () => {
   return (
-    <section className="relative bg-gradient-to-br from-white via-cream-light/30 to-teal-light/10 overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(0 137 123) 1px, transparent 0)',
-          backgroundSize: '40px 40px'
-        }}></div>
+    <section className="relative w-full h-[600px] md:h-[700px] overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=2000&auto=format&fit=crop"
+          alt="Diverse toddlers playing with educational toys on a soft mat"
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            e.currentTarget.src = 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=2000&auto=format&fit=crop';
+          }}
+        />
+        {/* Gradient Overlay - darker on left for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-warmgray-900/75 via-warmgray-900/50 to-transparent md:from-warmgray-900/70 md:via-warmgray-900/40 md:to-transparent"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-20 sm:py-28 relative">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left: Text Content */}
-          <div className="space-y-8">
-            <div className="inline-block">
-              <span className="px-4 py-2 bg-teal/10 text-teal font-semibold rounded-full text-sm">
-                Trusted by 1000+ Families
-              </span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-warmgray-900 leading-tight">
-              Expert-Curated Educational Toys for{' '}
-              <span className="text-teal">Speech Development</span>
-            </h1>
-
-            <p className="text-lg sm:text-xl text-warmgray-600 leading-relaxed max-w-xl">
-              Evidence-based learning tools designed by speech therapists to support your child's developmental milestones through purposeful play.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Link
-                to="/products"
-                className="inline-flex items-center justify-center px-8 py-4 bg-teal hover:bg-teal-dark text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl group"
-              >
-                Browse Products
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                to="/assessments"
-                className="inline-flex items-center justify-center px-8 py-4 border-2 border-warmgray-300 text-warmgray-700 font-semibold rounded-lg hover:bg-warmgray-50 transition-all"
-              >
-                Take Assessment
-              </Link>
-            </div>
-
-            {/* Trust Indicators */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8">
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-teal/10 rounded-lg flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-teal" />
-                </div>
-                <div>
-                  <div className="font-semibold text-warmgray-900">Safe & Certified</div>
-                  <div className="text-sm text-warmgray-600">Quality guaranteed</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-teal/10 rounded-lg flex items-center justify-center">
-                  <Award className="w-5 h-5 text-teal" />
-                </div>
-                <div>
-                  <div className="font-semibold text-warmgray-900">Expert Approved</div>
-                  <div className="text-sm text-warmgray-600">Therapist designed</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-teal/10 rounded-lg flex items-center justify-center">
-                  <Target className="w-5 h-5 text-teal" />
-                </div>
-                <div>
-                  <div className="font-semibold text-warmgray-900">Age Appropriate</div>
-                  <div className="text-sm text-warmgray-600">Developmental fit</div>
-                </div>
-              </div>
-            </div>
+      {/* Content Container */}
+      <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col justify-center h-full max-w-2xl">
+          {/* Small Badge */}
+          <div className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-full shadow-soft w-fit">
+            <Sparkles className="w-4 h-4 text-sunshine" />
+            <span className="text-sm font-semibold text-warmgray-800">Trusted by 1000+ Families</span>
           </div>
 
-          {/* Right: Hero Image */}
-          <div className="relative lg:pl-8">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-              <img
-                src="https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=1000&auto=format&fit=crop"
-                alt="Children engaging with educational toys"
-                className="w-full h-auto object-cover"
-                onError={(e) => {
-                  e.currentTarget.src = '/placeholder-hero.jpg';
-                }}
-              />
+          {/* Main Headline */}
+          <h1 className="font-[var(--font-family-fun)] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 drop-shadow-lg">
+            Where Every Playtime Becomes a{' '}
+            <span className="text-sunshine">Learning Moment</span>
+          </h1>
 
-              {/* Stats Badge */}
-              <div className="absolute bottom-6 left-6 right-6">
-                <div className="bg-white/95 backdrop-blur-md rounded-xl p-6 shadow-xl">
-                  <div className="grid grid-cols-3 gap-4 text-center">
-                    <div>
-                      <div className="text-2xl font-bold text-teal">500+</div>
-                      <div className="text-xs text-warmgray-600 mt-1">Products</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-teal">1000+</div>
-                      <div className="text-xs text-warmgray-600 mt-1">Families</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-teal">98%</div>
-                      <div className="text-xs text-warmgray-600 mt-1">Satisfaction</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          {/* Supporting Text */}
+          <p className="text-lg sm:text-xl md:text-2xl text-white/95 leading-relaxed mb-8 drop-shadow-md font-medium max-w-xl">
+            Expert-curated educational toys that nurture development, spark creativity, and make learning joyful.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              to="/products"
+              className="group inline-flex items-center justify-center px-8 py-4 bg-teal hover:bg-teal-dark text-white font-bold text-lg rounded-full shadow-soft-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            >
+              <BookOpen className="w-5 h-5 mr-2" />
+              Shop Learning Toys
+            </Link>
+            <Link
+              to="/assessments"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white/95 backdrop-blur-sm hover:bg-white text-warmgray-800 font-bold text-lg rounded-full border-2 border-white shadow-soft hover:shadow-lg transition-all duration-300"
+            >
+              <Sparkles className="w-5 h-5 mr-2 text-sunshine" />
+              Take the Development Quiz
+            </Link>
+          </div>
+
+          {/* Trust Indicators - Subtle and below CTAs */}
+          <div className="mt-10 flex flex-wrap gap-6 text-white/90">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-teal rounded-full"></div>
+              <span className="text-sm font-medium">Safe & Certified</span>
             </div>
-
-            {/* Decorative Element */}
-            <div className="absolute -top-6 -right-6 w-24 h-24 bg-teal/10 rounded-full blur-2xl"></div>
-            <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-coral/10 rounded-full blur-2xl"></div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-sunshine rounded-full"></div>
+              <span className="text-sm font-medium">Expert Approved</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-coral rounded-full"></div>
+              <span className="text-sm font-medium">Age-Appropriate</span>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Bottom Soft Fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/50 to-transparent pointer-events-none"></div>
     </section>
   );
 };
