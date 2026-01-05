@@ -1,5 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, Menu, X, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ShoppingCart, User, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAppSelector } from '../../store/hooks';
 import { useState } from 'react';
@@ -12,17 +12,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { user, isAuthenticated, logout } = useAuth();
   const cart = useAppSelector((state) => state.cart.cart);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const navigate = useNavigate();
 
   const cartItemsCount = cart?.items_count || 0;
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
-    }
-  };
 
   return (
     <div className="min-h-screen">
@@ -38,20 +29,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 className="h-16 sm:h-20 w-auto transition-all hover:scale-105"
               />
             </Link>
-
-            {/* Search Bar - Center on desktop */}
-            <form onSubmit={handleSearch} className="hidden lg:block flex-1 max-w-2xl">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-warmgray-400" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search toys by name, age, or domain..."
-                  className="w-full pl-12 pr-4 py-3 border-2 border-warmgray-200 rounded-full focus:ring-2 focus:ring-teal focus:border-teal outline-none transition-all font-medium text-warmgray-700 placeholder-warmgray-400 bg-white hover:border-teal/50"
-                />
-              </div>
-            </form>
 
             {/* Navigation Links - Desktop */}
             <nav className="hidden lg:flex items-center space-x-6">
@@ -162,23 +139,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
             <div className="lg:hidden border-t border-warmgray-200 bg-white mt-4">
-              {/* Mobile Search */}
-              <div className="px-4 py-3">
-                <form onSubmit={handleSearch}>
-                  <div className="relative">
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-warmgray-400" />
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Search toys..."
-                      className="w-full pl-12 pr-4 py-3 border-2 border-warmgray-200 rounded-full focus:ring-2 focus:ring-teal focus:border-teal outline-none transition-all font-medium text-warmgray-700 placeholder-warmgray-400 bg-white"
-                    />
-                  </div>
-                </form>
-              </div>
-
-              <nav className="flex flex-col space-y-1 px-4 pb-4">
+              <nav className="flex flex-col space-y-1 px-4 py-4">
                 <Link
                   to="/products"
                   className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
