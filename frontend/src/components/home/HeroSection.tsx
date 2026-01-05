@@ -7,11 +7,11 @@ const HeroSection = () => {
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=2000&auto=format&fit=crop"
+          src="/hero-image.jpg"
           alt="Diverse toddlers playing with educational toys on a soft mat"
           className="w-full h-full object-cover"
           onError={(e) => {
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=2000&auto=format&fit=crop';
+            e.currentTarget.src = 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=2000&auto=format&fit=crop';
           }}
         />
         {/* Gradient Overlay - darker on left for text readability */}
@@ -21,11 +21,6 @@ const HeroSection = () => {
       {/* Content Container */}
       <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col justify-center h-full max-w-2xl">
-          {/* Small Badge */}
-          <div className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-full shadow-soft w-fit">
-            <Sparkles className="w-4 h-4 text-sunshine" />
-            <span className="text-sm font-semibold text-warmgray-800">Trusted by 1000+ Families</span>
-          </div>
 
           {/* Main Headline */}
           <h1 className="font-[var(--font-family-fun)] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 drop-shadow-lg">
