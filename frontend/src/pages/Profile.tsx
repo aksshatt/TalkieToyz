@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import authService from '../services/authService';
 import { validateName, validatePhone } from '../utils/validation';
 import Layout from '../components/layout/Layout';
+import { User, Mail, Phone, FileText, ShoppingBag, LogOut, Edit2, Save, X, Shield } from 'lucide-react';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -13,11 +14,6 @@ const Profile: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
-  // Debug: log isEditing state changes
-  useEffect(() => {
-    console.log('Profile: isEditing state changed to:', isEditing);
-  }, [isEditing]);
 
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -66,21 +62,17 @@ const Profile: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('handleSubmit called! isEditing:', isEditing);
     setServerError('');
     setSuccessMessage('');
 
     if (!isEditing) {
-      console.log('Form submitted but not in edit mode, ignoring');
       return;
     }
 
     if (!validateForm()) {
-      console.log('Validation failed');
       return;
     }
 
-    console.log('Submitting profile update...');
     setIsLoading(true);
 
     try {
@@ -119,27 +111,24 @@ const Profile: React.FC = () => {
     navigate('/login');
   };
 
-  const getRoleColor = (role: string) => {
+  const getRoleBadge = (role: string) => {
     switch (role) {
       case 'admin':
-        return 'from-red-400 to-pink-500';
+        return (
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-pill bg-coral-gradient text-white text-xs font-semibold">
+            <Shield className="h-3 w-3" />
+            Admin
+          </span>
+        );
       case 'therapist':
-        return 'from-purple-400 to-blue-500';
-      case 'customer':
+        return (
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-pill bg-teal-gradient text-white text-xs font-semibold">
+            <User className="h-3 w-3" />
+            Therapist
+          </span>
+        );
       default:
-        return 'from-blue-400 to-green-500';
-    }
-  };
-
-  const getRoleIcon = (role: string) => {
-    switch (role) {
-      case 'admin':
-        return 'A';
-      case 'therapist':
-        return 'T';
-      case 'customer':
-      default:
-        return 'C';
+        return null;
     }
   };
 
@@ -149,183 +138,212 @@ const Profile: React.FC = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 py-12 px-4">
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">My Profile</h1>
-          <p className="text-gray-600">Manage your account information</p>
-        </div>
-
-        {/* Profile Card */}
-        <div className="bg-white rounded-3xl shadow-xl border-4 border-purple-200 overflow-hidden">
-          {/* Profile Header */}
-          <div className={`bg-gradient-to-r ${getRoleColor(user.role)} p-8 text-white text-center`}>
-            <div className="inline-flex items-center justify-center w-24 h-24 bg-white rounded-full shadow-lg mb-4">
-              <span className="text-5xl font-bold text-gray-700">{getRoleIcon(user.role)}</span>
-            </div>
-            <h2 className="text-3xl font-bold mb-1">{user.name}</h2>
-            <p className="text-white/90 font-medium capitalize">{user.role}</p>
+      <div className="min-h-screen bg-cream-light py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="heading-talkie mb-2">My Account</h1>
+            <p className="text-warmgray-600">Manage your profile and account settings</p>
           </div>
 
-          {/* Messages */}
-          <div className="p-8">
-            {successMessage && (
-              <div className="mb-6 bg-green-50 border-2 border-green-200 rounded-2xl p-4">
-                <p className="text-green-600 text-sm font-medium">{successMessage}</p>
-              </div>
-            )}
-
-            {serverError && (
-              <div className="mb-6 bg-red-50 border-2 border-red-200 rounded-2xl p-4">
-                <p className="text-red-600 text-sm font-medium">{serverError}</p>
-              </div>
-            )}
-
-            {/* Profile Information */}
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Email (Read-only) */}
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
-                  Email Address
-                </label>
-                <div className="px-4 py-3 bg-gray-50 rounded-xl border-2 border-gray-200 text-gray-600">
-                  {user.email}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Profile Summary Card */}
+            <div className="lg:col-span-1">
+              <div className="card-talkie p-6 text-center">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-teal-gradient rounded-full mb-4">
+                  <User className="h-10 w-10 text-white" />
                 </div>
-                <p className="mt-2 text-sm text-gray-500">Email cannot be changed</p>
-              </div>
+                <h2 className="font-[var(--font-family-fun)] font-bold text-xl text-warmgray-900 mb-2">
+                  {user.name}
+                </h2>
+                <p className="text-sm text-warmgray-600 mb-4">{user.email}</p>
+                {getRoleBadge(user.role)}
 
-              {/* Name */}
-              <div>
-                <label htmlFor="name" className="block text-sm font-bold text-gray-700 mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  disabled={!isEditing || isLoading}
-                  className={`w-full px-4 py-3 rounded-xl border-2 transition-colors ${
-                    errors.name
-                      ? 'border-red-300 focus:border-red-500'
-                      : 'border-gray-200 focus:border-purple-500'
-                  } ${
-                    !isEditing ? 'bg-gray-50' : ''
-                  } focus:outline-none focus:ring-2 focus:ring-purple-200 disabled:cursor-not-allowed`}
-                />
-                {errors.name && (
-                  <p className="mt-2 text-sm text-red-600 font-medium">{errors.name}</p>
-                )}
-              </div>
-
-              {/* Phone */}
-              <div>
-                <label htmlFor="phone" className="block text-sm font-bold text-gray-700 mb-2">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  disabled={!isEditing || isLoading}
-                  className={`w-full px-4 py-3 rounded-xl border-2 transition-colors ${
-                    errors.phone
-                      ? 'border-red-300 focus:border-red-500'
-                      : 'border-gray-200 focus:border-purple-500'
-                  } ${
-                    !isEditing ? 'bg-gray-50' : ''
-                  } focus:outline-none focus:ring-2 focus:ring-purple-200 disabled:cursor-not-allowed`}
-                  placeholder="Optional"
-                />
-                {errors.phone && (
-                  <p className="mt-2 text-sm text-red-600 font-medium">{errors.phone}</p>
-                )}
-              </div>
-
-              {/* Bio */}
-              <div>
-                <label htmlFor="bio" className="block text-sm font-bold text-gray-700 mb-2">
-                  Bio
-                </label>
-                <textarea
-                  id="bio"
-                  name="bio"
-                  rows={4}
-                  value={formData.bio}
-                  onChange={handleChange}
-                  disabled={!isEditing || isLoading}
-                  className={`w-full px-4 py-3 rounded-xl border-2 transition-colors ${
-                    !isEditing ? 'bg-gray-50' : ''
-                  } border-gray-200 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 disabled:cursor-not-allowed resize-none`}
-                  placeholder="Tell us about yourself (optional)"
-                />
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-4 pt-4">
-                {!isEditing ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      console.log('Edit Profile clicked, setting isEditing to true');
-                      setIsEditing(true);
-                    }}
-                    className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                <div className="mt-6 pt-6 border-t border-warmgray-200 space-y-3">
+                  <Link
+                    to="/orders"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-warmgray-700 hover:bg-warmgray-50 transition-colors"
                   >
-                    Edit Profile
-                  </button>
-                ) : (
-                  <>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleSubmit(e);
-                      }}
-                      disabled={isLoading}
-                      className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                    >
-                      {isLoading ? 'Saving...' : 'Save Changes'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleCancel}
-                      disabled={isLoading}
-                      className="flex-1 bg-gray-200 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Cancel
-                    </button>
-                  </>
-                )}
-              </div>
-            </form>
+                    <ShoppingBag className="h-5 w-5 text-teal" />
+                    <span className="font-medium">My Orders</span>
+                  </Link>
 
-            {/* Logout Button */}
-            <div className="mt-8 pt-8 border-t-2 border-gray-200">
-              <button
-                onClick={handleLogout}
-                className="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
-              >
-                Logout
-              </button>
+                  {user.role === 'admin' && (
+                    <Link
+                      to="/admin"
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-warmgray-700 hover:bg-warmgray-50 transition-colors"
+                    >
+                      <Shield className="h-5 w-5 text-coral" />
+                      <span className="font-medium">Admin Panel</span>
+                    </Link>
+                  )}
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl text-coral hover:bg-coral-light/20 transition-colors font-medium"
+                  >
+                    <LogOut className="h-5 w-5" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-warmgray-200">
+                  <p className="text-xs text-warmgray-500">
+                    Member since {user.created_at ? new Date(user.created_at).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }) : 'N/A'}
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Account Info */}
-            <div className="mt-6 text-center text-sm text-gray-500">
-              <p>
-                Member since{' '}
-                {user.created_at
-                  ? new Date(user.created_at).toLocaleDateString()
-                  : 'N/A'}
-              </p>
+            {/* Profile Details Card */}
+            <div className="lg:col-span-2">
+              <div className="card-talkie overflow-hidden">
+                <div className="bg-gradient-to-r from-teal-light/40 to-coral-light/30 px-6 py-4 border-b border-warmgray-200">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-[var(--font-family-fun)] font-bold text-xl text-warmgray-900">
+                      Profile Information
+                    </h3>
+                    {!isEditing && (
+                      <button
+                        onClick={() => setIsEditing(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-white rounded-xl text-teal hover:bg-teal hover:text-white transition-colors font-medium shadow-soft"
+                      >
+                        <Edit2 className="h-4 w-4" />
+                        <span>Edit</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  {/* Messages */}
+                  {successMessage && (
+                    <div className="mb-6 bg-teal-light/30 border-l-4 border-teal p-4 rounded-lg">
+                      <p className="text-teal-dark font-medium">{successMessage}</p>
+                    </div>
+                  )}
+
+                  {serverError && (
+                    <div className="mb-6 bg-coral-light/30 border-l-4 border-coral p-4 rounded-lg">
+                      <p className="text-coral-dark font-medium">{serverError}</p>
+                    </div>
+                  )}
+
+                  {/* Profile Information */}
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* Email (Read-only) */}
+                    <div>
+                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-2">
+                        <Mail className="h-4 w-4 text-teal" />
+                        Email Address
+                      </label>
+                      <div className="px-4 py-3 bg-warmgray-50 rounded-xl border border-warmgray-200 text-warmgray-600">
+                        {user.email}
+                      </div>
+                      <p className="mt-1 text-xs text-warmgray-500">Email cannot be changed</p>
+                    </div>
+
+                    {/* Name */}
+                    <div>
+                      <label htmlFor="name" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-2">
+                        <User className="h-4 w-4 text-teal" />
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        disabled={!isEditing || isLoading}
+                        className={`w-full px-4 py-3 rounded-xl border transition-colors ${
+                          errors.name
+                            ? 'border-coral focus:border-coral focus:ring-coral'
+                            : 'border-warmgray-300 focus:border-teal focus:ring-teal'
+                        } ${
+                          !isEditing ? 'bg-warmgray-50 text-warmgray-600' : 'bg-white'
+                        } focus:outline-none focus:ring-2 disabled:cursor-not-allowed`}
+                      />
+                      {errors.name && (
+                        <p className="mt-1 text-sm text-coral-dark font-medium">{errors.name}</p>
+                      )}
+                    </div>
+
+                    {/* Phone */}
+                    <div>
+                      <label htmlFor="phone" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-2">
+                        <Phone className="h-4 w-4 text-teal" />
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        disabled={!isEditing || isLoading}
+                        className={`w-full px-4 py-3 rounded-xl border transition-colors ${
+                          errors.phone
+                            ? 'border-coral focus:border-coral focus:ring-coral'
+                            : 'border-warmgray-300 focus:border-teal focus:ring-teal'
+                        } ${
+                          !isEditing ? 'bg-warmgray-50 text-warmgray-600' : 'bg-white'
+                        } focus:outline-none focus:ring-2 disabled:cursor-not-allowed`}
+                        placeholder="Optional"
+                      />
+                      {errors.phone && (
+                        <p className="mt-1 text-sm text-coral-dark font-medium">{errors.phone}</p>
+                      )}
+                    </div>
+
+                    {/* Bio */}
+                    <div>
+                      <label htmlFor="bio" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-2">
+                        <FileText className="h-4 w-4 text-teal" />
+                        Bio
+                      </label>
+                      <textarea
+                        id="bio"
+                        name="bio"
+                        rows={4}
+                        value={formData.bio}
+                        onChange={handleChange}
+                        disabled={!isEditing || isLoading}
+                        className={`w-full px-4 py-3 rounded-xl border transition-colors ${
+                          !isEditing ? 'bg-warmgray-50 text-warmgray-600' : 'bg-white'
+                        } border-warmgray-300 focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal disabled:cursor-not-allowed resize-none`}
+                        placeholder="Tell us about yourself (optional)"
+                      />
+                    </div>
+
+                    {/* Action Buttons */}
+                    {isEditing && (
+                      <div className="flex gap-3 pt-4">
+                        <button
+                          type="submit"
+                          disabled={isLoading}
+                          className="flex-1 btn-primary py-3 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <Save className="h-4 w-4" />
+                          {isLoading ? 'Saving...' : 'Save Changes'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleCancel}
+                          disabled={isLoading}
+                          className="flex-1 px-6 py-3 border border-warmgray-300 text-warmgray-700 rounded-xl hover:bg-warmgray-50 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                          <X className="h-4 w-4" />
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </Layout>
   );

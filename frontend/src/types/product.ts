@@ -5,6 +5,9 @@ export interface Category {
   description: string;
   icon: string;
   color: string;
+  position: number;
+  parent_id: number | null;
+  subcategories?: Category[];
 }
 
 export interface SpeechGoal {

@@ -36,4 +36,10 @@ export const assessmentService = {
     const response = await axios.post(`/assessments/${slug}/submit`, submission);
     return response.data;
   },
+
+  // Get assessment result by ID
+  getAssessmentResult: async (id: string): Promise<AssessmentResultResponse> => {
+    const response = await axios.get(`/assessment_results/${id}`);
+    return response.data;
+  },
 };

@@ -12,10 +12,9 @@ class Review < ApplicationRecord
   validates :rating, presence: true, inclusion: { in: 1..5 }
   validates :user_id, uniqueness: { scope: :product_id, message: 'can only review a product once' }
   validates :comment, length: { maximum: 1000 }
-  # TODO: Add active_storage_validations gem to enable these validations
-  # validates :photos, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
-  #                    size: { less_than: 5.megabytes },
-  #                    limit: { max: 3 }
+  validates :photos, content_type: ['image/png', 'image/jpeg'],
+                     size: { less_than: 5.megabytes },
+                     limit: { max: 3 }
   validates :admin_response, length: { maximum: 2000 }, allow_blank: true
 
   # Scopes

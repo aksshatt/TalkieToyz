@@ -10,8 +10,7 @@ class AssessmentResult < ApplicationRecord
   validate :answers_structure
 
   # Callbacks
-  before_save :calculate_scores, if: :answers_changed?
-  before_save :generate_recommendations, if: :scores_changed?
+  before_save :calculate_scores_and_recommendations, if: :answers_changed?
   before_save :set_completed_at, if: -> { completed_at.nil? && answers.present? }
 
   # Scopes
@@ -35,33 +34,75 @@ class AssessmentResult < ApplicationRecord
     ((total_score.to_f / max_score) * 100).round(2)
   end
 
+  def category_max_scores
+    return {} unless assessment.present? && assessment.questions.present?
+
+    max_scores = {}
+
+    assessment.questions.each do |question|
+      category = question['category'] || 'general'
+      max_scores[category] ||= 0
+
+      case question['type']
+      when 'yes_no'
+        max_scores[category] += question['points'].values.max.to_i if question['points'].is_a?(Hash)
+      when 'multiple_choice'
+        if question['options'].is_a?(Array)
+          max_points = question['options'].map { |opt| opt['points'].to_i }.max || 0
+          max_scores[category] += max_points
+        end
+      when 'scale'
+        points_per_level = question['points_per_level'] || 1
+        max_value = question['max_value'] || 5
+        max_scores[category] += (max_value * points_per_level)
+      end
+    end
+
+    max_scores
+  end
+
   private
+
+  def calculate_scores_and_recommendations
+    calculate_scores
+    generate_recommendations_data
+  end
 
   def calculate_scores
     return unless assessment.present? && answers.present?
 
     self.total_score = assessment.calculate_score(answers)
 
-    # Calculate category-level scores if scoring_rules include categories
-    if assessment.scoring_rules.present? && assessment.scoring_rules.is_a?(Array)
+    # Calculate category-level scores from questions
+    if assessment.questions.present? && assessment.questions.is_a?(Array)
       category_scores = {}
 
-      assessment.scoring_rules.each do |rule|
-        category = rule['category'] || 'general'
-        question_key = rule['question_key']
+      assessment.questions.each do |question|
+        category = question['category'] || 'general'
+        question_key = question['key']
         answer = answers[question_key]
 
         next if answer.blank?
 
         category_scores[category] ||= 0
 
-        case rule['scoring_type']
-        when 'points'
-          category_scores[category] += rule['points'][answer].to_i if rule['points'].is_a?(Hash)
-        when 'boolean'
-          category_scores[category] += rule['points'].to_i if answer.to_s == 'yes' || answer == true
+        case question['type']
+        when 'yes_no'
+          if question['points'].is_a?(Hash)
+            category_scores[category] += question['points'][answer.to_s].to_i
+          end
+        when 'multiple_choice'
+          # For multiple choice, find the selected option's points
+          # Handle both cases: answer as string value or as object with 'value' key
+          if question['options'].is_a?(Array)
+            answer_value = answer.is_a?(Hash) ? answer['value'] : answer
+            selected_option = question['options'].find { |opt| opt['value'] == answer_value }
+            category_scores[category] += selected_option['points'].to_i if selected_option
+          end
         when 'scale'
-          category_scores[category] += answer.to_i
+          # For scale questions, calculate points based on the answer value
+          points_per_level = question['points_per_level'] || 1
+          category_scores[category] += (answer.to_i * points_per_level)
         end
       end
 
@@ -69,7 +110,7 @@ class AssessmentResult < ApplicationRecord
     end
   end
 
-  def generate_recommendations
+  def generate_recommendations_data
     return unless assessment.present? && total_score.present?
 
     self.recommendations = assessment.generate_recommendations(total_score)
@@ -98,18 +139,23 @@ class AssessmentResult < ApplicationRecord
   end
 
   def calculate_max_possible_score
-    return 0 unless assessment.present? && assessment.scoring_rules.present?
+    return 0 unless assessment.present? && assessment.questions.present?
 
     max_score = 0
 
-    assessment.scoring_rules.each do |rule|
-      case rule['scoring_type']
-      when 'points'
-        max_score += rule['points'].values.max.to_i if rule['points'].is_a?(Hash)
-      when 'boolean'
-        max_score += rule['points'].to_i
+    assessment.questions.each do |question|
+      case question['type']
+      when 'yes_no'
+        max_score += question['points'].values.max.to_i if question['points'].is_a?(Hash)
+      when 'multiple_choice'
+        if question['options'].is_a?(Array)
+          max_points = question['options'].map { |opt| opt['points'].to_i }.max || 0
+          max_score += max_points
+        end
       when 'scale'
-        max_score += rule['max_value'].to_i
+        points_per_level = question['points_per_level'] || 1
+        max_value = question['max_value'] || 5
+        max_score += (max_value * points_per_level)
       end
     end
 

@@ -69,6 +69,7 @@ gem 'active_model_serializers'
 
 # File Storage
 gem 'aws-sdk-s3'
+gem 'active_storage_validations'
 
 # Search
 gem 'pg_search'

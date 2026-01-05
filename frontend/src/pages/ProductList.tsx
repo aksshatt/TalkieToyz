@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Grid, List, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
-import { useProducts } from '../hooks/useProducts';
+import { useProducts, useCategories } from '../hooks/useProducts';
 import ProductCard from '../components/products/ProductCard';
 import FilterSidebar from '../components/products/FilterSidebar';
 import SearchBar from '../components/products/SearchBar';
@@ -9,6 +10,7 @@ import type { ProductFilters } from '../types/product';
 import Layout from '../components/layout/Layout';
 
 const ProductList = () => {
+  const [searchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [filters, setFilters] = useState<ProductFilters>({
@@ -18,6 +20,33 @@ const ProductList = () => {
   });
 
   const { data, isLoading, error } = useProducts(filters);
+  const { data: categoriesData } = useCategories();
+  const categories = categoriesData?.data || [];
+
+  // Initialize filters from URL parameters on mount
+  useEffect(() => {
+    const categorySlug = searchParams.get('category');
+    const categoryIdParam = searchParams.get('category_id');
+
+    if (categorySlug && categories.length > 0) {
+      // Find category by slug
+      const category = categories.find(cat => cat.slug === categorySlug);
+      if (category) {
+        setFilters(prev => ({
+          ...prev,
+          category_id: category.id,
+          page: 1
+        }));
+      }
+    } else if (categoryIdParam) {
+      // Handle direct category_id parameter
+      setFilters(prev => ({
+        ...prev,
+        category_id: parseInt(categoryIdParam),
+        page: 1
+      }));
+    }
+  }, [searchParams, categories]);
 
   const products = data?.data || [];
   const meta = data?.meta;
@@ -38,12 +67,12 @@ const ProductList = () => {
   if (error) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <div className="min-h-screen bg-cream-light flex items-center justify-center px-4">
+          <div className="card-talkie text-center max-w-md">
+            <h2 className="heading-talkie text-2xl mb-2">
               Error loading products
             </h2>
-            <p className="text-gray-600">
+            <p className="text-warmgray-600">
               {error instanceof Error ? error.message : 'Something went wrong'}
             </p>
           </div>
@@ -54,20 +83,19 @@ const ProductList = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-cream-light">
       {/* Header */}
-      <div className="bg-fun-gradient shadow-playful sticky top-0 z-10">
+      <div className="bg-gradient-to-br from-teal-light/40 via-cream-light to-coral-light/30 border-b border-warmgray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-4xl md:text-5xl font-[var(--font-family-fun)] font-bold text-white mb-4 flex items-center gap-3 animate-bounce-slow">
-            <span className="text-5xl"></span>
-            Our Awesome Toys!
+          <h1 className="heading-talkie mb-4 text-3xl md:text-4xl">
+            Products
           </h1>
 
           {/* Search Bar */}
           <div className="mb-4">
             <SearchBar
               onSearch={handleSearchChange}
-              placeholder="Search for speech therapy toys..."
+              placeholder="Search products..."
             />
           </div>
 
@@ -76,30 +104,30 @@ const ProductList = () => {
             {/* Mobile Filter Button */}
             <button
               onClick={() => setShowMobileFilters(!showMobileFilters)}
-              className="lg:hidden flex items-center gap-2 px-5 py-3 bg-white rounded-full shadow-playful hover:shadow-playful-hover transition-all transform hover:scale-105 font-semibold"
+              className="lg:hidden flex items-center gap-2 px-5 py-2.5 bg-white rounded-xl shadow-soft hover:shadow-soft-md transition-all font-semibold text-warmgray-700"
             >
-              <SlidersHorizontal className="h-5 w-5 text-purple-600" />
-              <span className="text-purple-600">Filters 🔍</span>
+              <SlidersHorizontal className="h-5 w-5" />
+              <span>Filters</span>
             </button>
 
             {/* View Mode Toggle */}
-            <div className="hidden sm:flex items-center gap-2 bg-white rounded-full p-1.5 shadow-md">
+            <div className="hidden sm:flex items-center gap-1 bg-white rounded-xl p-1 shadow-soft border border-warmgray-200">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2.5 rounded-full transition-all ${
+                className={`p-2 rounded-lg transition-all ${
                   viewMode === 'grid'
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg text-white'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    ? 'bg-teal-gradient text-white shadow-soft'
+                    : 'text-warmgray-600 hover:text-warmgray-900 hover:bg-warmgray-50'
                 }`}
               >
                 <Grid className="h-5 w-5" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2.5 rounded-full transition-all ${
+                className={`p-2 rounded-lg transition-all ${
                   viewMode === 'list'
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg text-white'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    ? 'bg-teal-gradient text-white shadow-soft'
+                    : 'text-warmgray-600 hover:text-warmgray-900 hover:bg-warmgray-50'
                 }`}
               >
                 <List className="h-5 w-5" />
@@ -110,19 +138,19 @@ const ProductList = () => {
             <select
               value={filters.sort}
               onChange={(e) => handleSortChange(e.target.value as ProductFilters['sort'])}
-              className="px-5 py-3 border-2 border-purple-300 rounded-full focus:ring-4 focus:ring-purple-200 focus:border-purple-500 outline-none font-semibold text-gray-700 bg-white shadow-md hover:shadow-lg transition-all"
+              className="px-4 py-2.5 border-2 border-warmgray-300 rounded-xl focus:ring-2 focus:ring-teal focus:border-teal outline-none font-semibold text-warmgray-700 bg-white shadow-soft hover:shadow-soft-md transition-all"
             >
-              <option value="newest">✨ Newest First</option>
-              <option value="popular">🌟 Most Popular</option>
-              <option value="price_asc">💰 Price: Low to High</option>
-              <option value="price_desc">💎 Price: High to Low</option>
-              <option value="name">🔤 Name: A to Z</option>
+              <option value="newest">Newest First</option>
+              <option value="popular">Most Popular</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+              <option value="name">Name: A to Z</option>
             </select>
 
             {/* Results Count */}
             {meta && (
-              <span className="hidden md:block text-sm font-bold text-white bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2 rounded-full shadow-md">
-                 {meta.total_count} toys found!
+              <span className="hidden md:block text-sm font-semibold text-warmgray-700 bg-white px-4 py-2 rounded-xl shadow-soft border border-warmgray-200">
+                {meta.total_count} {meta.total_count === 1 ? 'product' : 'products'} found
               </span>
             )}
           </div>
@@ -131,7 +159,7 @@ const ProductList = () => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex gap-8">
+        <div className="flex gap-6">
           {/* Desktop Filters Sidebar */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
             <div className="sticky top-24">
@@ -144,8 +172,8 @@ const ProductList = () => {
 
           {/* Mobile Filters Sidebar */}
           {showMobileFilters && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden">
-              <div className="bg-white w-80 max-w-full h-full overflow-y-auto">
+            <div className="fixed inset-0 bg-warmgray-900 bg-opacity-50 z-50 lg:hidden">
+              <div className="bg-cream-light w-80 max-w-full h-full overflow-y-auto shadow-soft-xl">
                 <FilterSidebar
                   filters={filters}
                   onFiltersChange={(newFilters) => {
@@ -174,19 +202,23 @@ const ProductList = () => {
                 ))}
               </div>
             ) : products.length === 0 ? (
-              <div className="text-center py-16 bg-white rounded-3xl shadow-playful">
-                <div className="text-8xl mb-6 animate-bounce-slow">😢</div>
-                <h3 className="text-3xl font-[var(--font-family-fun)] font-bold text-gray-900 mb-3">
-                  Oops! No Toys Found
+              <div className="text-center py-16 card-talkie">
+                <div className="text-6xl mb-6 text-warmgray-400">
+                  <svg className="w-20 h-20 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <h3 className="font-[var(--font-family-fun)] text-xl font-bold text-warmgray-900 mb-2">
+                  No Products Found
                 </h3>
-                <p className="text-lg text-gray-600 mb-6">
-                  Try different filters or search words!
+                <p className="text-sm text-warmgray-600 mb-6 max-w-md mx-auto">
+                  We couldn't find any products matching your criteria. Please try adjusting your filters or search terms.
                 </p>
                 <button
                   onClick={() => setFilters({ page: 1, per_page: 12, sort: 'newest' })}
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold px-8 py-4 rounded-full shadow-playful hover:shadow-playful-hover transform hover:scale-105 transition-all"
+                  className="btn-primary px-6 py-2.5"
                 >
-                  🔄 Reset Filters
+                  Reset Filters
                 </button>
               </div>
             ) : (
@@ -205,16 +237,16 @@ const ProductList = () => {
 
                 {/* Pagination */}
                 {meta && meta.total_pages > 1 && (
-                  <div className="mt-10 flex items-center justify-center gap-3">
+                  <div className="mt-10 flex items-center justify-center gap-2">
                     <button
                       onClick={() => handlePageChange(meta.current_page - 1)}
                       disabled={meta.current_page === 1}
-                      className="p-3 rounded-full bg-white shadow-playful hover:shadow-playful-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-110"
+                      className="p-2 rounded-xl bg-white border-2 border-warmgray-300 shadow-soft hover:bg-warmgray-50 hover:shadow-soft-md disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
-                      <ChevronLeft className="h-6 w-6 text-purple-600" />
+                      <ChevronLeft className="h-5 w-5 text-warmgray-600" />
                     </button>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
                       {[...Array(meta.total_pages)].map((_, i) => {
                         const page = i + 1;
                         const isCurrentPage = page === meta.current_page;
@@ -225,7 +257,7 @@ const ProductList = () => {
 
                         if (!showPage) {
                           if (page === meta.current_page - 2 || page === meta.current_page + 2) {
-                            return <span key={page} className="px-2 text-2xl">...</span>;
+                            return <span key={page} className="px-2 text-warmgray-500">...</span>;
                           }
                           return null;
                         }
@@ -234,10 +266,10 @@ const ProductList = () => {
                           <button
                             key={page}
                             onClick={() => handlePageChange(page)}
-                            className={`px-5 py-3 rounded-full font-bold transition-all transform hover:scale-110 ${
+                            className={`min-w-[2.5rem] px-3 py-2 rounded-xl font-semibold transition-all ${
                               isCurrentPage
-                                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-playful'
-                                : 'bg-white shadow-md hover:shadow-lg text-purple-600'
+                                ? 'bg-teal-gradient text-white shadow-soft'
+                                : 'bg-white border-2 border-warmgray-300 text-warmgray-700 hover:bg-warmgray-50 hover:shadow-soft'
                             }`}
                           >
                             {page}
@@ -249,9 +281,9 @@ const ProductList = () => {
                     <button
                       onClick={() => handlePageChange(meta.current_page + 1)}
                       disabled={meta.current_page === meta.total_pages}
-                      className="p-3 rounded-full bg-white shadow-playful hover:shadow-playful-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-110"
+                      className="p-2 rounded-xl bg-white border-2 border-warmgray-300 shadow-soft hover:bg-warmgray-50 hover:shadow-soft-md disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
-                      <ChevronRight className="h-6 w-6 text-purple-600" />
+                      <ChevronRight className="h-5 w-5 text-warmgray-600" />
                     </button>
                   </div>
                 )}

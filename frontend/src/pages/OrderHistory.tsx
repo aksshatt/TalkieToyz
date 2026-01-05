@@ -13,13 +13,13 @@ const statusColors: Record<
   OrderStatus,
   { bg: string; text: string; badge: string }
 > = {
-  pending: { bg: 'bg-yellow-100', text: 'text-yellow-800', badge: '⏳' },
-  confirmed: { bg: 'bg-blue-100', text: 'text-blue-800', badge: '✅' },
-  processing: { bg: 'bg-purple-100', text: 'text-purple-800', badge: '📦' },
-  shipped: { bg: 'bg-indigo-100', text: 'text-indigo-800', badge: '🚚' },
-  delivered: { bg: 'bg-green-100', text: 'text-green-800', badge: '' },
-  cancelled: { bg: 'bg-red-100', text: 'text-red-800', badge: '❌' },
-  refunded: { bg: 'bg-gray-100', text: 'text-gray-800', badge: '💰' },
+  pending: { bg: 'bg-yellow-50', text: 'text-yellow-700', badge: '' },
+  confirmed: { bg: 'bg-blue-50', text: 'text-blue-700', badge: '' },
+  processing: { bg: 'bg-purple-50', text: 'text-purple-700', badge: '' },
+  shipped: { bg: 'bg-indigo-50', text: 'text-indigo-700', badge: '' },
+  delivered: { bg: 'bg-green-50', text: 'text-green-700', badge: '' },
+  cancelled: { bg: 'bg-red-50', text: 'text-red-700', badge: '' },
+  refunded: { bg: 'bg-gray-50', text: 'text-gray-700', badge: '' },
 };
 
 const OrderHistory = () => {
@@ -88,13 +88,13 @@ const OrderHistory = () => {
   if (isLoading) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-12">
+        <div className="min-h-screen bg-gray-50 py-8">
           <div className="max-w-6xl mx-auto px-4">
             <div className="animate-pulse">
-              <div className="h-12 bg-white rounded-lg mb-8 w-1/4"></div>
+              <div className="h-10 bg-white rounded-lg mb-6 w-1/4"></div>
               <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-48 bg-white rounded-2xl"></div>
+                  <div key={i} className="h-48 bg-white rounded-lg"></div>
                 ))}
               </div>
             </div>
@@ -107,19 +107,21 @@ const OrderHistory = () => {
   if (error) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-12">
+        <div className="min-h-screen bg-gray-50 py-12">
           <div className="max-w-2xl mx-auto px-4 text-center">
-            <div className="bg-white rounded-3xl p-12 shadow-playful">
-              <p className="text-6xl mb-4">😕</p>
-              <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-2">
-                Oops! Something went wrong
+            <div className="bg-white rounded-lg p-12 shadow-sm border border-gray-200">
+              <div className="text-red-500 mb-4">
+                <X className="h-16 w-16 mx-auto" />
+              </div>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                Something went wrong
               </h2>
               <p className="text-gray-600 mb-6">
                 {error instanceof Error ? error.message : 'Failed to load orders'}
               </p>
               <button
                 onClick={() => refetch()}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-8 rounded-2xl shadow-playful hover:shadow-playful-hover transform hover:scale-105 transition-all"
+                className="bg-purple-600 text-white font-medium py-2.5 px-6 rounded-lg shadow-sm hover:bg-purple-700 hover:shadow-md transition-all"
               >
                 Try Again
               </button>
@@ -132,12 +134,12 @@ const OrderHistory = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-12">
+      <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-6xl mx-auto px-4">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl md:text-5xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-6 flex items-center gap-3">
-              <Package className="h-10 w-10 text-purple-600" />
+          <div className="mb-6">
+            <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
+              <Package className="h-7 w-7 text-gray-700" />
               My Orders
             </h1>
 
@@ -147,10 +149,10 @@ const OrderHistory = () => {
                 <button
                   key={status}
                   onClick={() => setStatusFilter(status as OrderStatus | 'all')}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                  className={`px-4 py-2 rounded-lg font-medium transition-all border ${
                     statusFilter === status
-                      ? 'bg-purple-500 text-white shadow-playful'
-                      : 'bg-white text-gray-700 hover:bg-purple-50'
+                      ? 'bg-purple-600 text-white border-purple-600 shadow-sm'
+                      : 'bg-white text-gray-700 border-gray-200 hover:bg-purple-50'
                   }`}
                 >
                   {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -161,9 +163,9 @@ const OrderHistory = () => {
 
           {/* Orders List */}
           {orders.length === 0 ? (
-            <div className="bg-white rounded-3xl p-12 shadow-playful text-center">
-              <p className="text-6xl mb-4">📦</p>
-              <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-2">
+            <div className="bg-white rounded-lg p-12 shadow-sm border border-gray-200 text-center">
+              <Package className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
                 No Orders Found
               </h2>
               <p className="text-gray-600 mb-6">
@@ -173,13 +175,13 @@ const OrderHistory = () => {
               </p>
               <Link
                 to="/products"
-                className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-8 rounded-2xl shadow-playful hover:shadow-playful-hover transform hover:scale-105 transition-all"
+                className="inline-block bg-purple-600 text-white font-medium py-2.5 px-6 rounded-lg shadow-sm hover:bg-purple-700 hover:shadow-md transition-all"
               >
-                Start Shopping
+                Browse Products
               </Link>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-4">
               {orders.map((order: Order) => {
                 const isExpanded = expandedOrders.has(order.id);
                 const statusStyle = statusColors[order.status as OrderStatus];
@@ -187,13 +189,13 @@ const OrderHistory = () => {
                 return (
                   <div
                     key={order.id}
-                    className="bg-white rounded-2xl shadow-playful overflow-hidden"
+                    className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
                   >
                     {/* Order Header */}
-                    <div className="p-6 border-b-2 border-gray-100">
+                    <div className="p-6 border-b border-gray-200">
                       <div className="flex items-start justify-between mb-4">
                         <div>
-                          <h3 className="text-xl font-bold text-gray-800 mb-1">
+                          <h3 className="text-lg font-semibold text-gray-900 mb-1">
                             Order #{order.order_number}
                           </h3>
                           <p className="text-sm text-gray-600">
@@ -207,9 +209,8 @@ const OrderHistory = () => {
                         </div>
                         <div className="text-right">
                           <span
-                            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-semibold ${statusStyle.bg} ${statusStyle.text}`}
+                            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm border ${statusStyle.bg} ${statusStyle.text}`}
                           >
-                            <span>{statusStyle.badge}</span>
                             {order.status.charAt(0).toUpperCase() +
                               order.status.slice(1)}
                           </span>

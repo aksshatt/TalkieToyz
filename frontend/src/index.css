@@ -9,11 +9,11 @@
   --color-teal-DEFAULT: #26C6DA;
   --color-teal-dark: #00ACC1;
 
-  /* Secondary - Warm Pink/Coral (Train Wagon) */
-  --color-coral-light: #FFCCBC;
-  --color-coral: #FF8A80;
-  --color-coral-DEFAULT: #FF6F61;
-  --color-coral-dark: #E64A19;
+  /* Secondary - Soft Pink (Train Wagon) */
+  --color-coral-light: #FFE1F2;
+  --color-coral: #FF85C0;
+  --color-coral-DEFAULT: #FF69B4;
+  --color-coral-dark: #EC4899;
 
   /* Accent - Sunny Yellow (ABC Blocks) */
   --color-sunshine-light: #FFF9C4;
@@ -70,7 +70,7 @@
     font-family: var(--font-family-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(135deg, #FFFEF7 0%, #FFF9E6 25%, #B2EBF2 50%, #FFCCBC 75%, #FFF9C4 100%);
+    background: linear-gradient(135deg, #FFFEF7 0%, #FFF9E6 25%, #B2EBF2 50%, #FFE1F2 75%, #FFF9C4 100%);
     background-size: 400% 400%;
     animation: gentle-gradient 20s ease infinite;
   }
@@ -156,7 +156,7 @@
   }
 
   .bg-coral-gradient {
-    background: linear-gradient(135deg, #FFCCBC 0%, #FF8A80 50%, #FF6F61 100%);
+    background: linear-gradient(135deg, #FFE1F2 0%, #FF85C0 50%, #FF69B4 100%);
   }
 
   .bg-sunshine-gradient {
@@ -168,7 +168,7 @@
   }
 
   .bg-playful-gradient {
-    background: linear-gradient(135deg, #4DD0E1 0%, #FF8A80 50%, #FFD54F 100%);
+    background: linear-gradient(135deg, #4DD0E1 0%, #FF85C0 50%, #FFD54F 100%);
   }
 
   /* Soft Shadows - Parent-Friendly */
@@ -256,7 +256,7 @@
   }
 
   .btn-secondary {
-    background: linear-gradient(135deg, #FFCCBC 0%, #FF8A80 50%, #FF6F61 100%);
+    background: linear-gradient(135deg, #FFE1F2 0%, #FF85C0 50%, #FF69B4 100%);
     color: white;
     font-weight: 600;
     padding: 0.75rem 1.5rem;

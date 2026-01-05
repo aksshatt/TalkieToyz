@@ -103,20 +103,20 @@ const Cart = () => {
   if (loading) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-12">
+        <div className="min-h-screen bg-cream-light py-8">
           <div className="max-w-7xl mx-auto px-4">
             <div className="animate-pulse">
-              <div className="h-12 bg-white rounded-lg mb-8 w-1/4"></div>
-              <div className="grid lg:grid-cols-3 gap-8">
+              <div className="h-10 bg-white rounded-xl mb-6 w-1/4"></div>
+              <div className="grid lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-4">
                   {[1, 2, 3].map((i) => (
                     <div
                       key={i}
-                      className="h-32 bg-white rounded-2xl"
+                      className="h-32 bg-white rounded-xl shadow-soft"
                     ></div>
                   ))}
                 </div>
-                <div className="h-96 bg-white rounded-2xl"></div>
+                <div className="h-96 bg-white rounded-xl shadow-soft"></div>
               </div>
             </div>
           </div>
@@ -128,22 +128,22 @@ const Cart = () => {
   if (!cart || cart.cart_items.length === 0) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-16">
+        <div className="min-h-screen bg-cream-light py-16">
           <div className="max-w-2xl mx-auto px-4 text-center">
-            <div className="bg-white rounded-3xl p-12 shadow-playful">
-              <div className="text-8xl mb-6">🛒</div>
-              <h2 className="text-4xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-4">
+            <div className="card-talkie p-12">
+              <ShoppingBag className="h-20 w-20 mx-auto mb-6 text-warmgray-400" />
+              <h2 className="heading-talkie text-2xl mb-3">
                 Your Cart is Empty
               </h2>
-              <p className="text-xl text-gray-600 mb-8">
-                Let's fill it with some awesome toys!
+              <p className="text-base text-warmgray-600 mb-8">
+                Add items to your cart to get started.
               </p>
               <Link
                 to="/products"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-8 rounded-2xl shadow-playful hover:shadow-playful-hover transform hover:scale-105 transition-all"
+                className="btn-primary inline-flex items-center gap-2 py-3 px-6"
               >
-                <ShoppingBag className="h-6 w-6" />
-                Start Shopping
+                <ShoppingBag className="h-5 w-5" />
+                Browse Products
               </Link>
             </div>
           </div>
@@ -154,32 +154,30 @@ const Cart = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-12">
+      <div className="min-h-screen bg-cream-light py-8">
         <div className="max-w-7xl mx-auto px-4">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-[var(--font-family-fun)] font-bold text-gray-800 flex items-center gap-2 sm:gap-3">
-              <span className="text-4xl sm:text-5xl">🛒</span>
-              <span className="break-words">Shopping Cart</span>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <h1 className="heading-talkie text-2xl sm:text-3xl">
+              Shopping Cart
             </h1>
             <button
               onClick={handleClearCart}
               disabled={isUpdating}
-              className="text-red-600 hover:text-red-700 font-semibold flex items-center gap-2 px-3 sm:px-4 py-2 hover:bg-red-50 rounded-lg transition-colors text-sm sm:text-base whitespace-nowrap"
+              className="text-coral hover:text-coral-dark font-semibold flex items-center gap-2 px-4 py-2 hover:bg-coral-light/20 rounded-xl transition-colors text-sm border-2 border-coral whitespace-nowrap"
             >
-              <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="hidden sm:inline">Clear Cart</span>
-              <span className="sm:hidden">Clear</span>
+              <Trash2 className="h-4 w-4" />
+              <span>Clear Cart</span>
             </button>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-6">
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {cart.cart_items.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-2xl p-4 sm:p-6 shadow-playful"
+                  className="card-talkie p-4 sm:p-6"
                 >
                   <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                     {/* Product Image */}
@@ -198,13 +196,13 @@ const Cart = () => {
                     <div className="flex-1 min-w-0">
                       <Link
                         to={`/products/${item.product.slug}`}
-                        className="text-lg sm:text-xl font-bold text-gray-800 hover:text-purple-600 transition-colors block mb-2 line-clamp-2"
+                        className="font-[var(--font-family-fun)] text-lg sm:text-xl font-bold text-warmgray-900 hover:text-teal transition-colors block mb-2 line-clamp-2"
                       >
                         {item.product.name}
                       </Link>
 
                       {item.product_variant && (
-                        <p className="text-sm text-gray-600 mb-2">
+                        <p className="text-sm text-warmgray-600 mb-2">
                           Variant: {item.product_variant.name}
                         </p>
                       )}
@@ -217,11 +215,11 @@ const Cart = () => {
                               handleQuantityChange(item.id, item.quantity - 1)
                             }
                             disabled={isUpdating || item.quantity <= 1}
-                            className="p-2 bg-purple-100 hover:bg-purple-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="p-2 bg-teal-light/30 hover:bg-teal-light/50 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            <Minus className="h-4 w-4 text-purple-600" />
+                            <Minus className="h-4 w-4 text-teal" />
                           </button>
-                          <span className="text-lg font-bold w-12 text-center">
+                          <span className="font-[var(--font-family-fun)] text-lg font-bold w-12 text-center text-warmgray-900">
                             {item.quantity}
                           </span>
                           <button
@@ -229,18 +227,18 @@ const Cart = () => {
                               handleQuantityChange(item.id, item.quantity + 1)
                             }
                             disabled={isUpdating}
-                            className="p-2 bg-purple-100 hover:bg-purple-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="p-2 bg-teal-light/30 hover:bg-teal-light/50 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            <Plus className="h-4 w-4 text-purple-600" />
+                            <Plus className="h-4 w-4 text-teal" />
                           </button>
                         </div>
 
                         {/* Price */}
                         <div className="flex-1 sm:text-right">
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-warmgray-600">
                             ₹ {parseFloat(item.item_price).toFixed(2)} each
                           </p>
-                          <p className="text-xl font-bold text-purple-600">
+                          <p className="font-[var(--font-family-fun)] text-xl font-bold text-teal">
                             ₹ {parseFloat(item.total_price).toFixed(2)}
                           </p>
                         </div>
@@ -249,7 +247,7 @@ const Cart = () => {
                         <button
                           onClick={() => handleRemoveItem(item.id)}
                           disabled={isUpdating}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed self-start sm:self-center"
+                          className="p-2 text-coral hover:bg-coral-light/20 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed self-start sm:self-center"
                         >
                           <Trash2 className="h-5 w-5" />
                         </button>
@@ -262,36 +260,36 @@ const Cart = () => {
 
             {/* Cart Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-playful lg:sticky lg:top-24">
-                <h2 className="text-xl sm:text-2xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-4 sm:mb-6">
+              <div className="card-talkie p-4 sm:p-6 lg:sticky lg:top-24">
+                <h2 className="font-[var(--font-family-fun)] text-xl font-bold text-warmgray-900 mb-6">
                   Order Summary
                 </h2>
 
                 {/* Coupon Section */}
                 <div className="mb-6">
                   {appliedCoupon ? (
-                    <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 flex items-center justify-between">
+                    <div className="bg-teal-light/30 border-2 border-teal rounded-xl p-4 flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Tag className="h-5 w-5 text-green-600" />
+                        <Tag className="h-5 w-5 text-teal" />
                         <div>
-                          <p className="font-bold text-green-700">
+                          <p className="font-bold text-teal-dark">
                             {appliedCoupon.code}
                           </p>
-                          <p className="text-sm text-green-600">
+                          <p className="text-sm text-teal">
                             Discount: ₹{couponDiscount.toFixed(2)}
                           </p>
                         </div>
                       </div>
                       <button
                         onClick={removeCoupon}
-                        className="p-1 hover:bg-green-100 rounded-full"
+                        className="p-1 hover:bg-teal-light/50 rounded-full"
                       >
-                        <X className="h-5 w-5 text-green-600" />
+                        <X className="h-5 w-5 text-teal" />
                       </button>
                     </div>
                   ) : (
                     <form onSubmit={couponForm.handleSubmit}>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-warmgray-700 mb-2">
                         Have a coupon?
                       </label>
                       <div className="flex gap-2">
@@ -302,18 +300,18 @@ const Cart = () => {
                           onChange={couponForm.handleChange}
                           onBlur={couponForm.handleBlur}
                           placeholder="Enter code"
-                          className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors"
+                          className="flex-1 px-4 py-2 border-2 border-warmgray-300 rounded-xl focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-colors"
                         />
                         <button
                           type="submit"
                           disabled={validatingCoupon}
-                          className="px-4 py-2 bg-purple-500 text-white font-bold rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="px-4 py-2 bg-teal-gradient text-white font-bold rounded-xl hover:shadow-soft-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {validatingCoupon ? 'Checking...' : 'Apply'}
                         </button>
                       </div>
                       {couponForm.touched.code && couponForm.errors.code && (
-                        <p className="text-red-600 text-sm mt-1">
+                        <p className="text-coral-dark text-sm mt-1 font-medium">
                           {couponForm.errors.code}
                         </p>
                       )}
@@ -322,21 +320,21 @@ const Cart = () => {
                 </div>
 
                 {/* Price Breakdown */}
-                <div className="space-y-3 mb-6 pb-6 border-b-2 border-gray-100">
-                  <div className="flex justify-between text-gray-700">
+                <div className="space-y-3 mb-6 pb-6 border-b-2 border-warmgray-100">
+                  <div className="flex justify-between text-warmgray-700">
                     <span>Subtotal</span>
                     <span className="font-semibold">
                       ₹{parseFloat(cart.subtotal).toFixed(2)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-gray-700">
+                  <div className="flex justify-between text-warmgray-700">
                     <span>Tax (10%)</span>
                     <span className="font-semibold">
                       ₹{parseFloat(cart.tax_amount).toFixed(2)}
                     </span>
                   </div>
                   {appliedCoupon && (
-                    <div className="flex justify-between text-green-600">
+                    <div className="flex justify-between text-teal">
                       <span>Discount</span>
                       <span className="font-semibold">
                         -₹{couponDiscount.toFixed(2)}
@@ -347,11 +345,11 @@ const Cart = () => {
 
                 {/* Total */}
                 <div className="flex justify-between items-center mb-6">
-                  <span className="text-lg sm:text-xl font-bold text-gray-800">
+                  <span className="text-lg font-semibold text-warmgray-900">
                     Total
                   </span>
-                  <span className="text-2xl sm:text-3xl font-[var(--font-family-fun)] font-bold text-purple-600">
-                    ₹ {calculateFinalTotal().toFixed(2)}
+                  <span className="font-[var(--font-family-fun)] text-2xl font-bold text-teal">
+                    ₹{calculateFinalTotal().toFixed(2)}
                   </span>
                 </div>
 
@@ -365,14 +363,14 @@ const Cart = () => {
                       },
                     })
                   }
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-2xl shadow-playful hover:shadow-playful-hover transform hover:scale-105 transition-all text-sm sm:text-base"
+                  className="btn-primary w-full py-3 px-6"
                 >
                   Proceed to Checkout
                 </button>
 
                 <Link
                   to="/products"
-                  className="block text-center text-purple-600 font-semibold mt-4 hover:text-purple-700 transition-colors text-sm sm:text-base"
+                  className="block text-center text-teal font-semibold mt-4 hover:text-teal-dark transition-colors"
                 >
                   ← Continue Shopping
                 </Link>

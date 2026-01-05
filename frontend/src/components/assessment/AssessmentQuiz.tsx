@@ -40,16 +40,16 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
   const isLastQuestion = currentQuestionIndex === assessment.questions.length - 1;
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto w-full">
       {/* Progress Bar */}
-      <div className="mb-8">
+      <div className="mb-4 sm:mb-6 md:mb-8">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-semibold text-warmgray-700">
+          <span className="text-xs sm:text-sm font-semibold text-warmgray-700">
             Question {currentQuestionIndex + 1} of {assessment.questions.length}
           </span>
-          <span className="text-sm font-semibold text-teal">{Math.round(progress)}% Complete</span>
+          <span className="text-xs sm:text-sm font-semibold text-teal">{Math.round(progress)}% Complete</span>
         </div>
-        <div className="h-2 bg-warmgray-200 rounded-full overflow-hidden">
+        <div className="h-1.5 sm:h-2 bg-warmgray-200 rounded-full overflow-hidden">
           <div
             className="h-full bg-teal-gradient transition-all duration-300"
             style={{ width: `${progress}%` }}
@@ -58,16 +58,16 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
       </div>
 
       {/* Question Card */}
-      <div className="card-talkie p-8 mb-6">
+      <div className="card-talkie p-4 sm:p-6 md:p-8 mb-4 sm:mb-6">
         <div className="mb-2">
           {currentQuestion.category && (
-            <span className="inline-block bg-sky-gradient text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
+            <span className="inline-block bg-sky-gradient text-white text-xs font-bold px-2 sm:px-3 py-1 rounded-full mb-3 sm:mb-4">
               {currentQuestion.category}
             </span>
           )}
         </div>
 
-        <h2 className="font-[var(--font-family-fun)] font-bold text-2xl text-warmgray-900 mb-6">
+        <h2 className="font-[var(--font-family-fun)] font-bold text-lg sm:text-xl md:text-2xl text-warmgray-900 mb-4 sm:mb-6">
           {currentQuestion.text}
         </h2>
 
@@ -79,27 +79,28 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-4">
         <button
           onClick={handlePrevious}
           disabled={currentQuestionIndex === 0}
-          className={`btn-secondary-talkie flex items-center gap-2 ${
+          className={`btn-secondary-talkie flex items-center justify-center gap-2 text-sm sm:text-base py-2.5 sm:py-3 order-2 sm:order-1 ${
             currentQuestionIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
-          <ChevronLeft className="h-5 w-5" />
-          Previous
+          <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+          <span className="hidden sm:inline">Previous</span>
+          <span className="sm:hidden">Back</span>
         </button>
 
         <button
           onClick={handleNext}
           disabled={!isAnswered}
-          className={`btn-primary-talkie flex items-center gap-2 ${
+          className={`btn-primary-talkie flex items-center justify-center gap-2 text-sm sm:text-base py-2.5 sm:py-3 order-1 sm:order-2 ${
             !isAnswered ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           {isLastQuestion ? 'Complete' : 'Next'}
-          {!isLastQuestion && <ChevronRight className="h-5 w-5" />}
+          {!isLastQuestion && <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />}
         </button>
       </div>
     </div>

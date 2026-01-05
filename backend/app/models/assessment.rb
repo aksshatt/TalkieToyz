@@ -31,22 +31,28 @@ class Assessment < ApplicationRecord
 
   # Methods
   def calculate_score(answers)
-    return 0 if answers.blank? || scoring_rules.blank?
+    return 0 if answers.blank? || questions.blank?
 
     total = 0
-    scoring_rules.each do |rule|
-      question_key = rule['question_key']
+    questions.each do |question|
+      question_key = question['key']
       answer = answers[question_key]
 
       next if answer.blank?
 
-      case rule['scoring_type']
-      when 'points'
-        total += rule['points'][answer].to_i if rule['points'].is_a?(Hash)
-      when 'boolean'
-        total += rule['points'].to_i if answer.to_s == 'yes' || answer == true
+      case question['type']
+      when 'yes_no'
+        total += question['points'][answer.to_s].to_i if question['points'].is_a?(Hash)
+      when 'multiple_choice'
+        if question['options'].is_a?(Array)
+          # Handle both cases: answer as string value or as object with 'value' key
+          answer_value = answer.is_a?(Hash) ? answer['value'] : answer
+          selected_option = question['options'].find { |opt| opt['value'] == answer_value }
+          total += selected_option['points'].to_i if selected_option
+        end
       when 'scale'
-        total += answer.to_i
+        points_per_level = question['points_per_level'] || 1
+        total += (answer.to_i * points_per_level)
       end
     end
 
@@ -54,9 +60,20 @@ class Assessment < ApplicationRecord
   end
 
   def generate_recommendations(score)
-    return {} if recommendations.blank?
+    return {} if scoring_rules.blank? || recommendations.blank?
 
-    recommendations.find { |rec| score >= rec['min_score'] && score <= rec['max_score'] } || {}
+    # Find the score range/level from scoring_rules
+    score_level = scoring_rules.find do |rule|
+      min_score = rule['min_score'] || 0
+      max_score = rule['max_score'] || Float::INFINITY
+      score >= min_score && score <= max_score
+    end
+
+    return {} unless score_level
+
+    # Find the recommendation for that level
+    level = score_level['level']
+    recommendations.find { |rec| rec['level'] == level } || {}
   end
 
   def soft_delete

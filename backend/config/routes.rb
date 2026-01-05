@@ -45,11 +45,10 @@ Rails.application.routes.draw do
         end
       end
 
-      # Progress Logs (authenticated)
-      resources :progress_logs do
-        collection do
-          get :summary
-          post :export_pdf
+      # Assessment Results
+      resources :assessment_results, only: [:show] do
+        member do
+          get :download_pdf
         end
       end
 
@@ -80,6 +79,9 @@ Rails.application.routes.draw do
 
       # Contact Submissions (public)
       resources :contact_submissions, only: [:create]
+
+      # Appointments (public - create only)
+      resources :appointments, only: [:create]
 
       # Site Contents (CMS - public)
       get 'site_contents/:page', to: 'site_contents#show', as: :site_content_page
@@ -212,6 +214,9 @@ Rails.application.routes.draw do
             get :statistics
           end
         end
+
+        # Appointments Management
+        resources :appointments, only: [:index, :show, :update]
 
         # Site Contents Management (CMS)
         resources :site_contents do

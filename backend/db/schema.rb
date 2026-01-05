@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_29_222721) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_04_075759) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -89,6 +89,19 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_29_222721) do
     t.index ["resource_type", "resource_id"], name: "index_admin_activity_logs_on_resource_type_and_resource_id"
     t.index ["resource_type"], name: "index_admin_activity_logs_on_resource_type"
     t.index ["user_id"], name: "index_admin_activity_logs_on_user_id"
+  end
+
+  create_table "appointments", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "phone"
+    t.text "message"
+    t.string "preferred_language"
+    t.string "status"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_appointments_on_user_id"
   end
 
   create_table "assessment_results", force: :cascade do |t|
@@ -197,8 +210,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_29_222721) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "parent_id"
     t.index ["active"], name: "index_categories_on_active"
     t.index ["deleted_at"], name: "index_categories_on_deleted_at"
+    t.index ["parent_id"], name: "index_categories_on_parent_id"
     t.index ["position"], name: "index_categories_on_position"
     t.index ["slug"], name: "index_categories_on_slug", unique: true
   end
@@ -634,6 +649,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_29_222721) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "addresses", "users"
   add_foreign_key "admin_activity_logs", "users"
+  add_foreign_key "appointments", "users"
   add_foreign_key "assessment_results", "assessments"
   add_foreign_key "assessment_results", "users"
   add_foreign_key "blog_posts", "users", column: "author_id"
@@ -641,6 +657,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_29_222721) do
   add_foreign_key "cart_items", "product_variants"
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
+  add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "contact_submissions", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "product_variants"

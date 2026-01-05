@@ -64,6 +64,7 @@ export interface AssessmentResult {
   scores: Record<string, number>;
   total_score: number;
   percentage_score: number;
+  category_max_scores: Record<string, number>;
   recommendations: Recommendation;
   completed_at: string;
   assessment: AssessmentSummary;

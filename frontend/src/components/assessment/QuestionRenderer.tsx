@@ -45,19 +45,29 @@ const QuestionRenderer = ({ question, answer, onAnswer }: QuestionRendererProps)
   if (question.type === 'multiple_choice' && question.options) {
     return (
       <div className="space-y-3">
-        {question.options.map((option, index) => (
-          <button
-            key={index}
-            onClick={() => onAnswer(option)}
-            className={`w-full p-4 rounded-lg border-2 transition-all font-semibold text-left ${
-              answer === option
-                ? 'border-teal bg-teal-light text-teal'
-                : 'border-warmgray-300 hover:border-teal hover:bg-teal-light/30'
-            }`}
-          >
-            {option}
-          </button>
-        ))}
+        {question.options.map((option, index) => {
+          // Handle both string options and object options {label, value, points}
+          const isObject = typeof option === 'object' && option !== null;
+          const optionLabel = isObject ? (option as any).label : option;
+          const optionValue = isObject ? (option as any).value : option;
+          const isSelected = isObject
+            ? (typeof answer === 'object' ? answer?.value === optionValue : answer === optionValue)
+            : answer === option;
+
+          return (
+            <button
+              key={index}
+              onClick={() => onAnswer(isObject ? option : optionValue)}
+              className={`w-full p-4 rounded-lg border-2 transition-all font-semibold text-left ${
+                isSelected
+                  ? 'border-teal bg-teal-light text-teal'
+                  : 'border-warmgray-300 hover:border-teal hover:bg-teal-light/30'
+              }`}
+            >
+              {optionLabel}
+            </button>
+          );
+        })}
       </div>
     );
   }

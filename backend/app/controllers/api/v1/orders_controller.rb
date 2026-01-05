@@ -262,8 +262,8 @@ module Api
           # Clear cart after successful payment
           current_user.cart.clear
 
-          # TODO: Trigger email notification job
-          # OrderMailer.order_confirmation(order.id).deliver_later
+          # Trigger email notification job
+          OrderMailer.order_confirmation(order.id).deliver_later
 
           render_success(
             OrderSerializer.new(order).as_json,

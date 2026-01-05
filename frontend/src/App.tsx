@@ -21,14 +21,11 @@ import Checkout from './pages/Checkout';
 import OrderHistory from './pages/OrderHistory';
 import OrderConfirmation from './pages/OrderConfirmation';
 
-// Assessment & Progress Pages
+// Assessment Pages
 import AssessmentList from './pages/AssessmentList';
 import AssessmentDetail from './pages/AssessmentDetail';
 import AssessmentResultsPage from './pages/AssessmentResultsPage';
 import MilestonesPage from './pages/MilestonesPage';
-import ProgressTracker from './pages/ProgressTracker';
-import ProgressLogFormPage from './pages/ProgressLogFormPage';
-import ProgressLogDetail from './pages/ProgressLogDetail';
 
 // Blog & Resource Pages
 import BlogList from './pages/BlogList';
@@ -53,6 +50,7 @@ import ResourceFormPage from './pages/admin/ResourceFormPage';
 import ReviewModeration from './components/admin/ReviewModeration';
 import FAQManagement from './pages/admin/FAQManagement';
 import ContentManagement from './pages/admin/ContentManagement';
+import Appointments from './pages/admin/Appointments';
 
 // Communication Components
 import WhatsAppButton from './components/common/WhatsAppButton';
@@ -128,40 +126,6 @@ function App() {
           {/* Milestone Routes */}
           <Route path="/milestones" element={<MilestonesPage />} />
 
-          {/* Progress Tracking Routes */}
-          <Route
-            path="/progress"
-            element={
-              <PrivateRoute>
-                <ProgressTracker />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/progress/log/new"
-            element={
-              <PrivateRoute>
-                <ProgressLogFormPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/progress/log/:id"
-            element={
-              <PrivateRoute>
-                <ProgressLogDetail />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/progress/log/:id/edit"
-            element={
-              <PrivateRoute>
-                <ProgressLogFormPage />
-              </PrivateRoute>
-            }
-          />
-
           {/* Blog Routes */}
           <Route path="/blog" element={<BlogList />} />
           <Route path="/blog/:slug" element={<BlogPostDetail />} />
@@ -196,6 +160,7 @@ function App() {
             <Route path="resources/edit/:slug" element={<ResourceFormPage />} />
             <Route path="faqs" element={<FAQManagement />} />
             <Route path="content" element={<ContentManagement />} />
+            <Route path="appointments" element={<Appointments />} />
           </Route>
 
           {/* Catch all - redirect to home */}

@@ -23,7 +23,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
     'bg-playful-gradient',
   ];
 
-  const categoryColor = categoryColors[product.category.id % categoryColors.length];
+  const categoryColor = product.category
+    ? categoryColors[product.category.id % categoryColors.length]
+    : categoryColors[0]; // Default to first color if no category
 
   return (
     <div className="card-talkie-hover overflow-hidden animate-slide-in">
@@ -75,9 +77,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
         {/* Category and Age Range */}
         <div className="flex items-center gap-2 mb-3 text-xs font-semibold">
-          <span className={`${categoryColor} text-white px-3 py-1.5 rounded-pill shadow-soft`}>
-            {product.category.name}
-          </span>
+          {product.category && (
+            <span className={`${categoryColor} text-white px-3 py-1.5 rounded-pill shadow-soft`}>
+              {product.category.name}
+            </span>
+          )}
           <span className="bg-sky-gradient text-white px-3 py-1.5 rounded-pill shadow-soft">
              {product.min_age}-{product.max_age} yrs
           </span>
