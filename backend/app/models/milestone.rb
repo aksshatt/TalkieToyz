@@ -2,7 +2,7 @@ class Milestone < ApplicationRecord
   include PgSearch::Model
 
   # Associations
-  has_many :progress_logs, dependent: :nullify
+  # has_many :progress_logs, dependent: :nullify
 
   # Enums
   enum category: {

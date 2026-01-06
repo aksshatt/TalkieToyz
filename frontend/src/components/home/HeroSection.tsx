@@ -55,15 +55,15 @@ const HeroSection = () => {
           <div className="mt-10 flex flex-wrap gap-6 text-white/90">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-teal rounded-full"></div>
-              <span className="text-sm font-medium">Safe & Certified</span>
+              <span className="text-lg sm:text-xl md:text-2xl font-medium">Safe & Certified</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-sunshine rounded-full"></div>
-              <span className="text-sm font-medium">Expert Approved</span>
+              <span className="text-lg sm:text-xl md:text-2xl font-medium">Expert Approved</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-coral rounded-full"></div>
-              <span className="text-sm font-medium">Age-Appropriate</span>
+              <span className="text-lg sm:text-xl md:text-2xl font-medium">Age-Appropriate</span>
             </div>
           </div>
         </div>

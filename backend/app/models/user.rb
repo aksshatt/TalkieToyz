@@ -15,7 +15,7 @@ class User < ApplicationRecord
   has_many :user_addresses, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_many :assessment_results, dependent: :destroy
-  has_many :progress_logs, dependent: :destroy
+  # has_many :progress_logs, dependent: :destroy
   has_many :blog_posts, foreign_key: :author_id, dependent: :destroy
 
   # Validations

@@ -72,83 +72,83 @@ end
 puts '🎯 Creating speech goals...'
 speech_goals = [
   {
-    name: 'Articulation Practice',
-    slug: 'articulation-practice',
-    description: 'Improving pronunciation of specific sounds',
+    name: 'Attention & Concentration',
+    slug: 'attention-concentration',
+    description: 'Developing focus and sustained attention skills',
     color: '#3B82F6',
-    icon: 'message-circle',
+    icon: 'focus',
     active: true
   },
   {
-    name: 'Vocabulary Building',
-    slug: 'vocabulary-building',
-    description: 'Expanding word knowledge and usage',
+    name: 'Language & Vocabulary',
+    slug: 'language-vocabulary',
+    description: 'Building language skills and expanding vocabulary',
     color: '#10B981',
     icon: 'book-open',
     active: true
   },
   {
-    name: 'Sentence Formation',
-    slug: 'sentence-formation',
-    description: 'Learning to construct proper sentences',
+    name: 'Fine Motor Skills',
+    slug: 'fine-motor-skills',
+    description: 'Developing small muscle control and hand-eye coordination',
     color: '#F59E0B',
-    icon: 'list',
+    icon: 'hand',
     active: true
   },
   {
-    name: 'Social Skills',
-    slug: 'social-skills',
-    description: 'Developing conversational and interaction abilities',
+    name: 'Cognitive Skills',
+    slug: 'cognitive-skills',
+    description: 'Enhancing thinking, learning, and problem-solving abilities',
     color: '#8B5CF6',
+    icon: 'brain',
+    active: true
+  },
+  {
+    name: 'Social Interaction',
+    slug: 'social-interaction',
+    description: 'Promoting social engagement and peer interaction',
+    color: '#EC4899',
     icon: 'users',
     active: true
   },
   {
-    name: 'Following Directions',
-    slug: 'following-directions',
-    description: 'Understanding and executing multi-step instructions',
-    color: '#EC4899',
-    icon: 'compass',
-    active: true
-  },
-  {
-    name: 'Phonological Awareness',
-    slug: 'phonological-awareness',
-    description: 'Recognizing and manipulating sounds in words',
+    name: 'Emotional Development',
+    slug: 'emotional-development',
+    description: 'Supporting emotional awareness and regulation',
     color: '#6366F1',
-    icon: 'volume-2',
+    icon: 'heart',
     active: true
   },
   {
-    name: 'Pragmatic Language',
-    slug: 'pragmatic-language',
-    description: 'Using language appropriately in social contexts',
+    name: 'Listening Skills',
+    slug: 'listening-skills',
+    description: 'Improving auditory attention and comprehension',
     color: '#14B8A6',
-    icon: 'message-square',
-    active: true
-  },
-  {
-    name: 'Oral Motor Strength',
-    slug: 'oral-motor-strength',
-    description: 'Building muscle strength for speech production',
-    color: '#EF4444',
-    icon: 'zap',
-    active: true
-  },
-  {
-    name: 'Auditory Processing',
-    slug: 'auditory-processing',
-    description: 'Improving ability to process and understand sounds',
-    color: '#06B6D4',
     icon: 'ear',
     active: true
   },
   {
-    name: 'Fluency Development',
-    slug: 'fluency-development',
-    description: 'Promoting smooth and rhythmic speech patterns',
-    color: '#84CC16',
+    name: 'Gross Motor Skills',
+    slug: 'gross-motor-skills',
+    description: 'Building large muscle movement and coordination',
+    color: '#EF4444',
     icon: 'activity',
+    active: true
+  },
+  {
+    name: 'Sensory Processing',
+    slug: 'sensory-processing',
+    description: 'Developing sensory integration and awareness',
+    color: '#06B6D4',
+    icon: 'zap',
+    active: true
+  },
+  {
+    name: 'Daily Living Skills',
+    slug: 'daily-living-skills',
+    description: 'Learning practical skills for everyday activities',
+    color: '#84CC16',
+    icon: 'home',
     active: true
   }
 ]
@@ -221,7 +221,7 @@ products_data = [
     min_age: 4,
     max_age: 8,
     featured: true,
-    speech_goals: ['Articulation Practice', 'Phonological Awareness'],
+    speech_goals: ['Language & Vocabulary', 'Listening Skills'],
     specifications: {
       'Number of Cards' => '50',
       'Material' => 'Laminated cardstock',
@@ -239,7 +239,7 @@ products_data = [
     min_age: 3,
     max_age: 10,
     featured: true,
-    speech_goals: ['Vocabulary Building', 'Sentence Formation'],
+    speech_goals: ['Language & Vocabulary', 'Cognitive Skills'],
     specifications: {
       'Number of Cards' => '200',
       'Material' => 'Durable cardstock',
@@ -258,7 +258,7 @@ products_data = [
     min_age: 6,
     max_age: 12,
     featured: false,
-    speech_goals: ['Social Skills', 'Pragmatic Language', 'Following Directions'],
+    speech_goals: ['Social Interaction', 'Attention & Concentration'],
     specifications: {
       'Players' => '2-4',
       'Game Duration' => '20-30 minutes',
@@ -276,7 +276,7 @@ products_data = [
     min_age: 2,
     max_age: 99,
     featured: false,
-    speech_goals: ['Oral Motor Strength'],
+    speech_goals: ['Fine Motor Skills'],
     specifications: {
       'Set Includes' => '3 tubes (soft, medium, hard)',
       'Material' => 'Medical-grade silicone',
@@ -295,7 +295,7 @@ products_data = [
     min_age: 4,
     max_age: 9,
     featured: false,
-    speech_goals: ['Sentence Formation', 'Following Directions', 'Vocabulary Building'],
+    speech_goals: ['Cognitive Skills', 'Attention & Concentration', 'Language & Vocabulary'],
     specifications: {
       'Number of Sequences' => '15',
       'Cards per Sequence' => '4',
