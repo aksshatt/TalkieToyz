@@ -107,15 +107,19 @@ const ProductDetail = () => {
                 Products
               </Link>
             </li>
-            <li className="text-gray-400">/</li>
-            <li>
-              <Link
-                to={`/products?category_id=${product.category.id}`}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                {product.category.name}
-              </Link>
-            </li>
+            {product.category && (
+              <>
+                <li className="text-gray-400">/</li>
+                <li>
+                  <Link
+                    to={`/products?category=${product.category.slug}`}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    {product.category.name}
+                  </Link>
+                </li>
+              </>
+            )}
             <li className="text-gray-400">/</li>
             <li className="text-gray-900 font-medium truncate">{product.name}</li>
           </ol>
@@ -190,10 +194,12 @@ const ProductDetail = () => {
 
               {/* Category and Age Range */}
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <div>
-                  <span className="text-sm text-gray-600">Category</span>
-                  <p className="font-medium text-gray-900">{product.category.name}</p>
-                </div>
+                {product.category && (
+                  <div>
+                    <span className="text-sm text-gray-600">Category</span>
+                    <p className="font-medium text-gray-900">{product.category.name}</p>
+                  </div>
+                )}
                 <div>
                   <span className="text-sm text-gray-600">Age Range</span>
                   <p className="font-medium text-gray-900">
