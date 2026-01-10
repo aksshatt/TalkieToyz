@@ -1,10 +1,26 @@
 namespace :categories do
   desc "Reorganize categories with hierarchical structure"
   task reorganize: :environment do
-    puts "Reorganizing categories..."
+    # Check if already reorganized (look for hierarchical domains)
+    if Category.exists?(slug: 'physical-domain')
+      puts "✓ Categories already organized with hierarchical structure"
+      return
+    end
 
-    # Clear existing categories (keeping products intact with nullify)
-    Category.destroy_all
+    # Check if old categories exist
+    has_old_categories = Category.exists?(slug: 'articulation-toys')
+
+    if has_old_categories
+      puts "Reorganizing categories from old structure..."
+      # Clear existing categories (keeping products intact with nullify)
+      Category.destroy_all
+    elsif Category.count > 0
+      puts "⚠ Unknown category structure found, skipping reorganization"
+      puts "Run 'rails categories:force_reorganize' to override"
+      return
+    else
+      puts "Creating initial category structure..."
+    end
 
     # Create top-level domains
     physical_domain = Category.create!(
