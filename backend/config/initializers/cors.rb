@@ -10,7 +10,10 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
               /https:\/\/.*\.pages\.dev/,
               /https:\/\/.*\.talkietoys\.com/,
               'https://talkietoys.com',
-              'https://www.talkietoys.com'
+              'https://www.talkietoys.com',
+              'https://talkietoyz.shop',
+              'https://www.talkietoyz.shop',
+              /https:\/\/.*\.talkietoyz\.shop/
     end
 
     resource '*',
