@@ -303,29 +303,6 @@ const Login: React.FC = () => {
             </Link>
           </div>
 
-          {/* Demo Credentials - Subtle */}
-          <details className="mt-8 text-center">
-            <summary className="text-sm text-warmgray-500 cursor-pointer hover:text-warmgray-700">
-              View demo credentials
-            </summary>
-            <div className="mt-4 bg-warmgray-50 rounded-lg p-4 text-left">
-              <p className="text-xs font-semibold text-warmgray-700 mb-2">Demo Accounts:</p>
-              <div className="text-xs text-warmgray-600 space-y-1.5 font-mono">
-                <div className="flex justify-between">
-                  <span>Admin:</span>
-                  <span>admin@talkietoys.com</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Parent:</span>
-                  <span>parent@example.com</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Password:</span>
-                  <span>password123</span>
-                </div>
-              </div>
-            </div>
-          </details>
         </div>
       </div>
     </div>

@@ -12,7 +12,7 @@ Cart.destroy_all
 ProductSpeechGoal.destroy_all
 Product.destroy_all
 Address.destroy_all
-User.where.not(email: 'admin@talkietoys.com').destroy_all
+User.where.not(email: 'talkietoyz@gmail.com').destroy_all
 Category.destroy_all
 SpeechGoal.destroy_all
 
@@ -160,46 +160,13 @@ end
 
 # Create Admin User
 puts '👤 Creating admin user...'
-admin = User.find_or_create_by!(email: 'admin@talkietoys.com') do |user|
-  user.name = 'Admin User'
-  user.password = 'password123'
-  user.password_confirmation = 'password123'
+admin = User.find_or_create_by!(email: 'talkietoyz@gmail.com') do |user|
+  user.name = 'Swekchaa'
+  user.password = ENV.fetch('ADMIN_PASSWORD', 'Swekchaanishi@123')
+  user.password_confirmation = ENV.fetch('ADMIN_PASSWORD', 'Swekchaanishi@123')
   user.role = :admin
-  user.phone = '+1234567890'
 end
 puts "  ✓ Created admin user: #{admin.email}"
-
-# Create Sample Therapist User
-puts '👨‍⚕️ Creating therapist user...'
-therapist = User.find_or_create_by!(email: 'therapist@example.com') do |user|
-  user.name = 'Sarah Johnson'
-  user.password = 'password123'
-  user.password_confirmation = 'password123'
-  user.role = :therapist
-  user.phone = '+1987654321'
-  user.bio = 'Speech-Language Pathologist with 10 years of experience'
-end
-puts "  ✓ Created therapist user: #{therapist.email}"
-
-# Create Sample Customer Users
-puts '👥 Creating customer users...'
-customer1 = User.find_or_create_by!(email: 'parent@example.com') do |user|
-  user.name = 'John Smith'
-  user.password = 'password123'
-  user.password_confirmation = 'password123'
-  user.role = :customer
-  user.phone = '+1555123456'
-end
-puts "  ✓ Created customer user: #{customer1.email}"
-
-customer2 = User.find_or_create_by!(email: 'parent2@example.com') do |user|
-  user.name = 'Emily Davis'
-  user.password = 'password123'
-  user.password_confirmation = 'password123'
-  user.role = :customer
-  user.phone = '+1555654321'
-end
-puts "  ✓ Created customer user: #{customer2.email}"
 
 # Create Sample Products
 puts '🧸 Creating sample products...'
@@ -319,39 +286,7 @@ products_data.each do |product_data|
   puts "  ✓ Created product: #{product.name}"
 end
 
-# Create Sample Addresses
-puts '📍 Creating sample addresses...'
-Address.create!([
-  {
-    user: customer1,
-    label: 'Home',
-    full_name: 'John Smith',
-    phone: '+1555123456',
-    address_line_1: '123 Main Street',
-    city: 'Springfield',
-    state_province: 'IL',
-    postal_code: '62701',
-    country: 'US',
-    is_default: true,
-    is_shipping: true,
-    is_billing: true
-  },
-  {
-    user: customer2,
-    label: 'Home',
-    full_name: 'Emily Davis',
-    phone: '+1555654321',
-    address_line_1: '456 Oak Avenue',
-    address_line_2: 'Apt 2B',
-    city: 'Portland',
-    state_province: 'OR',
-    postal_code: '97201',
-    country: 'US',
-    is_default: true,
-    is_shipping: true
-  }
-])
-puts "  ✓ Created #{Address.count} addresses"
+puts '📍 Skipping sample addresses (no demo users)'
 
 # Load additional seed files
 puts '📚 Loading assessment and content seed data...'
@@ -376,7 +311,4 @@ puts "  Resource Categories: #{ResourceCategory.count}"
 puts "  Resources: #{Resource.count}"
 puts "  Site Contents: #{SiteContent.count}"
 puts ''
-puts '🔐 Test Credentials:'
-puts '  Admin: admin@talkietoys.com / password123'
-puts '  Therapist: therapist@example.com / password123'
-puts '  Customer: parent@example.com / password123'
+puts '🔐 Admin: talkietoyz@gmail.com'
