@@ -357,32 +357,34 @@ const Orders: React.FC = () => {
             </div>
 
             {/* Shipping Address */}
-            <div className="border-t-2 border-warmgray-100 pt-6">
-              <h3 className="text-lg font-bold text-warmgray-800 mb-4">
-                Shipping Address
-              </h3>
-              <div className="p-4 bg-warmgray-50 rounded-lg">
-                <p className="font-semibold text-warmgray-800">
-                  {selectedOrder.shipping_address.name}
-                </p>
-                <p className="text-sm text-warmgray-600">
-                  {selectedOrder.shipping_address.phone}
-                </p>
-                <p className="text-sm text-warmgray-600 mt-2">
-                  {selectedOrder.shipping_address.address_line_1}
-                </p>
-                {selectedOrder.shipping_address.address_line_2 && (
-                  <p className="text-sm text-warmgray-600">
-                    {selectedOrder.shipping_address.address_line_2}
+            {selectedOrder.shipping_address && (
+              <div className="border-t-2 border-warmgray-100 pt-6">
+                <h3 className="text-lg font-bold text-warmgray-800 mb-4">
+                  Shipping Address
+                </h3>
+                <div className="p-4 bg-warmgray-50 rounded-lg">
+                  <p className="font-semibold text-warmgray-800">
+                    {selectedOrder.shipping_address.name}
                   </p>
-                )}
-                <p className="text-sm text-warmgray-600">
-                  {selectedOrder.shipping_address.city},{' '}
-                  {selectedOrder.shipping_address.state} -{' '}
-                  {selectedOrder.shipping_address.postal_code}
-                </p>
+                  <p className="text-sm text-warmgray-600">
+                    {selectedOrder.shipping_address.phone}
+                  </p>
+                  <p className="text-sm text-warmgray-600 mt-2">
+                    {selectedOrder.shipping_address.address_line_1}
+                  </p>
+                  {selectedOrder.shipping_address.address_line_2 && (
+                    <p className="text-sm text-warmgray-600">
+                      {selectedOrder.shipping_address.address_line_2}
+                    </p>
+                  )}
+                  <p className="text-sm text-warmgray-600">
+                    {selectedOrder.shipping_address.city},{' '}
+                    {selectedOrder.shipping_address.state} -{' '}
+                    {selectedOrder.shipping_address.postal_code}
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Actions */}
             <div className="flex items-center justify-end space-x-4 border-t-2 border-warmgray-100 pt-6">
