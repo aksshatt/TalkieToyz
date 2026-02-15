@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   DollarSign,
   ShoppingBag,
   Users,
   Package,
-  TrendingUp,
   AlertCircle,
 } from 'lucide-react';
 import {
   LineChart,
   Line,
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from 'recharts';
 import StatsCard from '../../components/admin/StatsCard';
 import DataTable from '../../components/admin/DataTable';
 import type { Column } from '../../components/admin/DataTable';
+import { adminService } from '../../services/adminService';
+import toast from 'react-hot-toast';
 
 interface Order {
   id: number;
@@ -39,81 +37,95 @@ interface LowStockProduct {
   threshold: number;
 }
 
+interface Stats {
+  totalSales: string;
+  totalOrders: number;
+  totalCustomers: number;
+  totalProducts: number;
+  salesTrend: { value: number; isPositive: boolean };
+}
+
 const Dashboard: React.FC = () => {
-  const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('week');
+  const [isLoading, setIsLoading] = useState(true);
+  const [stats, setStats] = useState<Stats>({
+    totalSales: '₹0',
+    totalOrders: 0,
+    totalCustomers: 0,
+    totalProducts: 0,
+    salesTrend: { value: 0, isPositive: true },
+  });
+  const [salesData, setSalesData] = useState<any[]>([]);
+  const [recentOrders, setRecentOrders] = useState<Order[]>([]);
+  const [lowStockProducts, setLowStockProducts] = useState<LowStockProduct[]>([]);
 
-  // Mock data - replace with actual API calls
-  const stats = {
-    totalSales: '₹1,24,567',
-    totalOrders: 156,
-    totalCustomers: 89,
-    totalProducts: 42,
-    trends: {
-      sales: { value: 12.5, isPositive: true },
-      orders: { value: 8.3, isPositive: true },
-      customers: { value: -2.4, isPositive: false },
-      products: { value: 5.1, isPositive: true },
-    },
+  useEffect(() => {
+    loadDashboardData();
+  }, []);
+
+  const loadDashboardData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await adminService.getDashboardStats();
+      if (response.success) {
+        const data = response.data;
+
+        // Set stats
+        setStats({
+          totalSales: `₹${data.overview.total_sales.toLocaleString()}`,
+          totalOrders: data.overview.total_orders,
+          totalCustomers: data.overview.total_customers,
+          totalProducts: data.overview.total_products,
+          salesTrend: {
+            value: data.revenue.growth_percentage || 0,
+            isPositive: (data.revenue.growth_percentage || 0) >= 0
+          },
+        });
+
+        // Transform revenue data for charts
+        if (data.revenue.last_7_days && data.revenue.last_7_days.length > 0) {
+          const chartData = data.revenue.last_7_days.map((item: any) => ({
+            name: new Date(item.date).toLocaleDateString('en-US', { weekday: 'short' }),
+            sales: item.revenue,
+          }));
+          setSalesData(chartData);
+        } else {
+          // Fallback to empty data
+          setSalesData([]);
+        }
+
+        // Set recent orders
+        if (data.recent_orders && data.recent_orders.length > 0) {
+          const transformedOrders = data.recent_orders.map((order: any) => ({
+            id: order.id,
+            order_number: order.order_number,
+            customer_name: order.customer_name,
+            total: `₹${order.total.toLocaleString()}`,
+            status: order.status,
+            created_at: new Date(order.created_at).toLocaleDateString('en-IN'),
+          }));
+          setRecentOrders(transformedOrders);
+        }
+
+        // Get low stock products
+        const productsResponse = await adminService.getProducts({ low_stock: 10 });
+        if (productsResponse.success) {
+          const lowStock = productsResponse.data.products
+            .filter((p: any) => p.stock_quantity < 10)
+            .map((p: any) => ({
+              id: p.id,
+              name: p.name,
+              stock: p.stock_quantity,
+              threshold: 10,
+            }));
+          setLowStockProducts(lowStock);
+        }
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to load dashboard data');
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-  const salesData = [
-    { name: 'Mon', sales: 4000, orders: 24 },
-    { name: 'Tue', sales: 3000, orders: 18 },
-    { name: 'Wed', sales: 5000, orders: 32 },
-    { name: 'Thu', sales: 4500, orders: 28 },
-    { name: 'Fri', sales: 6000, orders: 38 },
-    { name: 'Sat', sales: 8000, orders: 52 },
-    { name: 'Sun', sales: 7000, orders: 45 },
-  ];
-
-  const recentOrders: Order[] = [
-    {
-      id: 1,
-      order_number: 'ORD-001',
-      customer_name: 'John Doe',
-      total: '₹2,450',
-      status: 'pending',
-      created_at: '2025-12-26',
-    },
-    {
-      id: 2,
-      order_number: 'ORD-002',
-      customer_name: 'Jane Smith',
-      total: '₹1,890',
-      status: 'processing',
-      created_at: '2025-12-26',
-    },
-    {
-      id: 3,
-      order_number: 'ORD-003',
-      customer_name: 'Bob Johnson',
-      total: '₹3,200',
-      status: 'shipped',
-      created_at: '2025-12-25',
-    },
-    {
-      id: 4,
-      order_number: 'ORD-004',
-      customer_name: 'Alice Williams',
-      total: '₹1,550',
-      status: 'delivered',
-      created_at: '2025-12-25',
-    },
-    {
-      id: 5,
-      order_number: 'ORD-005',
-      customer_name: 'Charlie Brown',
-      total: '₹2,100',
-      status: 'pending',
-      created_at: '2025-12-24',
-    },
-  ];
-
-  const lowStockProducts: LowStockProduct[] = [
-    { id: 1, name: 'ABC Learning Blocks', stock: 5, threshold: 10 },
-    { id: 2, name: 'Alphabet Puzzle Set', stock: 3, threshold: 10 },
-    { id: 3, name: 'Counting Bears Kit', stock: 7, threshold: 15 },
-  ];
 
   const orderColumns: Column<Order>[] = [
     { key: 'order_number', label: 'Order #', sortable: true },
@@ -141,17 +153,16 @@ const Dashboard: React.FC = () => {
     { key: 'created_at', label: 'Date', sortable: true },
   ];
 
-  const lowStockColumns: Column<LowStockProduct>[] = [
-    { key: 'name', label: 'Product Name' },
-    {
-      key: 'stock',
-      label: 'Stock',
-      render: (product) => (
-        <span className="font-bold text-coral">{product.stock} units</span>
-      ),
-    },
-    { key: 'threshold', label: 'Threshold' },
-  ];
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-teal mx-auto"></div>
+          <p className="mt-4 text-warmgray-600 text-lg">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -171,56 +182,35 @@ const Dashboard: React.FC = () => {
           title="Total Sales"
           value={stats.totalSales}
           icon={DollarSign}
-          trend={stats.trends.sales}
+          trend={stats.salesTrend}
           iconColor="text-teal"
         />
         <StatsCard
           title="Total Orders"
           value={stats.totalOrders}
           icon={ShoppingBag}
-          trend={stats.trends.orders}
           iconColor="text-coral"
         />
         <StatsCard
           title="Total Customers"
           value={stats.totalCustomers}
           icon={Users}
-          trend={stats.trends.customers}
           iconColor="text-sunshine"
         />
         <StatsCard
           title="Total Products"
           value={stats.totalProducts}
           icon={Package}
-          trend={stats.trends.products}
           iconColor="text-sky"
         />
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Sales Chart */}
-        <div className="card-talkie bg-white">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-800">
-              Sales Overview
-            </h2>
-            <div className="flex space-x-2">
-              {(['week', 'month', 'year'] as const).map((range) => (
-                <button
-                  key={range}
-                  onClick={() => setTimeRange(range)}
-                  className={`px-3 py-1 rounded-lg text-sm font-semibold transition-colors ${
-                    timeRange === range
-                      ? 'bg-teal text-white'
-                      : 'text-warmgray-600 hover:bg-warmgray-100'
-                  }`}
-                >
-                  {range.charAt(0).toUpperCase() + range.slice(1)}
-                </button>
-              ))}
-            </div>
-          </div>
+      {/* Sales Chart */}
+      <div className="card-talkie bg-white">
+        <h2 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-6">
+          Revenue (Last 7 Days)
+        </h2>
+        {salesData.length > 0 ? (
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={salesData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#E7E5E4" />
@@ -238,7 +228,6 @@ const Dashboard: React.FC = () => {
                   padding: '12px',
                 }}
               />
-              <Legend />
               <Line
                 type="monotone"
                 dataKey="sales"
@@ -249,35 +238,11 @@ const Dashboard: React.FC = () => {
               />
             </LineChart>
           </ResponsiveContainer>
-        </div>
-
-        {/* Orders Chart */}
-        <div className="card-talkie bg-white">
-          <h2 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-6">
-            Orders Overview
-          </h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={salesData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E7E5E4" />
-              <XAxis
-                dataKey="name"
-                stroke="#78716C"
-                style={{ fontSize: '12px' }}
-              />
-              <YAxis stroke="#78716C" style={{ fontSize: '12px' }} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'white',
-                  border: '2px solid #E7E5E4',
-                  borderRadius: '12px',
-                  padding: '12px',
-                }}
-              />
-              <Legend />
-              <Bar dataKey="orders" fill="#FF6F61" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        ) : (
+          <div className="h-[300px] flex items-center justify-center text-warmgray-500">
+            <p>No sales data available</p>
+          </div>
+        )}
       </div>
 
       {/* Recent Orders & Low Stock */}
@@ -307,20 +272,26 @@ const Dashboard: React.FC = () => {
               </h2>
             </div>
             <div className="space-y-3">
-              {lowStockProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="p-4 bg-coral-light/20 border-2 border-coral-light rounded-xl"
-                >
-                  <p className="font-bold text-warmgray-800 mb-1">
-                    {product.name}
-                  </p>
-                  <p className="text-sm text-warmgray-600">
-                    Only <span className="font-bold text-coral">{product.stock}</span> units
-                    left (threshold: {product.threshold})
-                  </p>
+              {lowStockProducts.length > 0 ? (
+                lowStockProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className="p-4 bg-coral-light/20 border-2 border-coral-light rounded-xl"
+                  >
+                    <p className="font-bold text-warmgray-800 mb-1">
+                      {product.name}
+                    </p>
+                    <p className="text-sm text-warmgray-600">
+                      Only <span className="font-bold text-coral">{product.stock}</span> units
+                      left (threshold: {product.threshold})
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <div className="p-4 text-center text-warmgray-600">
+                  <p className="text-sm">No low stock items</p>
                 </div>
-              ))}
+              )}
             </div>
             <button className="w-full mt-4 px-4 py-2 bg-coral text-white font-semibold rounded-xl hover:opacity-90 transition-opacity">
               Restock Products
