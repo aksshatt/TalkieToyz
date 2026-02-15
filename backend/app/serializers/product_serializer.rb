@@ -30,11 +30,12 @@ class ProductSerializer < ApplicationSerializer
   def images
     return [] unless object.images.attached?
 
-    object.images.map do |image|
-      {
-        id: image.id,
-        url: Rails.application.routes.url_helpers.url_for(image)
-      }
+    object.images.filter_map do |image|
+      url = Rails.application.routes.url_helpers.url_for(image)
+      { id: image.id, url: url }
+    rescue => e
+      Rails.logger.warn("Failed to generate image URL: #{e.message}")
+      nil
     end
   end
 end

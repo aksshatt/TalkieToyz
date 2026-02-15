@@ -154,9 +154,17 @@ module Api
             featured: product.featured,
             created_at: product.created_at.iso8601,
             total_sold: calculate_total_sold(product),
-            image_url: product.images.attached? ? url_for(product.images.first) : nil,
-            image_urls: product.images.attached? ? product.images.map { |img| { id: img.id, url: url_for(img) } } : []
+            image_url: safe_image_url(product.images.first),
+            image_urls: product.images.attached? ? product.images.map { |img| { id: img.id, url: safe_image_url(img) } }.compact : []
           }
+        end
+
+        def safe_image_url(image)
+          return nil unless image&.attached?
+          url_for(image)
+        rescue => e
+          Rails.logger.warn("Failed to generate image URL: #{e.message}")
+          nil
         end
 
         def admin_product_details(product)
