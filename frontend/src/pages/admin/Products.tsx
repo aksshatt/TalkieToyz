@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Eye, Image as ImageIcon } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Plus, Edit, Trash2, Eye, Image as ImageIcon, Upload, X } from 'lucide-react';
 import DataTable from '../../components/admin/DataTable';
 import type { Column } from '../../components/admin/DataTable';
 import Modal from '../../components/admin/Modal';
@@ -15,6 +15,7 @@ interface Product {
   category: string;
   status: string;
   image_url?: string;
+  image_urls?: Array<{ id: number; url: string }>;
 }
 
 const Products: React.FC = () => {
@@ -44,6 +45,7 @@ const Products: React.FC = () => {
           category: p.category,
           status: p.stock_quantity > 0 && p.active ? 'active' : 'out_of_stock',
           image_url: p.image_url,
+          image_urls: p.image_urls,
         }));
         setProducts(transformedProducts);
       }
@@ -61,9 +63,13 @@ const Products: React.FC = () => {
       sortable: true,
       render: (product) => (
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-warmgray-100 rounded-lg flex items-center justify-center">
-            <ImageIcon className="h-5 w-5 text-warmgray-400" />
-          </div>
+          {product.image_url ? (
+            <img src={product.image_url} alt={product.name} className="w-10 h-10 rounded-lg object-cover" />
+          ) : (
+            <div className="w-10 h-10 bg-warmgray-100 rounded-lg flex items-center justify-center">
+              <ImageIcon className="h-5 w-5 text-warmgray-400" />
+            </div>
+          )}
           <span className="font-semibold">{product.name}</span>
         </div>
       ),
@@ -273,6 +279,16 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Image upload state
+  const [newImages, setNewImages] = useState<File[]>([]);
+  const [newImagePreviews, setNewImagePreviews] = useState<string[]>([]);
+  const [existingImages, setExistingImages] = useState<Array<{ id: number; url: string }>>(
+    product?.image_urls || []
+  );
+  const [removeImageIds, setRemoveImageIds] = useState<number[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   // Fetch categories from API
   useEffect(() => {
     const fetchCategories = async () => {
@@ -287,6 +303,63 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
     };
     fetchCategories();
   }, []);
+
+  const handleFilesSelected = useCallback((files: FileList | File[]) => {
+    const validFiles = Array.from(files).filter((file) => {
+      if (!file.type.startsWith('image/')) {
+        toast.error(`${file.name} is not an image file`);
+        return false;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error(`${file.name} exceeds 5MB limit`);
+        return false;
+      }
+      return true;
+    });
+
+    if (validFiles.length === 0) return;
+
+    setNewImages((prev) => [...prev, ...validFiles]);
+
+    validFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewImagePreviews((prev) => [...prev, reader.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
+      if (e.dataTransfer.files) {
+        handleFilesSelected(e.dataTransfer.files);
+      }
+    },
+    [handleFilesSelected]
+  );
+
+  const removeNewImage = (index: number) => {
+    setNewImages((prev) => prev.filter((_, i) => i !== index));
+    setNewImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const removeExistingImage = (imageId: number) => {
+    setExistingImages((prev) => prev.filter((img) => img.id !== imageId));
+    setRemoveImageIds((prev) => [...prev, imageId]);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -315,10 +388,18 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
       }
 
       if (product) {
-        await adminService.updateProduct(product.id, productData);
+        await adminService.updateProduct(
+          product.id,
+          productData,
+          newImages.length > 0 ? newImages : undefined,
+          removeImageIds.length > 0 ? removeImageIds : undefined
+        );
         toast.success('Product updated successfully');
       } else {
-        await adminService.createProduct(productData);
+        await adminService.createProduct(
+          productData,
+          newImages.length > 0 ? newImages : undefined
+        );
         toast.success('Product added successfully');
       }
       onClose();
@@ -344,6 +425,84 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
             required
+          />
+        </div>
+
+        {/* Image Upload */}
+        <div className="md:col-span-2">
+          <label className="block text-sm font-bold text-warmgray-700 mb-2">
+            Product Images
+          </label>
+
+          {/* Existing Images */}
+          {existingImages.length > 0 && (
+            <div className="flex flex-wrap gap-3 mb-3">
+              {existingImages.map((img) => (
+                <div key={img.id} className="relative group">
+                  <img
+                    src={img.url}
+                    alt="Product"
+                    className="w-20 h-20 rounded-lg object-cover border-2 border-warmgray-200"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeExistingImage(img.id)}
+                    className="absolute -top-2 -right-2 bg-coral text-white rounded-full w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* New Image Previews */}
+          {newImagePreviews.length > 0 && (
+            <div className="flex flex-wrap gap-3 mb-3">
+              {newImagePreviews.map((preview, index) => (
+                <div key={index} className="relative group">
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="w-20 h-20 rounded-lg object-cover border-2 border-teal/30"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeNewImage(index)}
+                    className="absolute -top-2 -right-2 bg-coral text-white rounded-full w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Drop Zone */}
+          <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+            className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
+              isDragging
+                ? 'border-teal bg-teal/5'
+                : 'border-warmgray-300 hover:border-teal hover:bg-warmgray-50'
+            }`}
+          >
+            <Upload className="h-8 w-8 text-warmgray-400 mx-auto mb-2" />
+            <p className="text-sm text-warmgray-600">
+              Drag & drop images here, or <span className="text-teal font-semibold">browse</span>
+            </p>
+            <p className="text-xs text-warmgray-400 mt-1">PNG, JPG up to 5MB each</p>
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(e) => e.target.files && handleFilesSelected(e.target.files)}
+            className="hidden"
           />
         </div>
 

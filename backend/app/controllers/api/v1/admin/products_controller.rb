@@ -51,10 +51,16 @@ module Api
 
         # PATCH /api/v1/admin/products/:id
         def update
+          # Remove specific images if requested
+          if params[:remove_image_ids].present?
+            images_to_remove = @product.images.where(id: params[:remove_image_ids])
+            images_to_remove.each(&:purge_later)
+          end
+
           if @product.update(product_params)
             log_activity('update', 'Product', @product.id, { name: @product.name })
             render_success(
-              admin_product_details(@product),
+              admin_product_details(@product.reload),
               'Product updated successfully'
             )
           else
@@ -117,7 +123,8 @@ module Api
           params.require(:product).permit(
             :name, :description, :long_description, :price, :compare_at_price,
             :stock_quantity, :sku, :min_age, :max_age, :category_id,
-            :featured, :active, specifications: {}, speech_goal_ids: []
+            :featured, :active, specifications: {}, speech_goal_ids: [],
+            images: []
           )
         end
 
@@ -146,7 +153,9 @@ module Api
             active: product.active,
             featured: product.featured,
             created_at: product.created_at.iso8601,
-            total_sold: calculate_total_sold(product)
+            total_sold: calculate_total_sold(product),
+            image_url: product.images.attached? ? url_for(product.images.first) : nil,
+            image_urls: product.images.attached? ? product.images.map { |img| { id: img.id, url: url_for(img) } } : []
           }
         end
 

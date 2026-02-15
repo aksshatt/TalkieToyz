@@ -26,4 +26,15 @@ class ProductSerializer < ApplicationSerializer
   def review_count
     object.reviews.approved.count
   end
+
+  def images
+    return [] unless object.images.attached?
+
+    object.images.map do |image|
+      {
+        id: image.id,
+        url: Rails.application.routes.url_helpers.url_for(image)
+      }
+    end
+  end
 end

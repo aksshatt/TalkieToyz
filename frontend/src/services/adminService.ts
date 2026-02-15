@@ -51,6 +51,7 @@ export interface AdminProduct {
   created_at: string;
   total_sold?: number;
   image_url?: string;
+  image_urls?: Array<{ id: number; url: string }>;
 }
 
 export interface AdminProductsResponse {
@@ -183,12 +184,49 @@ export const adminService = {
     return response.data;
   },
 
-  createProduct: async (product: any): Promise<{ success: boolean; data: AdminProduct; message: string }> => {
+  createProduct: async (product: any, images?: File[]): Promise<{ success: boolean; data: AdminProduct; message: string }> => {
+    if (images && images.length > 0) {
+      const formData = new FormData();
+      Object.entries(product).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formData.append(`product[${key}]`, String(value));
+        }
+      });
+      images.forEach((image) => {
+        formData.append('product[images][]', image);
+      });
+      const response = await axios.post('/admin/products', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return response.data;
+    }
     const response = await axios.post('/admin/products', { product });
     return response.data;
   },
 
-  updateProduct: async (id: number, product: any): Promise<{ success: boolean; data: AdminProduct; message: string }> => {
+  updateProduct: async (id: number, product: any, images?: File[], removeImageIds?: number[]): Promise<{ success: boolean; data: AdminProduct; message: string }> => {
+    if ((images && images.length > 0) || (removeImageIds && removeImageIds.length > 0)) {
+      const formData = new FormData();
+      Object.entries(product).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formData.append(`product[${key}]`, String(value));
+        }
+      });
+      if (images) {
+        images.forEach((image) => {
+          formData.append('product[images][]', image);
+        });
+      }
+      if (removeImageIds) {
+        removeImageIds.forEach((imgId) => {
+          formData.append('remove_image_ids[]', String(imgId));
+        });
+      }
+      const response = await axios.patch(`/admin/products/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return response.data;
+    }
     const response = await axios.patch(`/admin/products/${id}`, { product });
     return response.data;
   },
