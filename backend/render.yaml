@@ -9,6 +9,7 @@ services:
     name: talkietoys-backend
     runtime: ruby
     plan: free
+    rootDir: backend
     buildCommand: "./bin/render-build.sh"
     startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
