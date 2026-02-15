@@ -28,26 +28,8 @@ namespace :db do
     puts "Removing addresses..."
     Address.destroy_all
 
-    puts "Removing blog post comments..."
-    BlogComment.destroy_all if defined?(BlogComment)
-
-    puts "Removing blog posts..."
-    BlogPost.destroy_all
-
-    puts "Removing resources..."
-    Resource.destroy_all if defined?(Resource)
-
-    puts "Removing resource categories..."
-    ResourceCategory.destroy_all if defined?(ResourceCategory)
-
-    puts "Removing assessment results..."
-    AssessmentResult.destroy_all if defined?(AssessmentResult)
-
-    puts "Removing assessments..."
-    Assessment.destroy_all if defined?(Assessment)
-
-    puts "Removing milestones..."
-    Milestone.destroy_all if defined?(Milestone)
+    # KEEPING: Assessments, Milestones, Blog Posts
+    puts "Skipping assessments, milestones, blog posts (keeping them)..."
 
     puts "Removing site contents..."
     SiteContent.destroy_all if defined?(SiteContent)
