@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, Eye, Image as ImageIcon } from 'lucide-react';
 import DataTable from '../../components/admin/DataTable';
 import type { Column } from '../../components/admin/DataTable';
 import Modal from '../../components/admin/Modal';
 import toast from 'react-hot-toast';
+import { adminService, type AdminProduct } from '../../services/adminService';
+import axios from '../../config/axios';
 
 interface Product {
   id: number;
@@ -20,50 +22,37 @@ const Products: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Mock data - replace with actual API calls
-  const products: Product[] = [
-    {
-      id: 1,
-      name: 'ABC Learning Blocks',
-      price: '₹1,299',
-      stock_quantity: 45,
-      category: 'Educational',
-      status: 'active',
-    },
-    {
-      id: 2,
-      name: 'Alphabet Puzzle Set',
-      price: '₹899',
-      stock_quantity: 32,
-      category: 'Puzzles',
-      status: 'active',
-    },
-    {
-      id: 3,
-      name: 'Counting Bears Kit',
-      price: '₹1,499',
-      stock_quantity: 18,
-      category: 'Educational',
-      status: 'active',
-    },
-    {
-      id: 4,
-      name: 'Shape Sorter Toy',
-      price: '₹749',
-      stock_quantity: 0,
-      category: 'Learning',
-      status: 'out_of_stock',
-    },
-    {
-      id: 5,
-      name: 'Musical Xylophone',
-      price: '₹1,199',
-      stock_quantity: 28,
-      category: 'Musical',
-      status: 'active',
-    },
-  ];
+  // Load products from API
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const loadProducts = async () => {
+    setIsLoading(true);
+    try {
+      const response = await adminService.getProducts();
+      if (response.success) {
+        // Transform API data to match component interface
+        const transformedProducts = response.data.products.map((p: AdminProduct) => ({
+          id: p.id,
+          name: p.name,
+          price: `₹${p.price.toLocaleString()}`,
+          stock_quantity: p.stock_quantity,
+          category: p.category,
+          status: p.stock_quantity > 0 && p.active ? 'active' : 'out_of_stock',
+          image_url: p.image_url,
+        }));
+        setProducts(transformedProducts);
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to load products');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const columns: Column<Product>[] = [
     {
@@ -143,13 +132,21 @@ const Products: React.FC = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
-      toast.success('Product deleted successfully');
+      try {
+        const response = await adminService.deleteProduct(id);
+        if (response.success) {
+          toast.success('Product deleted successfully');
+          loadProducts(); // Reload products after deletion
+        }
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || 'Failed to delete product');
+      }
     }
   };
 
-  const handleBulkDelete = () => {
+  const handleBulkDelete = async () => {
     if (selectedProducts.length === 0) {
       toast.error('Please select products to delete');
       return;
@@ -159,8 +156,14 @@ const Products: React.FC = () => {
         `Are you sure you want to delete ${selectedProducts.length} products?`
       )
     ) {
-      toast.success(`${selectedProducts.length} products deleted`);
-      setSelectedProducts([]);
+      try {
+        await Promise.all(selectedProducts.map(id => adminService.deleteProduct(id)));
+        toast.success(`${selectedProducts.length} products deleted`);
+        setSelectedProducts([]);
+        loadProducts(); // Reload products after deletion
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || 'Failed to delete products');
+      }
     }
   };
 
@@ -202,13 +205,20 @@ const Products: React.FC = () => {
       )}
 
       {/* Products Table */}
-      <DataTable
-        columns={columns}
-        data={products}
-        searchable
-        searchPlaceholder="Search products..."
-        emptyMessage="No products found"
-      />
+      {isLoading ? (
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
+          <p className="mt-4 text-warmgray-600">Loading products...</p>
+        </div>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={products}
+          searchable
+          searchPlaceholder="Search products..."
+          emptyMessage="No products found"
+        />
+      )}
 
       {/* Add Product Modal */}
       <Modal
@@ -249,32 +259,75 @@ interface ProductFormProps {
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
+  const [categories, setCategories] = useState<Array<{ id: number; name: string }>>([]);
   const [formData, setFormData] = useState({
     name: product?.name || '',
     price: product?.price?.replace('₹', '').replace(',', '') || '',
     stock_quantity: product?.stock_quantity || 0,
-    category: product?.category || '',
+    category_id: '',
     description: '',
+    long_description: '',
+    compare_at_price: '',
+    featured: false,
     age_range: '',
   });
-  const [images, setImages] = useState<File[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      setImages(files);
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('/categories');
+        if (response.data?.success) {
+          setCategories(response.data.data || []);
+        }
+      } catch (error) {
+        console.error('Failed to load categories');
+      }
+    };
+    fetchCategories();
+  }, []);
 
-      // Generate previews
-      const previews = files.map((file) => URL.createObjectURL(file));
-      setImagePreviews(previews);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success(product ? 'Product updated successfully' : 'Product added successfully');
-    onClose();
+    setIsSubmitting(true);
+    try {
+      const productData: any = {
+        name: formData.name,
+        price: parseFloat(formData.price),
+        stock_quantity: formData.stock_quantity,
+        description: formData.description,
+        long_description: formData.long_description,
+        featured: formData.featured,
+        active: true,
+      };
+
+      if (formData.category_id) {
+        productData.category_id = parseInt(formData.category_id);
+      }
+      if (formData.compare_at_price) {
+        productData.compare_at_price = parseFloat(formData.compare_at_price);
+      }
+      if (formData.age_range) {
+        const [min, max] = formData.age_range.split('-');
+        productData.min_age = parseInt(min);
+        productData.max_age = parseInt(max);
+      }
+
+      if (product) {
+        await adminService.updateProduct(product.id, productData);
+        toast.success('Product updated successfully');
+      } else {
+        await adminService.createProduct(productData);
+        toast.success('Product added successfully');
+      }
+      onClose();
+      window.location.reload();
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to save product');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -301,10 +354,26 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
           </label>
           <input
             type="number"
+            step="0.01"
             value={formData.price}
             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
             className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
             required
+          />
+        </div>
+
+        {/* Compare at Price */}
+        <div>
+          <label className="block text-sm font-bold text-warmgray-700 mb-2">
+            Compare at Price (₹)
+          </label>
+          <input
+            type="number"
+            step="0.01"
+            value={formData.compare_at_price}
+            onChange={(e) => setFormData({ ...formData, compare_at_price: e.target.value })}
+            className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
+            placeholder="Original price for sale display"
           />
         </div>
 
@@ -317,7 +386,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
             type="number"
             value={formData.stock_quantity}
             onChange={(e) =>
-              setFormData({ ...formData, stock_quantity: parseInt(e.target.value) })
+              setFormData({ ...formData, stock_quantity: parseInt(e.target.value) || 0 })
             }
             className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
             required
@@ -327,20 +396,19 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
         {/* Category */}
         <div>
           <label className="block text-sm font-bold text-warmgray-700 mb-2">
-            Category *
+            Category
           </label>
           <select
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            value={formData.category_id}
+            onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
             className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
-            required
           >
             <option value="">Select Category</option>
-            <option value="Educational">Educational</option>
-            <option value="Puzzles">Puzzles</option>
-            <option value="Learning">Learning</option>
-            <option value="Musical">Musical</option>
-            <option value="Creative">Creative</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -359,49 +427,54 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
             <option value="2-4">2-4 years</option>
             <option value="4-6">4-6 years</option>
             <option value="6-8">6-8 years</option>
+            <option value="8-12">8-12 years</option>
           </select>
+        </div>
+
+        {/* Featured */}
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="featured"
+            checked={formData.featured}
+            onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+            className="w-5 h-5 rounded border-warmgray-300 text-teal focus:ring-teal"
+          />
+          <label htmlFor="featured" className="text-sm font-bold text-warmgray-700">
+            Featured Product
+          </label>
         </div>
 
         {/* Description */}
         <div className="md:col-span-2">
           <label className="block text-sm font-bold text-warmgray-700 mb-2">
-            Description
+            Short Description
           </label>
           <textarea
             value={formData.description}
             onChange={(e) =>
               setFormData({ ...formData, description: e.target.value })
             }
-            rows={4}
+            rows={3}
             className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors resize-none"
+            placeholder="Brief product description"
           />
         </div>
 
-        {/* Images */}
+        {/* Long Description */}
         <div className="md:col-span-2">
           <label className="block text-sm font-bold text-warmgray-700 mb-2">
-            Product Images
+            Detailed Description
           </label>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleImageChange}
-            className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
+          <textarea
+            value={formData.long_description}
+            onChange={(e) =>
+              setFormData({ ...formData, long_description: e.target.value })
+            }
+            rows={5}
+            className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors resize-none"
+            placeholder="Full product description with details"
           />
-          {imagePreviews.length > 0 && (
-            <div className="grid grid-cols-4 gap-4 mt-4">
-              {imagePreviews.map((preview, index) => (
-                <div key={index} className="relative aspect-square rounded-lg overflow-hidden border-2 border-warmgray-200">
-                  <img
-                    src={preview}
-                    alt={`Preview ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
 
@@ -416,9 +489,10 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
         </button>
         <button
           type="submit"
-          className="px-6 py-3 bg-teal-gradient text-white font-bold rounded-xl shadow-soft hover-lift"
+          disabled={isSubmitting}
+          className="px-6 py-3 bg-teal-gradient text-white font-bold rounded-xl shadow-soft hover-lift disabled:opacity-50"
         >
-          {product ? 'Update Product' : 'Add Product'}
+          {isSubmitting ? 'Saving...' : product ? 'Update Product' : 'Add Product'}
         </button>
       </div>
     </form>
