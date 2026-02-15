@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye, Printer, Filter, Download } from 'lucide-react';
 import DataTable from '../../components/admin/DataTable';
 import type { Column } from '../../components/admin/DataTable';
 import Modal from '../../components/admin/Modal';
 import toast from 'react-hot-toast';
+import { adminService, type AdminOrder } from '../../services/adminService';
 
 interface Order {
   id: number;
@@ -15,7 +16,7 @@ interface Order {
   payment_method: string;
   created_at: string;
   items: OrderItem[];
-  shipping_address: Address;
+  shipping_address?: Address;
 }
 
 interface OrderItem {
@@ -41,153 +42,57 @@ const Orders: React.FC = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [dateFilter, setDateFilter] = useState<string>('all');
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Mock data - replace with actual API calls
-  const orders: Order[] = [
-    {
-      id: 1,
-      order_number: 'ORD-001',
-      customer_name: 'John Doe',
-      customer_email: 'john@example.com',
-      total: '₹2,450',
-      status: 'pending',
-      payment_method: 'Razorpay',
-      created_at: '2025-12-26',
-      items: [
-        {
-          id: 1,
-          product_name: 'ABC Learning Blocks',
-          quantity: 1,
-          price: '₹1,299',
-          total: '₹1,299',
-        },
-        {
-          id: 2,
-          product_name: 'Musical Xylophone',
-          quantity: 1,
-          price: '₹1,199',
-          total: '₹1,199',
-        },
-      ],
-      shipping_address: {
-        name: 'John Doe',
-        phone: '9876543210',
-        address_line_1: '123 Main Street',
-        address_line_2: 'Apartment 4B',
-        city: 'Mumbai',
-        state: 'Maharashtra',
-        postal_code: '400001',
-      },
-    },
-    {
-      id: 2,
-      order_number: 'ORD-002',
-      customer_name: 'Jane Smith',
-      customer_email: 'jane@example.com',
-      total: '₹1,890',
-      status: 'processing',
-      payment_method: 'COD',
-      created_at: '2025-12-26',
-      items: [
-        {
-          id: 1,
-          product_name: 'Alphabet Puzzle Set',
-          quantity: 2,
-          price: '₹899',
-          total: '₹1,798',
-        },
-      ],
-      shipping_address: {
-        name: 'Jane Smith',
-        phone: '9876543211',
-        address_line_1: '456 Park Avenue',
-        city: 'Delhi',
-        state: 'Delhi',
-        postal_code: '110001',
-      },
-    },
-    {
-      id: 3,
-      order_number: 'ORD-003',
-      customer_name: 'Bob Johnson',
-      customer_email: 'bob@example.com',
-      total: '₹3,200',
-      status: 'shipped',
-      payment_method: 'Razorpay',
-      created_at: '2025-12-25',
-      items: [
-        {
-          id: 1,
-          product_name: 'Counting Bears Kit',
-          quantity: 2,
-          price: '₹1,499',
-          total: '₹2,998',
-        },
-      ],
-      shipping_address: {
-        name: 'Bob Johnson',
-        phone: '9876543212',
-        address_line_1: '789 Lake Road',
-        city: 'Bangalore',
-        state: 'Karnataka',
-        postal_code: '560001',
-      },
-    },
-    {
-      id: 4,
-      order_number: 'ORD-004',
-      customer_name: 'Alice Williams',
-      customer_email: 'alice@example.com',
-      total: '₹1,550',
-      status: 'delivered',
-      payment_method: 'Razorpay',
-      created_at: '2025-12-25',
-      items: [
-        {
-          id: 1,
-          product_name: 'Musical Xylophone',
-          quantity: 1,
-          price: '₹1,199',
-          total: '₹1,199',
-        },
-      ],
-      shipping_address: {
-        name: 'Alice Williams',
-        phone: '9876543213',
-        address_line_1: '321 Hill Street',
-        city: 'Pune',
-        state: 'Maharashtra',
-        postal_code: '411001',
-      },
-    },
-    {
-      id: 5,
-      order_number: 'ORD-005',
-      customer_name: 'Charlie Brown',
-      customer_email: 'charlie@example.com',
-      total: '₹2,100',
-      status: 'cancelled',
-      payment_method: 'COD',
-      created_at: '2025-12-24',
-      items: [
-        {
-          id: 1,
-          product_name: 'ABC Learning Blocks',
-          quantity: 1,
-          price: '₹1,299',
-          total: '₹1,299',
-        },
-      ],
-      shipping_address: {
-        name: 'Charlie Brown',
-        phone: '9876543214',
-        address_line_1: '555 River Drive',
-        city: 'Chennai',
-        state: 'Tamil Nadu',
-        postal_code: '600001',
-      },
-    },
-  ];
+  // Load orders from API
+  useEffect(() => {
+    loadOrders();
+  }, [statusFilter]);
+
+  const loadOrders = async () => {
+    setIsLoading(true);
+    try {
+      const response = await adminService.getOrders({
+        status: statusFilter !== 'all' ? statusFilter : undefined,
+      });
+      if (response.success) {
+        // Transform API data to match component interface
+        const transformedOrders = await Promise.all(
+          response.data.orders.map(async (o: AdminOrder) => {
+            // Fetch full order details to get items
+            const detailResponse = await adminService.getOrder(o.id);
+            const orderDetail = detailResponse.data;
+
+            return {
+              id: o.id,
+              order_number: o.order_number,
+              customer_name: o.customer_name,
+              customer_email: o.customer_email,
+              total: `₹${o.total.toLocaleString()}`,
+              status: o.status as any,
+              payment_method: o.payment_method || 'N/A',
+              created_at: new Date(o.created_at).toLocaleDateString('en-IN'),
+              items: (orderDetail.items || []).map((item: any) => ({
+                id: item.id,
+                product_name: item.product_name || item.item_name || 'Unknown',
+                quantity: item.quantity,
+                price: `₹${(item.price || item.unit_price || 0).toLocaleString()}`,
+                total: `₹${(item.total || item.total_price || 0).toLocaleString()}`,
+              })),
+              shipping_address: orderDetail.shipping_address,
+            };
+          })
+        );
+        setOrders(transformedOrders);
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to load orders');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -256,23 +161,24 @@ const Orders: React.FC = () => {
     toast.success(`Printing invoice for ${order.order_number}`);
   };
 
-  const handleUpdateStatus = (newStatus: Order['status']) => {
+  const handleUpdateStatus = async (newStatus: Order['status']) => {
     if (selectedOrder) {
-      toast.success(`Order status updated to ${newStatus}`);
-      setSelectedOrder({ ...selectedOrder, status: newStatus });
+      try {
+        const response = await adminService.updateOrderStatus(selectedOrder.id, newStatus);
+        if (response.success) {
+          toast.success(`Order status updated to ${newStatus}`);
+          setSelectedOrder({ ...selectedOrder, status: newStatus });
+          loadOrders(); // Reload orders to reflect changes
+        }
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || 'Failed to update order status');
+      }
     }
   };
 
-  const filteredOrders = orders.filter((order) => {
-    if (statusFilter !== 'all' && order.status !== statusFilter) return false;
-    if (dateFilter === 'today') {
-      return order.created_at === '2025-12-26';
-    }
-    if (dateFilter === 'week') {
-      return true; // Implement date logic
-    }
-    return true;
-  });
+  // Orders are already filtered by status in the API call
+  // Additional client-side filtering can be added here if needed
+  const filteredOrders = orders;
 
   return (
     <div className="space-y-6">
@@ -335,13 +241,20 @@ const Orders: React.FC = () => {
       </div>
 
       {/* Orders Table */}
-      <DataTable
-        columns={columns}
-        data={filteredOrders}
-        searchable
-        searchPlaceholder="Search orders..."
-        emptyMessage="No orders found"
-      />
+      {isLoading ? (
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
+          <p className="mt-4 text-warmgray-600">Loading orders...</p>
+        </div>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={filteredOrders}
+          searchable
+          searchPlaceholder="Search orders..."
+          emptyMessage="No orders found"
+        />
+      )}
 
       {/* Order Detail Modal */}
       <Modal

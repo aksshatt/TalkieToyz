@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye, Mail, Phone, MapPin, ShoppingBag } from 'lucide-react';
 import DataTable from '../../components/admin/DataTable';
 import type { Column } from '../../components/admin/DataTable';
 import Modal from '../../components/admin/Modal';
+import toast from 'react-hot-toast';
+import { adminService, type AdminCustomer } from '../../services/adminService';
 
 interface Customer {
   id: number;
@@ -22,158 +24,76 @@ interface CustomerOrder {
   total: string;
   status: string;
   created_at: string;
+  payment_status?: string;
 }
 
 const Customers: React.FC = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Mock data - replace with actual API calls
-  const customers: Customer[] = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '9876543210',
-      role: 'customer',
-      total_orders: 5,
-      total_spent: '₹12,450',
-      created_at: '2025-01-15',
-      orders: [
-        {
-          id: 1,
-          order_number: 'ORD-001',
-          total: '₹2,450',
-          status: 'delivered',
-          created_at: '2025-12-26',
-        },
-        {
-          id: 2,
-          order_number: 'ORD-010',
-          total: '₹3,200',
-          status: 'delivered',
-          created_at: '2025-12-20',
-        },
-        {
-          id: 3,
-          order_number: 'ORD-025',
-          total: '₹1,800',
-          status: 'delivered',
-          created_at: '2025-12-15',
-        },
-        {
-          id: 4,
-          order_number: 'ORD-042',
-          total: '₹2,500',
-          status: 'delivered',
-          created_at: '2025-12-10',
-        },
-        {
-          id: 5,
-          order_number: 'ORD-058',
-          total: '₹2,500',
-          status: 'shipped',
-          created_at: '2025-12-05',
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      phone: '9876543211',
-      role: 'customer',
-      total_orders: 3,
-      total_spent: '₹8,750',
-      created_at: '2025-02-20',
-      orders: [
-        {
-          id: 1,
-          order_number: 'ORD-002',
-          total: '₹1,890',
-          status: 'processing',
-          created_at: '2025-12-26',
-        },
-        {
-          id: 2,
-          order_number: 'ORD-015',
-          total: '₹3,560',
-          status: 'delivered',
-          created_at: '2025-12-18',
-        },
-        {
-          id: 3,
-          order_number: 'ORD-032',
-          total: '₹3,300',
-          status: 'delivered',
-          created_at: '2025-12-12',
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: 'Bob Johnson',
-      email: 'bob@example.com',
-      phone: '9876543212',
-      role: 'customer',
-      total_orders: 8,
-      total_spent: '₹25,600',
-      created_at: '2024-11-10',
-      orders: [
-        {
-          id: 1,
-          order_number: 'ORD-003',
-          total: '₹3,200',
-          status: 'shipped',
-          created_at: '2025-12-25',
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: 'Alice Williams',
-      email: 'alice@example.com',
-      phone: '9876543213',
-      role: 'customer',
-      total_orders: 2,
-      total_spent: '₹4,850',
-      created_at: '2025-03-05',
-      orders: [
-        {
-          id: 1,
-          order_number: 'ORD-004',
-          total: '₹1,550',
-          status: 'delivered',
-          created_at: '2025-12-25',
-        },
-        {
-          id: 2,
-          order_number: 'ORD-028',
-          total: '₹3,300',
-          status: 'delivered',
-          created_at: '2025-12-14',
-        },
-      ],
-    },
-    {
-      id: 5,
-      name: 'Charlie Brown',
-      email: 'charlie@example.com',
-      role: 'customer',
-      total_orders: 1,
-      total_spent: '₹2,100',
-      created_at: '2025-04-12',
-      orders: [
-        {
-          id: 1,
-          order_number: 'ORD-005',
-          total: '₹2,100',
-          status: 'cancelled',
-          created_at: '2025-12-24',
-        },
-      ],
-    },
-  ];
+  // Load customers from API
+  useEffect(() => {
+    loadCustomers();
+  }, []);
+
+  const loadCustomers = async () => {
+    setIsLoading(true);
+    try {
+      const response = await adminService.getCustomers();
+      if (response.success) {
+        // Transform API data to match component interface
+        const transformedCustomers = await Promise.all(
+          response.data.customers.map(async (c: AdminCustomer) => {
+            // Fetch full customer details to get orders
+            try {
+              const detailResponse = await adminService.getCustomer(c.id);
+              const customerDetail = detailResponse.data;
+
+              return {
+                id: c.id,
+                name: c.name,
+                email: c.email,
+                phone: c.phone,
+                role: 'customer',
+                total_orders: c.total_orders,
+                total_spent: `₹${c.total_spent.toLocaleString()}`,
+                created_at: new Date(c.created_at).toLocaleDateString('en-IN'),
+                orders: (customerDetail.orders || []).map((order: any) => ({
+                  id: order.id,
+                  order_number: order.order_number,
+                  total: `₹${order.total.toLocaleString()}`,
+                  status: order.status,
+                  created_at: new Date(order.created_at).toLocaleDateString('en-IN'),
+                  payment_status: order.payment_status,
+                })),
+              };
+            } catch {
+              // If detail fetch fails, use basic data
+              return {
+                id: c.id,
+                name: c.name,
+                email: c.email,
+                phone: c.phone,
+                role: 'customer',
+                total_orders: c.total_orders,
+                total_spent: `₹${c.total_spent.toLocaleString()}`,
+                created_at: new Date(c.created_at).toLocaleDateString('en-IN'),
+                orders: [],
+              };
+            }
+          })
+        );
+        setCustomers(transformedCustomers);
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to load customers');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   const columns: Column<Customer>[] = [
     { key: 'name', label: 'Customer Name', sortable: true },
@@ -316,13 +236,20 @@ const Customers: React.FC = () => {
       </div>
 
       {/* Customers Table */}
-      <DataTable
-        columns={columns}
-        data={customers}
-        searchable
-        searchPlaceholder="Search customers..."
-        emptyMessage="No customers found"
-      />
+      {isLoading ? (
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
+          <p className="mt-4 text-warmgray-600">Loading customers...</p>
+        </div>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={customers}
+          searchable
+          searchPlaceholder="Search customers..."
+          emptyMessage="No customers found"
+        />
+      )}
 
       {/* Customer Detail Modal */}
       <Modal
