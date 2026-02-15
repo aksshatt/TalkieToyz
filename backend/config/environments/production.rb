@@ -61,8 +61,9 @@ Rails.application.configure do
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
-  # Use Sidekiq as the queuing backend for Active Job.
-  config.active_job.queue_adapter = :sidekiq
+  # Use async adapter for Active Job on free tier (no Redis/Sidekiq).
+  # Switch back to :sidekiq if you add a Redis instance.
+  config.active_job.queue_adapter = ENV.fetch("ACTIVE_JOB_ADAPTER", "async").to_sym
 
   config.action_mailer.perform_caching = false
 
