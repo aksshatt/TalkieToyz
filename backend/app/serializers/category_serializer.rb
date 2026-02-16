@@ -3,6 +3,11 @@ class CategorySerializer < ApplicationSerializer
   has_many :subcategories, serializer: CategorySerializer
 
   def product_count
-    object.products.active.count
+    if object.subcategories.any?
+      subcategory_ids = object.subcategories.pluck(:id)
+      Product.active.where(category_id: [object.id, *subcategory_ids]).count
+    else
+      object.products.active.count
+    end
   end
 end

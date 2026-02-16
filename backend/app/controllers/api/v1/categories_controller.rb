@@ -3,7 +3,7 @@ module Api
     class CategoriesController < BaseController
       # GET /api/v1/categories
       def index
-        @categories = Category.active.by_position.includes(:products)
+        @categories = Category.active.top_level.by_position.includes(:subcategories, :products)
 
         render_success(
           ActiveModelSerializers::SerializableResource.new(

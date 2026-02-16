@@ -37,7 +37,10 @@ class Product < ApplicationRecord
   scope :active, -> { where(active: true, deleted_at: nil) }
   scope :featured, -> { where(featured: true) }
   scope :in_stock, -> { where('stock_quantity > ?', 0) }
-  scope :by_category, ->(category_id) { where(category_id: category_id) }
+  scope :by_category, ->(category_id) {
+    subcategory_ids = Category.where(parent_id: category_id).pluck(:id)
+    where(category_id: [category_id, *subcategory_ids])
+  }
   scope :by_age_range, ->(age) { where('min_age <= ? AND max_age >= ?', age, age) }
   scope :by_price_range, ->(min_price, max_price) { where(price: min_price..max_price) }
   scope :by_speech_goals, ->(goal_ids) { joins(:speech_goals).where(speech_goals: { id: goal_ids }).distinct }
