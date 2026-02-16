@@ -271,7 +271,7 @@ const Dashboard: React.FC = () => {
                 Low Stock Alerts
               </h2>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3 max-h-[400px] overflow-y-auto">
               {lowStockProducts.length > 0 ? (
                 lowStockProducts.map((product) => (
                   <div

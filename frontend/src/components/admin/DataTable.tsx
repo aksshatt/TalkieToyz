@@ -80,9 +80,9 @@ function DataTable<T extends { id: number | string }>({
 
       {/* Table */}
       <div className="bg-white rounded-xl border-2 border-warmgray-200 overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto max-h-[65vh] overflow-y-auto">
           <table className="w-full">
-            <thead className="bg-warmgray-50 border-b-2 border-warmgray-200">
+            <thead className="bg-warmgray-50 border-b-2 border-warmgray-200 sticky top-0 z-10">
               <tr>
                 {columns.map((column) => (
                   <th

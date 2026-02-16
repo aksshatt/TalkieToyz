@@ -104,9 +104,9 @@ const FAQManagement = () => {
 
       {/* Table */}
       <div className="card-talkie overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto max-h-[65vh] overflow-y-auto">
           <table className="w-full">
-            <thead className="bg-warmgray-100">
+            <thead className="bg-warmgray-100 sticky top-0 z-10">
               <tr>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700">Question</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700">Category</th>

@@ -460,9 +460,9 @@ const ContentManagement = () => {
         </div>
 
         {/* Content Table */}
-        <div className="card-talkie overflow-x-auto">
+        <div className="card-talkie overflow-x-auto max-h-[65vh] overflow-y-auto">
           <table className="w-full">
-            <thead>
+            <thead className="sticky top-0 z-10">
               <tr className="border-b-2 border-warmgray-200 bg-warmgray-50">
                 <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700">Key</th>
                 <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700">Page</th>

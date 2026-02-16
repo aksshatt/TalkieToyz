@@ -1,12 +1,51 @@
 import { useState, useEffect } from 'react';
-import { ClipboardList, Calendar, CheckCircle, X } from 'lucide-react';
+import { ClipboardList, Calendar, CheckCircle, X, Globe, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import AssessmentCard from '../components/assessment/AssessmentCard';
 import { assessmentService } from '../services/assessmentService';
 import { appointmentService } from '../services/appointmentService';
 import type { AssessmentSummary } from '../types/assessment';
 import Layout from '../components/layout/Layout';
 
+const SCREENING_QUESTIONS = [
+  {
+    id: 'sq1',
+    question: 'Does your child respond to their name when called?',
+    options: ['Always', 'Sometimes', 'Rarely', 'Never'],
+  },
+  {
+    id: 'sq2',
+    question: 'Can your child follow simple one-step instructions?',
+    options: ['Yes, easily', 'With some help', 'Only with gestures', 'Not yet'],
+  },
+  {
+    id: 'sq3',
+    question: 'How does your child communicate their needs?',
+    options: ['Uses words/sentences', 'Uses single words', 'Points or gestures', 'Cries or pulls you'],
+  },
+  {
+    id: 'sq4',
+    question: 'Does your child make eye contact during conversations?',
+    options: ['Consistently', 'Sometimes', 'Rarely', 'Not at all'],
+  },
+  {
+    id: 'sq5',
+    question: 'How many words can your child say?',
+    options: ['50+ words', '20–50 words', '5–20 words', 'Fewer than 5'],
+  },
+];
+
+const LANGUAGES = [
+  { name: 'Hindi', native: 'हिंदी' },
+  { name: 'English', native: 'English' },
+  { name: 'Marathi', native: 'मराठी' },
+  { name: 'Odia', native: 'ଓଡ଼ିଆ' },
+  { name: 'Konkani', native: 'कोंकणी' },
+  { name: 'Gujarati', native: 'ગુજરાતી' },
+];
+
 const AssessmentList = () => {
+  const navigate = useNavigate();
   const [assessments, setAssessments] = useState<AssessmentSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -21,6 +60,7 @@ const AssessmentList = () => {
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [screeningAnswers, setScreeningAnswers] = useState<Record<string, string>>({});
 
   useEffect(() => {
     loadAssessments();
@@ -79,36 +119,79 @@ const AssessmentList = () => {
             </div>
           )}
 
-          {/* Book Appointment Section */}
+          {/* Screening Questions Section */}
           {!loading && (
             <div className="mt-8 sm:mt-10 md:mt-12">
-              <div className="bg-gradient-to-br from-teal-light/40 via-cream-light to-coral-light/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-soft-lg">
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-coral-gradient rounded-full mb-3 sm:mb-4">
-                    <Calendar className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
-                  </div>
-                  <h2 className="font-[var(--font-family-fun)] font-bold text-xl sm:text-2xl text-warmgray-900 mb-2 sm:mb-3">
-                    Need Professional Support?
+              <div className="card-talkie p-5 sm:p-6 md:p-8">
+                <div className="text-center mb-5 sm:mb-6">
+                  <h2 className="font-[var(--font-family-fun)] font-bold text-xl sm:text-2xl text-warmgray-900 mb-2">
+                    Quick Screening Questions
                   </h2>
-                  <p className="text-sm sm:text-base text-warmgray-600 mb-4 sm:mb-6 max-w-2xl mx-auto">
-                    Book an appointment with our speech therapy experts for personalized therapy sessions.
+                  <p className="text-xs sm:text-sm text-warmgray-600 max-w-xl mx-auto">
+                    Answer a few quick questions to get an initial understanding of your child's speech development.
                   </p>
-
-                  {!showBookingModal ? (
-                    <button
-                      onClick={() => setShowBookingModal(true)}
-                      className="btn-primary text-sm sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 inline-flex items-center gap-2"
-                    >
-                      <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
-                      Book Appointment  
-                    </button>
-                  ) : null}
                 </div>
+
+                <div className="space-y-4 sm:space-y-5 max-w-2xl mx-auto">
+                  {SCREENING_QUESTIONS.map((q, index) => (
+                    <div key={q.id} className="animate-slide-in" style={{ animationDelay: `${index * 60}ms` }}>
+                      <label className="block text-sm sm:text-base font-semibold text-warmgray-800 mb-2">
+                        {index + 1}. {q.question}
+                      </label>
+                      <select
+                        value={screeningAnswers[q.id] || ''}
+                        onChange={(e) =>
+                          setScreeningAnswers((prev) => ({ ...prev, [q.id]: e.target.value }))
+                        }
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all bg-white"
+                      >
+                        <option value="">Select an answer</option>
+                        {q.options.map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="text-[10px] sm:text-xs text-warmgray-500 mt-4 text-center italic">
+                  *These questions are for initial guidance only and do not replace a professional assessment.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* CTA: Book Appointment for Online Therapy */}
+          {!loading && (
+            <div className="mt-6 sm:mt-8">
+              <div className="bg-gradient-to-br from-coral-light/30 via-cream-light to-teal-light/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-soft-lg text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-coral-gradient rounded-full mb-3 sm:mb-4 shadow-soft animate-pulse-soft">
+                  <Calendar className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
+                </div>
+                <h2 className="font-[var(--font-family-fun)] font-bold text-xl sm:text-2xl text-warmgray-900 mb-2 sm:mb-3">
+                  Need Professional Support?
+                </h2>
+                <p className="text-sm sm:text-base text-warmgray-600 mb-5 sm:mb-6 max-w-2xl mx-auto">
+                  Our speech therapy experts provide personalized online therapy sessions tailored to your child's needs.
+                </p>
+
+                {!showBookingModal ? (
+                  <button
+                    onClick={() => setShowBookingModal(true)}
+                    className="btn-secondary text-sm sm:text-base md:text-lg px-8 sm:px-10 py-3.5 sm:py-4 inline-flex items-center gap-2 shadow-soft-md"
+                  >
+                    <Calendar className="h-5 w-5 sm:h-6 sm:w-6" />
+                    Book Appointment for Online Therapy
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </button>
+                ) : null}
 
                 {/* Booking Form - Inline Expansion */}
                 {showBookingModal && (
                   <div className="mt-6 sm:mt-8 animate-slide-in">
-                    <div className="bg-white rounded-2xl sm:rounded-3xl shadow-soft-lg p-4 sm:p-6 md:p-8 max-w-3xl mx-auto">
+                    <div className="bg-white rounded-2xl sm:rounded-3xl shadow-soft-lg p-4 sm:p-6 md:p-8 max-w-3xl mx-auto text-left">
                       <div className="flex items-center justify-between mb-4 sm:mb-6">
                         <h3 className="font-[var(--font-family-fun)] font-bold text-xl sm:text-2xl text-warmgray-900">
                           Book an Appointment
@@ -272,7 +355,7 @@ const AssessmentList = () => {
                           <button
                             type="submit"
                             disabled={submitting || submitSuccess}
-                            className="flex-1 btn-primary px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed order-1 sm:order-2"
+                            className="flex-1 btn-secondary px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed order-1 sm:order-2"
                           >
                             {submitting ? 'Submitting...' : submitSuccess ? 'Submitted!' : 'Submit Request'}
                           </button>
@@ -281,6 +364,33 @@ const AssessmentList = () => {
                     </div>
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+
+          {/* Languages Available Section */}
+          {!loading && (
+            <div className="mt-6 sm:mt-8">
+              <div className="card-talkie p-5 sm:p-6 md:p-8 text-center">
+                <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-sky-gradient rounded-full mb-3 sm:mb-4">
+                  <Globe className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                </div>
+                <h3 className="font-[var(--font-family-fun)] font-bold text-lg sm:text-xl text-warmgray-900 mb-3 sm:mb-4">
+                  Languages Available
+                </h3>
+                <p className="text-xs sm:text-sm text-warmgray-600 mb-4 sm:mb-5 max-w-lg mx-auto">
+                  Our therapy sessions are available in the following languages:
+                </p>
+                <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+                  {LANGUAGES.map((lang) => (
+                    <span
+                      key={lang.name}
+                      className="bg-gradient-to-r from-teal-light/40 to-sky-light/40 text-warmgray-800 text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-teal/20 shadow-soft-sm"
+                    >
+                      {lang.name} <span className="text-warmgray-500">({lang.native})</span>
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           )}

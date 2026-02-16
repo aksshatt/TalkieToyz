@@ -1,18 +1,15 @@
 # Assessments Seed Data
 puts "Creating assessments..."
 
-Assessment.destroy_all
-
-# Assessment 1: Speech Development Assessment (12-24 months)
-Assessment.create!(
-  title: "Speech Development Assessment (12-24 months)",
-  description: "This assessment evaluates early speech and language development for toddlers between 12 and 24 months old. It covers vocabulary, gestures, comprehension, and early word combinations.",
-  slug: "speech-development-12-24-months",
-  min_age: 12,
-  max_age: 24,
-  active: true,
-  version: 1,
-  questions: [
+# Assessment 1: Speech Development Assessment (1-2 years)
+Assessment.find_or_create_by!(slug: "speech-development-12-24-months") do |a|
+  a.title = "Speech Development Assessment (1-2 years)"
+  a.description = "This assessment evaluates early speech and language development for toddlers between 1 and 2 years old. It covers vocabulary, gestures, comprehension, and early word combinations."
+  a.min_age = 1
+  a.max_age = 2
+  a.active = true
+  a.version = 1
+  a.questions = [
     {
       key: "q1",
       text: "Does your child say at least 3-5 words consistently?",
@@ -93,14 +90,14 @@ Assessment.create!(
       category: "expressive_language",
       points: { yes: 15, no: 0 }
     }
-  ],
-  scoring_rules: [
+  ]
+  a.scoring_rules = [
     { min_score: 0, max_score: 30, level: "needs_attention", label: "Needs Attention" },
     { min_score: 31, max_score: 60, level: "developing", label: "Developing" },
     { min_score: 61, max_score: 85, level: "on_track", label: "On Track" },
     { min_score: 86, max_score: 100, level: "advanced", label: "Advanced" }
-  ],
-  recommendations: [
+  ]
+  a.recommendations = [
     {
       level: "needs_attention",
       message: "Your child may benefit from additional speech therapy support. Consider consulting with a speech-language pathologist.",
@@ -150,18 +147,17 @@ Assessment.create!(
       ]
     }
   ]
-)
+end
 
 # Assessment 2: Language Skills Assessment (3-5 years)
-Assessment.create!(
-  title: "Language Skills Assessment (3-5 years)",
-  description: "This comprehensive assessment evaluates language skills for preschoolers aged 3-5 years. It covers vocabulary, sentence structure, comprehension, storytelling abilities, and social communication.",
-  slug: "language-skills-3-5-years",
-  min_age: 36,
-  max_age: 60,
-  active: true,
-  version: 1,
-  questions: [
+Assessment.find_or_create_by!(slug: "language-skills-3-5-years") do |a|
+  a.title = "Language Skills Assessment (3-5 years)"
+  a.description = "This comprehensive assessment evaluates language skills for preschoolers aged 3-5 years. It covers vocabulary, sentence structure, comprehension, storytelling abilities, and social communication."
+  a.min_age = 3
+  a.max_age = 5
+  a.active = true
+  a.version = 1
+  a.questions = [
     {
       key: "q1",
       text: "Does your child speak in complete sentences with 4-5 words?",
@@ -263,14 +259,14 @@ Assessment.create!(
       category: "social_communication",
       points: { yes: 10, no: 0 }
     }
-  ],
-  scoring_rules: [
+  ]
+  a.scoring_rules = [
     { min_score: 0, max_score: 40, level: "needs_attention", label: "Needs Attention" },
     { min_score: 41, max_score: 75, level: "developing", label: "Developing" },
     { min_score: 76, max_score: 100, level: "on_track", label: "On Track" },
     { min_score: 101, max_score: 130, level: "advanced", label: "Advanced" }
-  ],
-  recommendations: [
+  ]
+  a.recommendations = [
     {
       level: "needs_attention",
       message: "We recommend consulting with a speech-language pathologist for a comprehensive evaluation.",
@@ -320,18 +316,17 @@ Assessment.create!(
       ]
     }
   ]
-)
+end
 
 # Assessment 3: Articulation Assessment (5-8 years)
-Assessment.create!(
-  title: "Articulation Assessment (5-8 years)",
-  description: "This assessment focuses on speech sound production and articulation clarity for school-age children. It helps identify potential articulation challenges and provides guidance for improvement.",
-  slug: "articulation-5-8-years",
-  min_age: 60,
-  max_age: 96,
-  active: true,
-  version: 1,
-  questions: [
+Assessment.find_or_create_by!(slug: "articulation-5-8-years") do |a|
+  a.title = "Articulation Assessment (5-8 years)"
+  a.description = "This assessment focuses on speech sound production and articulation clarity for school-age children. It helps identify potential articulation challenges and provides guidance for improvement."
+  a.min_age = 5
+  a.max_age = 8
+  a.active = true
+  a.version = 1
+  a.questions = [
     {
       key: "q1",
       text: "Can your child produce /r/ sounds correctly (as in 'red', 'car')?",
@@ -426,14 +421,14 @@ Assessment.create!(
       category: "social_communication",
       points: { yes: 0, no: 10 }
     }
-  ],
-  scoring_rules: [
+  ]
+  a.scoring_rules = [
     { min_score: 0, max_score: 45, level: "needs_attention", label: "Needs Attention" },
     { min_score: 46, max_score: 70, level: "developing", label: "Developing" },
     { min_score: 71, max_score: 90, level: "on_track", label: "On Track" },
     { min_score: 91, max_score: 110, level: "advanced", label: "Advanced" }
-  ],
-  recommendations: [
+  ]
+  a.recommendations = [
     {
       level: "needs_attention",
       message: "Your child would benefit from articulation therapy with a licensed speech-language pathologist.",
@@ -483,6 +478,6 @@ Assessment.create!(
       ]
     }
   ]
-)
+end
 
-puts "Created #{Assessment.count} assessments"
+puts "Assessments: #{Assessment.count}"

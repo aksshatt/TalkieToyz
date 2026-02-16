@@ -128,8 +128,9 @@ const Appointments = () => {
         </div>
       ) : (
         <div className="bg-white rounded-xl shadow-soft-lg overflow-hidden">
+          <div className="max-h-[65vh] overflow-y-auto">
           <table className="w-full">
-            <thead className="bg-warmgray-50 border-b border-warmgray-200">
+            <thead className="bg-warmgray-50 border-b border-warmgray-200 sticky top-0 z-10">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
                   Name
@@ -209,6 +210,7 @@ const Appointments = () => {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

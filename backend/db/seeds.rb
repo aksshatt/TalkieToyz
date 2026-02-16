@@ -2,70 +2,78 @@
 
 puts '🌱 Seeding database...'
 
-# Clear existing data (optional - comment out in production)
-puts '🗑️  Clearing existing data...'
-Review.destroy_all
-OrderItem.destroy_all
-Order.destroy_all
-CartItem.destroy_all
-Cart.destroy_all
-ProductSpeechGoal.destroy_all
-Product.destroy_all
-Address.destroy_all
-User.where.not(email: 'talkietoyz@gmail.com').destroy_all
-Category.destroy_all
-SpeechGoal.destroy_all
-
-# Create Categories
+# Create Categories (Developmental Domains with subcategories)
 puts '📁 Creating categories...'
-categories = [
+
+parent_categories = [
   {
-    name: 'Articulation Toys',
-    slug: 'articulation-toys',
-    description: 'Toys designed to help children practice correct pronunciation and sound production',
+    name: 'Physical Domain',
+    slug: 'physical-domain',
+    description: 'Toys for developing fine and gross motor skills',
     position: 1,
-    active: true
+    subcategories: [
+      { name: 'Fine Motor Skills', slug: 'fine-motor-skills', description: 'Toys for developing small muscle control and hand-eye coordination', position: 1 },
+      { name: 'Gross Motor Skills', slug: 'gross-motor-skills', description: 'Toys for building large muscle movement and coordination', position: 2 },
+    ]
   },
   {
-    name: 'Language Development',
-    slug: 'language-development',
-    description: 'Interactive toys that encourage vocabulary building and language comprehension',
+    name: 'Cognitive Domain',
+    slug: 'cognitive-domain',
+    description: 'Toys for enhancing thinking, learning, and problem-solving abilities',
     position: 2,
-    active: true
+    subcategories: []
   },
   {
-    name: 'Social Communication',
-    slug: 'social-communication',
-    description: 'Games and activities that promote social skills and conversational abilities',
+    name: 'Speech and Language Domain',
+    slug: 'speech-language-domain',
+    description: 'Toys designed to support speech production, language comprehension, and communication skills',
     position: 3,
-    active: true
+    subcategories: []
   },
   {
-    name: 'Fluency Tools',
-    slug: 'fluency-tools',
-    description: 'Resources to support children working on speech fluency and rhythm',
+    name: 'Social-Emotional Domain',
+    slug: 'social-emotional-domain',
+    description: 'Toys that promote social skills, emotional awareness, and interpersonal interactions',
     position: 4,
-    active: true
+    subcategories: []
   },
   {
-    name: 'Oral Motor Skills',
-    slug: 'oral-motor-skills',
-    description: 'Toys that strengthen mouth and tongue muscles for better speech production',
+    name: 'Adaptive Domain',
+    slug: 'adaptive-domain',
+    description: 'Toys that support daily living skills, self-care, and adaptive behavior',
     position: 5,
-    active: true
+    subcategories: []
   },
   {
-    name: 'Sensory Integration',
-    slug: 'sensory-integration',
-    description: 'Sensory-friendly toys that support speech development through multi-sensory experiences',
+    name: 'Sensory Integration Domain',
+    slug: 'sensory-integration-domain',
+    description: 'Sensory-focused toys that support development through multi-sensory experiences',
     position: 6,
-    active: true
+    subcategories: [
+      { name: 'Proprioceptive Toys', slug: 'proprioceptive-toys', description: 'Toys that provide deep pressure and body awareness input', position: 1 },
+      { name: 'Vestibular Toys', slug: 'vestibular-toys', description: 'Toys that stimulate balance and movement sense', position: 2 },
+      { name: 'Tactile Toys', slug: 'tactile-toys', description: 'Toys with varied textures for touch exploration', position: 3 },
+      { name: 'Auditory Toys', slug: 'auditory-toys', description: 'Toys that develop auditory processing and listening skills', position: 4 },
+      { name: 'Oral Sensory Toys', slug: 'oral-sensory-toys', description: 'Toys that support oral motor and sensory development', position: 5 },
+      { name: 'Visual Toys', slug: 'visual-toys', description: 'Toys that stimulate visual tracking and perception', position: 6 },
+      { name: 'Olfactory Toys', slug: 'olfactory-toys', description: 'Toys that engage the sense of smell for sensory development', position: 7 },
+    ]
   }
 ]
 
-categories.each do |cat_attrs|
-  Category.create!(cat_attrs)
-  puts "  ✓ Created category: #{cat_attrs[:name]}"
+parent_categories.each do |cat_attrs|
+  subs = cat_attrs.delete(:subcategories)
+  parent = Category.find_or_create_by!(slug: cat_attrs[:slug]) do |c|
+    c.assign_attributes(cat_attrs.merge(active: true))
+  end
+  puts "  ✓ Category: #{parent.name}"
+
+  subs.each do |sub_attrs|
+    Category.find_or_create_by!(slug: sub_attrs[:slug]) do |c|
+      c.assign_attributes(sub_attrs.merge(active: true, parent_id: parent.id))
+    end
+    puts "    ✓ Subcategory: #{sub_attrs[:name]}"
+  end
 end
 
 # Create Speech Goals
@@ -154,139 +162,22 @@ speech_goals = [
 ]
 
 speech_goals.each do |goal_attrs|
-  SpeechGoal.create!(goal_attrs)
-  puts "  ✓ Created speech goal: #{goal_attrs[:name]}"
+  SpeechGoal.find_or_create_by!(slug: goal_attrs[:slug]) do |g|
+    g.assign_attributes(goal_attrs)
+  end
+  puts "  ✓ Speech goal: #{goal_attrs[:name]}"
 end
 
 # Create Admin User
 puts '👤 Creating admin user...'
+admin_password = ENV.fetch('ADMIN_PASSWORD') { raise 'ADMIN_PASSWORD environment variable is required' }
 admin = User.find_or_create_by!(email: 'talkietoyz@gmail.com') do |user|
   user.name = 'Swekchaa'
-  user.password = ENV.fetch('ADMIN_PASSWORD', 'Swekchaanishi@123')
-  user.password_confirmation = ENV.fetch('ADMIN_PASSWORD', 'Swekchaanishi@123')
+  user.password = admin_password
+  user.password_confirmation = admin_password
   user.role = :admin
 end
-puts "  ✓ Created admin user: #{admin.email}"
-
-# Create Sample Products
-puts '🧸 Creating sample products...'
-
-articulation_category = Category.find_by(slug: 'articulation-toys')
-language_category = Category.find_by(slug: 'language-development')
-social_category = Category.find_by(slug: 'social-communication')
-oral_motor_category = Category.find_by(slug: 'oral-motor-skills')
-
-products_data = [
-  {
-    name: 'Sound Sorting Game',
-    description: 'Interactive card game for practicing initial and final sounds',
-    long_description: 'This engaging card game helps children practice identifying and producing sounds in different word positions. Includes 50 colorful cards with pictures representing common words.',
-    price: 29.99,
-    compare_at_price: 39.99,
-    stock_quantity: 50,
-    category: articulation_category,
-    min_age: 4,
-    max_age: 8,
-    featured: true,
-    speech_goals: ['Language & Vocabulary', 'Listening Skills'],
-    specifications: {
-      'Number of Cards' => '50',
-      'Material' => 'Laminated cardstock',
-      'Dimensions' => '3.5" x 2.5" per card',
-      'Storage' => 'Includes storage box'
-    }
-  },
-  {
-    name: 'Vocabulary Builder Flashcards',
-    description: 'Comprehensive flashcard set with 200 common nouns and verbs',
-    long_description: 'Build vocabulary with this extensive flashcard collection featuring vivid photographs and clear labels. Perfect for home practice or therapy sessions.',
-    price: 24.99,
-    stock_quantity: 100,
-    category: language_category,
-    min_age: 3,
-    max_age: 10,
-    featured: true,
-    speech_goals: ['Language & Vocabulary', 'Cognitive Skills'],
-    specifications: {
-      'Number of Cards' => '200',
-      'Material' => 'Durable cardstock',
-      'Categories' => 'Nouns, Verbs, Adjectives',
-      'Double-sided' => 'Yes'
-    }
-  },
-  {
-    name: 'Conversation Starter Board Game',
-    description: 'Fun board game that encourages turn-taking and conversation',
-    long_description: 'This exciting board game promotes social communication skills through engaging conversation prompts and turn-taking activities. Suitable for groups of 2-4 players.',
-    price: 34.99,
-    compare_at_price: 44.99,
-    stock_quantity: 30,
-    category: social_category,
-    min_age: 6,
-    max_age: 12,
-    featured: false,
-    speech_goals: ['Social Interaction', 'Attention & Concentration'],
-    specifications: {
-      'Players' => '2-4',
-      'Game Duration' => '20-30 minutes',
-      'Components' => 'Game board, cards, tokens, dice',
-      'Skill Level' => 'Beginner to Intermediate'
-    }
-  },
-  {
-    name: 'Chewy Tubes Set',
-    description: 'Oral motor therapy tools in various textures',
-    long_description: 'Professional-grade chewy tubes designed to improve oral motor strength and coordination. Set includes 3 different textures for progressive therapy.',
-    price: 19.99,
-    stock_quantity: 75,
-    category: oral_motor_category,
-    min_age: 2,
-    max_age: 99,
-    featured: false,
-    speech_goals: ['Fine Motor Skills'],
-    specifications: {
-      'Set Includes' => '3 tubes (soft, medium, hard)',
-      'Material' => 'Medical-grade silicone',
-      'BPA Free' => 'Yes',
-      'Dishwasher Safe' => 'Yes',
-      'Colors' => 'Red, Blue, Green'
-    }
-  },
-  {
-    name: 'Sequencing Story Cards',
-    description: '4-step picture sequences for narrative skills',
-    long_description: 'Help children develop sequencing and storytelling skills with these colorful picture card sets. Each set contains multiple 4-picture sequences showing everyday activities.',
-    price: 27.99,
-    stock_quantity: 40,
-    category: language_category,
-    min_age: 4,
-    max_age: 9,
-    featured: false,
-    speech_goals: ['Cognitive Skills', 'Attention & Concentration', 'Language & Vocabulary'],
-    specifications: {
-      'Number of Sequences' => '15',
-      'Cards per Sequence' => '4',
-      'Total Cards' => '60',
-      'Material' => 'Laminated',
-      'Size' => '4" x 4"'
-    }
-  }
-]
-
-products_data.each do |product_data|
-  speech_goal_names = product_data.delete(:speech_goals)
-  product = Product.create!(product_data.except(:speech_goals))
-
-  # Associate speech goals
-  speech_goal_names.each do |goal_name|
-    goal = SpeechGoal.find_by(name: goal_name)
-    product.speech_goals << goal if goal
-  end
-
-  puts "  ✓ Created product: #{product.name}"
-end
-
-puts '📍 Skipping sample addresses (no demo users)'
+puts "  ✓ Admin user: #{admin.email}"
 
 # Load additional seed files
 puts '📚 Loading assessment and content seed data...'
@@ -303,7 +194,6 @@ puts "  Categories: #{Category.count}"
 puts "  Speech Goals: #{SpeechGoal.count}"
 puts "  Products: #{Product.count}"
 puts "  Users: #{User.count}"
-puts "  Addresses: #{Address.count}"
 puts "  Assessments: #{Assessment.count}"
 puts "  Milestones: #{Milestone.count}"
 puts "  Blog Posts: #{BlogPost.count}"
