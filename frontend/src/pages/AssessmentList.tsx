@@ -10,28 +10,31 @@ import Layout from '../components/layout/Layout';
 const SCREENING_QUESTIONS = [
   {
     id: 'sq1',
-    question: 'Does your child respond to their name when called?',
-    options: ['Always', 'Sometimes', 'Rarely', 'Never'],
+    question: 'Is your child not speaking or using very few words for their age?',
   },
   {
     id: 'sq2',
-    question: 'Can your child follow simple one-step instructions?',
-    options: ['Yes, easily', 'With some help', 'Only with gestures', 'Not yet'],
+    question: "Is your child's speech unclear or hard to understand?",
   },
   {
     id: 'sq3',
-    question: 'How does your child communicate their needs?',
-    options: ['Uses words/sentences', 'Uses single words', 'Points or gestures', 'Cries or pulls you'],
+    question: 'Does your child struggle to understand or follow simple instructions?',
   },
   {
     id: 'sq4',
-    question: 'Does your child make eye contact during conversations?',
-    options: ['Consistently', 'Sometimes', 'Rarely', 'Not at all'],
+    question: 'Does your child get frustrated or throw tantrums due to communication difficulty?',
   },
   {
     id: 'sq5',
-    question: 'How many words can your child say?',
-    options: ['50+ words', '20–50 words', '5–20 words', 'Fewer than 5'],
+    question: 'Does your child not respond when called or need repeated calling?',
+  },
+  {
+    id: 'sq6',
+    question: 'Does your child avoid eye contact or have limited interaction with others?',
+  },
+  {
+    id: 'sq7',
+    question: 'Does your child repeat sounds/words or get stuck while speaking?',
   },
 ];
 
@@ -125,36 +128,48 @@ const AssessmentList = () => {
               <div className="card-talkie p-5 sm:p-6 md:p-8">
                 <div className="text-center mb-5 sm:mb-6">
                   <h2 className="font-[var(--font-family-fun)] font-bold text-xl sm:text-2xl text-warmgray-900 mb-2">
-                    Quick Screening Questions
+                    Do You Notice These in Your Child?
                   </h2>
                   <p className="text-xs sm:text-sm text-warmgray-600 max-w-xl mx-auto">
-                    Answer a few quick questions to get an initial understanding of your child's speech development.
+                    Check the signs you have observed. If you relate to any of these, consider booking a professional consultation.
                   </p>
                 </div>
 
-                <div className="space-y-4 sm:space-y-5 max-w-2xl mx-auto">
+                <div className="space-y-3 sm:space-y-4 max-w-2xl mx-auto">
                   {SCREENING_QUESTIONS.map((q, index) => (
-                    <div key={q.id} className="animate-slide-in" style={{ animationDelay: `${index * 60}ms` }}>
-                      <label className="block text-sm sm:text-base font-semibold text-warmgray-800 mb-2">
-                        {index + 1}. {q.question}
-                      </label>
-                      <select
-                        value={screeningAnswers[q.id] || ''}
+                    <label
+                      key={q.id}
+                      className="flex items-start gap-3 p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all animate-slide-in hover:shadow-soft"
+                      style={{ animationDelay: `${index * 60}ms` }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={screeningAnswers[q.id] === 'yes'}
                         onChange={(e) =>
-                          setScreeningAnswers((prev) => ({ ...prev, [q.id]: e.target.value }))
+                          setScreeningAnswers((prev) => ({
+                            ...prev,
+                            [q.id]: e.target.checked ? 'yes' : '',
+                          }))
                         }
-                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all bg-white"
-                      >
-                        <option value="">Select an answer</option>
-                        {q.options.map((opt) => (
-                          <option key={opt} value={opt}>
-                            {opt}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                        className="w-5 h-5 mt-0.5 text-coral border-warmgray-300 rounded focus:ring-coral flex-shrink-0"
+                      />
+                      <span className="text-sm sm:text-base text-warmgray-800 font-medium">
+                        {index + 1}. {q.question}
+                      </span>
+                    </label>
                   ))}
                 </div>
+
+                {Object.values(screeningAnswers).filter((v) => v === 'yes').length > 0 && (
+                  <div className="mt-5 sm:mt-6 p-4 bg-coral-light/20 border border-coral/20 rounded-xl text-center">
+                    <p className="text-sm sm:text-base text-warmgray-800 font-semibold mb-1">
+                      You checked {Object.values(screeningAnswers).filter((v) => v === 'yes').length} sign(s).
+                    </p>
+                    <p className="text-xs sm:text-sm text-warmgray-600">
+                      We recommend booking an appointment with our speech therapy expert for a detailed evaluation.
+                    </p>
+                  </div>
+                )}
 
                 <p className="text-[10px] sm:text-xs text-warmgray-500 mt-4 text-center italic">
                   *These questions are for initial guidance only and do not replace a professional assessment.
