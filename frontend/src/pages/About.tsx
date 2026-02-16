@@ -120,14 +120,12 @@ const About = () => {
               {/* Text Content */}
               <div className="md:col-span-2 prose prose-lg max-w-none">
                 <p className="text-lg text-warmgray-700 leading-relaxed mb-6">
-                  {content.founder_bio_1 || "I'm Swekchaa Tamrakar, a speech and hearing professional..."}
+                  {content.founder_bio_1 || "I'm Swekchaa Tamrakar, a speech and hearing professional, founder of Talkie Toyz and Madhuram Multi Rehabilitation Centre, and a passionate believer in learning through play. While working closely with children and parents, I saw how the right toys can make a powerful difference in a child's communication journey."}
                 </p>
 
-                {content.founder_bio_2 && (
-                  <p className="text-lg text-warmgray-700 leading-relaxed mb-6">
-                    {content.founder_bio_2}
-                  </p>
-                )}
+                <p className="text-lg text-warmgray-700 leading-relaxed mb-6">
+                  {content.founder_bio_2 || "That's how Talkie Toyz was born—to create toys that don't just entertain, but educate, empower, and encourage communication. Every product is inspired by real therapy needs and designed with love, care, and clinical understanding."}
+                </p>
               </div>
             </div>
           </div>
