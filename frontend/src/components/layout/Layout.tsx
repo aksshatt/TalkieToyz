@@ -68,6 +68,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               >
                 Orders
               </Link>
+              <Link
+                to="/about"
+                className="text-warmgray-700 font-semibold hover:text-teal transition-colors whitespace-nowrap"
+              >
+                About Us
+              </Link>
             </nav>
 
             {/* Right side actions */}
@@ -181,6 +187,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Orders
+                </Link>
+                <Link
+                  to="/about"
+                  className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  About Us
                 </Link>
                 {!isAuthenticated && (
                   <>
