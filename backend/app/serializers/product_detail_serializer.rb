@@ -31,24 +31,22 @@ class ProductDetailSerializer < ApplicationSerializer
   def image_urls
     return [] unless object.images.attached?
 
-    object.images.map do |image|
+    host = ENV.fetch('BACKEND_URL', 'https://talkietoys-backend.onrender.com')
+    object.images.filter_map do |image|
+      result = {
+        url: Rails.application.routes.url_helpers.rails_blob_url(image, host: host),
+        filename: image.filename.to_s,
+        content_type: image.content_type
+      }
       if image.representable?
-        {
-          url: Rails.application.routes.url_helpers.rails_blob_url(image, only_path: true),
-          thumbnail_url: Rails.application.routes.url_helpers.rails_representation_url(
-            image.variant(resize_to_limit: [300, 300]),
-            only_path: true
-          ),
-          filename: image.filename.to_s,
-          content_type: image.content_type
-        }
-      else
-        {
-          url: Rails.application.routes.url_helpers.rails_blob_url(image, only_path: true),
-          filename: image.filename.to_s,
-          content_type: image.content_type
-        }
+        result[:thumbnail_url] = Rails.application.routes.url_helpers.rails_representation_url(
+          image.variant(resize_to_limit: [300, 300]), host: host
+        )
       end
+      result
+    rescue => e
+      Rails.logger.error("Failed to generate image URL: #{e.message}")
+      nil
     end
   end
 
