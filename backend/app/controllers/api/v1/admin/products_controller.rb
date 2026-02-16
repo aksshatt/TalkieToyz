@@ -161,9 +161,9 @@ module Api
 
         def safe_image_url(image)
           return nil unless image&.attached?
-          url_for(image)
+          rails_blob_url(image)
         rescue => e
-          Rails.logger.warn("Failed to generate image URL: #{e.message}")
+          Rails.logger.error("Failed to generate image URL: #{e.message}\n#{e.backtrace.first(3).join("\n")}")
           nil
         end
 

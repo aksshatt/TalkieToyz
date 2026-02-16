@@ -31,10 +31,12 @@ class ProductSerializer < ApplicationSerializer
     return [] unless object.images.attached?
 
     object.images.filter_map do |image|
-      url = Rails.application.routes.url_helpers.url_for(image)
-      { id: image.id, url: url }
+      {
+        id: image.id,
+        url: Rails.application.routes.url_helpers.rails_blob_url(image, host: ENV.fetch('BACKEND_URL', 'https://talkietoys-backend.onrender.com'))
+      }
     rescue => e
-      Rails.logger.warn("Failed to generate image URL: #{e.message}")
+      Rails.logger.error("Failed to generate image URL for image #{image.id}: #{e.message}")
       nil
     end
   end
