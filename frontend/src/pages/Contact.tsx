@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Loader2, Clock, ExternalLink } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import { contactService } from '../services/contactService';
 import toast from 'react-hot-toast';
@@ -111,43 +111,39 @@ const Contact = () => {
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <Mail className="h-5 w-5 text-teal mt-1 flex-shrink-0" />
-                    <div>
-                      <p className="font-semibold text-warmgray-800">Email</p>
-                      <p className="text-warmgray-600">support@talkietoyz.com</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <Phone className="h-5 w-5 text-coral mt-1 flex-shrink-0" />
-                    <div>
-                      <p className="font-semibold text-warmgray-800">Phone</p>
-                      <p className="text-warmgray-600">+91 (800) 123-4567</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
                     <MapPin className="h-5 w-5 text-sunshine mt-1 flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-warmgray-800">Address</p>
                       <p className="text-warmgray-600">
-                        123 Learning Street<br />
-                        Mumbai, Maharashtra 400001<br />
-                        India
+                        4th, gate, Near, Madan Mahal Railway Station Rd,<br />
+                        Wright Town, Jabalpur,<br />
+                        Madhya Pradesh 482002
                       </p>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="card-talkie bg-teal-light/20">
-                <h3 className="text-lg font-bold text-warmgray-800 mb-3">
-                  Business Hours
-                </h3>
-                <div className="space-y-2 text-warmgray-700">
-                  <p><strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM</p>
-                  <p><strong>Saturday:</strong> 10:00 AM - 4:00 PM</p>
-                  <p><strong>Sunday:</strong> Closed</p>
+                  <div className="flex items-start gap-3">
+                    <Clock className="h-5 w-5 text-coral mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-warmgray-800">Hours</p>
+                      <p className="text-warmgray-600">Open · Closes 8:30 pm</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <ExternalLink className="h-5 w-5 text-teal mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-warmgray-800">Find Us</p>
+                      <a
+                        href="https://share.google/XioJr7mP1cx3w0768"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-teal hover:text-teal-dark underline"
+                      >
+                        View on Google Maps
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
