@@ -5,6 +5,8 @@ export interface Question {
   options?: string[];
   min_value?: number;
   max_value?: number;
+  min_label?: string;
+  max_label?: string;
   category?: string;
 }
 
