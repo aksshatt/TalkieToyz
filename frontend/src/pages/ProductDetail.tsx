@@ -84,7 +84,7 @@ const ProductDetail = () => {
 
   const tabs = [
     { id: 'description', label: 'Description' },
-    { id: 'speech-goals', label: 'Speech Goals' },
+    { id: 'speech-goals', label: 'Goals' },
     { id: 'usage-tips', label: 'Usage Tips' },
     { id: 'reviews', label: `Reviews (${product.review_count})` },
   ] as const;

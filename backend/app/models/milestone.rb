@@ -6,13 +6,13 @@ class Milestone < ApplicationRecord
 
   # Enums
   enum category: {
-    expressive_language: 'expressive_language',
-    receptive_language: 'receptive_language',
-    articulation: 'articulation',
-    social_communication: 'social_communication',
-    fluency: 'fluency',
-    voice: 'voice',
-    feeding_swallowing: 'feeding_swallowing'
+    gross_motor: 'gross_motor',
+    fine_motor: 'fine_motor',
+    speech: 'speech',
+    language: 'language',
+    cognitive: 'cognitive',
+    social: 'social',
+    emotional: 'emotional'
   }, _prefix: true
 
   # Validations

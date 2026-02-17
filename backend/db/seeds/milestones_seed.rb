@@ -1,204 +1,340 @@
-# Milestones Seed Data
+# Milestones Seed Data - Comprehensive Child Developmental Milestones
 puts "Creating milestones..."
 
+# Remove old milestones with deprecated categories
+old_categories = %w[expressive_language receptive_language articulation social_communication fluency voice feeding_swallowing]
+deleted = Milestone.where(category: old_categories).destroy_all
+puts "Removed #{deleted.size} old milestones" if deleted.any?
+
 milestones_data = [
-  {
-    title: "Coos and makes pleasure sounds",
-    description: "Baby begins to make cooing sounds, vowel-like sounds, and expresses happiness through vocalizations.",
-    category: "expressive_language",
-    age_months_min: 0, age_months_max: 6, position: 1, active: true,
-    indicators: ["Makes cooing sounds (ooh, aah)", "Vocalizes when happy", "Responds to voices with sounds", "Begins experimenting with different sounds"],
-    tips: ["Talk to your baby frequently throughout the day", "Respond to baby's coos with your own sounds", "Make eye contact while talking", "Sing songs and lullabies"]
-  },
-  {
-    title: "Babbles with different sounds",
-    description: "Baby starts combining consonants and vowels, producing babbling sounds like 'ba-ba' or 'da-da'.",
-    category: "expressive_language",
-    age_months_min: 4, age_months_max: 8, position: 2, active: true,
-    indicators: ["Produces consonant-vowel combinations", "Babbles in response to speech", "Varies pitch and tone", "Uses sounds to get attention"],
-    tips: ["Imitate your baby's babbling", "Add new sounds for them to try", "Name objects and actions", "Read simple board books together"]
-  },
-  {
-    title: "Responds to sounds and voices",
-    description: "Baby turns toward sounds, recognizes familiar voices, and shows awareness of environmental sounds.",
-    category: "receptive_language",
-    age_months_min: 0, age_months_max: 6, position: 3, active: true,
-    indicators: ["Turns head toward sounds", "Quiets or smiles when spoken to", "Recognizes parent's voice", "Startles at loud sounds"],
-    tips: ["Talk about what you're doing", "Use different tones of voice", "Point out interesting sounds", "Play gentle music"]
-  },
-  {
-    title: "Uses gestures to communicate",
-    description: "Baby begins using gestures like waving bye-bye, pointing, and reaching to communicate wants and needs.",
-    category: "expressive_language",
-    age_months_min: 8, age_months_max: 12, position: 4, active: true,
-    indicators: ["Waves bye-bye", "Points to objects of interest", "Reaches for desired objects", "Shakes head 'no'"],
-    tips: ["Model gestures during daily routines", "Respond enthusiastically to gestures", "Pair words with gestures", "Play interactive games like peek-a-boo"]
-  },
-  {
-    title: "Says first words",
-    description: "Baby begins saying their first recognizable words, typically 'mama', 'dada', or common objects.",
-    category: "expressive_language",
-    age_months_min: 10, age_months_max: 14, position: 5, active: true,
-    indicators: ["Says 'mama' or 'dada' specifically", "Uses 1-3 words consistently", "May have own words for objects", "Uses sounds or words to get attention"],
-    tips: ["Celebrate first words with excitement", "Repeat and expand on words", "Name objects throughout the day", "Read picture books and name items"]
-  },
-  {
-    title: "Understands simple words and commands",
-    description: "Baby begins to understand common words like their name, 'no', and simple commands.",
-    category: "receptive_language",
-    age_months_min: 8, age_months_max: 12, position: 6, active: true,
-    indicators: ["Responds to own name", "Understands 'no'", "Looks at familiar objects when named", "Follows simple directions with gestures"],
-    tips: ["Use child's name frequently", "Give simple, clear instructions", "Point to objects while naming them", "Play naming games"]
-  },
-  {
-    title: "Vocabulary of 5-20 words",
-    description: "Toddler's spoken vocabulary expands to include multiple words for people, objects, and actions.",
-    category: "expressive_language",
-    age_months_min: 12, age_months_max: 18, position: 7, active: true,
-    indicators: ["Uses 5-20 recognizable words", "Names familiar people and objects", "Uses words with gestures", "Attempts to repeat words"],
-    tips: ["Narrate daily activities", "Expand on child's single words", "Read simple books together daily", "Sing songs with actions"]
-  },
-  {
-    title: "Shows and shares objects",
-    description: "Toddler begins to show objects to others and shares attention with caregivers.",
-    category: "social_communication",
-    age_months_min: 12, age_months_max: 18, position: 8, active: true,
-    indicators: ["Shows objects to others", "Brings toys to share", "Points to show interest", "Enjoys interactive games"],
-    tips: ["Respond enthusiastically to sharing", "Play turn-taking games", "Comment on what child shows you", "Model sharing behaviors"]
-  },
-  {
-    title: "Combines two words together",
-    description: "Toddler starts combining words to form simple phrases like 'more milk' or 'daddy go'.",
-    category: "expressive_language",
-    age_months_min: 18, age_months_max: 24, position: 9, active: true,
-    indicators: ["Combines 2 words ('more juice', 'bye bye daddy')", "Has vocabulary of 50+ words", "Names pictures in books", "Asks simple questions ('What that?')"],
-    tips: ["Expand two-word phrases into sentences", "Ask questions that encourage talking", "Read books with simple storylines", "Play pretend with toys"]
-  },
-  {
-    title: "Follows two-step commands",
-    description: "Toddler can understand and follow simple two-step directions.",
-    category: "receptive_language",
-    age_months_min: 18, age_months_max: 24, position: 10, active: true,
-    indicators: ["Follows two-step directions ('Get your shoes and bring them here')", "Points to body parts when asked", "Identifies objects by function", "Understands simple questions"],
-    tips: ["Give clear, simple directions", "Praise following directions", "Play Simon Says games", "Read and follow simple recipes together"]
-  },
-  {
-    title: "Speaks in 3-4 word sentences",
-    description: "Child uses longer sentences and has rapidly expanding vocabulary.",
-    category: "expressive_language",
-    age_months_min: 24, age_months_max: 36, position: 11, active: true,
-    indicators: ["Uses 3-4 word sentences", "Has vocabulary of 200+ words", "Asks 'what' and 'where' questions", "Talks about recent events"],
-    tips: ["Model longer, grammatically correct sentences", "Ask open-ended questions", "Encourage storytelling", "Introduce new vocabulary through themes"]
-  },
-  {
-    title: "Speech is becoming clearer",
-    description: "Child's speech becomes more intelligible, though some errors are still normal.",
-    category: "articulation",
-    age_months_min: 24, age_months_max: 36, position: 12, active: true,
-    indicators: ["Familiar listeners understand most speech", "Produces p, b, m, h, w sounds", "May still make some sound errors", "Uses word endings like -ing"],
-    tips: ["Model correct pronunciation without forcing correction", "Respond to the message, not the mistakes", "Read aloud to model clear speech", "Sing songs and rhymes"]
-  },
-  {
-    title: "Speaks in complete sentences",
-    description: "Child uses grammatically correct sentences and tells simple stories.",
-    category: "expressive_language",
-    age_months_min: 36, age_months_max: 48, position: 13, active: true,
-    indicators: ["Uses sentences with 4-5 words", "Tells simple stories", "Asks 'why' questions", "Uses plurals and past tense"],
-    tips: ["Have conversations about daily events", "Ask child to explain their thinking", "Read books and discuss the story", "Play imaginative games"]
-  },
-  {
-    title: "Understands complex instructions",
-    description: "Child can follow multi-step directions and understand more complex language.",
-    category: "receptive_language",
-    age_months_min: 36, age_months_max: 48, position: 14, active: true,
-    indicators: ["Follows 2-3 step directions", "Understands positional concepts (in, on, under)", "Answers simple 'who, what, where' questions", "Understands basic time concepts"],
-    tips: ["Give multi-step directions during routines", "Play games involving following directions", "Ask comprehension questions about stories", "Introduce concepts through play"]
-  },
-  {
-    title: "Engages in conversations",
-    description: "Child participates in back-and-forth conversations and takes turns talking.",
-    category: "social_communication",
-    age_months_min: 36, age_months_max: 48, position: 15, active: true,
-    indicators: ["Takes turns in conversation", "Stays on topic", "Uses language to play with others", "Asks for information"],
-    tips: ["Practice turn-taking in conversations", "Encourage playing with peers", "Model polite conversation skills", "Ask questions that promote thinking"]
-  },
-  {
-    title: "Uses complex sentences",
-    description: "Child uses detailed sentences with descriptive language and tells longer stories.",
-    category: "expressive_language",
-    age_months_min: 48, age_months_max: 60, position: 16, active: true,
-    indicators: ["Uses sentences with 5-6 words or more", "Tells detailed stories", "Uses time words (yesterday, tomorrow)", "Describes events in sequence"],
-    tips: ["Encourage detailed storytelling", "Ask 'why' and 'how' questions", "Discuss cause and effect", "Introduce new vocabulary regularly"]
-  },
-  {
-    title: "Speech is mostly clear to strangers",
-    description: "Child's speech is understood by unfamiliar listeners, though some errors may persist.",
-    category: "articulation",
-    age_months_min: 48, age_months_max: 60, position: 17, active: true,
-    indicators: ["Strangers understand most speech", "Produces most sounds correctly", "May still have difficulty with r, l, s, th", "Uses correct word structure"],
-    tips: ["Continue modeling clear speech", "Play rhyming games", "Read tongue twisters for fun", "Don't overcorrect articulation"]
-  },
-  {
-    title: "Communicates like an adult",
-    description: "Child uses language similarly to adults, with complex grammar and extensive vocabulary.",
-    category: "expressive_language",
-    age_months_min: 60, age_months_max: 72, position: 18, active: true,
-    indicators: ["Uses grammatically correct sentences", "Has vocabulary of 2000+ words", "Defines words", "Understands and uses complex concepts"],
-    tips: ["Engage in detailed discussions", "Introduce abstract concepts", "Encourage creative writing and storytelling", "Play word games and puzzles"]
-  },
-  {
-    title: "Produces all speech sounds correctly",
-    description: "Child can produce all speech sounds clearly in conversation.",
-    category: "articulation",
-    age_months_min: 60, age_months_max: 72, position: 19, active: true,
-    indicators: ["Produces all sounds correctly including r, l, s, th", "Speech is fully intelligible", "Uses correct grammar consistently", "Speaks fluently"],
-    tips: ["Encourage public speaking opportunities", "Support reading fluency", "Play verbal games", "Model expressive, clear speech"]
-  },
-  {
-    title: "Uses language for varied purposes",
-    description: "Child uses language to inform, persuade, entertain, and maintain relationships.",
-    category: "social_communication",
-    age_months_min: 60, age_months_max: 72, position: 20, active: true,
-    indicators: ["Adjusts language based on listener", "Uses polite forms appropriately", "Tells jokes and understands humor", "Maintains conversations on various topics"],
-    tips: ["Discuss feelings and perspectives", "Practice problem-solving conversations", "Encourage empathy and understanding", "Support friendships through language"]
-  },
-  {
-    title: "Uses sophisticated language",
-    description: "Child uses advanced vocabulary, complex sentences, and understands figurative language.",
-    category: "expressive_language",
-    age_months_min: 72, age_months_max: 96, position: 21, active: true,
-    indicators: ["Uses advanced vocabulary", "Understands idioms and figures of speech", "Tells detailed, organized stories", "Uses language to reason and explain"],
-    tips: ["Introduce idioms and their meanings", "Discuss multiple meanings of words", "Encourage creative writing", "Support presentation skills"]
-  },
-  {
-    title: "Smooth, easy speech patterns",
-    description: "Child speaks with smooth flow and rhythm, though some repetitions are normal in young children.",
-    category: "fluency",
-    age_months_min: 24, age_months_max: 60, position: 22, active: true,
-    indicators: ["Speech flows smoothly most of the time", "Some repetitions are normal ('I-I-I want')", "Doesn't struggle to get words out", "Not frustrated by speech"],
-    tips: ["Give child plenty of time to speak", "Model slow, easy speech", "Don't finish sentences for them", "Reduce pressure to speak perfectly", "Listen patiently without rushing"]
-  },
-  {
-    title: "Speaks fluently without struggle",
-    description: "School-age child speaks smoothly without significant repetitions or blocks.",
-    category: "fluency",
-    age_months_min: 60, age_months_max: 96, position: 23, active: true,
-    indicators: ["Speaks fluently in most situations", "Minimal repetitions or hesitations", "Comfortable speaking in groups", "No signs of struggle or frustration"],
-    tips: ["Maintain relaxed communication environment", "Encourage participation in group discussions", "Model fluid, relaxed speech", "Address any concerns with speech therapist if needed"]
-  },
-  {
-    title: "Appropriate voice quality",
-    description: "Child's voice sounds clear, not hoarse or strained.",
-    category: "voice",
-    age_months_min: 0, age_months_max: 96, position: 24, active: true,
-    indicators: ["Voice sounds clear and pleasant", "Not chronically hoarse or raspy", "Appropriate loudness", "No vocal strain"],
-    tips: ["Model appropriate voice volume", "Encourage water intake", "Avoid yelling when possible", "See doctor if voice is chronically hoarse"]
-  }
+  # ============================================================
+  # 0-6 Months
+  # ============================================================
+
+  # Gross Motor (0-6)
+  { title: "Lifts head during tummy time", category: "gross_motor", age_months_min: 0, age_months_max: 6, position: 1 },
+  { title: "Pushes up on forearms", category: "gross_motor", age_months_min: 0, age_months_max: 6, position: 2 },
+  { title: "Rolls tummy to back (by 5-6 months)", category: "gross_motor", age_months_min: 0, age_months_max: 6, position: 3 },
+  { title: "Kicks legs actively", category: "gross_motor", age_months_min: 0, age_months_max: 6, position: 4 },
+  { title: "Brings hands to midline", category: "gross_motor", age_months_min: 0, age_months_max: 6, position: 5 },
+
+  # Fine Motor (0-6)
+  { title: "Hands mostly fisted (early months)", category: "fine_motor", age_months_min: 0, age_months_max: 6, position: 1 },
+  { title: "Grasps finger reflexively", category: "fine_motor", age_months_min: 0, age_months_max: 6, position: 2 },
+  { title: "Holds rattle briefly", category: "fine_motor", age_months_min: 0, age_months_max: 6, position: 3 },
+  { title: "Reaches for toys", category: "fine_motor", age_months_min: 0, age_months_max: 6, position: 4 },
+  { title: "Transfers toy hand-to-hand (by 6 months)", category: "fine_motor", age_months_min: 0, age_months_max: 6, position: 5 },
+
+  # Speech (0-6)
+  { title: "Cries differently for needs", category: "speech", age_months_min: 0, age_months_max: 6, position: 1 },
+  { title: "Coos (vowel sounds)", category: "speech", age_months_min: 0, age_months_max: 6, position: 2 },
+  { title: "Laughs aloud", category: "speech", age_months_min: 0, age_months_max: 6, position: 3 },
+  { title: "Squeals with excitement", category: "speech", age_months_min: 0, age_months_max: 6, position: 4 },
+  { title: "Begins consonant sounds (ba, da)", category: "speech", age_months_min: 0, age_months_max: 6, position: 5 },
+
+  # Language (0-6)
+  { title: "Turns toward sound", category: "language", age_months_min: 0, age_months_max: 6, position: 1 },
+  { title: "Recognizes caregiver's voice", category: "language", age_months_min: 0, age_months_max: 6, position: 2 },
+  { title: "Responds to name (by 6 months)", category: "language", age_months_min: 0, age_months_max: 6, position: 3 },
+  { title: "Stops briefly to \"no\" (tone)", category: "language", age_months_min: 0, age_months_max: 6, position: 4 },
+  { title: "Watches speaker's face", category: "language", age_months_min: 0, age_months_max: 6, position: 5 },
+
+  # Cognitive (0-6)
+  { title: "Follows moving objects", category: "cognitive", age_months_min: 0, age_months_max: 6, position: 1 },
+  { title: "Explores with mouth", category: "cognitive", age_months_min: 0, age_months_max: 6, position: 2 },
+  { title: "Shows curiosity", category: "cognitive", age_months_min: 0, age_months_max: 6, position: 3 },
+  { title: "Recognizes familiar people", category: "cognitive", age_months_min: 0, age_months_max: 6, position: 4 },
+  { title: "Anticipates feeding", category: "cognitive", age_months_min: 0, age_months_max: 6, position: 5 },
+
+  # Social (0-6)
+  { title: "Social smile", category: "social", age_months_min: 0, age_months_max: 6, position: 1 },
+  { title: "Enjoys peek-a-boo", category: "social", age_months_min: 0, age_months_max: 6, position: 2 },
+  { title: "Makes eye contact", category: "social", age_months_min: 0, age_months_max: 6, position: 3 },
+  { title: "Responds to smiles", category: "social", age_months_min: 0, age_months_max: 6, position: 4 },
+  { title: "Enjoys interaction", category: "social", age_months_min: 0, age_months_max: 6, position: 5 },
+
+  # Emotional (0-6)
+  { title: "Calms when comforted", category: "emotional", age_months_min: 0, age_months_max: 6, position: 1 },
+  { title: "Expresses joy", category: "emotional", age_months_min: 0, age_months_max: 6, position: 2 },
+  { title: "Shows distress when uncomfortable", category: "emotional", age_months_min: 0, age_months_max: 6, position: 3 },
+  { title: "Shows excitement", category: "emotional", age_months_min: 0, age_months_max: 6, position: 4 },
+  { title: "Begins attachment to caregiver", category: "emotional", age_months_min: 0, age_months_max: 6, position: 5 },
+
+  # ============================================================
+  # 6-12 Months
+  # ============================================================
+
+  # Gross Motor (6-12)
+  { title: "Sits without support", category: "gross_motor", age_months_min: 6, age_months_max: 12, position: 1 },
+  { title: "Crawls", category: "gross_motor", age_months_min: 6, age_months_max: 12, position: 2 },
+  { title: "Pulls to stand", category: "gross_motor", age_months_min: 6, age_months_max: 12, position: 3 },
+  { title: "Cruises furniture", category: "gross_motor", age_months_min: 6, age_months_max: 12, position: 4 },
+  { title: "May take first steps", category: "gross_motor", age_months_min: 6, age_months_max: 12, position: 5 },
+
+  # Fine Motor (6-12)
+  { title: "Rakes small objects", category: "fine_motor", age_months_min: 6, age_months_max: 12, position: 1 },
+  { title: "Develops pincer grasp", category: "fine_motor", age_months_min: 6, age_months_max: 12, position: 2 },
+  { title: "Points with index finger", category: "fine_motor", age_months_min: 6, age_months_max: 12, position: 3 },
+  { title: "Bangs two objects together", category: "fine_motor", age_months_min: 6, age_months_max: 12, position: 4 },
+  { title: "Puts objects in container", category: "fine_motor", age_months_min: 6, age_months_max: 12, position: 5 },
+
+  # Speech (6-12)
+  { title: "Canonical babbling (mamama)", category: "speech", age_months_min: 6, age_months_max: 12, position: 1 },
+  { title: "Imitates sounds", category: "speech", age_months_min: 6, age_months_max: 12, position: 2 },
+  { title: "Uses varied tone", category: "speech", age_months_min: 6, age_months_max: 12, position: 3 },
+  { title: "Says 1-2 meaningful words", category: "speech", age_months_min: 6, age_months_max: 12, position: 4 },
+  { title: "Vocalizes for attention", category: "speech", age_months_min: 6, age_months_max: 12, position: 5 },
+
+  # Language (6-12)
+  { title: "Understands \"no\"", category: "language", age_months_min: 6, age_months_max: 12, position: 1 },
+  { title: "Follows simple commands", category: "language", age_months_min: 6, age_months_max: 12, position: 2 },
+  { title: "Recognizes common objects", category: "language", age_months_min: 6, age_months_max: 12, position: 3 },
+  { title: "Looks when name called", category: "language", age_months_min: 6, age_months_max: 12, position: 4 },
+  { title: "Understands simple gestures", category: "language", age_months_min: 6, age_months_max: 12, position: 5 },
+
+  # Cognitive (6-12)
+  { title: "Object permanence", category: "cognitive", age_months_min: 6, age_months_max: 12, position: 1 },
+  { title: "Imitates actions", category: "cognitive", age_months_min: 6, age_months_max: 12, position: 2 },
+  { title: "Searches for hidden toy", category: "cognitive", age_months_min: 6, age_months_max: 12, position: 3 },
+  { title: "Explores cause-effect", category: "cognitive", age_months_min: 6, age_months_max: 12, position: 4 },
+  { title: "Uses objects appropriately", category: "cognitive", age_months_min: 6, age_months_max: 12, position: 5 },
+
+  # Social (6-12)
+  { title: "Stranger anxiety", category: "social", age_months_min: 6, age_months_max: 12, position: 1 },
+  { title: "Waves bye", category: "social", age_months_min: 6, age_months_max: 12, position: 2 },
+  { title: "Claps", category: "social", age_months_min: 6, age_months_max: 12, position: 3 },
+  { title: "Shows preference for caregiver", category: "social", age_months_min: 6, age_months_max: 12, position: 4 },
+  { title: "Plays interactive games", category: "social", age_months_min: 6, age_months_max: 12, position: 5 },
+
+  # Emotional (6-12)
+  { title: "Separation anxiety", category: "emotional", age_months_min: 6, age_months_max: 12, position: 1 },
+  { title: "Expresses fear", category: "emotional", age_months_min: 6, age_months_max: 12, position: 2 },
+  { title: "Shows affection", category: "emotional", age_months_min: 6, age_months_max: 12, position: 3 },
+  { title: "Displays frustration", category: "emotional", age_months_min: 6, age_months_max: 12, position: 4 },
+  { title: "Enjoys praise", category: "emotional", age_months_min: 6, age_months_max: 12, position: 5 },
+
+  # ============================================================
+  # 1-2 Years (12-24 months)
+  # ============================================================
+
+  # Gross Motor (12-24)
+  { title: "Walks independently", category: "gross_motor", age_months_min: 12, age_months_max: 24, position: 1 },
+  { title: "Climbs onto furniture", category: "gross_motor", age_months_min: 12, age_months_max: 24, position: 2 },
+  { title: "Begins running", category: "gross_motor", age_months_min: 12, age_months_max: 24, position: 3 },
+  { title: "Pulls toys while walking", category: "gross_motor", age_months_min: 12, age_months_max: 24, position: 4 },
+  { title: "Walks up stairs with help", category: "gross_motor", age_months_min: 12, age_months_max: 24, position: 5 },
+
+  # Fine Motor (12-24)
+  { title: "Scribbles", category: "fine_motor", age_months_min: 12, age_months_max: 24, position: 1 },
+  { title: "Stacks 2-4 blocks", category: "fine_motor", age_months_min: 12, age_months_max: 24, position: 2 },
+  { title: "Uses spoon (spills)", category: "fine_motor", age_months_min: 12, age_months_max: 24, position: 3 },
+  { title: "Turns book pages", category: "fine_motor", age_months_min: 12, age_months_max: 24, position: 4 },
+  { title: "Removes socks/shoes", category: "fine_motor", age_months_min: 12, age_months_max: 24, position: 5 },
+
+  # Speech (12-24)
+  { title: "10-50+ words", category: "speech", age_months_min: 12, age_months_max: 24, position: 1 },
+  { title: "2-word phrases by 2 years", category: "speech", age_months_min: 12, age_months_max: 24, position: 2 },
+  { title: "Names familiar objects", category: "speech", age_months_min: 12, age_months_max: 24, position: 3 },
+  { title: "Imitates new words", category: "speech", age_months_min: 12, age_months_max: 24, position: 4 },
+  { title: "Speech ~50% understood", category: "speech", age_months_min: 12, age_months_max: 24, position: 5 },
+
+  # Language (12-24)
+  { title: "Follows 2-step commands", category: "language", age_months_min: 12, age_months_max: 24, position: 1 },
+  { title: "Points to body parts", category: "language", age_months_min: 12, age_months_max: 24, position: 2 },
+  { title: "Understands simple questions", category: "language", age_months_min: 12, age_months_max: 24, position: 3 },
+  { title: "Identifies pictures", category: "language", age_months_min: 12, age_months_max: 24, position: 4 },
+  { title: "Uses gestures with words", category: "language", age_months_min: 12, age_months_max: 24, position: 5 },
+
+  # Cognitive (12-24)
+  { title: "Pretend play", category: "cognitive", age_months_min: 12, age_months_max: 24, position: 1 },
+  { title: "Matches similar objects", category: "cognitive", age_months_min: 12, age_months_max: 24, position: 2 },
+  { title: "Finds hidden items", category: "cognitive", age_months_min: 12, age_months_max: 24, position: 3 },
+  { title: "Sorts basic shapes", category: "cognitive", age_months_min: 12, age_months_max: 24, position: 4 },
+  { title: "Understands use of objects", category: "cognitive", age_months_min: 12, age_months_max: 24, position: 5 },
+
+  # Social (12-24)
+  { title: "Parallel play", category: "social", age_months_min: 12, age_months_max: 24, position: 1 },
+  { title: "Imitates adults", category: "social", age_months_min: 12, age_months_max: 24, position: 2 },
+  { title: "Seeks attention", category: "social", age_months_min: 12, age_months_max: 24, position: 3 },
+  { title: "Shows possessiveness", category: "social", age_months_min: 12, age_months_max: 24, position: 4 },
+  { title: "Enjoys routine", category: "social", age_months_min: 12, age_months_max: 24, position: 5 },
+
+  # Emotional (12-24)
+  { title: "Temper tantrums", category: "emotional", age_months_min: 12, age_months_max: 24, position: 1 },
+  { title: "Shows independence", category: "emotional", age_months_min: 12, age_months_max: 24, position: 2 },
+  { title: "Expresses affection", category: "emotional", age_months_min: 12, age_months_max: 24, position: 3 },
+  { title: "Displays frustration with limits", category: "emotional", age_months_min: 12, age_months_max: 24, position: 4 },
+  { title: "Begins empathy", category: "emotional", age_months_min: 12, age_months_max: 24, position: 5 },
+
+  # ============================================================
+  # 2-3 Years (24-36 months)
+  # ============================================================
+
+  # Gross Motor (24-36)
+  { title: "Runs well", category: "gross_motor", age_months_min: 24, age_months_max: 36, position: 1 },
+  { title: "Jumps with both feet", category: "gross_motor", age_months_min: 24, age_months_max: 36, position: 2 },
+  { title: "Kicks ball", category: "gross_motor", age_months_min: 24, age_months_max: 36, position: 3 },
+  { title: "Climbs playground equipment", category: "gross_motor", age_months_min: 24, age_months_max: 36, position: 4 },
+  { title: "Walks up stairs alternating feet", category: "gross_motor", age_months_min: 24, age_months_max: 36, position: 5 },
+
+  # Fine Motor (24-36)
+  { title: "Builds 6-block tower", category: "fine_motor", age_months_min: 24, age_months_max: 36, position: 1 },
+  { title: "Turns doorknob", category: "fine_motor", age_months_min: 24, age_months_max: 36, position: 2 },
+  { title: "Copies vertical line", category: "fine_motor", age_months_min: 24, age_months_max: 36, position: 3 },
+  { title: "Uses fork", category: "fine_motor", age_months_min: 24, age_months_max: 36, position: 4 },
+  { title: "Strings large beads", category: "fine_motor", age_months_min: 24, age_months_max: 36, position: 5 },
+
+  # Speech (24-36)
+  { title: "3-4 word sentences", category: "speech", age_months_min: 24, age_months_max: 36, position: 1 },
+  { title: "Asks \"what/where\"", category: "speech", age_months_min: 24, age_months_max: 36, position: 2 },
+  { title: "Names colors", category: "speech", age_months_min: 24, age_months_max: 36, position: 3 },
+  { title: "Speech ~75% clear", category: "speech", age_months_min: 24, age_months_max: 36, position: 4 },
+  { title: "Uses pronouns", category: "speech", age_months_min: 24, age_months_max: 36, position: 5 },
+
+  # Language (24-36)
+  { title: "Follows 2-3 step commands", category: "language", age_months_min: 24, age_months_max: 36, position: 1 },
+  { title: "Understands prepositions", category: "language", age_months_min: 24, age_months_max: 36, position: 2 },
+  { title: "Answers simple questions", category: "language", age_months_min: 24, age_months_max: 36, position: 3 },
+  { title: "Identifies objects by function", category: "language", age_months_min: 24, age_months_max: 36, position: 4 },
+  { title: "Uses plurals", category: "language", age_months_min: 24, age_months_max: 36, position: 5 },
+
+  # Cognitive (24-36)
+  { title: "Sorts by color/shape", category: "cognitive", age_months_min: 24, age_months_max: 36, position: 1 },
+  { title: "Understands big/small", category: "cognitive", age_months_min: 24, age_months_max: 36, position: 2 },
+  { title: "Solves simple puzzles", category: "cognitive", age_months_min: 24, age_months_max: 36, position: 3 },
+  { title: "Understands cause-effect", category: "cognitive", age_months_min: 24, age_months_max: 36, position: 4 },
+  { title: "Engages in pretend sequences", category: "cognitive", age_months_min: 24, age_months_max: 36, position: 5 },
+
+  # Social (24-36)
+  { title: "Takes turns briefly", category: "social", age_months_min: 24, age_months_max: 36, position: 1 },
+  { title: "Plays beside peers", category: "social", age_months_min: 24, age_months_max: 36, position: 2 },
+  { title: "Imitates friends", category: "social", age_months_min: 24, age_months_max: 36, position: 3 },
+  { title: "Follows simple rules", category: "social", age_months_min: 24, age_months_max: 36, position: 4 },
+  { title: "Shares occasionally", category: "social", age_months_min: 24, age_months_max: 36, position: 5 },
+
+  # Emotional (24-36)
+  { title: "Expresses wide emotions", category: "emotional", age_months_min: 24, age_months_max: 36, position: 1 },
+  { title: "Shows fear", category: "emotional", age_months_min: 24, age_months_max: 36, position: 2 },
+  { title: "Says \"mine\"", category: "emotional", age_months_min: 24, age_months_max: 36, position: 3 },
+  { title: "Tests limits", category: "emotional", age_months_min: 24, age_months_max: 36, position: 4 },
+  { title: "Shows pride", category: "emotional", age_months_min: 24, age_months_max: 36, position: 5 },
+
+  # ============================================================
+  # 3-5 Years (36-60 months)
+  # ============================================================
+
+  # Gross Motor (36-60)
+  { title: "Hops on one foot", category: "gross_motor", age_months_min: 36, age_months_max: 60, position: 1 },
+  { title: "Pedals tricycle", category: "gross_motor", age_months_min: 36, age_months_max: 60, position: 2 },
+  { title: "Throws and catches ball", category: "gross_motor", age_months_min: 36, age_months_max: 60, position: 3 },
+  { title: "Skips (by 5)", category: "gross_motor", age_months_min: 36, age_months_max: 60, position: 4 },
+  { title: "Balances briefly", category: "gross_motor", age_months_min: 36, age_months_max: 60, position: 5 },
+
+  # Fine Motor (36-60)
+  { title: "Copies circle/square", category: "fine_motor", age_months_min: 36, age_months_max: 60, position: 1 },
+  { title: "Uses scissors", category: "fine_motor", age_months_min: 36, age_months_max: 60, position: 2 },
+  { title: "Draws person (3-5 parts)", category: "fine_motor", age_months_min: 36, age_months_max: 60, position: 3 },
+  { title: "Writes some letters", category: "fine_motor", age_months_min: 36, age_months_max: 60, position: 4 },
+  { title: "Colors within lines", category: "fine_motor", age_months_min: 36, age_months_max: 60, position: 5 },
+
+  # Speech (36-60)
+  { title: "4-6 word sentences", category: "speech", age_months_min: 36, age_months_max: 60, position: 1 },
+  { title: "Mostly clear speech", category: "speech", age_months_min: 36, age_months_max: 60, position: 2 },
+  { title: "Tells simple stories", category: "speech", age_months_min: 36, age_months_max: 60, position: 3 },
+  { title: "Uses correct grammar mostly", category: "speech", age_months_min: 36, age_months_max: 60, position: 4 },
+  { title: "Asks many questions", category: "speech", age_months_min: 36, age_months_max: 60, position: 5 },
+
+  # Language (36-60)
+  { title: "Answers WH questions", category: "language", age_months_min: 36, age_months_max: 60, position: 1 },
+  { title: "Understands time words", category: "language", age_months_min: 36, age_months_max: 60, position: 2 },
+  { title: "Uses descriptive words", category: "language", age_months_min: 36, age_months_max: 60, position: 3 },
+  { title: "Follows complex directions", category: "language", age_months_min: 36, age_months_max: 60, position: 4 },
+  { title: "Retells events", category: "language", age_months_min: 36, age_months_max: 60, position: 5 },
+
+  # Cognitive (36-60)
+  { title: "Counts 5-10 objects", category: "cognitive", age_months_min: 36, age_months_max: 60, position: 1 },
+  { title: "Recognizes letters", category: "cognitive", age_months_min: 36, age_months_max: 60, position: 2 },
+  { title: "Understands sequencing", category: "cognitive", age_months_min: 36, age_months_max: 60, position: 3 },
+  { title: "Knows basic colors/shapes", category: "cognitive", age_months_min: 36, age_months_max: 60, position: 4 },
+  { title: "Engages in imaginative play", category: "cognitive", age_months_min: 36, age_months_max: 60, position: 5 },
+
+  # Social (36-60)
+  { title: "Cooperative play", category: "social", age_months_min: 36, age_months_max: 60, position: 1 },
+  { title: "Follows rules", category: "social", age_months_min: 36, age_months_max: 60, position: 2 },
+  { title: "Has favorite friends", category: "social", age_months_min: 36, age_months_max: 60, position: 3 },
+  { title: "Shares more consistently", category: "social", age_months_min: 36, age_months_max: 60, position: 4 },
+  { title: "Participates in group games", category: "social", age_months_min: 36, age_months_max: 60, position: 5 },
+
+  # Emotional (36-60)
+  { title: "Better self-control", category: "emotional", age_months_min: 36, age_months_max: 60, position: 1 },
+  { title: "Expresses feelings verbally", category: "emotional", age_months_min: 36, age_months_max: 60, position: 2 },
+  { title: "Understands others' feelings", category: "emotional", age_months_min: 36, age_months_max: 60, position: 3 },
+  { title: "Manages minor conflicts", category: "emotional", age_months_min: 36, age_months_max: 60, position: 4 },
+  { title: "Shows confidence", category: "emotional", age_months_min: 36, age_months_max: 60, position: 5 },
+
+  # ============================================================
+  # 5-8 Years (60-96 months)
+  # ============================================================
+
+  # Gross Motor (60-96)
+  { title: "Skips smoothly", category: "gross_motor", age_months_min: 60, age_months_max: 96, position: 1 },
+  { title: "Rides bicycle", category: "gross_motor", age_months_min: 60, age_months_max: 96, position: 2 },
+  { title: "Participates in sports", category: "gross_motor", age_months_min: 60, age_months_max: 96, position: 3 },
+  { title: "Good coordination", category: "gross_motor", age_months_min: 60, age_months_max: 96, position: 4 },
+  { title: "Improved balance", category: "gross_motor", age_months_min: 60, age_months_max: 96, position: 5 },
+
+  # Fine Motor (60-96)
+  { title: "Writes sentences", category: "fine_motor", age_months_min: 60, age_months_max: 96, position: 1 },
+  { title: "Draws detailed pictures", category: "fine_motor", age_months_min: 60, age_months_max: 96, position: 2 },
+  { title: "Cuts neatly", category: "fine_motor", age_months_min: 60, age_months_max: 96, position: 3 },
+  { title: "Uses tools accurately", category: "fine_motor", age_months_min: 60, age_months_max: 96, position: 4 },
+  { title: "Ties shoelaces", category: "fine_motor", age_months_min: 60, age_months_max: 96, position: 5 },
+
+  # Speech (60-96)
+  { title: "Fully intelligible", category: "speech", age_months_min: 60, age_months_max: 96, position: 1 },
+  { title: "Uses complex sentences", category: "speech", age_months_min: 60, age_months_max: 96, position: 2 },
+  { title: "Clear articulation", category: "speech", age_months_min: 60, age_months_max: 96, position: 3 },
+  { title: "Adjusts tone for situation", category: "speech", age_months_min: 60, age_months_max: 96, position: 4 },
+  { title: "Explains ideas clearly", category: "speech", age_months_min: 60, age_months_max: 96, position: 5 },
+
+  # Language (60-96)
+  { title: "Understands idioms", category: "language", age_months_min: 60, age_months_max: 96, position: 1 },
+  { title: "Tells detailed stories", category: "language", age_months_min: 60, age_months_max: 96, position: 2 },
+  { title: "Follows multi-step instructions", category: "language", age_months_min: 60, age_months_max: 96, position: 3 },
+  { title: "Uses advanced vocabulary", category: "language", age_months_min: 60, age_months_max: 96, position: 4 },
+  { title: "Engages in conversation", category: "language", age_months_min: 60, age_months_max: 96, position: 5 },
+
+  # Cognitive (60-96)
+  { title: "Logical reasoning", category: "cognitive", age_months_min: 60, age_months_max: 96, position: 1 },
+  { title: "Solves math problems", category: "cognitive", age_months_min: 60, age_months_max: 96, position: 2 },
+  { title: "Reads paragraphs", category: "cognitive", age_months_min: 60, age_months_max: 96, position: 3 },
+  { title: "Understands time concepts", category: "cognitive", age_months_min: 60, age_months_max: 96, position: 4 },
+  { title: "Plans tasks independently", category: "cognitive", age_months_min: 60, age_months_max: 96, position: 5 },
+
+  # Social (60-96)
+  { title: "Teamwork skills", category: "social", age_months_min: 60, age_months_max: 96, position: 1 },
+  { title: "Understands fairness", category: "social", age_months_min: 60, age_months_max: 96, position: 2 },
+  { title: "Forms close friendships", category: "social", age_months_min: 60, age_months_max: 96, position: 3 },
+  { title: "Follows classroom rules", category: "social", age_months_min: 60, age_months_max: 96, position: 4 },
+  { title: "Resolves conflicts verbally", category: "social", age_months_min: 60, age_months_max: 96, position: 5 },
+
+  # Emotional (60-96)
+  { title: "Controls impulses", category: "emotional", age_months_min: 60, age_months_max: 96, position: 1 },
+  { title: "Builds self-esteem", category: "emotional", age_months_min: 60, age_months_max: 96, position: 2 },
+  { title: "Understands responsibility", category: "emotional", age_months_min: 60, age_months_max: 96, position: 3 },
+  { title: "Manages frustration", category: "emotional", age_months_min: 60, age_months_max: 96, position: 4 },
+  { title: "Shows empathy", category: "emotional", age_months_min: 60, age_months_max: 96, position: 5 },
 ]
 
 milestones_data.each do |attrs|
   Milestone.find_or_create_by!(title: attrs[:title], category: attrs[:category]) do |m|
-    m.assign_attributes(attrs)
+    m.assign_attributes(
+      attrs.merge(
+        active: true,
+        indicators: [],
+        tips: []
+      )
+    )
   end
 end
 

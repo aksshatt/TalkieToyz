@@ -24,7 +24,7 @@ module Api
 
         # Pagination
         page = params[:page] || 1
-        per_page = [params[:per_page]&.to_i || 20, 100].min
+        per_page = [params[:per_page]&.to_i || 20, 250].min
 
         @milestones = @milestones.page(page).per(per_page)
 

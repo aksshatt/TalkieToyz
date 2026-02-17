@@ -116,16 +116,24 @@ const Signup: React.FC = () => {
               <h3 className="font-semibold text-lg mb-3">For Parents</h3>
               <ul className="space-y-2 text-white/80 text-sm">
                 <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>Track your child's speech milestones</span>
+                  <span className="mr-2">1.</span>
+                  <span><strong>Child-Friendly Learning Tools</strong> – Fun and engaging materials that make learning enjoyable.</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>Access curated learning toys and resources</span>
+                  <span className="mr-2">2.</span>
+                  <span><strong>Supports Speech & Language Development</strong> – Activities designed to improve communication skills.</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>Get personalized recommendations</span>
+                  <span className="mr-2">3.</span>
+                  <span><strong>Age-Appropriate Resources</strong> – Structured materials suitable for children 1–8 years.</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">4.</span>
+                  <span><strong>Encourages Play-Based Learning</strong> – Learn through play to build confidence and skills naturally.</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">5.</span>
+                  <span><strong>Safe & Durable Quality</strong> – High-quality, safe, and long-lasting materials for home use.</span>
                 </li>
               </ul>
             </div>
@@ -134,16 +142,24 @@ const Signup: React.FC = () => {
               <h3 className="font-semibold text-lg mb-3">For Therapists</h3>
               <ul className="space-y-2 text-white/80 text-sm">
                 <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>Professional assessment tools</span>
+                  <span className="mr-2">1.</span>
+                  <span><strong>Evidence-Based Materials</strong> – Structured tools designed according to therapy goals.</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>Client progress tracking</span>
+                  <span className="mr-2">2.</span>
+                  <span><strong>Time-Saving Resources</strong> – Ready-to-use flashcards and activity kits for easy session planning.</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>Evidence-based therapy resources</span>
+                  <span className="mr-2">3.</span>
+                  <span><strong>Age-Wise Organized Kits</strong> – Developmental materials designed for children 1–8 years.</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">4.</span>
+                  <span><strong>Autism & Speech Friendly</strong> – Created to improve engagement, communication, and learning.</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">5.</span>
+                  <span><strong>Durable & Clinic-Ready Quality</strong> – Child-friendly, long-lasting materials suitable for professional use.</span>
                 </li>
               </ul>
             </div>

@@ -246,9 +246,9 @@ const FilterSidebar = ({
         />
       </div>
 
-      {/* Speech Goals */}
+      {/* Goals */}
       <div>
-        <h3 className="text-sm font-semibold text-warmgray-900 mb-3">Speech Goals</h3>
+        <h3 className="text-sm font-semibold text-warmgray-900 mb-3">Goals</h3>
         <div className="space-y-2">
           {speechGoals.map((goal) => (
             <label

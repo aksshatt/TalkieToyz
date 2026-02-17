@@ -1,21 +1,52 @@
 import { useState, useEffect } from 'react';
 import Layout from '../components/layout/Layout';
-import { Target, Calendar, CheckCircle } from 'lucide-react';
+import { Target, ChevronDown, ChevronRight } from 'lucide-react';
 import axios from '../config/axios';
 
 interface Milestone {
   id: number;
   title: string;
   description: string;
-  age_range_start: number;
-  age_range_end: number;
   category: string;
+  category_display_name: string;
+  age_months_min: number;
+  age_months_max: number;
 }
+
+const AGE_RANGES = [
+  { label: '0\u20136 Months', min: 0, max: 6 },
+  { label: '6\u201312 Months', min: 6, max: 12 },
+  { label: '1\u20132 Years', min: 12, max: 24 },
+  { label: '2\u20133 Years', min: 24, max: 36 },
+  { label: '3\u20135 Years', min: 36, max: 60 },
+  { label: '5\u20138 Years', min: 60, max: 96 },
+];
+
+const CATEGORY_ORDER = [
+  'gross_motor',
+  'fine_motor',
+  'speech',
+  'language',
+  'cognitive',
+  'social',
+  'emotional',
+];
+
+const CATEGORY_COLORS: Record<string, { bg: string; text: string; icon: string }> = {
+  gross_motor: { bg: 'bg-blue-50', text: 'text-blue-700', icon: '\uD83C\uDFC3' },
+  fine_motor: { bg: 'bg-purple-50', text: 'text-purple-700', icon: '\u270B' },
+  speech: { bg: 'bg-teal/10', text: 'text-teal', icon: '\uD83D\uDDE3\uFE0F' },
+  language: { bg: 'bg-green-50', text: 'text-green-700', icon: '\uD83D\uDCD6' },
+  cognitive: { bg: 'bg-amber-50', text: 'text-amber-700', icon: '\uD83E\uDDE0' },
+  social: { bg: 'bg-pink-50', text: 'text-pink-700', icon: '\uD83E\uDD1D' },
+  emotional: { bg: 'bg-red-50', text: 'text-red-700', icon: '\u2764\uFE0F' },
+};
 
 const MilestonesPage = () => {
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [openAgeRange, setOpenAgeRange] = useState<string>('0\u20136 Months');
 
   useEffect(() => {
     loadMilestones();
@@ -24,7 +55,7 @@ const MilestonesPage = () => {
   const loadMilestones = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/milestones');
+      const response = await axios.get('/milestones?per_page=250');
       setMilestones(response.data.data || []);
       setError(null);
     } catch (err: any) {
@@ -35,36 +66,53 @@ const MilestonesPage = () => {
     }
   };
 
-  const getAgeRangeText = (start: number, end: number) => {
-    const startYears = Math.floor(start / 12);
-    const startMonths = start % 12;
-    const endYears = Math.floor(end / 12);
-    const endMonths = end % 12;
+  const getMilestonesForAgeRange = (min: number, max: number) => {
+    return milestones.filter(
+      (m) => m.age_months_min === min && m.age_months_max === max
+    );
+  };
 
-    const formatAge = (years: number, months: number) => {
-      if (years === 0) return `${months} months`;
-      if (months === 0) return `${years} ${years === 1 ? 'year' : 'years'}`;
-      return `${years}y ${months}m`;
-    };
-
-    return `${formatAge(startYears, startMonths)} - ${formatAge(endYears, endMonths)}`;
+  const groupByCategory = (items: Milestone[]) => {
+    const grouped: Record<string, Milestone[]> = {};
+    for (const m of items) {
+      if (!grouped[m.category]) grouped[m.category] = [];
+      grouped[m.category].push(m);
+    }
+    return grouped;
   };
 
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-b from-white to-cream-light/30 py-16">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           {/* Header */}
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-teal/10 rounded-2xl mb-6">
               <Target className="h-8 w-8 text-teal" />
             </div>
             <h1 className="text-4xl sm:text-5xl font-bold text-warmgray-900 mb-4">
-              Speech Development Milestones
+              Child Development Milestones
             </h1>
             <p className="text-lg text-warmgray-600 max-w-2xl mx-auto">
-              Track your child's speech and language development with these age-appropriate milestones designed by professional therapists.
+              Track your child's growth across key developmental areas. Milestones are organized by age range to help you understand what to expect at each stage.
             </p>
+          </div>
+
+          {/* Category Legend */}
+          <div className="flex flex-wrap gap-2 justify-center mb-10">
+            {CATEGORY_ORDER.map((cat) => {
+              const color = CATEGORY_COLORS[cat];
+              const displayName = cat.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+              return (
+                <span
+                  key={cat}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${color.bg} ${color.text}`}
+                >
+                  <span>{color.icon}</span>
+                  {displayName}
+                </span>
+              );
+            })}
           </div>
 
           {loading ? (
@@ -81,37 +129,76 @@ const MilestonesPage = () => {
               <p className="text-warmgray-600">No milestones available at this time.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {milestones.map((milestone) => (
-                <div
-                  key={milestone.id}
-                  className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all border border-warmgray-100 hover:border-teal/30"
-                >
-                  {/* Category Badge */}
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="inline-block px-3 py-1 bg-teal/10 text-teal text-xs font-semibold rounded-full">
-                      {milestone.category}
-                    </span>
-                    <CheckCircle className="h-5 w-5 text-warmgray-300" />
+            <div className="space-y-3">
+              {AGE_RANGES.map((range) => {
+                const isOpen = openAgeRange === range.label;
+                const rangeMilestones = getMilestonesForAgeRange(range.min, range.max);
+                const grouped = groupByCategory(rangeMilestones);
+
+                return (
+                  <div
+                    key={range.label}
+                    className="bg-white rounded-2xl shadow-md border border-warmgray-100 overflow-hidden"
+                  >
+                    {/* Accordion Header */}
+                    <button
+                      onClick={() => setOpenAgeRange(isOpen ? '' : range.label)}
+                      className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-warmgray-50 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl font-bold text-teal">
+                          {range.label}
+                        </span>
+                        <span className="text-sm text-warmgray-400">
+                          {rangeMilestones.length} milestones
+                        </span>
+                      </div>
+                      {isOpen ? (
+                        <ChevronDown className="h-5 w-5 text-warmgray-400" />
+                      ) : (
+                        <ChevronRight className="h-5 w-5 text-warmgray-400" />
+                      )}
+                    </button>
+
+                    {/* Accordion Content */}
+                    {isOpen && (
+                      <div className="px-6 pb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {CATEGORY_ORDER.map((cat) => {
+                          const items = grouped[cat];
+                          if (!items || items.length === 0) return null;
+                          const color = CATEGORY_COLORS[cat];
+                          const displayName = cat
+                            .replace('_', ' ')
+                            .replace(/\b\w/g, (c) => c.toUpperCase());
+
+                          return (
+                            <div
+                              key={cat}
+                              className={`rounded-xl p-4 ${color.bg}`}
+                            >
+                              <h3 className={`font-semibold text-sm mb-3 ${color.text} flex items-center gap-2`}>
+                                <span>{color.icon}</span>
+                                {displayName}
+                              </h3>
+                              <ul className="space-y-1.5">
+                                {items.map((m) => (
+                                  <li
+                                    key={m.id}
+                                    className="flex items-start gap-2 text-sm text-warmgray-700"
+                                  >
+                                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-warmgray-400 flex-shrink-0" />
+                                    {m.title}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-warmgray-900 mb-3">
-                    {milestone.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-warmgray-600 text-sm mb-4 leading-relaxed">
-                    {milestone.description}
-                  </p>
-
-                  {/* Age Range */}
-                  <div className="flex items-center gap-2 text-sm text-warmgray-500 pt-4 border-t border-warmgray-100">
-                    <Calendar className="h-4 w-4" />
-                    <span>{getAgeRangeText(milestone.age_range_start, milestone.age_range_end)}</span>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
 

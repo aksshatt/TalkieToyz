@@ -2,41 +2,11 @@ import { useState, useEffect } from 'react';
 import { ClipboardList, Calendar, CheckCircle, X, Globe, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import AssessmentCard from '../components/assessment/AssessmentCard';
+import StartAssessmentModal from '../components/assessment/StartAssessmentModal';
 import { assessmentService } from '../services/assessmentService';
 import { appointmentService } from '../services/appointmentService';
 import type { AssessmentSummary } from '../types/assessment';
 import Layout from '../components/layout/Layout';
-
-const SCREENING_QUESTIONS = [
-  {
-    id: 'sq1',
-    question: 'Is your child not speaking or using very few words for their age?',
-  },
-  {
-    id: 'sq2',
-    question: "Is your child's speech unclear or hard to understand?",
-  },
-  {
-    id: 'sq3',
-    question: 'Does your child struggle to understand or follow simple instructions?',
-  },
-  {
-    id: 'sq4',
-    question: 'Does your child get frustrated or throw tantrums due to communication difficulty?',
-  },
-  {
-    id: 'sq5',
-    question: 'Does your child not respond when called or need repeated calling?',
-  },
-  {
-    id: 'sq6',
-    question: 'Does your child avoid eye contact or have limited interaction with others?',
-  },
-  {
-    id: 'sq7',
-    question: 'Does your child repeat sounds/words or get stuck while speaking?',
-  },
-];
 
 const LANGUAGES = [
   { name: 'Hindi', native: 'हिंदी' },
@@ -63,7 +33,7 @@ const AssessmentList = () => {
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [screeningAnswers, setScreeningAnswers] = useState<Record<string, string>>({});
+  const [selectedAssessment, setSelectedAssessment] = useState<AssessmentSummary | null>(null);
 
   useEffect(() => {
     loadAssessments();
@@ -111,7 +81,7 @@ const AssessmentList = () => {
           {!loading && !error && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               {assessments.map((assessment) => (
-                <AssessmentCard key={assessment.id} assessment={assessment} />
+                <AssessmentCard key={assessment.id} assessment={assessment} onStartAssessment={setSelectedAssessment} />
               ))}
             </div>
           )}
@@ -119,62 +89,6 @@ const AssessmentList = () => {
           {!loading && !error && assessments.length === 0 && (
             <div className="text-center py-12">
               <p className="text-sm sm:text-base text-warmgray-600">No assessments available at the moment.</p>
-            </div>
-          )}
-
-          {/* Screening Questions Section */}
-          {!loading && (
-            <div className="mt-8 sm:mt-10 md:mt-12">
-              <div className="card-talkie p-5 sm:p-6 md:p-8">
-                <div className="text-center mb-5 sm:mb-6">
-                  <h2 className="font-[var(--font-family-fun)] font-bold text-xl sm:text-2xl text-warmgray-900 mb-2">
-                    Do You Notice These in Your Child?
-                  </h2>
-                  <p className="text-xs sm:text-sm text-warmgray-600 max-w-xl mx-auto">
-                    Check the signs you have observed. If you relate to any of these, consider booking a professional consultation.
-                  </p>
-                </div>
-
-                <div className="space-y-3 sm:space-y-4 max-w-2xl mx-auto">
-                  {SCREENING_QUESTIONS.map((q, index) => (
-                    <label
-                      key={q.id}
-                      className="flex items-start gap-3 p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all animate-slide-in hover:shadow-soft"
-                      style={{ animationDelay: `${index * 60}ms` }}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={screeningAnswers[q.id] === 'yes'}
-                        onChange={(e) =>
-                          setScreeningAnswers((prev) => ({
-                            ...prev,
-                            [q.id]: e.target.checked ? 'yes' : '',
-                          }))
-                        }
-                        className="w-5 h-5 mt-0.5 text-coral border-warmgray-300 rounded focus:ring-coral flex-shrink-0"
-                      />
-                      <span className="text-sm sm:text-base text-warmgray-800 font-medium">
-                        {index + 1}. {q.question}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-
-                {Object.values(screeningAnswers).filter((v) => v === 'yes').length > 0 && (
-                  <div className="mt-5 sm:mt-6 p-4 bg-coral-light/20 border border-coral/20 rounded-xl text-center">
-                    <p className="text-sm sm:text-base text-warmgray-800 font-semibold mb-1">
-                      You checked {Object.values(screeningAnswers).filter((v) => v === 'yes').length} sign(s).
-                    </p>
-                    <p className="text-xs sm:text-sm text-warmgray-600">
-                      We recommend booking an appointment with our speech therapy expert for a detailed evaluation.
-                    </p>
-                  </div>
-                )}
-
-                <p className="text-[10px] sm:text-xs text-warmgray-500 mt-4 text-center italic">
-                  *These questions are for initial guidance only and do not replace a professional assessment.
-                </p>
-              </div>
             </div>
           )}
 
@@ -411,6 +325,15 @@ const AssessmentList = () => {
           )}
         </div>
       </div>
+
+      {/* Start Assessment Modal */}
+      {selectedAssessment && (
+        <StartAssessmentModal
+          assessment={selectedAssessment}
+          isOpen={!!selectedAssessment}
+          onClose={() => setSelectedAssessment(null)}
+        />
+      )}
     </Layout>
   );
 };
