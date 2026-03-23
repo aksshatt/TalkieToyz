@@ -8,4 +8,14 @@ class AuthMailer < ApplicationMailer
       subject: 'Reset your TalkieToys password'
     )
   end
+
+  def welcome(user)
+    @user = user
+    @shop_url = ENV.fetch('FRONTEND_URL', 'https://talkietoyz.shop')
+
+    mail(
+      to: @user.email,
+      subject: 'Welcome to TalkieToys!'
+    )
+  end
 end

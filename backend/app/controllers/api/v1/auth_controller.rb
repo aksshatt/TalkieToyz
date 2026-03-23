@@ -11,6 +11,13 @@ module Api
           token = generate_jwt_token(user)
           refresh_token = generate_refresh_token(user)
 
+          # Send welcome email
+          begin
+            AuthMailer.welcome(user).deliver_now
+          rescue => e
+            Rails.logger.error "Welcome email failed: #{e.message}"
+          end
+
           render json: {
             success: true,
             message: 'User created successfully',

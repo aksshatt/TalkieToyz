@@ -111,12 +111,22 @@ module Api
         updates[:notes] = params[:notes] if params[:notes].present?
 
         if @order.update(updates)
-          # Update shipped_at or delivered_at based on status
+          # Update shipped_at or delivered_at based on status and send emails
           case @order.status.to_sym
           when :shipped
             @order.update(shipped_at: Time.current) unless @order.shipped_at.present?
+            begin
+              OrderMailer.order_shipped(@order.id).deliver_now
+            rescue => e
+              Rails.logger.error "Order shipped email failed: #{e.message}"
+            end
           when :delivered
             @order.update(delivered_at: Time.current) unless @order.delivered_at.present?
+            begin
+              OrderMailer.order_delivered(@order.id).deliver_now
+            rescue => e
+              Rails.logger.error "Order delivered email failed: #{e.message}"
+            end
           end
 
           render_success(
@@ -161,6 +171,11 @@ module Api
         end
 
         if @order.mark_as_cancelled
+          begin
+            OrderMailer.order_cancelled(@order.id).deliver_now
+          rescue => e
+            Rails.logger.error "Order cancelled email failed: #{e.message}"
+          end
           render_success(
             OrderSerializer.new(@order).as_json,
             'Order cancelled successfully'
@@ -281,7 +296,7 @@ module Api
           current_user.cart.clear
 
           # Trigger email notification job
-          OrderMailer.order_confirmation(order.id).deliver_later
+          OrderMailer.order_confirmation(order.id).deliver_now
 
           render_success(
             OrderSerializer.new(order).as_json,

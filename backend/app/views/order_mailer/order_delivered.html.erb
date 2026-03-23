@@ -2,34 +2,65 @@
 <html>
 <head>
   <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background-color: #48bb78; color: white; padding: 20px; text-align: center; }
-    .content { padding: 20px; background-color: #f9f9f9; }
-    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>📦 Your Order Has Been Delivered!</h1>
-    </div>
+<body style="margin:0;padding:0;background-color:#f5f0eb;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f5f0eb;">
+    <tr>
+      <td align="center" style="padding:40px 16px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
 
-    <div class="content">
-      <h2>Hi <%= @user.email %>,</h2>
-      <p>Your order <strong><%= @order.order_number %></strong> has been successfully delivered!</p>
+          <!-- Header -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#0d9488 0%,#0f766e 60%,#44403c 100%);padding:40px 48px;text-align:center;">
+              <h1 style="margin:0;color:#ffffff;font-size:32px;font-weight:800;letter-spacing:-0.5px;">TalkieToys</h1>
+              <p style="margin:8px 0 0;color:rgba(255,255,255,0.8);font-size:14px;letter-spacing:0.5px;text-transform:uppercase;">Order Delivered</p>
+              <div style="width:48px;height:3px;background:rgba(255,255,255,0.4);border-radius:2px;margin:16px auto 0;"></div>
+            </td>
+          </tr>
 
-      <p>We hope you enjoy your new TalkieToys products. If you have any questions or concerns about your order, please don't hesitate to contact us.</p>
+          <!-- Body -->
+          <tr>
+            <td style="background:#ffffff;padding:48px;">
+              <h2 style="margin:0 0 8px;color:#1c1917;font-size:22px;font-weight:700;">Your order has arrived, <%= @user.name %>!</h2>
+              <p style="margin:0 0 24px;color:#57534e;font-size:15px;line-height:1.7;">
+                Order <strong style="color:#0d9488;"><%= @order.order_number %></strong> has been successfully delivered. We hope you and your child love it!
+              </p>
 
-      <p>We'd love to hear your feedback! Please consider leaving a review of your purchased items.</p>
+              <!-- Review CTA -->
+              <div style="text-align:center;margin:0 0 32px;">
+                <a href="https://talkietoyz.shop/products"
+                   style="display:inline-block;padding:16px 40px;background-color:#0d9488;color:#ffffff;text-decoration:none;border-radius:10px;font-weight:700;font-size:16px;letter-spacing:0.3px;box-shadow:0 4px 12px rgba(13,148,136,0.35);">
+                  Leave a Review
+                </a>
+              </div>
 
-      <p>Thank you for shopping with TalkieToys!</p>
-    </div>
+              <div style="background:#f5f0eb;border-radius:10px;padding:20px 24px;margin:0 0 24px;">
+                <p style="margin:0 0 8px;color:#0f766e;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Need anything?</p>
+                <p style="margin:0;color:#57534e;font-size:14px;line-height:1.7;">
+                  If you have any issues with your order or it didn't arrive as expected, reply to this email and our team will help you right away.
+                </p>
+              </div>
 
-    <div class="footer">
-      <p>&copy; <%= Time.current.year %> TalkieToys. All rights reserved.</p>
-    </div>
-  </div>
+              <p style="margin:0;color:#57534e;font-size:15px;line-height:1.7;">
+                Thank you for choosing TalkieToys. We're proud to be part of your child's development journey.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#f5f0eb;padding:28px 48px;text-align:center;border-top:1px solid #e7e5e4;">
+              <p style="margin:0 0 4px;color:#a8a29e;font-size:12px;">&copy; <%= Date.current.year %> TalkieToys. All rights reserved.</p>
+              <p style="margin:0;font-size:12px;">
+                <a href="https://talkietoyz.shop" style="color:#0d9488;text-decoration:none;font-weight:600;">talkietoyz.shop</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
