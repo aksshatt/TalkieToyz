@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import authService from '../../services/authService';
 import { validateEmail } from '../../utils/validation';
 
@@ -25,8 +26,6 @@ const ForgotPassword: React.FC = () => {
       await authService.requestPasswordReset(email);
       setIsSuccess(true);
     } catch (error: any) {
-      console.error('Password reset request error:', error);
-
       if (error.response?.data?.message) {
         setError(error.response.data.message);
       } else {
@@ -39,24 +38,25 @@ const ForgotPassword: React.FC = () => {
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-100 via-blue-100 to-purple-100 flex items-center justify-center px-4 py-12">
-        <div className="max-w-md w-full">
-          <div className="bg-white rounded-3xl shadow-xl p-8 border-4 border-green-200 text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-full shadow-lg mb-6">
-              <span className="text-4xl">✉️</span>
+      <div className="min-h-screen flex items-center justify-center px-4 bg-warmgray-50">
+        <div className="max-w-md w-full text-center">
+          <div className="bg-white rounded-2xl shadow-soft border border-warmgray-200 p-10">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-teal-light rounded-full mb-6">
+              <CheckCircle className="h-8 w-8 text-teal" />
             </div>
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Check Your Email!</h2>
-            <p className="text-gray-600 mb-6">
-              We've sent password reset instructions to{' '}
-              <span className="font-bold text-blue-600">{email}</span>
+            <h2 className="text-2xl font-bold text-warmgray-900 mb-3">Check your email</h2>
+            <p className="text-warmgray-600 mb-2">
+              We've sent reset instructions to
             </p>
-            <p className="text-sm text-gray-500 mb-8">
-              If you don't see the email, please check your spam folder.
+            <p className="font-semibold text-teal mb-6">{email}</p>
+            <p className="text-sm text-warmgray-500 mb-8">
+              Didn't receive it? Check your spam folder. The link expires in 6 hours.
             </p>
             <Link
               to="/login"
-              className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+              className="btn-primary-talkie inline-flex items-center gap-2"
             >
+              <ArrowLeft className="h-4 w-4" />
               Back to Login
             </Link>
           </div>
@@ -66,81 +66,78 @@ const ForgotPassword: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-pink-100 to-purple-100 flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full">
-        {/* Logo/Brand */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-500 to-pink-500 rounded-3xl shadow-lg mb-4 transform hover:rotate-12 transition-transform">
-            <span className="text-4xl">🔑</span>
-          </div>
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Forgot Password?</h1>
-          <p className="text-gray-600">No worries! We'll help you reset it</p>
-        </div>
+    <div className="min-h-screen flex">
+      {/* Left Side - Branding */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-teal via-teal-dark to-warmgray-800 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-teal/90 via-teal-dark/80 to-warmgray-900/90"></div>
+        <div className="absolute top-20 left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-teal-light/20 rounded-full blur-3xl"></div>
 
-        {/* Reset Form */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 border-4 border-orange-200">
+        <div className="relative z-10 flex flex-col justify-center px-16 text-white">
+          <div className="mb-8">
+            <h1 className="text-5xl font-bold mb-4">TalkieToys</h1>
+            <div className="w-20 h-1 bg-white/50 rounded-full"></div>
+          </div>
+          <h2 className="text-3xl font-semibold mb-6">Forgot your password?</h2>
+          <p className="text-lg text-white/80 leading-relaxed max-w-md">
+            No worries! Enter your email address and we'll send you instructions to reset your password.
+          </p>
+        </div>
+      </div>
+
+      {/* Right Side - Form */}
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-white">
+        <div className="w-full max-w-md">
+          <div className="lg:hidden mb-8 text-center">
+            <h1 className="text-3xl font-bold text-teal">TalkieToys</h1>
+          </div>
+
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-warmgray-900 mb-2">Reset password</h2>
+            <p className="text-warmgray-600">Enter your email and we'll send you a reset link</p>
+          </div>
+
           {error && (
-            <div className="mb-6 bg-red-50 border-2 border-red-200 rounded-2xl p-4">
-              <p className="text-red-600 text-sm font-medium">{error}</p>
+            <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded">
+              <p className="text-sm text-red-700">{error}</p>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-2">
-                Email Address
+              <label htmlFor="email" className="block text-sm font-medium text-warmgray-700 mb-2">
+                Email address
               </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setError('');
-                }}
-                className={`w-full px-4 py-3 rounded-xl border-2 transition-colors ${
-                  error
-                    ? 'border-red-300 focus:border-red-500'
-                    : 'border-gray-200 focus:border-orange-500'
-                } focus:outline-none focus:ring-2 focus:ring-orange-200`}
-                placeholder="your.email@example.com"
-                disabled={isLoading}
-              />
-              <p className="mt-2 text-sm text-gray-500">
-                Enter the email address associated with your account
-              </p>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-warmgray-400" />
+                </div>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                  className={`w-full pl-12 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
+                    error
+                      ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
+                      : 'border-warmgray-300 focus:border-teal focus:ring-teal/20'
+                  }`}
+                  placeholder="you@example.com"
+                  disabled={isLoading}
+                />
+              </div>
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="btn-primary-talkie w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
-                <span className="flex items-center justify-center">
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                   Sending...
-                </span>
+                </>
               ) : (
                 'Send Reset Instructions'
               )}
@@ -150,9 +147,10 @@ const ForgotPassword: React.FC = () => {
           <div className="mt-8 text-center">
             <Link
               to="/login"
-              className="text-sm font-medium text-orange-600 hover:text-orange-800 transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-medium text-teal hover:text-teal-dark transition-colors"
             >
-              ← Back to Login
+              <ArrowLeft className="h-4 w-4" />
+              Back to Login
             </Link>
           </div>
         </div>

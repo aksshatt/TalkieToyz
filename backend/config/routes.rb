@@ -14,6 +14,8 @@ Rails.application.routes.draw do
       delete 'auth/logout', to: 'auth#logout'
       get 'auth/me', to: 'auth#me'
       patch 'auth/profile', to: 'auth#update_profile'
+      post 'auth/password/reset', to: 'auth#forgot_password'
+      post 'auth/password/reset/confirm', to: 'auth#reset_password'
 
       # Products (full CRUD)
       resources :products, param: :id do

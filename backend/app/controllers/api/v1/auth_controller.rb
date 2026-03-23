@@ -82,6 +82,46 @@ module Api
         }
       end
 
+      # POST /api/v1/auth/password/reset
+      def forgot_password
+        user = User.find_by(email: params[:email]&.downcase&.strip)
+
+        if user
+          raw_token = user.set_reset_password_token
+          frontend_url = ENV.fetch('FRONTEND_URL', 'https://talkietoyz.shop')
+          reset_url = "#{frontend_url}/reset-password?token=#{raw_token}"
+          AuthMailer.reset_password(user, reset_url).deliver_later
+        end
+
+        # Always return success to prevent email enumeration
+        render json: {
+          success: true,
+          message: 'If an account with that email exists, we have sent password reset instructions.'
+        }
+      end
+
+      # POST /api/v1/auth/password/reset/confirm
+      def reset_password
+        user = User.reset_password_by_token(
+          reset_password_token: params[:reset_token],
+          password: params[:password],
+          password_confirmation: params[:password_confirmation]
+        )
+
+        if user.errors.empty?
+          render json: {
+            success: true,
+            message: 'Password has been reset successfully. You can now log in.'
+          }
+        else
+          render json: {
+            success: false,
+            message: user.errors.full_messages.first || 'Invalid or expired reset token',
+            errors: user.errors.full_messages
+          }, status: :unprocessable_entity
+        end
+      end
+
       # GET /api/v1/auth/me
       def me
         user = current_user
