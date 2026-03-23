@@ -1,11 +1,15 @@
 module Api
   module V1
     class CartsController < BaseController
-      before_action :authenticate_user!
-      before_action :set_cart, only: [:show, :add_item, :update_item, :remove_item, :clear]
+      before_action :authenticate_user!, only: [:add_item, :update_item, :remove_item, :clear]
+      before_action :set_cart, only: [:add_item, :update_item, :remove_item, :clear]
 
       # GET /api/v1/cart
       def show
+        unless current_user
+          return render json: { success: true, data: { cart_items: [], total: '0.0' }, message: 'Cart retrieved successfully' }
+        end
+        @cart = current_user.cart
         render_success(
           CartSerializer.new(@cart, include: ['cart_items', 'cart_items.product', 'cart_items.product_variant']).as_json,
           'Cart retrieved successfully'

@@ -38,9 +38,15 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      try {
-        const refreshToken = localStorage.getItem('refresh_token');
+      const refreshToken = localStorage.getItem('refresh_token');
+      const accessToken = localStorage.getItem('access_token');
 
+      // Only redirect to login if we had tokens that expired (not a guest/unauthenticated request)
+      if (!refreshToken && !accessToken) {
+        return Promise.reject(error);
+      }
+
+      try {
         if (!refreshToken) {
           throw new Error('No refresh token available');
         }
@@ -67,13 +73,14 @@ axiosInstance.interceptors.response.use(
         // Retry the original request
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        // If refresh fails, clear tokens and redirect to login
+        // Token expired and refresh failed — clear and redirect only if not already on login
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
 
-        // Redirect to login page
-        window.location.href = '/login';
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = '/login';
+        }
 
         return Promise.reject(refreshError);
       }
