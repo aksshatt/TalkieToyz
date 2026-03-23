@@ -80,6 +80,9 @@ gem 'pg_search'
 gem 'razorpay'
 gem 'httparty'  # For Shiprocket API integration
 
+# Email
+gem 'resend'
+
 # PDF Generation
 gem 'matrix'         # Required by prawn for Ruby 3.2+
 gem 'prawn'
