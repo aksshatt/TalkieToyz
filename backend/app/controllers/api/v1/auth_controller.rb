@@ -118,10 +118,14 @@ module Api
         user = User.find_by(email: params[:email]&.downcase&.strip)
 
         if user
-          raw_token = user.set_reset_password_token
-          frontend_url = ENV.fetch('FRONTEND_URL', 'https://talkietoyz.shop')
-          reset_url = "#{frontend_url}/reset-password?token=#{raw_token}"
-          AuthMailer.reset_password(user, reset_url).deliver_later
+          begin
+            raw_token = user.set_reset_password_token
+            frontend_url = ENV.fetch('FRONTEND_URL', 'https://talkietoyz.shop')
+            reset_url = "#{frontend_url}/reset-password?token=#{raw_token}"
+            AuthMailer.reset_password(user, reset_url).deliver_later
+          rescue => e
+            Rails.logger.error "Password reset email failed: #{e.message}"
+          end
         end
 
         # Always return success to prevent email enumeration
