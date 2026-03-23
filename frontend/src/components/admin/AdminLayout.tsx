@@ -9,6 +9,10 @@ import {
   FileText,
   Calendar,
   BookOpen,
+  Star,
+  Newspaper,
+  MessageSquare,
+  BarChart2,
   LogOut,
   Menu,
   X,
@@ -26,12 +30,16 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+    { name: 'Analytics', href: '/admin/analytics', icon: BarChart2 },
     { name: 'Products', href: '/admin/products', icon: Package },
     { name: 'Orders', href: '/admin/orders', icon: ShoppingBag },
     { name: 'Customers', href: '/admin/customers', icon: Users },
+    { name: 'Reviews', href: '/admin/reviews', icon: Star },
     { name: 'Appointments', href: '/admin/appointments', icon: Calendar },
+    { name: 'Blog', href: '/admin/blog', icon: Newspaper },
     { name: 'Resources', href: '/admin/resources', icon: BookOpen },
     { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
+    { name: 'Contact', href: '/admin/contact', icon: MessageSquare },
     { name: 'Content', href: '/admin/content', icon: FileText },
   ];
 

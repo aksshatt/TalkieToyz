@@ -19,6 +19,7 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderHistory from './pages/OrderHistory';
+import OrderDetail from './pages/OrderDetail';
 import OrderConfirmation from './pages/OrderConfirmation';
 
 // Assessment Pages
@@ -51,6 +52,8 @@ import ReviewModeration from './components/admin/ReviewModeration';
 import FAQManagement from './pages/admin/FAQManagement';
 import ContentManagement from './pages/admin/ContentManagement';
 import Appointments from './pages/admin/Appointments';
+import ContactSubmissions from './pages/admin/ContactSubmissions';
+import Analytics from './pages/admin/Analytics';
 
 // Communication Components
 import WhatsAppButton from './components/common/WhatsAppButton';
@@ -107,6 +110,14 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/orders/:id"
+            element={
+              <PrivateRoute>
+                <OrderDetail />
+              </PrivateRoute>
+            }
+          />
 
           {/* Protected Routes */}
           <Route
@@ -151,6 +162,7 @@ function App() {
             <Route path="products" element={<Products />} />
             <Route path="orders" element={<Orders />} />
             <Route path="customers" element={<Customers />} />
+            <Route path="analytics" element={<Analytics />} />
             <Route path="reviews" element={<ReviewModeration />} />
             <Route path="blog" element={<BlogManagement />} />
             <Route path="blog/new" element={<BlogPostFormPage />} />
@@ -161,6 +173,7 @@ function App() {
             <Route path="faqs" element={<FAQManagement />} />
             <Route path="content" element={<ContentManagement />} />
             <Route path="appointments" element={<Appointments />} />
+            <Route path="contact" element={<ContactSubmissions />} />
           </Route>
 
           {/* Catch all - redirect to home */}
