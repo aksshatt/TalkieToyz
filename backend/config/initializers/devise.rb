@@ -7,7 +7,7 @@ Devise.setup do |config|
   config.secret_key = ENV['DEVISE_JWT_SECRET_KEY'] || 'temp_key_for_development'
 
   # ==> Mailer Configuration
-  config.mailer_sender = 'noreply@talkietoys.com'
+  config.mailer_sender = ENV.fetch('MAILER_SENDER', 'noreply@talkietoyz.shop')
 
   # ==> ORM configuration
   require 'devise/orm/active_record'

@@ -31,7 +31,7 @@ class ProductDetailSerializer < ApplicationSerializer
   def image_urls
     return [] unless object.images.attached?
 
-    host = ENV.fetch('BACKEND_URL', 'https://talkietoys-backend.onrender.com')
+    host = ENV.fetch('BACKEND_URL')
     object.images.filter_map do |image|
       result = {
         url: Rails.application.routes.url_helpers.rails_blob_url(image, host: host),

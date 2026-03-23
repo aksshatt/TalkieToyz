@@ -6,11 +6,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     else
       # Production origins - Update with your actual domains
       origins ENV.fetch('FRONTEND_URL', '').split(','),
-              'https://talkietoyz.pages.dev',
-              /https:\/\/.*\.pages\.dev/,
-              /https:\/\/.*\.talkietoys\.com/,
-              'https://talkietoys.com',
-              'https://www.talkietoys.com',
               'https://talkietoyz.shop',
               'https://www.talkietoyz.shop',
               /https:\/\/.*\.talkietoyz\.shop/

@@ -34,8 +34,8 @@ Rails.application.configure do
   config.active_storage.service = :cloudinary
 
   # Required for Active Storage URL generation in API responses
-  Rails.application.routes.default_url_options[:host] = ENV.fetch('BACKEND_URL', 'https://talkietoys-backend.onrender.com')
-  config.action_controller.default_url_options = { host: ENV.fetch('BACKEND_URL', 'https://talkietoys-backend.onrender.com') }
+  Rails.application.routes.default_url_options[:host] = ENV.fetch('BACKEND_URL')
+  config.action_controller.default_url_options = { host: ENV.fetch('BACKEND_URL') }
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
