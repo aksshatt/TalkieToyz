@@ -472,9 +472,19 @@ const OrderHistory = () => {
 
                         {/* Actions */}
                         <div className="flex gap-3 flex-wrap">
+                          <Link
+                            to={`/orders/${order.id}`}
+                            className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors"
+                          >
+                            <Truck className="h-4 w-4" />
+                            {order.status === 'shipped' || order.status === 'delivered'
+                              ? 'Track Order'
+                              : 'View Details'}
+                          </Link>
+
                           <button
                             onClick={() => handleReorder(order)}
-                            className="flex items-center gap-2 px-4 py-2 bg-purple-500 text-white font-semibold rounded-lg hover:bg-purple-600 transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 font-semibold rounded-lg hover:bg-purple-200 transition-colors"
                           >
                             <RefreshCw className="h-4 w-4" />
                             Reorder

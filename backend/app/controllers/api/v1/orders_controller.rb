@@ -1,7 +1,7 @@
 module Api
   module V1
     class OrdersController < BaseController
-      before_action :set_order, only: [:show, :update, :cancel, :retry_payment]
+      before_action :set_order, only: [:show, :update, :cancel, :retry_payment, :track]
       before_action :require_admin, only: [:update]
 
       # GET /api/v1/orders
@@ -125,6 +125,23 @@ module Api
         else
           render_error('Failed to update order', @order.errors.full_messages)
         end
+      end
+
+      # POST /api/v1/orders/:id/track
+      def track
+        unless @order.shipment.present?
+          return render_error('No shipment found for this order', nil, status: :not_found)
+        end
+
+        @order.shipment.refresh_tracking
+
+        render_success(
+          OrderSerializer.new(@order.reload).as_json,
+          'Tracking refreshed successfully'
+        )
+      rescue StandardError => e
+        Rails.logger.error("Tracking refresh error: #{e.message}")
+        render_error('Failed to refresh tracking', e.message, status: :unprocessable_entity)
       end
 
       # POST /api/v1/orders/:id/cancel
@@ -280,7 +297,7 @@ module Api
       private
 
       def set_order
-        @order = Order.includes(:order_items, :coupon, :user).find(params[:id])
+        @order = Order.includes(order_items: [:product, :product_variant], coupon: [], shipment: []).find(params[:id])
 
         # Non-admin users can only view their own orders
         unless current_user.admin? || @order.user_id == current_user.id

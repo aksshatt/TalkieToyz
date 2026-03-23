@@ -86,6 +86,14 @@ const orderService = {
   },
 
   /**
+   * Refresh tracking for an order's shipment
+   */
+  refreshTracking: async (orderId: number): Promise<OrderResponse> => {
+    const response = await axiosInstance.post(`/orders/${orderId}/track`);
+    return response.data;
+  },
+
+  /**
    * Retry payment for failed/awaiting payment orders
    */
   retryPayment: async (orderId: number): Promise<RazorpayOrderResponse> => {
