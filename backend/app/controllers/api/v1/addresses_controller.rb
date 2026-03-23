@@ -1,6 +1,7 @@
 module Api
   module V1
     class AddressesController < BaseController
+      before_action :authenticate_user!
       before_action :set_address, only: [:show, :update, :destroy, :set_default]
 
       # GET /api/v1/addresses

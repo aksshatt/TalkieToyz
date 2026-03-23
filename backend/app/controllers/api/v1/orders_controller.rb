@@ -1,6 +1,7 @@
 module Api
   module V1
     class OrdersController < BaseController
+      before_action :authenticate_user!
       before_action :set_order, only: [:show, :update, :cancel, :retry_payment, :track]
       before_action :require_admin, only: [:update]
 

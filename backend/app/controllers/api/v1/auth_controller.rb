@@ -84,8 +84,7 @@ module Api
 
       # GET /api/v1/auth/me
       def me
-        # For development, return first user
-        user = User.first
+        user = current_user
 
         if user
           render json: {
@@ -113,7 +112,11 @@ module Api
 
       # PATCH /api/v1/auth/profile
       def update_profile
-        user = User.first # For development
+        user = current_user
+
+        unless user
+          return render json: { success: false, message: 'Authentication required' }, status: :unauthorized
+        end
 
         if user.update(profile_params)
           render json: {

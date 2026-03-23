@@ -1,6 +1,7 @@
 module Api
   module V1
     class CartsController < BaseController
+      before_action :authenticate_user!
       before_action :set_cart, only: [:show, :add_item, :update_item, :remove_item, :clear]
 
       # GET /api/v1/cart
