@@ -122,7 +122,7 @@ module Api
             raw_token = user.set_reset_password_token
             frontend_url = ENV.fetch('FRONTEND_URL', 'https://talkietoyz.shop')
             reset_url = "#{frontend_url}/reset-password?token=#{raw_token}"
-            AuthMailer.reset_password(user, reset_url).deliver_later
+            AuthMailer.reset_password(user, reset_url).deliver_now
           rescue => e
             Rails.logger.error "Password reset email failed: #{e.message}"
           end
