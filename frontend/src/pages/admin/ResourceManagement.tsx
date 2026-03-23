@@ -36,9 +36,8 @@ const ResourceManagement = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cream-light py-12">
-      <div className="container-talkie">
-        <div className="flex items-center justify-between mb-8">
+    <div>
+      <div className="flex items-center justify-between mb-8">
           <h1 className="heading-talkie">Resource Management</h1>
           <Link to="/admin/resources/new" className="btn-primary-talkie flex items-center gap-2">
             <Plus className="h-5 w-5" />
@@ -85,7 +84,6 @@ const ResourceManagement = () => {
             </table>
           </div>
         )}
-      </div>
     </div>
   );
 };

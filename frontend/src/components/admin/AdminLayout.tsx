@@ -8,6 +8,7 @@ import {
   HelpCircle,
   FileText,
   Calendar,
+  BookOpen,
   LogOut,
   Menu,
   X,
@@ -29,6 +30,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'Orders', href: '/admin/orders', icon: ShoppingBag },
     { name: 'Customers', href: '/admin/customers', icon: Users },
     { name: 'Appointments', href: '/admin/appointments', icon: Calendar },
+    { name: 'Resources', href: '/admin/resources', icon: BookOpen },
     { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
     { name: 'Content', href: '/admin/content', icon: FileText },
   ];
