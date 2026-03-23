@@ -74,6 +74,10 @@ const Login: React.FC = () => {
         setServerError(error.response.data.message);
       } else if (error.response?.data?.errors) {
         setServerError(error.response.data.errors.join(', '));
+      } else if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+        setServerError('Server is starting up, please wait a moment and try again.');
+      } else if (!error.response) {
+        setServerError('Cannot connect to server. Please check your connection and try again.');
       } else {
         setServerError('Invalid email or password. Please try again.');
       }

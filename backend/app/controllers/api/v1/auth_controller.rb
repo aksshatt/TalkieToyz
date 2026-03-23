@@ -82,6 +82,37 @@ module Api
         }
       end
 
+      # POST /api/v1/auth/refresh
+      def refresh
+        token = params[:refresh_token]
+        unless token
+          return render json: { success: false, message: 'Refresh token required' }, status: :unprocessable_entity
+        end
+
+        begin
+          secret = ENV['DEVISE_JWT_SECRET_KEY'] || Rails.application.credentials.secret_key_base
+          payload = JWT.decode(token, secret, true, algorithms: ['HS256']).first
+
+          unless payload['type'] == 'refresh'
+            return render json: { success: false, message: 'Invalid token type' }, status: :unauthorized
+          end
+
+          user = User.find_by(id: payload['user_id'])
+          unless user
+            return render json: { success: false, message: 'User not found' }, status: :unauthorized
+          end
+
+          new_access_token = generate_jwt_token(user)
+
+          render json: {
+            success: true,
+            data: { access_token: new_access_token, refresh_token: token }
+          }
+        rescue JWT::DecodeError, JWT::ExpiredSignature
+          render json: { success: false, message: 'Invalid or expired refresh token' }, status: :unauthorized
+        end
+      end
+
       # POST /api/v1/auth/password/reset
       def forgot_password
         user = User.find_by(email: params[:email]&.downcase&.strip)
