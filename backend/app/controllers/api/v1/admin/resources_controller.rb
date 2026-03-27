@@ -8,9 +8,10 @@ module Api
         # GET /api/v1/admin/resources
         def index
           @resources = Resource.includes(:resource_category, file_attachment: :blob)
+                               .where(deleted_at: nil)
 
-          # Apply filters (admin can see all including deleted)
-          @resources = @resources.active if params[:active] == 'true'
+          # Apply filters
+          @resources = @resources.where(active: true) if params[:active] == 'true'
           @resources = @resources.by_category(params[:category_id]) if params[:category_id].present?
           @resources = @resources.by_type(params[:resource_type]) if params[:resource_type].present?
 
