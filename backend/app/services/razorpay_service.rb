@@ -3,6 +3,7 @@ class RazorpayService
     # Create a Razorpay order
     def create_order(order)
       amount_in_paise = (order.total.to_f * 100).round.to_i
+      Rails.logger.info "Razorpay creating order: amount=#{amount_in_paise} (class=#{amount_in_paise.class}), receipt=#{order.order_number}"
       razorpay_order = Razorpay::Order.create(
         'amount' => amount_in_paise,
         'currency' => 'INR',
@@ -14,7 +15,7 @@ class RazorpayService
 
       razorpay_order
     rescue Razorpay::Error => e
-      Rails.logger.error "Razorpay Order Creation Error: #{e.message}"
+      Rails.logger.error "Razorpay Order Creation Error: #{e.message} | Full: #{e.inspect}"
       nil
     end
 
