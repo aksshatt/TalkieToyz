@@ -3,7 +3,7 @@ class RazorpayService
     # Create a Razorpay order
     def create_order(order)
       razorpay_order = Razorpay::Order.create(
-        amount: (order.total * 100).to_i, # Amount in paise
+        amount: (order.total.to_f * 100).round, # Amount in paise (integer)
         currency: 'INR',
         receipt: order.order_number,
         notes: {
