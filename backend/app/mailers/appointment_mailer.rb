@@ -1,5 +1,5 @@
 class AppointmentMailer < ApplicationMailer
-  SWEKCHAA_EMAIL = 'swekchaa@talkietoyz.shop'.freeze
+  SWEKCHAA_EMAIL = 'talkietoyz@gmail.com'.freeze
 
   # Email to the customer confirming their booking
   def customer_confirmation(appointment)
