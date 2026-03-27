@@ -315,10 +315,10 @@ module Api
             { event: 'Order Created', timestamp: order.created_at.iso8601 }
           ]
 
-          timeline << { event: 'Payment Confirmed', timestamp: (order.paid_at || order.updated_at).iso8601 } if order.payment_status == 'paid'
+          timeline << { event: 'Payment Confirmed', timestamp: order.updated_at.iso8601 } if order.payment_status == 'paid'
           timeline << { event: 'Order Shipped', timestamp: (order.shipped_at || order.updated_at).iso8601 } if order.shipped_at.present? || order.status == 'shipped'
           timeline << { event: 'Order Delivered', timestamp: (order.delivered_at || order.updated_at).iso8601 } if order.delivered_at.present? || order.status == 'delivered'
-          timeline << { event: 'Order Cancelled', timestamp: order.cancelled_at.iso8601 } if order.cancelled_at.present?
+          timeline << { event: 'Order Cancelled', timestamp: order.updated_at.iso8601 } if order.status == 'cancelled'
 
           timeline
         end
