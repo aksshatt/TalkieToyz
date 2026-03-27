@@ -40,7 +40,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const { cart } = useAppSelector((state) => state.cart);
+  const { cart, loading: cartLoading } = useAppSelector((state) => state.cart);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [deliveryMethod, setDeliveryMethod] = useState<'standard' | 'express'>(
@@ -62,10 +62,10 @@ const Checkout = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!cart || cart.cart_items.length === 0) {
+    if (!cartLoading && (!cart || cart.cart_items.length === 0)) {
       navigate('/cart');
     }
-  }, [cart, navigate]);
+  }, [cart, cartLoading, navigate]);
 
   // Load saved addresses
   useEffect(() => {

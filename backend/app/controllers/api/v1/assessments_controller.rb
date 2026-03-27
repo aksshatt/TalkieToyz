@@ -44,6 +44,7 @@ module Api
           assessment: @assessment,
           child_name: params[:child_name],
           child_age_months: params[:child_age_months],
+          mother_tongue: params[:mother_tongue],
           answers: params[:answers] || {}
         )
 

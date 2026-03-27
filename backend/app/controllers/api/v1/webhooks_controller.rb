@@ -6,13 +6,15 @@ module Api
 
       # Razorpay Webhook Handler
       def razorpay
+        raw_body = request.body.read
+
         # Verify webhook signature
-        unless verify_razorpay_signature(request.body.read, request.headers['X-Razorpay-Signature'])
+        unless verify_razorpay_signature(raw_body, request.headers['X-Razorpay-Signature'])
           Rails.logger.error("Razorpay webhook signature verification failed")
           return render json: { error: 'Invalid signature' }, status: :unauthorized
         end
 
-        payload = JSON.parse(request.body.read)
+        payload = JSON.parse(raw_body)
         event = payload['event']
 
         Rails.logger.info("Razorpay webhook received: #{event}")

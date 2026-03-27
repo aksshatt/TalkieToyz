@@ -54,6 +54,10 @@ import ContentManagement from './pages/admin/ContentManagement';
 import Appointments from './pages/admin/Appointments';
 import ContactSubmissions from './pages/admin/ContactSubmissions';
 import Analytics from './pages/admin/Analytics';
+import AssessmentResultsAdmin from './pages/admin/AssessmentResultsAdmin';
+import AuditLog from './pages/admin/AuditLog';
+import AssessmentHistoryPage from './pages/AssessmentHistoryPage';
+import WishlistPage from './pages/WishlistPage';
 
 // Communication Components
 import WhatsAppButton from './components/common/WhatsAppButton';
@@ -134,6 +138,23 @@ function App() {
           <Route path="/assessments/:slug" element={<AssessmentDetail />} />
           <Route path="/assessment/results/:id" element={<AssessmentResultsPage />} />
 
+          <Route
+            path="/my-assessments"
+            element={
+              <PrivateRoute>
+                <AssessmentHistoryPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <PrivateRoute>
+                <WishlistPage />
+              </PrivateRoute>
+            }
+          />
+
           {/* Milestone Routes */}
           <Route path="/milestones" element={<MilestonesPage />} />
 
@@ -173,7 +194,9 @@ function App() {
             <Route path="faqs" element={<FAQManagement />} />
             <Route path="content" element={<ContentManagement />} />
             <Route path="appointments" element={<Appointments />} />
+            <Route path="assessments" element={<AssessmentResultsAdmin />} />
             <Route path="contact" element={<ContactSubmissions />} />
+            <Route path="audit-log" element={<AuditLog />} />
           </Route>
 
           {/* Catch all - redirect to home */}

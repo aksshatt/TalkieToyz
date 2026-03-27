@@ -315,10 +315,10 @@ module Api
             { event: 'Order Created', timestamp: order.created_at.iso8601 }
           ]
 
-          timeline << { event: 'Payment Confirmed', timestamp: order.updated_at.iso8601 } if order.payment_status == 'paid'
-          timeline << { event: 'Order Shipped', timestamp: order.updated_at.iso8601 } if order.status == 'shipped'
-          timeline << { event: 'Order Delivered', timestamp: order.updated_at.iso8601 } if order.status == 'delivered'
-          timeline << { event: 'Order Cancelled', timestamp: order.cancelled_at } if order.cancelled_at.present?
+          timeline << { event: 'Payment Confirmed', timestamp: (order.paid_at || order.updated_at).iso8601 } if order.payment_status == 'paid'
+          timeline << { event: 'Order Shipped', timestamp: (order.shipped_at || order.updated_at).iso8601 } if order.shipped_at.present? || order.status == 'shipped'
+          timeline << { event: 'Order Delivered', timestamp: (order.delivered_at || order.updated_at).iso8601 } if order.delivered_at.present? || order.status == 'delivered'
+          timeline << { event: 'Order Cancelled', timestamp: order.cancelled_at.iso8601 } if order.cancelled_at.present?
 
           timeline
         end
@@ -367,8 +367,8 @@ module Api
             orders.each do |order|
               csv << [
                 order.order_number,
-                order.user.name,
-                order.user.email,
+                sanitize_csv_field(order.user.name),
+                sanitize_csv_field(order.user.email),
                 order.total,
                 order.status,
                 order.payment_status,
@@ -377,6 +377,13 @@ module Api
               ]
             end
           end
+        end
+
+        def sanitize_csv_field(value)
+          return value if value.blank?
+          # Prevent CSV formula injection
+          dangerous_prefixes = ['=', '+', '-', '@', "\t", "\r"]
+          dangerous_prefixes.any? { |p| value.to_s.start_with?(p) } ? "'#{value}" : value
         end
       end
     end

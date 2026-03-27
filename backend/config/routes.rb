@@ -49,9 +49,16 @@ Rails.application.routes.draw do
       end
 
       # Assessment Results
-      resources :assessment_results, only: [:show] do
+      resources :assessment_results, only: [:index, :show] do
         member do
           get :download_pdf
+        end
+      end
+
+      # Wishlists
+      resources :wishlists, only: [:index, :create, :destroy] do
+        member do
+          get :check
         end
       end
 
@@ -222,12 +229,22 @@ Rails.application.routes.draw do
         # Appointments Management
         resources :appointments, only: [:index, :show, :update]
 
+        # Assessment Results Management
+        resources :assessment_results, only: [:index, :show] do
+          collection do
+            get :statistics
+          end
+        end
+
         # Site Contents Management (CMS)
         resources :site_contents do
           collection do
             get :pages
           end
         end
+
+        # Activity Logs
+        resources :activity_logs, only: [:index]
       end
     end
   end

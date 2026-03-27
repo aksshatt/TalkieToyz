@@ -75,6 +75,15 @@ class Order < ApplicationRecord
 
       order.save!
 
+      # Decrement stock for each ordered item
+      order.order_items.each do |item|
+        if item.product_variant_id
+          item.product_variant.decrement!(:stock_quantity, item.quantity)
+        else
+          item.product.decrement!(:stock_quantity, item.quantity)
+        end
+      end
+
       # Only clear cart if explicitly requested (for COD orders)
       # For payment gateway orders, cart will be cleared after payment verification
       cart.clear if clear_cart
@@ -102,7 +111,20 @@ class Order < ApplicationRecord
 
   def mark_as_cancelled
     return false unless can_be_cancelled?
-    update(status: :cancelled)
+    transaction do
+      update!(status: :cancelled)
+      # Restore stock for cancelled orders
+      order_items.each do |item|
+        if item.product_variant_id
+          item.product_variant.increment!(:stock_quantity, item.quantity)
+        else
+          item.product.increment!(:stock_quantity, item.quantity)
+        end
+      end
+    end
+    true
+  rescue ActiveRecord::RecordInvalid
+    false
   end
 
   def can_be_cancelled?

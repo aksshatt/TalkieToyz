@@ -180,12 +180,8 @@ module Api
       end
 
       def rating_breakdown
-        (1..5).map do |rating|
-          {
-            rating: rating,
-            count: @product.reviews.approved.by_rating(rating).count
-          }
-        end
+        counts = @product.reviews.approved.group(:rating).count
+        (1..5).map { |rating| { rating: rating, count: counts[rating] || 0 } }
       end
     end
   end

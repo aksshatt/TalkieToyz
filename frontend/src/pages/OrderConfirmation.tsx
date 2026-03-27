@@ -10,7 +10,7 @@ const OrderConfirmation = () => {
   const navigate = useNavigate();
   const orderId = location.state?.orderId;
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['order', orderId],
     queryFn: () => orderService.getOrder(orderId),
     enabled: !!orderId,
@@ -24,11 +24,29 @@ const OrderConfirmation = () => {
 
   const order = data?.data;
 
-  if (isLoading || !order) {
+  if (isLoading) {
     return (
       <Layout>
         <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-12 flex items-center justify-center">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-600"></div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (isError || !order) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-12 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-xl text-gray-700 mb-4">Could not load order details.</p>
+            <button
+              onClick={() => refetch()}
+              className="px-6 py-3 bg-purple-500 text-white rounded-xl font-semibold hover:bg-purple-600 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
         </div>
       </Layout>
     );

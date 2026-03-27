@@ -62,14 +62,18 @@ export interface AssessmentResult {
   id: number;
   child_name: string;
   child_age_months: number;
+  mother_tongue?: string;
   answers: Record<string, any>;
   scores: Record<string, number>;
   total_score: number;
   percentage_score: number;
   category_max_scores: Record<string, number>;
   recommendations: Recommendation;
+  pdf_download_count?: number;
   completed_at: string;
   assessment: AssessmentSummary;
+  user_name?: string;
+  user_email?: string;
   created_at: string;
   updated_at: string;
 }
@@ -77,6 +81,7 @@ export interface AssessmentResult {
 export interface AssessmentSubmission {
   child_name: string;
   child_age_months: number;
+  mother_tongue?: string;
   answers: Record<string, any>;
 }
 

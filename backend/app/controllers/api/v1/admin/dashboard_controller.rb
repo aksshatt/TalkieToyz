@@ -19,17 +19,30 @@ module Api
         private
 
         def overview_stats
+          # Combine order aggregates into a single query
+          today_start = Time.current.beginning_of_day
+          order_stats = Order.select(
+            'COUNT(*) AS total_orders',
+            "SUM(CASE WHEN payment_status = 'paid' THEN total ELSE 0 END) AS total_sales",
+            "SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) AS pending_orders",
+            "SUM(CASE WHEN created_at >= '#{today_start.to_fs(:db)}' THEN 1 ELSE 0 END) AS orders_today",
+            "SUM(CASE WHEN created_at >= '#{today_start.to_fs(:db)}' AND payment_status = 'paid' THEN total ELSE 0 END) AS revenue_today",
+            "SUM(CASE WHEN payment_status = 'paid' THEN 1 ELSE 0 END) AS paid_orders_count"
+          ).first
+
+          total_sales = order_stats.total_sales.to_f.round(2)
+          paid_count = order_stats.paid_orders_count.to_i
+          avg_order_value = paid_count > 0 ? (total_sales / paid_count).round(2) : 0
+
           {
-            total_sales: Order.where(payment_status: 'paid').sum(:total).to_f.round(2),
-            total_orders: Order.count,
+            total_sales: total_sales,
+            total_orders: order_stats.total_orders.to_i,
             total_customers: User.where(role: 'customer').count,
             total_products: Product.active.count,
-            pending_orders: Order.where(status: 'pending').count,
-            orders_today: Order.where('created_at >= ?', Time.current.beginning_of_day).count,
-            revenue_today: Order.where('created_at >= ? AND payment_status = ?',
-                                       Time.current.beginning_of_day, 'paid')
-                                .sum(:total).to_f.round(2),
-            average_order_value: calculate_average_order_value
+            pending_orders: order_stats.pending_orders.to_i,
+            orders_today: order_stats.orders_today.to_i,
+            revenue_today: order_stats.revenue_today.to_f.round(2),
+            average_order_value: avg_order_value
           }
         end
 
@@ -70,26 +83,27 @@ module Api
         end
 
         def revenue_stats
-          # Last 7 days revenue
+          # Last 7 days revenue — single GROUP BY query instead of 7 individual queries
+          start_date = 6.days.ago.beginning_of_day
+          daily_rows = Order.where('created_at >= ? AND payment_status = ?', start_date, 'paid')
+                            .group("DATE(created_at)")
+                            .sum(:total)
+
           last_7_days = (0..6).map do |days_ago|
             date = days_ago.days.ago.to_date
-            revenue = Order.where('DATE(created_at) = ? AND payment_status = ?', date, 'paid')
-                          .sum(:total).to_f.round(2)
-            {
-              date: date.iso8601,
-              revenue: revenue
-            }
+            { date: date.iso8601, revenue: daily_rows[date].to_f.round(2) }
           end.reverse
 
-          # Monthly comparison
-          current_month = Order.where('created_at >= ? AND payment_status = ?',
-                                      Time.current.beginning_of_month, 'paid')
-                              .sum(:total).to_f.round(2)
-          last_month = Order.where('created_at >= ? AND created_at < ? AND payment_status = ?',
-                                   1.month.ago.beginning_of_month,
-                                   Time.current.beginning_of_month,
-                                   'paid')
-                           .sum(:total).to_f.round(2)
+          # Monthly comparison — single query with conditional aggregation
+          month_start = Time.current.beginning_of_month
+          prev_month_start = 1.month.ago.beginning_of_month
+          monthly = Order.where('created_at >= ? AND payment_status = ?', prev_month_start, 'paid')
+                         .select(
+                           "SUM(CASE WHEN created_at >= '#{month_start.to_fs(:db)}' THEN total ELSE 0 END) AS current_month_total",
+                           "SUM(CASE WHEN created_at < '#{month_start.to_fs(:db)}' THEN total ELSE 0 END) AS last_month_total"
+                         ).first
+          current_month = monthly.current_month_total.to_f.round(2)
+          last_month = monthly.last_month_total.to_f.round(2)
 
           {
             last_7_days: last_7_days,
@@ -97,14 +111,6 @@ module Api
             last_month: last_month,
             growth_percentage: calculate_growth_percentage(current_month, last_month)
           }
-        end
-
-        def calculate_average_order_value
-          total_orders = Order.where(payment_status: 'paid').count
-          return 0 if total_orders.zero?
-
-          total_revenue = Order.where(payment_status: 'paid').sum(:total).to_f
-          (total_revenue / total_orders).round(2)
         end
 
         def calculate_growth_percentage(current, previous)

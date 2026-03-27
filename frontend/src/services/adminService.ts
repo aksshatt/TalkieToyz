@@ -44,10 +44,15 @@ export interface AdminProduct {
   name: string;
   sku?: string;
   price: number;
+  compare_at_price?: number | null;
   stock_quantity: number;
-  category: string;
+  category: string | { id: number; name: string; [key: string]: any };
   active: boolean;
   featured?: boolean;
+  description?: string;
+  long_description?: string;
+  min_age?: number | null;
+  max_age?: number | null;
   created_at: string;
   total_sold?: number;
   image_url?: string;

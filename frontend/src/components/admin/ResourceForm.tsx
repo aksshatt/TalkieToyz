@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { ResourceFormData, ResourceType, ResourceCategory } from '../../types/blog';
 import { Upload } from 'lucide-react';
 
@@ -7,9 +7,10 @@ interface ResourceFormProps {
   categories: ResourceCategory[];
   onSubmit: (data: ResourceFormData) => void;
   onCancel?: () => void;
+  saving?: boolean;
 }
 
-const ResourceForm = ({ initialData, categories, onSubmit, onCancel }: ResourceFormProps) => {
+const ResourceForm = ({ initialData, categories, onSubmit, onCancel, saving }: ResourceFormProps) => {
   const [formData, setFormData] = useState<ResourceFormData>({
     title: initialData?.title || '',
     description: initialData?.description || '',
@@ -22,6 +23,12 @@ const ResourceForm = ({ initialData, categories, onSubmit, onCancel }: ResourceF
 
   const [file, setFile] = useState<File | null>(null);
   const [newTag, setNewTag] = useState('');
+
+  useEffect(() => {
+    if (categories.length > 0 && !initialData?.resource_category_id) {
+      setFormData(prev => ({ ...prev, resource_category_id: categories[0].id }));
+    }
+  }, [categories]);
 
   const resourceTypes: { value: ResourceType; label: string }[] = [
     { value: 'pdf', label: 'PDF' },
@@ -166,7 +173,9 @@ const ResourceForm = ({ initialData, categories, onSubmit, onCancel }: ResourceF
         {onCancel && (
           <button type="button" onClick={onCancel} className="btn-secondary-talkie flex-1">Cancel</button>
         )}
-        <button type="submit" className="btn-primary-talkie flex-1">Save Resource</button>
+        <button type="submit" disabled={saving} className="btn-primary-talkie flex-1 disabled:opacity-60">
+          {saving ? 'Saving...' : 'Save Resource'}
+        </button>
       </div>
     </form>
   );

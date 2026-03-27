@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_17_100000) do
+ActiveRecord::Schema[7.1].define(version: 2026_03_26_000003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -101,6 +101,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_17_100000) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_appointments_on_created_at"
+    t.index ["status"], name: "index_appointments_on_status"
     t.index ["user_id"], name: "index_appointments_on_user_id"
   end
 
@@ -116,6 +118,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_17_100000) do
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "mother_tongue"
+    t.integer "pdf_download_count", default: 0, null: false
     t.index ["answers"], name: "index_assessment_results_on_answers", using: :gin
     t.index ["assessment_id"], name: "index_assessment_results_on_assessment_id"
     t.index ["completed_at"], name: "index_assessment_results_on_completed_at"
@@ -547,6 +551,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_17_100000) do
     t.index ["created_at"], name: "index_reviews_on_created_at"
     t.index ["deleted_at"], name: "index_reviews_on_deleted_at"
     t.index ["product_id", "approved", "created_at"], name: "index_reviews_on_product_approved_created"
+    t.index ["product_id", "approved"], name: "index_reviews_on_product_id_and_approved"
     t.index ["product_id"], name: "index_reviews_on_product_id"
     t.index ["rating"], name: "index_reviews_on_rating"
     t.index ["user_id", "product_id"], name: "index_reviews_on_user_id_and_product_id", unique: true
@@ -645,6 +650,16 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_17_100000) do
     t.index ["role"], name: "index_users_on_role"
   end
 
+  create_table "wishlists", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_wishlists_on_product_id"
+    t.index ["user_id", "product_id"], name: "index_wishlists_on_user_id_and_product_id", unique: true
+    t.index ["user_id"], name: "index_wishlists_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "addresses", "users"
@@ -680,4 +695,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_17_100000) do
   add_foreign_key "reviews", "users", column: "admin_responder_id"
   add_foreign_key "shipments", "orders"
   add_foreign_key "user_addresses", "users"
+  add_foreign_key "wishlists", "products"
+  add_foreign_key "wishlists", "users"
 end

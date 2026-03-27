@@ -108,6 +108,12 @@ module Api
 
         def attach_file
           @resource.file.attach(params[:file])
+          if @resource.file.attached?
+            @resource.update_columns(
+              file_size_bytes: @resource.file.blob.byte_size,
+              file_format: @resource.file.blob.content_type
+            )
+          end
         end
 
         def authenticate_admin!

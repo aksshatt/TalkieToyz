@@ -78,7 +78,9 @@ axiosInstance.interceptors.response.use(
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
 
-        if (!window.location.pathname.includes('/login')) {
+        const publicPaths = ['/login', '/signup', '/forgot-password', '/reset-password'];
+        const isPublicPath = publicPaths.some(p => window.location.pathname.startsWith(p));
+        if (!isPublicPath) {
           window.location.href = '/login';
         }
 

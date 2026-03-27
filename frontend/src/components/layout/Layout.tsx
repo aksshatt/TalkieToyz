@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, Menu, X } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Menu, X, Heart, ClipboardList } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAppSelector } from '../../store/hooks';
 import { useState } from 'react';
@@ -95,6 +95,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               {/* User Menu */}
               {isAuthenticated ? (
                 <>
+                  <Link
+                    to="/wishlist"
+                    className="p-2.5 hover:bg-teal-light/30 rounded-full transition-all"
+                    title="Wishlist"
+                  >
+                    <Heart className="h-6 w-6 text-warmgray-700" />
+                  </Link>
+                  <Link
+                    to="/my-assessments"
+                    className="hidden sm:block p-2.5 hover:bg-teal-light/30 rounded-full transition-all"
+                    title="My Assessments"
+                  >
+                    <ClipboardList className="h-6 w-6 text-warmgray-700" />
+                  </Link>
                   <Link
                     to="/profile"
                     className="p-2.5 hover:bg-teal-light/30 rounded-full transition-all"
@@ -214,15 +228,31 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </>
                 )}
                 {isAuthenticated && (
-                  <button
-                    onClick={() => {
-                      logout();
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors text-left sm:hidden"
-                  >
-                    Logout
-                  </button>
+                  <>
+                    <Link
+                      to="/wishlist"
+                      className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Wishlist
+                    </Link>
+                    <Link
+                      to="/my-assessments"
+                      className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      My Assessments
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="text-warmgray-700 font-semibold hover:text-teal hover:bg-teal-light/20 px-4 py-3 rounded-lg transition-colors text-left sm:hidden"
+                    >
+                      Logout
+                    </button>
+                  </>
                 )}
               </nav>
             </div>

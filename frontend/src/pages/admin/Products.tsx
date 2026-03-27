@@ -278,6 +278,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
     age_range: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loadingDetails, setLoadingDetails] = useState(!!product);
 
   // Image upload state
   const [newImages, setNewImages] = useState<File[]>([]);
@@ -303,6 +304,32 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
     };
     fetchCategories();
   }, []);
+
+  // Fetch full product details when editing
+  useEffect(() => {
+    if (!product) return;
+    adminService.getProduct(product.id)
+      .then((response) => {
+        const p = response.data;
+        const categoryId =
+          p.category && typeof p.category === 'object' ? String(p.category.id) : '';
+        const ageRange =
+          p.min_age != null && p.max_age != null ? `${p.min_age}-${p.max_age}` : '';
+        setFormData({
+          name: p.name || '',
+          price: p.price != null ? String(p.price) : '',
+          stock_quantity: p.stock_quantity || 0,
+          category_id: categoryId,
+          description: p.description || '',
+          long_description: p.long_description || '',
+          compare_at_price: p.compare_at_price != null ? String(p.compare_at_price) : '',
+          featured: p.featured || false,
+          age_range: ageRange,
+        });
+      })
+      .catch(() => toast.error('Failed to load product details'))
+      .finally(() => setLoadingDetails(false));
+  }, [product?.id]);
 
   const handleFilesSelected = useCallback((files: FileList | File[]) => {
     const validFiles = Array.from(files).filter((file) => {
@@ -410,6 +437,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
       setIsSubmitting(false);
     }
   };
+
+  if (loadingDetails) {
+    return (
+      <div className="flex justify-center py-12">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-teal"></div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">

@@ -17,6 +17,7 @@ const AssessmentDetail = () => {
   const [childName, setChildName] = useState('');
   const [childAge, setChildAge] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('English');
+  const [otherLanguage, setOtherLanguage] = useState('');
 
   // Check if we came from the list page modal with autoStart
   useEffect(() => {
@@ -24,9 +25,9 @@ const AssessmentDetail = () => {
     if (state?.autoStart && state.childName && state.childAge) {
       setChildName(state.childName);
       setChildAge(state.childAge);
+      // selectedLanguage here is already resolved (Others text already substituted in StartAssessmentModal)
       setSelectedLanguage(state.selectedLanguage || 'English');
       setStarted(true);
-      // Clear the state so refreshing doesn't auto-start again
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
@@ -47,6 +48,8 @@ const AssessmentDetail = () => {
     }
   };
 
+  const motherTongue = selectedLanguage === 'Others' ? otherLanguage.trim() || 'Others' : selectedLanguage;
+
   const handleStart = () => {
     if (childName && childAge) {
       setStarted(true);
@@ -60,6 +63,7 @@ const AssessmentDetail = () => {
       const response = await assessmentService.submitAssessment(slug!, {
         child_name: childName,
         child_age_months: ageInMonths,
+        mother_tongue: motherTongue,
         answers,
       });
       navigate(`/assessment/results/${response.data.id}`);
@@ -205,7 +209,7 @@ const AssessmentDetail = () => {
                   </div>
                   <div>
                     <label className="block text-xs sm:text-sm font-semibold text-warmgray-700 mb-1.5">
-                      Preferred Language
+                      Mother Tongue
                     </label>
                     <select
                       value={selectedLanguage}
@@ -218,7 +222,17 @@ const AssessmentDetail = () => {
                       <option value="Odia">Odia (ଓଡ଼ିଆ)</option>
                       <option value="Konkani">Konkani (कोंकणी)</option>
                       <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+                      <option value="Others">Others</option>
                     </select>
+                    {selectedLanguage === 'Others' && (
+                      <input
+                        type="text"
+                        value={otherLanguage}
+                        onChange={(e) => setOtherLanguage(e.target.value)}
+                        className="mt-2 w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
+                        placeholder="Please specify your mother tongue"
+                      />
+                    )}
                   </div>
                 </div>
               </div>

@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, BookOpen } from 'lucide-react';
+import { Sparkles, BookOpen, Calendar } from 'lucide-react';
+import BookAppointmentModal from '../common/BookAppointmentModal';
 
 const HeroSection = () => {
+  const [showBooking, setShowBooking] = useState(false);
+
   return (
     <section className="relative w-full h-[600px] md:h-[700px] overflow-hidden">
       {/* Background Image */}
@@ -49,6 +53,13 @@ const HeroSection = () => {
               <Sparkles className="w-5 h-5 mr-2 text-sunshine" />
               Take the Development Quiz
             </Link>
+            <button
+              onClick={() => setShowBooking(true)}
+              className="inline-flex items-center justify-center px-8 py-4 bg-coral hover:bg-coral-dark text-white font-bold text-lg rounded-full shadow-soft hover:shadow-lg transition-all duration-300"
+            >
+              <Calendar className="w-5 h-5 mr-2" />
+              Book Appointment
+            </button>
           </div>
 
           {/* Trust Indicators - Subtle and below CTAs */}
@@ -71,6 +82,7 @@ const HeroSection = () => {
 
       {/* Bottom Soft Fade */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/50 to-transparent pointer-events-none"></div>
+      <BookAppointmentModal isOpen={showBooking} onClose={() => setShowBooking(false)} />
     </section>
   );
 };

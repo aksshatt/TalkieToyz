@@ -6,9 +6,10 @@ interface BlogPostFormProps {
   initialData?: Partial<BlogPostFormData>;
   onSubmit: (data: BlogPostFormData) => void;
   onCancel?: () => void;
+  saving?: boolean;
 }
 
-const BlogPostForm = ({ initialData, onSubmit, onCancel }: BlogPostFormProps) => {
+const BlogPostForm = ({ initialData, onSubmit, onCancel, saving }: BlogPostFormProps) => {
   const [formData, setFormData] = useState<BlogPostFormData>({
     title: initialData?.title || '',
     excerpt: initialData?.excerpt || '',
@@ -185,8 +186,8 @@ const BlogPostForm = ({ initialData, onSubmit, onCancel }: BlogPostFormProps) =>
             Cancel
           </button>
         )}
-        <button type="submit" className="btn-primary-talkie flex-1">
-          Save Blog Post
+        <button type="submit" disabled={saving} className="btn-primary-talkie flex-1 disabled:opacity-60">
+          {saving ? 'Saving...' : 'Save Blog Post'}
         </button>
       </div>
     </form>

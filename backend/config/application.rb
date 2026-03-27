@@ -43,5 +43,7 @@ module Backend
 
     # Configure ActiveJob to use Sidekiq
     config.active_job.queue_adapter = :sidekiq
+
+    config.middleware.use Rack::Attack
   end
 end

@@ -13,9 +13,11 @@ import {
   Newspaper,
   MessageSquare,
   BarChart2,
+  ClipboardList,
   LogOut,
   Menu,
   X,
+  Shield,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -36,11 +38,13 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'Customers', href: '/admin/customers', icon: Users },
     { name: 'Reviews', href: '/admin/reviews', icon: Star },
     { name: 'Appointments', href: '/admin/appointments', icon: Calendar },
+    { name: 'Assessments', href: '/admin/assessments', icon: ClipboardList },
     { name: 'Blog', href: '/admin/blog', icon: Newspaper },
     { name: 'Resources', href: '/admin/resources', icon: BookOpen },
     { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
     { name: 'Contact', href: '/admin/contact', icon: MessageSquare },
     { name: 'Content', href: '/admin/content', icon: FileText },
+    { name: 'Audit Log', href: '/admin/audit-log', icon: Shield },
   ];
 
   const isActive = (href: string) => {

@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { CheckCircle, TrendingUp, Lightbulb, Download, Share2, Calendar, Award, Target } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { AssessmentResult } from '../../types/assessment';
+import BookAppointmentModal from '../common/BookAppointmentModal';
 
 interface AssessmentResultsProps {
   result: AssessmentResult;
@@ -8,6 +10,7 @@ interface AssessmentResultsProps {
 
 const AssessmentResults = ({ result }: AssessmentResultsProps) => {
   const navigate = useNavigate();
+  const [showBooking, setShowBooking] = useState(false);
 
   const getScoreLevel = (percentage: number) => {
     if (percentage >= 80) return {
@@ -279,7 +282,7 @@ const AssessmentResults = ({ result }: AssessmentResultsProps) => {
             Our speech therapy experts can provide personalized support and create a customized development plan for your child.
           </p>
           <button
-            onClick={() => navigate('/assessments')}
+            onClick={() => setShowBooking(true)}
             className="btn-primary text-sm sm:text-base px-6 sm:px-8 py-3 inline-flex items-center gap-2"
           >
             <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -303,6 +306,7 @@ const AssessmentResults = ({ result }: AssessmentResultsProps) => {
           Browse Recommended Toys
         </button>
       </div>
+      <BookAppointmentModal isOpen={showBooking} onClose={() => setShowBooking(false)} />
     </div>
   );
 };

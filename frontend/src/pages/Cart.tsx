@@ -65,15 +65,21 @@ const Cart = () => {
   const handleQuantityChange = (itemId: number, newQuantity: number) => {
     if (newQuantity < 1) return;
     dispatch(updateCartItem({ itemId, data: { quantity: newQuantity } }));
+    // Clear coupon when cart total changes - user must re-apply
+    if (appliedCoupon) {
+      setAppliedCoupon(null);
+      setCouponDiscount(0);
+      toast('Cart updated — please re-apply your coupon code', { icon: '🏷️' });
+    }
   };
 
   const handleRemoveItem = (itemId: number) => {
     if (window.confirm('Remove this item from cart?')) {
       dispatch(removeFromCart(itemId));
-      // Remove coupon if cart becomes empty
-      if (cart?.cart_items.length === 1) {
+      if (appliedCoupon) {
         setAppliedCoupon(null);
         setCouponDiscount(0);
+        toast('Cart updated — please re-apply your coupon code', { icon: '🏷️' });
       }
     }
   };
