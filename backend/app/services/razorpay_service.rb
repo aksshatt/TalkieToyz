@@ -1,21 +1,41 @@
+require 'net/http'
+require 'json'
+
 class RazorpayService
   class << self
     # Create a Razorpay order
     def create_order(order)
       amount_in_paise = (order.total.to_f * 100).round.to_i
-      Rails.logger.info "Razorpay creating order: amount=#{amount_in_paise} (class=#{amount_in_paise.class}), receipt=#{order.order_number}"
-      razorpay_order = Razorpay::Order.create(
-        'amount' => amount_in_paise,
-        'currency' => 'INR',
-        'receipt' => order.order_number
-      )
+      Rails.logger.info "Razorpay creating order: amount=#{amount_in_paise}, receipt=#{order.order_number}"
 
-      # Store Razorpay order ID in payment_intent_id
-      order.update(payment_intent_id: razorpay_order.id)
+      uri = URI('https://api.razorpay.com/v1/orders')
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
 
-      razorpay_order
-    rescue Razorpay::Error => e
-      Rails.logger.error "Razorpay Order Creation Error: #{e.message} | Full: #{e.inspect}"
+      request = Net::HTTP::Post.new(uri)
+      request.basic_auth(ENV['RAZORPAY_KEY_ID'], ENV['RAZORPAY_KEY_SECRET'])
+      request['Content-Type'] = 'application/json'
+      request.body = {
+        amount: amount_in_paise,
+        currency: 'INR',
+        receipt: order.order_number
+      }.to_json
+
+      response = http.request(request)
+      body = JSON.parse(response.body)
+
+      Rails.logger.info "Razorpay API response: #{response.code} #{body.inspect}"
+
+      unless response.code.to_i == 200
+        Rails.logger.error "Razorpay Order Creation Error: #{body['error']&.dig('description') || body.inspect}"
+        return nil
+      end
+
+      order.update(payment_intent_id: body['id'])
+
+      OpenStruct.new(id: body['id'], amount: body['amount'])
+    rescue => e
+      Rails.logger.error "Razorpay Order Creation Error: #{e.message}"
       nil
     end
 
