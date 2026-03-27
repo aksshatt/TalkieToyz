@@ -61,9 +61,20 @@ const AssessmentResultsAdmin = () => {
     }
   };
 
-  const handleDownloadPdf = (result: AssessmentResult) => {
+  const handleDownloadPdf = async (result: AssessmentResult) => {
     const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
-    window.open(`${baseUrl}/assessment_results/${result.id}/download_pdf`, '_blank');
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${baseUrl}/assessment_results/${result.id}/download_pdf`, {
+      headers: { ...(token ? { 'Authorization': `Bearer ${token}` } : {}) },
+    });
+    if (!response.ok) return;
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `assessment_${result.child_name}_${result.id}.pdf`;
+    a.click();
+    window.URL.revokeObjectURL(url);
   };
 
   const ageDisplay = (months: number) => {
