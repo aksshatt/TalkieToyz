@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body style="margin:0;padding:0;background-color:#f5f0eb;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f5f0eb;">
+    <tr>
+      <td align="center" style="padding:40px 16px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#0d9488 0%,#0f766e 60%,#44403c 100%);padding:40px 48px;text-align:center;">
+              <h1 style="margin:0;color:#ffffff;font-size:32px;font-weight:800;letter-spacing:-0.5px;">TalkieToyz</h1>
+              <p style="margin:8px 0 0;color:rgba(255,255,255,0.8);font-size:14px;letter-spacing:0.5px;text-transform:uppercase;">Appointment Booked</p>
+              <div style="width:48px;height:3px;background:rgba(255,255,255,0.4);border-radius:2px;margin:16px auto 0;"></div>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background:#ffffff;padding:48px;">
+              <h2 style="margin:0 0 8px;color:#1c1917;font-size:22px;font-weight:700;">Hi <%= @appointment.name %>!</h2>
+              <p style="margin:0 0 28px;color:#57534e;font-size:15px;line-height:1.7;">
+                Thank you for booking an appointment with <strong>Swekchaa Tamrakar</strong> (Audiologist &amp; Speech Therapist). We have received your request and will get in touch with you shortly to confirm your appointment time.
+              </p>
+
+              <!-- Appointment Details -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f0eb;border-radius:10px;margin:0 0 28px;">
+                <tr>
+                  <td style="padding:24px;">
+                    <p style="margin:0 0 16px;color:#0d9488;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Your Appointment Details</p>
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="padding:6px 0;border-bottom:1px solid #e7e5e4;">
+                          <span style="color:#78716c;font-size:13px;">Name</span><br>
+                          <span style="color:#1c1917;font-size:15px;font-weight:600;"><%= @appointment.name %></span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:6px 0;border-bottom:1px solid #e7e5e4;">
+                          <span style="color:#78716c;font-size:13px;">Email</span><br>
+                          <span style="color:#1c1917;font-size:15px;font-weight:600;"><%= @appointment.email %></span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:6px 0;border-bottom:1px solid #e7e5e4;">
+                          <span style="color:#78716c;font-size:13px;">Phone</span><br>
+                          <span style="color:#1c1917;font-size:15px;font-weight:600;"><%= @appointment.phone %></span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:6px 0;border-bottom:1px solid #e7e5e4;">
+                          <span style="color:#78716c;font-size:13px;">Preferred Language</span><br>
+                          <span style="color:#1c1917;font-size:15px;font-weight:600;"><%= @appointment.preferred_language %></span>
+                        </td>
+                      </tr>
+                      <% if @appointment.message.present? %>
+                      <tr>
+                        <td style="padding:6px 0;">
+                          <span style="color:#78716c;font-size:13px;">Message</span><br>
+                          <span style="color:#1c1917;font-size:15px;font-weight:600;"><%= @appointment.message %></span>
+                        </td>
+                      </tr>
+                      <% end %>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Therapist Info -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(135deg,#0d9488,#0f766e);border-radius:10px;margin:0 0 28px;">
+                <tr>
+                  <td style="padding:24px;text-align:center;">
+                    <p style="margin:0 0 4px;color:rgba(255,255,255,0.8);font-size:13px;">Your Therapist</p>
+                    <p style="margin:0 0 4px;color:#ffffff;font-size:18px;font-weight:700;">Swekchaa Tamrakar</p>
+                    <p style="margin:0;color:rgba(255,255,255,0.8);font-size:13px;">Audiologist &amp; Speech Therapist | BASLP, M.Sc. Audiology (Mumbai)</p>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:0;color:#57534e;font-size:14px;line-height:1.7;">
+                We will reach out to you at <strong><%= @appointment.phone %></strong> or <strong><%= @appointment.email %></strong> to confirm the appointment. If you have any questions, feel free to reply to this email.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#1c1917;padding:32px 48px;text-align:center;">
+              <p style="margin:0 0 8px;color:#a8a29e;font-size:13px;">TalkieToyz &mdash; Expert Speech &amp; Language Toys</p>
+              <p style="margin:0;color:#78716c;font-size:12px;">&copy; <%= Date.today.year %> TalkieToyz. All rights reserved.</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

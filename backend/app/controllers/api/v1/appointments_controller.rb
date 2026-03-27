@@ -7,6 +7,9 @@ module Api
         @appointment.user = current_user if defined?(current_user) && current_user
 
         if @appointment.save
+          AppointmentMailer.customer_confirmation(@appointment).deliver_later
+          AppointmentMailer.admin_notification(@appointment).deliver_later
+
           render_success(
             { id: @appointment.id },
             'Your appointment request has been submitted successfully. We will contact you soon!',
