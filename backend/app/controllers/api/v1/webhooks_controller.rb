@@ -42,6 +42,15 @@ module Api
 
       # Shiprocket Webhook Handler
       def shiprocket
+        # Verify token if configured
+        token = ENV['SHIPROCKET_WEBHOOK_TOKEN']
+        if token.present?
+          incoming = request.headers['x-api-key']
+          unless Rack::Utils.secure_compare(token, incoming.to_s)
+            return render json: { error: 'Unauthorized' }, status: :unauthorized
+          end
+        end
+
         payload = JSON.parse(request.body.read)
 
         Rails.logger.info("Shiprocket webhook received: #{payload.inspect}")
