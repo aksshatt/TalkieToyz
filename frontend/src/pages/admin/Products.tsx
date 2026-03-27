@@ -42,7 +42,7 @@ const Products: React.FC = () => {
           name: p.name,
           price: `₹${p.price.toLocaleString()}`,
           stock_quantity: p.stock_quantity,
-          category: p.category,
+          category: typeof p.category === 'object' && p.category !== null ? p.category.name : (p.category as string),
           status: p.stock_quantity > 0 && p.active ? 'active' : 'out_of_stock',
           image_url: p.image_url,
           image_urls: p.image_urls,
