@@ -262,6 +262,7 @@ module Api
             'Razorpay order created successfully'
           )
         else
+          Rails.logger.error("Razorpay order creation failed. KEY_ID present: #{ENV['RAZORPAY_KEY_ID'].present?}, Order: #{order.id}, Amount: #{order.total}")
           render_error('Failed to create Razorpay order', nil, status: :unprocessable_entity)
         end
       end
