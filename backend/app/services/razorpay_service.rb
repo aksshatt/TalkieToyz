@@ -2,14 +2,11 @@ class RazorpayService
   class << self
     # Create a Razorpay order
     def create_order(order)
+      amount_in_paise = (order.total.to_f * 100).round.to_i
       razorpay_order = Razorpay::Order.create(
-        amount: (order.total.to_f * 100).round, # Amount in paise (integer)
-        currency: 'INR',
-        receipt: order.order_number,
-        notes: {
-          order_id: order.id,
-          user_id: order.user_id
-        }
+        'amount' => amount_in_paise,
+        'currency' => 'INR',
+        'receipt' => order.order_number
       )
 
       # Store Razorpay order ID in payment_intent_id
