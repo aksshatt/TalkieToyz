@@ -158,7 +158,7 @@ class AssessmentResultPdfService
         pdf.move_down 10
         pdf.text 'Book an Appointment', size: 14, style: :bold, align: :center
         pdf.move_down 4
-        pdf.text 'Visit: www.talkietoyz.shop/assessments  |  Or use the Book Appointment button in our app',
+        pdf.text 'Visit: https://talkietoyz.shop  |  Or use the Book Appointment button in our app',
                  size: 10, align: :center, color: '004D40'
       end
       pdf.fill_color '000000'
