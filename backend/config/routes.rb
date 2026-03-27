@@ -137,7 +137,7 @@ Rails.application.routes.draw do
       # Webhooks (public - no authentication)
       namespace :webhooks do
         post 'razorpay', to: 'webhooks#razorpay'
-        post 'shipping', to: 'webhooks#shiprocket'
+        match 'shipping', to: 'webhooks#shiprocket', via: [:get, :post]
       end
 
       # Shipping Rates (public)

@@ -51,20 +51,22 @@ module Api
           end
         end
 
-        payload = JSON.parse(request.body.read)
+        body = request.body.read
+        payload = body.present? ? JSON.parse(body) : {}
 
         Rails.logger.info("Shiprocket webhook received: #{payload.inspect}")
 
         awb_code = payload['awb']
         status = payload['current_status']
 
-        return render json: { error: 'Missing AWB code' }, status: :bad_request unless awb_code
+        # Return 200 for test/ping requests with no AWB
+        return render json: { status: 'ok' }, status: :ok unless awb_code.present?
 
         shipment = Shipment.find_by(awb_code: awb_code)
 
         unless shipment
           Rails.logger.warn("Shipment not found for AWB: #{awb_code}")
-          return render json: { error: 'Shipment not found' }, status: :not_found
+          return render json: { status: 'ok' }, status: :ok
         end
 
         # Update shipment status
