@@ -68,7 +68,7 @@ const AssessmentResults = ({ result }: AssessmentResultsProps) => {
   const handleDownload = async () => {
     try {
       const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('access_token');
       const response = await fetch(`${baseUrl}/assessment_results/${result.id}/download_pdf`, {
         method: 'GET',
         headers: {
