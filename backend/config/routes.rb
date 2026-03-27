@@ -135,7 +135,7 @@ Rails.application.routes.draw do
       end
 
       # Webhooks (public - no authentication)
-      namespace :webhooks do
+      scope 'webhooks' do
         post 'razorpay', to: 'webhooks#razorpay'
         match 'shipping', to: 'webhooks#shiprocket', via: [:get, :post]
       end
