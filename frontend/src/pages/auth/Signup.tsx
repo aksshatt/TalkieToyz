@@ -7,7 +7,27 @@ import {
   validatePasswordConfirmation,
   validateName,
 } from '../../utils/validation';
-import { Mail, Lock, User, Eye, EyeOff, ArrowRight, UserCheck, Stethoscope } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, ArrowRight, UserCheck, Stethoscope, Sparkles, BookOpen, Star, Heart } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const floatingIcons = [
+  { Icon: BookOpen, top: '10%', left: '10%', delay: 0, size: 'w-7 h-7' },
+  { Icon: Star, top: '60%', left: '6%', delay: 1.4, size: 'w-5 h-5' },
+  { Icon: Sparkles, top: '25%', right: '10%', delay: 0.7, size: 'w-6 h-6' },
+  { Icon: Heart, top: '70%', right: '12%', delay: 1.9, size: 'w-6 h-6' },
+  { Icon: Star, top: '42%', left: '20%', delay: 1.0, size: 'w-4 h-4' },
+  { Icon: UserCheck, top: '15%', right: '25%', delay: 2.2, size: 'w-5 h-5' },
+];
+
+const formVariants = {
+  hidden: { opacity: 0, x: 40 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5, staggerChildren: 0.08 } },
+} as const;
+
+const fieldVariant = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+} as const;
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
@@ -27,37 +47,23 @@ const Signup: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
-    }
-    if (serverError) {
-      setServerError('');
-    }
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
+    if (serverError) setServerError('');
   };
 
   const validateForm = (): boolean => {
     const newErrors: { [key: string]: string } = {};
-
     const nameError = validateName(formData.name);
     if (nameError) newErrors.name = nameError;
-
     const emailError = validateEmail(formData.email);
     if (emailError) newErrors.email = emailError;
-
     const passwordError = validatePassword(formData.password);
     if (passwordError) newErrors.password = passwordError;
-
-    const confirmError = validatePasswordConfirmation(
-      formData.password,
-      formData.password_confirmation
-    );
+    const confirmError = validatePasswordConfirmation(formData.password, formData.password_confirmation);
     if (confirmError) newErrors.password_confirmation = confirmError;
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -65,26 +71,15 @@ const Signup: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setServerError('');
-
-    if (!validateForm()) {
-      return;
-    }
-
+    if (!validateForm()) return;
     setIsLoading(true);
-
     try {
       await signup(formData);
       navigate('/', { replace: true });
     } catch (error: any) {
-      console.error('Signup error:', error);
-
-      if (error.response?.data?.message) {
-        setServerError(error.response.data.message);
-      } else if (error.response?.data?.errors) {
-        setServerError(error.response.data.errors.join(', '));
-      } else {
-        setServerError('Failed to create account. Please try again.');
-      }
+      if (error.response?.data?.message) setServerError(error.response.data.message);
+      else if (error.response?.data?.errors) setServerError(error.response.data.errors.join(', '));
+      else setServerError('Failed to create account. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -92,379 +87,352 @@ const Signup: React.FC = () => {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Side - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-teal via-teal-dark to-warmgray-800 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-teal/90 via-teal-dark/80 to-warmgray-900/90"></div>
+      {/* ── Left Panel ── */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-coral-dark via-coral to-sunshine-dark">
 
-        {/* Decorative circles */}
-        <div className="absolute top-20 left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-teal-light/20 rounded-full blur-3xl"></div>
+        {/* Animated blobs */}
+        <motion.div
+          className="absolute w-96 h-96 rounded-full bg-white/10 blur-3xl"
+          animate={{ x: [0, 35, 0], y: [0, -28, 0], scale: [1, 1.12, 1] }}
+          transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ top: '5%', left: '5%' }}
+        />
+        <motion.div
+          className="absolute w-72 h-72 rounded-full bg-teal/25 blur-3xl"
+          animate={{ x: [0, -22, 10, 0], y: [0, 28, -12, 0], scale: [1, 0.9, 1] }}
+          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          style={{ bottom: '8%', right: '5%' }}
+        />
+        <motion.div
+          className="absolute w-52 h-52 rounded-full bg-sunshine/25 blur-2xl"
+          animate={{ x: [0, 16, -10, 0], y: [0, -20, 12, 0] }}
+          transition={{ duration: 13, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          style={{ top: '40%', right: '20%' }}
+        />
 
+        {/* Floating icons */}
+        {floatingIcons.map(({ Icon, top, left, right, delay, size }, i) => (
+          <motion.div
+            key={i}
+            className={`absolute text-white/20 ${size}`}
+            style={{ top, left, right } as React.CSSProperties}
+            animate={{ y: [0, -13, 0], rotate: [0, 7, -7, 0] }}
+            transition={{ duration: 4 + i * 0.8, repeat: Infinity, ease: 'easeInOut', delay }}
+          >
+            <Icon className="w-full h-full" />
+          </motion.div>
+        ))}
+
+        {/* Content */}
         <div className="relative z-10 flex flex-col justify-center px-16 text-white">
-          <div className="mb-8">
-            <h1 className="text-5xl font-bold mb-4">TalkieToys</h1>
-            <div className="w-20 h-1 bg-white/50 rounded-full"></div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="mb-8"
+          >
+            <h1 className="text-5xl font-[var(--font-family-fun)] font-bold mb-4 drop-shadow-lg">TalkieToys</h1>
+            <motion.div
+              className="h-1 bg-white/60 rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: 80 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+            />
+          </motion.div>
 
-          <h2 className="text-3xl font-semibold mb-6">Start your journey</h2>
-          <p className="text-lg text-white/80 leading-relaxed max-w-md mb-12">
+          <motion.h2
+            className="text-3xl font-semibold mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            Start your journey 🚀
+          </motion.h2>
+          <motion.p
+            className="text-lg text-white/80 leading-relaxed max-w-md mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             Join thousands of parents and therapists using TalkieToys to support speech and language development.
-          </p>
+          </motion.p>
 
-          <div className="space-y-6">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <h3 className="font-semibold text-lg mb-3">For Parents</h3>
-              <ul className="space-y-2 text-white/80 text-sm">
-                <li className="flex items-start">
-                  <span className="mr-2">1.</span>
-                  <span><strong>Child-Friendly Learning Tools</strong> – Fun and engaging materials that make learning enjoyable.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">2.</span>
-                  <span><strong>Supports Speech & Language Development</strong> – Activities designed to improve communication skills.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">3.</span>
-                  <span><strong>Age-Appropriate Resources</strong> – Structured materials suitable for children 1–8 years.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">4.</span>
-                  <span><strong>Encourages Play-Based Learning</strong> – Learn through play to build confidence and skills naturally.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">5.</span>
-                  <span><strong>Safe & Durable Quality</strong> – High-quality, safe, and long-lasting materials for home use.</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <h3 className="font-semibold text-lg mb-3">For Therapists</h3>
-              <ul className="space-y-2 text-white/80 text-sm">
-                <li className="flex items-start">
-                  <span className="mr-2">1.</span>
-                  <span><strong>Evidence-Based Materials</strong> – Structured tools designed according to therapy goals.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">2.</span>
-                  <span><strong>Time-Saving Resources</strong> – Ready-to-use flashcards and activity kits for easy session planning.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">3.</span>
-                  <span><strong>Age-Wise Organized Kits</strong> – Developmental materials designed for children 1–8 years.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">4.</span>
-                  <span><strong>Autism & Speech Friendly</strong> – Created to improve engagement, communication, and learning.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">5.</span>
-                  <span><strong>Durable & Clinic-Ready Quality</strong> – Child-friendly, long-lasting materials suitable for professional use.</span>
-                </li>
-              </ul>
-            </div>
+          <div className="space-y-4">
+            {[
+              {
+                title: 'For Parents',
+                emoji: '👨‍👩‍👧',
+                items: ['Child-Friendly Learning Tools', 'Supports Speech & Language Development', 'Age-Appropriate Resources (1–8 yrs)'],
+              },
+              {
+                title: 'For Therapists',
+                emoji: '🩺',
+                items: ['Evidence-Based Materials', 'Time-Saving Ready-to-Use Kits', 'Autism & Speech Friendly'],
+              },
+            ].map((card, ci) => (
+              <motion.div
+                key={ci}
+                className="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/20"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 + ci * 0.15, duration: 0.45 }}
+              >
+                <h3 className="font-bold text-base mb-2 flex items-center gap-2">
+                  <span>{card.emoji}</span> {card.title}
+                </h3>
+                <ul className="space-y-1">
+                  {card.items.map((item, ii) => (
+                    <li key={ii} className="flex items-center gap-2 text-sm text-white/80">
+                      <span className="w-1.5 h-1.5 rounded-full bg-white/60 flex-shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Right Side - Signup Form */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-white">
-        <div className="w-full max-w-md">
+      {/* ── Right Panel ── */}
+      <div className="flex-1 flex items-center justify-center px-6 py-10 bg-gradient-to-br from-cream-light via-white to-coral-light/20 relative overflow-hidden">
+
+        {/* Subtle bg dots */}
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full opacity-25"
+            style={{
+              width: 8 + i * 4,
+              height: 8 + i * 4,
+              background: ['#FF85C0', '#FFD54F', '#4DD0E1', '#FF85C0', '#4FC3F7'][i],
+              top: `${12 + i * 18}%`,
+              right: `${3 + i * 2}%`,
+            }}
+            animate={{ y: [0, -10, 0], opacity: [0.2, 0.4, 0.2] }}
+            transition={{ duration: 3 + i, repeat: Infinity, ease: 'easeInOut', delay: i * 0.5 }}
+          />
+        ))}
+
+        <motion.div
+          className="w-full max-w-md"
+          variants={formVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {/* Mobile Logo */}
-          <div className="lg:hidden mb-8 text-center">
-            <h1 className="text-3xl font-bold text-teal">TalkieToys</h1>
-          </div>
+          <motion.div variants={fieldVariant} className="lg:hidden mb-6 text-center">
+            <h1 className="text-3xl font-[var(--font-family-fun)] font-bold text-coral">TalkieToys</h1>
+          </motion.div>
 
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-warmgray-900 mb-2">Create account</h2>
-            <p className="text-warmgray-600">Get started with your free account</p>
-          </div>
-
-          {serverError && (
-            <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-              <p className="text-sm text-red-700">{serverError}</p>
+          {/* Form Card */}
+          <motion.div
+            variants={fieldVariant}
+            className="bg-white/80 backdrop-blur-md rounded-3xl shadow-soft-xl border border-white/60 p-8"
+          >
+            <div className="mb-6">
+              <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-1">Create account</h2>
+              <p className="text-warmgray-500 text-sm">Get started with your free account today</p>
             </div>
-          )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Account Type Selection */}
-            <div>
-              <label className="block text-sm font-medium text-warmgray-700 mb-3">
-                Account type
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setFormData((prev) => ({ ...prev, role: 'customer' }))}
-                  className={`relative p-4 border-2 rounded-lg transition-all ${
-                    formData.role === 'customer'
-                      ? 'border-teal bg-teal/5 shadow-md'
-                      : 'border-warmgray-300 hover:border-teal/50'
-                  }`}
-                  disabled={isLoading}
-                >
-                  <div className="flex flex-col items-center">
-                    <UserCheck className={`h-8 w-8 mb-2 ${formData.role === 'customer' ? 'text-teal' : 'text-warmgray-400'}`} />
-                    <span className={`text-sm font-medium ${formData.role === 'customer' ? 'text-teal' : 'text-warmgray-700'}`}>
-                      Parent
-                    </span>
+            {serverError && (
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-5 bg-red-50 border-l-4 border-red-400 p-4 rounded-xl"
+              >
+                <p className="text-sm text-red-700">{serverError}</p>
+              </motion.div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Account Type */}
+              <motion.div variants={fieldVariant}>
+                <label className="block text-sm font-semibold text-warmgray-700 mb-2">Account type</label>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { role: 'customer' as const, Icon: UserCheck, label: 'Parent', emoji: '👨‍👩‍👧' },
+                    { role: 'therapist' as const, Icon: Stethoscope, label: 'Therapist', emoji: '🩺' },
+                  ].map(({ role, Icon, label, emoji }) => (
+                    <motion.button
+                      key={role}
+                      type="button"
+                      onClick={() => setFormData((prev) => ({ ...prev, role }))}
+                      disabled={isLoading}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`relative p-4 border-2 rounded-2xl transition-all ${
+                        formData.role === role
+                          ? 'border-coral bg-coral/5 shadow-soft-md'
+                          : 'border-warmgray-200 hover:border-coral/40 bg-warmgray-50'
+                      }`}
+                    >
+                      <div className="flex flex-col items-center gap-1">
+                        <span className="text-2xl">{emoji}</span>
+                        <Icon className={`h-5 w-5 ${formData.role === role ? 'text-coral' : 'text-warmgray-400'}`} />
+                        <span className={`text-sm font-semibold ${formData.role === role ? 'text-coral' : 'text-warmgray-600'}`}>
+                          {label}
+                        </span>
+                      </div>
+                      {formData.role === role && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="absolute top-2 right-2 w-5 h-5 bg-coral rounded-full flex items-center justify-center"
+                        >
+                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </motion.div>
+                      )}
+                    </motion.button>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Name */}
+              <motion.div variants={fieldVariant}>
+                <label htmlFor="name" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Full name</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
                   </div>
-                  {formData.role === 'customer' && (
-                    <div className="absolute top-2 right-2 w-5 h-5 bg-teal rounded-full flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  )}
-                </button>
+                  <input
+                    type="text" id="name" name="name"
+                    value={formData.name} onChange={handleChange}
+                    className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 focus:bg-white ${
+                      errors.name ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-100'
+                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10'
+                    }`}
+                    placeholder="John Doe" disabled={isLoading}
+                  />
+                </div>
+                {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
+              </motion.div>
 
-                <button
-                  type="button"
-                  onClick={() => setFormData((prev) => ({ ...prev, role: 'therapist' }))}
-                  className={`relative p-4 border-2 rounded-lg transition-all ${
-                    formData.role === 'therapist'
-                      ? 'border-teal bg-teal/5 shadow-md'
-                      : 'border-warmgray-300 hover:border-teal/50'
-                  }`}
-                  disabled={isLoading}
-                >
-                  <div className="flex flex-col items-center">
-                    <Stethoscope className={`h-8 w-8 mb-2 ${formData.role === 'therapist' ? 'text-teal' : 'text-warmgray-400'}`} />
-                    <span className={`text-sm font-medium ${formData.role === 'therapist' ? 'text-teal' : 'text-warmgray-700'}`}>
-                      Therapist
-                    </span>
+              {/* Email */}
+              <motion.div variants={fieldVariant}>
+                <label htmlFor="email" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Email address</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
                   </div>
-                  {formData.role === 'therapist' && (
-                    <div className="absolute top-2 right-2 w-5 h-5 bg-teal rounded-full flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <input
+                    type="email" id="email" name="email"
+                    value={formData.email} onChange={handleChange}
+                    className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 focus:bg-white ${
+                      errors.email ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-100'
+                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10'
+                    }`}
+                    placeholder="you@example.com" disabled={isLoading}
+                  />
+                </div>
+                {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
+              </motion.div>
+
+              {/* Password */}
+              <motion.div variants={fieldVariant}>
+                <label htmlFor="password" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Password</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    id="password" name="password"
+                    value={formData.password} onChange={handleChange}
+                    className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 focus:bg-white ${
+                      errors.password ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-100'
+                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10'
+                    }`}
+                    placeholder="At least 6 characters" disabled={isLoading}
+                  />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-4 flex items-center">
+                    {showPassword ? <EyeOff className="h-5 w-5 text-warmgray-400 hover:text-coral transition-colors" />
+                      : <Eye className="h-5 w-5 text-warmgray-400 hover:text-coral transition-colors" />}
+                  </button>
+                </div>
+                {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password}</p>}
+              </motion.div>
+
+              {/* Confirm Password */}
+              <motion.div variants={fieldVariant}>
+                <label htmlFor="password_confirmation" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Confirm password</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
+                  </div>
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    id="password_confirmation" name="password_confirmation"
+                    value={formData.password_confirmation} onChange={handleChange}
+                    className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 focus:bg-white ${
+                      errors.password_confirmation ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-100'
+                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10'
+                    }`}
+                    placeholder="Re-enter your password" disabled={isLoading}
+                  />
+                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-4 flex items-center">
+                    {showConfirmPassword ? <EyeOff className="h-5 w-5 text-warmgray-400 hover:text-coral transition-colors" />
+                      : <Eye className="h-5 w-5 text-warmgray-400 hover:text-coral transition-colors" />}
+                  </button>
+                </div>
+                {errors.password_confirmation && <p className="mt-1 text-xs text-red-600">{errors.password_confirmation}</p>}
+              </motion.div>
+
+              {/* Terms */}
+              <motion.div variants={fieldVariant} className="flex items-start">
+                <input id="terms" name="terms" type="checkbox" required
+                  className="h-4 w-4 text-coral focus:ring-coral border-warmgray-300 rounded mt-0.5"
+                />
+                <label htmlFor="terms" className="ml-2 text-sm text-warmgray-500">
+                  I agree to the{' '}
+                  <Link to="/terms" className="text-coral hover:text-coral-dark font-semibold">Terms</Link>{' '}
+                  and{' '}
+                  <Link to="/privacy" className="text-coral hover:text-coral-dark font-semibold">Privacy Policy</Link>
+                </label>
+              </motion.div>
+
+              {/* Submit */}
+              <motion.div variants={fieldVariant}>
+                <motion.button
+                  type="submit"
+                  disabled={isLoading}
+                  whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                  whileTap={{ scale: isLoading ? 1 : 0.97 }}
+                  className="w-full bg-gradient-to-r from-coral to-coral-dark text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-200 flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed shadow-soft-lg hover:shadow-soft-xl"
+                >
+                  {isLoading ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
-                    </div>
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Name Field */}
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-warmgray-700 mb-2">
-                Full name
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-warmgray-400" />
-                </div>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`w-full pl-12 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
-                    errors.name
-                      ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                      : 'border-warmgray-300 focus:border-teal focus:ring-teal/20'
-                  }`}
-                  placeholder="John Doe"
-                  disabled={isLoading}
-                />
-              </div>
-              {errors.name && (
-                <p className="mt-2 text-sm text-red-600">{errors.name}</p>
-              )}
-            </div>
-
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-warmgray-700 mb-2">
-                Email address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-warmgray-400" />
-                </div>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full pl-12 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
-                    errors.email
-                      ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                      : 'border-warmgray-300 focus:border-teal focus:ring-teal/20'
-                  }`}
-                  placeholder="you@example.com"
-                  disabled={isLoading}
-                />
-              </div>
-              {errors.email && (
-                <p className="mt-2 text-sm text-red-600">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Password Field */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-warmgray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-warmgray-400" />
-                </div>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className={`w-full pl-12 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
-                    errors.password
-                      ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                      : 'border-warmgray-300 focus:border-teal focus:ring-teal/20'
-                  }`}
-                  placeholder="At least 6 characters"
-                  disabled={isLoading}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-warmgray-400 hover:text-warmgray-600" />
+                      Creating account...
+                    </>
                   ) : (
-                    <Eye className="h-5 w-5 text-warmgray-400 hover:text-warmgray-600" />
+                    <>Create account <ArrowRight className="ml-2 h-5 w-5" /></>
                   )}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="mt-2 text-sm text-red-600">{errors.password}</p>
-              )}
+                </motion.button>
+              </motion.div>
+            </form>
+
+            <div className="my-5 flex items-center gap-3">
+              <div className="flex-1 h-px bg-warmgray-200" />
+              <span className="text-xs text-warmgray-400 font-medium">Already have an account?</span>
+              <div className="flex-1 h-px bg-warmgray-200" />
             </div>
 
-            {/* Confirm Password Field */}
-            <div>
-              <label htmlFor="password_confirmation" className="block text-sm font-medium text-warmgray-700 mb-2">
-                Confirm password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-warmgray-400" />
-                </div>
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  id="password_confirmation"
-                  name="password_confirmation"
-                  value={formData.password_confirmation}
-                  onChange={handleChange}
-                  className={`w-full pl-12 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
-                    errors.password_confirmation
-                      ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                      : 'border-warmgray-300 focus:border-teal focus:ring-teal/20'
-                  }`}
-                  placeholder="Re-enter your password"
-                  disabled={isLoading}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center"
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5 text-warmgray-400 hover:text-warmgray-600" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-warmgray-400 hover:text-warmgray-600" />
-                  )}
-                </button>
-              </div>
-              {errors.password_confirmation && (
-                <p className="mt-2 text-sm text-red-600">{errors.password_confirmation}</p>
-              )}
-            </div>
-
-            {/* Terms Agreement */}
-            <div className="flex items-start">
-              <input
-                id="terms"
-                name="terms"
-                type="checkbox"
-                required
-                className="h-4 w-4 text-teal focus:ring-teal border-warmgray-300 rounded mt-1"
-              />
-              <label htmlFor="terms" className="ml-2 block text-sm text-warmgray-600">
-                I agree to the{' '}
-                <Link to="/terms" className="text-teal hover:text-teal-dark font-medium">
-                  Terms of Service
-                </Link>{' '}
-                and{' '}
-                <Link to="/privacy" className="text-teal hover:text-teal-dark font-medium">
-                  Privacy Policy
-                </Link>
-              </label>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-teal hover:bg-teal-dark text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
-            >
-              {isLoading ? (
-                <>
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Creating account...
-                </>
-              ) : (
-                <>
-                  Create account
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Divider */}
-          <div className="mt-8 mb-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-warmgray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-warmgray-500">Already have an account?</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Login Link */}
-          <div className="text-center">
-            <Link
-              to="/login"
-              className="inline-flex items-center justify-center w-full py-3 px-4 border-2 border-warmgray-300 text-warmgray-700 font-semibold rounded-lg hover:bg-warmgray-50 transition-all duration-200"
-            >
-              Sign in instead
-            </Link>
-          </div>
-        </div>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                to="/login"
+                className="flex items-center justify-center w-full py-3 px-4 border-2 border-warmgray-200 text-warmgray-600 font-semibold rounded-xl hover:bg-warmgray-50 hover:border-warmgray-300 transition-all duration-200"
+              >
+                Sign in instead
+              </Link>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );
