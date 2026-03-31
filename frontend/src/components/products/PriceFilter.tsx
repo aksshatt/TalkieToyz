@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DollarSign } from 'lucide-react';
+import { IndianRupee } from 'lucide-react';
 
 interface PriceFilterProps {
   onPriceChange: (min: number | undefined, max: number | undefined) => void;
@@ -32,7 +32,7 @@ const PriceFilter = ({ onPriceChange, minPrice = 0, maxPrice = 200 }: PriceFilte
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-        <DollarSign className="h-4 w-4" />
+        <IndianRupee className="h-4 w-4" />
         <span>Price Range</span>
       </div>
 
