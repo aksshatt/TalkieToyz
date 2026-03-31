@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Grid, List, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
+import { Grid, List, ChevronLeft, ChevronRight, SlidersHorizontal, ShoppingBag, Sparkles, Star } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useProducts, useCategories } from '../hooks/useProducts';
 import ProductCard from '../components/products/ProductCard';
 import FilterSidebar from '../components/products/FilterSidebar';
@@ -99,6 +100,44 @@ const ProductList = () => {
   return (
     <Layout>
       <div className="min-h-screen bg-cream-light">
+      {/* Hero Banner */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-sky py-16 px-4">
+        <motion.div className="absolute w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"
+          animate={{ x: [0, 30, 0], y: [0, -20, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ top: '-15%', left: '-5%' }} />
+        <motion.div className="absolute w-60 h-60 rounded-full bg-sunshine/20 blur-3xl pointer-events-none"
+          animate={{ x: [0, -18, 0], y: [0, 25, 0] }} transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          style={{ bottom: '-10%', right: '8%' }} />
+        {[ShoppingBag, Sparkles, Star].map((Icon, i) => (
+          <motion.div key={i} className="absolute text-white/15 pointer-events-none"
+            style={{ top: `${20 + i * 25}%`, left: `${8 + i * 28}%` }}
+            animate={{ y: [0, -10, 0], rotate: [0, 8, -8, 0] }}
+            transition={{ duration: 4 + i, repeat: Infinity, ease: 'easeInOut', delay: i * 0.8 }}>
+            <Icon className="w-7 h-7" />
+          </motion.div>
+        ))}
+        <div className="relative z-10 max-w-3xl mx-auto text-center text-white">
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+            className="inline-flex items-center justify-center w-14 h-14 bg-white/20 rounded-full mb-5">
+            <ShoppingBag className="w-7 h-7 text-white" />
+          </motion.div>
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+            className="text-4xl md:text-5xl font-[var(--font-family-fun)] font-bold mb-3">
+            Our <span className="text-sunshine">Products</span>
+          </motion.h1>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
+            className="text-lg text-white/85 max-w-xl mx-auto">
+            Discover therapeutic toys designed to nurture speech, communication, and development.
+          </motion.p>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+            <path d="M0 48C240 16 480 0 720 0C960 0 1200 16 1440 48H0Z" fill="#fdf8f0" />
+          </svg>
+        </div>
+      </div>
+
       {/* Header */}
       <div className="bg-gradient-to-br from-teal-light/40 via-cream-light to-coral-light/30 border-b border-warmgray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

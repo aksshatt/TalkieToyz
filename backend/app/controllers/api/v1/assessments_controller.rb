@@ -1,7 +1,6 @@
 module Api
   module V1
     class AssessmentsController < BaseController
-      before_action :authenticate_user!, only: [:submit]
       before_action :set_assessment, only: [:show, :submit]
 
       # GET /api/v1/assessments
@@ -40,7 +39,8 @@ module Api
 
       # POST /api/v1/assessments/:id/submit
       def submit
-        @result = current_user.assessment_results.build(
+        @result = AssessmentResult.new(
+          user: current_user,
           assessment: @assessment,
           child_name: params[:child_name],
           child_age_months: params[:child_age_months],

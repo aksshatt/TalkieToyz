@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Heart, Sparkles, Target } from 'lucide-react';
+import { Heart, Sparkles, Target, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import { siteContentService } from '../services/siteContentService';
@@ -10,9 +12,7 @@ const About = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadContent();
-  }, []);
+  useEffect(() => { loadContent(); }, []);
 
   const loadContent = async () => {
     try {
@@ -28,24 +28,14 @@ const About = () => {
     }
   };
 
-  // Parse vision cards from JSON
   const getVisionCards = () => {
-    try {
-      return content.vision_cards ? JSON.parse(content.vision_cards) : [];
-    } catch {
-      return [];
-    }
+    try { return content.vision_cards ? JSON.parse(content.vision_cards) : []; }
+    catch { return []; }
   };
-
   const visionCards = getVisionCards();
 
-  // Icon mapping
   const getIcon = (iconName: string) => {
-    const icons: Record<string, any> = {
-      heart: Heart,
-      sparkles: Sparkles,
-      target: Target
-    };
+    const icons: Record<string, any> = { heart: Heart, sparkles: Sparkles, target: Target };
     return icons[iconName] || Heart;
   };
 
@@ -53,9 +43,7 @@ const About = () => {
     return (
       <Layout>
         <div className="min-h-screen py-12 bg-warmgray-50">
-          <div className="max-w-4xl mx-auto px-4">
-            <LoadingSkeleton />
-          </div>
+          <div className="max-w-4xl mx-auto px-4"><LoadingSkeleton /></div>
         </div>
       </Layout>
     );
@@ -65,9 +53,7 @@ const About = () => {
     return (
       <Layout>
         <div className="min-h-screen py-12 bg-warmgray-50">
-          <div className="max-w-4xl mx-auto px-4">
-            <div className="text-center text-red-600">{error}</div>
-          </div>
+          <div className="max-w-4xl mx-auto px-4 text-center text-red-600">{error}</div>
         </div>
       </Layout>
     );
@@ -75,123 +61,229 @@ const About = () => {
 
   const HeroIcon = getIcon(content.hero_icon || 'heart');
 
+  const cardGradients: Record<string, string> = {
+    teal: 'from-teal/10 to-teal-light/20 border-teal/20',
+    coral: 'from-coral/10 to-coral-light/20 border-coral/20',
+    sunshine: 'from-sunshine/10 to-sunshine-light/20 border-sunshine/20',
+  };
+  const iconGradients: Record<string, string> = {
+    teal: 'bg-teal-gradient',
+    coral: 'bg-coral-gradient',
+    sunshine: 'bg-sunshine-gradient',
+  };
+
   return (
     <Layout>
-      <div className="min-h-screen py-12 bg-warmgray-50">
-        <div className="max-w-4xl mx-auto px-4">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-block p-4 bg-teal-light/30 rounded-full mb-4">
-              <HeroIcon className="h-12 w-12 text-teal" />
-            </div>
-            <h1 className="text-5xl font-[var(--font-family-fun)] font-bold mb-4">
-              <span className="text-teal">{content.hero_title || 'About Us'}</span>
-            </h1>
-          </div>
+      {/* Hero Banner */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-coral-dark via-coral to-sunshine py-20 px-4">
+        <motion.div
+          className="absolute w-96 h-96 rounded-full bg-white/10 blur-3xl pointer-events-none"
+          animate={{ x: [0, 35, 0], y: [0, -25, 0] }}
+          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ top: '-15%', left: '-5%' }}
+        />
+        <motion.div
+          className="absolute w-72 h-72 rounded-full bg-teal/20 blur-3xl pointer-events-none"
+          animate={{ x: [0, -20, 0], y: [0, 30, 0] }}
+          transition={{ duration: 13, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          style={{ bottom: '-15%', right: '5%' }}
+        />
+        <motion.div
+          className="absolute w-52 h-52 rounded-full bg-white/15 blur-2xl pointer-events-none"
+          animate={{ x: [0, 18, -12, 0], y: [0, -18, 12, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          style={{ top: '30%', right: '15%' }}
+        />
 
-          {/* Main Content Card with Image */}
-          <div className="card-talkie mb-8">
-            <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-6 text-center">
-              {content.main_heading || 'Meet the Mind Behind Talkie Toyz'}
-            </h2>
+        {[Heart, Sparkles, Target].map((Icon, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-white/15 pointer-events-none"
+            style={{ top: `${15 + i * 28}%`, left: `${8 + i * 25}%` }}
+            animate={{ y: [0, -14, 0], rotate: [0, 10, -10, 0] }}
+            transition={{ duration: 4.5 + i * 0.7, repeat: Infinity, ease: 'easeInOut', delay: i * 0.9 }}
+          >
+            <Icon className="w-8 h-8" />
+          </motion.div>
+        ))}
 
-            <div className="grid md:grid-cols-3 gap-8 items-start">
-              {/* Image Section */}
-              <div className="md:col-span-1">
-                <div className="relative rounded-2xl overflow-hidden shadow-soft-lg">
-                  <img
-                    src={content.founder_image || '/swekchaa-tamrakar.jpg'}
-                    alt={`${content.founder_name || 'Swekchaa Tamrakar'} - Founder of Talkie Toyz`}
-                    className="w-full h-auto object-cover"
-                    onError={(e) => {
-                      // Fallback to placeholder if image not found
-                      e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"%3E%3Crect width="400" height="500" fill="%2399d5d0"/%3E%3Ctext x="50%25" y="50%25" font-size="24" fill="%23fff" text-anchor="middle" dominant-baseline="middle"%3E' + encodeURIComponent(content.founder_name || 'Founder') + '%3C/text%3E%3C/svg%3E';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal/20 to-transparent"></div>
-                </div>
-                <p className="text-center text-sm text-warmgray-600 mt-3 font-medium">
-                  {content.founder_name || 'Swekchaa Tamrakar'}
-                  <br />
-                  <span className="text-teal">{content.founder_title || 'Founder & Speech Therapist'}</span>
-                </p>
+        <div className="relative z-10 max-w-3xl mx-auto text-center text-white">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+            className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6"
+          >
+            <HeroIcon className="w-8 h-8 text-white" />
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="text-4xl md:text-5xl font-[var(--font-family-fun)] font-bold mb-4"
+          >
+            {content.hero_title || 'About Us'}
+          </motion.h1>
+          <motion.div
+            className="h-1 bg-white/60 rounded-full mx-auto"
+            initial={{ width: 0 }}
+            animate={{ width: 80 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          />
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+            <path d="M0 48C240 16 480 0 720 0C960 0 1200 16 1440 48H0Z" fill="#fafaf9" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="bg-warmgray-50 min-h-screen py-12">
+        <div className="max-w-5xl mx-auto px-4">
+
+          {/* Founder Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-3xl shadow-soft-xl overflow-hidden mb-10"
+          >
+            <div className="p-8 md:p-10">
+              <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-8 text-center">
+                {content.main_heading || 'Meet the Mind Behind Talkie Toyz'}
+              </h2>
+              <div className="grid md:grid-cols-3 gap-8 items-start">
+                {/* Image */}
+                <motion.div
+                  className="md:col-span-1"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  <div className="relative rounded-2xl overflow-hidden shadow-soft-lg">
+                    <img
+                      src={content.founder_image || '/swekchaa-tamrakar.jpg'}
+                      alt={`${content.founder_name || 'Swekchaa Tamrakar'} - Founder of Talkie Toyz`}
+                      className="w-full h-auto object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"%3E%3Crect width="400" height="500" fill="%2399d5d0"/%3E%3Ctext x="50%25" y="50%25" font-size="24" fill="%23fff" text-anchor="middle" dominant-baseline="middle"%3E' + encodeURIComponent(content.founder_name || 'Founder') + '%3C/text%3E%3C/svg%3E';
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-coral/30 to-transparent" />
+                  </div>
+                  <div className="text-center mt-3">
+                    <p className="font-bold text-warmgray-800">{content.founder_name || 'Swekchaa Tamrakar'}</p>
+                    <p className="text-coral text-sm font-semibold">{content.founder_title || 'Founder & Speech Therapist'}</p>
+                  </div>
+                </motion.div>
+
+                {/* Bio */}
+                <motion.div
+                  className="md:col-span-2"
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  <p className="text-lg text-warmgray-700 leading-relaxed mb-5">
+                    {content.founder_bio_1 || "I'm Swekchaa Tamrakar, a speech and hearing professional, founder of Talkie Toyz and Madhuram Multi Rehabilitation Centre, and a passionate believer in learning through play."}
+                  </p>
+                  <p className="text-lg text-warmgray-700 leading-relaxed">
+                    {content.founder_bio_2 || "That's how Talkie Toyz was born—to create toys that don't just entertain, but educate, empower, and encourage communication."}
+                  </p>
+                </motion.div>
               </div>
-
-              {/* Text Content */}
-              <div className="md:col-span-2 prose prose-lg max-w-none">
-                <p className="text-lg text-warmgray-700 leading-relaxed mb-6">
-                  {content.founder_bio_1 || "I'm Swekchaa Tamrakar, a speech and hearing professional, founder of Talkie Toyz and Madhuram Multi Rehabilitation Centre, and a passionate believer in learning through play. While working closely with children and parents, I saw how the right toys can make a powerful difference in a child's communication journey."}
-                </p>
-
-                <p className="text-lg text-warmgray-700 leading-relaxed mb-6">
-                  {content.founder_bio_2 || "That's how Talkie Toyz was born—to create toys that don't just entertain, but educate, empower, and encourage communication. Every product is inspired by real therapy needs and designed with love, care, and clinical understanding."}
-                </p>
-              </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Vision Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            {visionCards.map((card: any, index: number) => {
-              const CardIcon = getIcon(card.icon);
-              const colorClasses = {
-                teal: 'bg-teal-light/30 text-teal',
-                coral: 'bg-coral-light/30 text-coral',
-                sunshine: 'bg-sunshine-light/30 text-sunshine'
-              };
-              const colorClass = colorClasses[card.color as keyof typeof colorClasses] || colorClasses.teal;
-
-              return (
-                <div key={index} className="card-talkie text-center">
-                  <div className={`inline-block p-3 ${colorClass.split(' ')[0]} rounded-full mb-4`}>
-                    <CardIcon className={`h-8 w-8 ${colorClass.split(' ')[1]}`} />
-                  </div>
-                  <h3 className="text-xl font-bold text-warmgray-800 mb-3">{card.title}</h3>
-                  <p className="text-warmgray-600">{card.description}</p>
-                </div>
-              );
-            })}
-          </div>
+          {visionCards.length > 0 && (
+            <div className="grid md:grid-cols-3 gap-6 mb-10">
+              {visionCards.map((card: any, index: number) => {
+                const CardIcon = getIcon(card.icon);
+                const gradientClass = cardGradients[card.color as keyof typeof cardGradients] || cardGradients.teal;
+                const iconClass = iconGradients[card.color as keyof typeof iconGradients] || iconGradients.teal;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                    whileHover={{ y: -6, boxShadow: '0 16px 40px rgba(0,0,0,0.1)' }}
+                    className={`bg-gradient-to-br ${gradientClass} rounded-2xl p-6 text-center border shadow-soft`}
+                  >
+                    <div className={`inline-flex items-center justify-center w-14 h-14 ${iconClass} rounded-2xl mb-4 shadow-soft`}>
+                      <CardIcon className="h-7 w-7 text-white" />
+                    </div>
+                    <h3 className="text-lg font-bold text-warmgray-800 mb-2">{card.title}</h3>
+                    <p className="text-warmgray-600 text-sm leading-relaxed">{card.description}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
 
           {/* Credentials Section */}
-          <div className="card-talkie bg-teal-light/20">
-            <h3 className="text-2xl font-bold text-warmgray-800 mb-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="bg-gradient-to-br from-teal-light/20 to-sky-light/20 rounded-3xl p-8 md:p-10 border border-teal/10 shadow-soft mb-10"
+          >
+            <h3 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-6 text-center">
               {content.credentials_heading || 'Professional Background'}
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <h4 className="font-bold text-lg text-teal mb-2">
-                  {content.talkie_toyz_title || 'Talkie Toyz'}
-                </h4>
-                <p className="text-warmgray-700">
+              <div className="bg-white/70 rounded-2xl p-5 border border-teal/10">
+                <h4 className="font-bold text-lg text-teal mb-2">{content.talkie_toyz_title || 'Talkie Toyz'}</h4>
+                <p className="text-warmgray-700 text-sm leading-relaxed">
                   {content.talkie_toyz_description || 'Founder & Creator of therapeutic toys designed specifically for speech and communication development.'}
                 </p>
               </div>
-              <div>
-                <h4 className="font-bold text-lg text-coral mb-2">
-                  {content.madhuram_title || 'Madhuram Multi Rehabilitation Centre'}
-                </h4>
-                <p className="text-warmgray-700">
+              <div className="bg-white/70 rounded-2xl p-5 border border-coral/10">
+                <h4 className="font-bold text-lg text-coral mb-2">{content.madhuram_title || 'Madhuram Multi Rehabilitation Centre'}</h4>
+                <p className="text-warmgray-700 text-sm leading-relaxed">
                   {content.madhuram_description || 'Founder & Speech-Hearing Professional providing comprehensive therapy services for children.'}
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* CTA Section */}
-          <div className="text-center mt-8">
-            <p className="text-lg text-warmgray-600 mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center bg-white rounded-3xl shadow-soft p-10"
+          >
+            <p className="text-lg text-warmgray-600 mb-7 max-w-xl mx-auto">
               {content.cta_text || 'Join us in making communication development fun, effective, and accessible for every child.'}
             </p>
-            <div className="flex gap-4 justify-center">
-              <a href={content.cta_button_1_link || '/products'} className="btn-primary">
-                {content.cta_button_1_text || 'Explore Our Toys'}
-              </a>
-              <a href={content.cta_button_2_link || '/contact'} className="btn-outline">
-                {content.cta_button_2_text || 'Get in Touch'}
-              </a>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+                <Link
+                  to={content.cta_button_1_link || '/products'}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-teal to-teal-dark text-white font-bold px-8 py-3.5 rounded-xl shadow-soft-lg hover:shadow-soft-xl transition-shadow"
+                >
+                  {content.cta_button_1_text || 'Explore Our Toys'}
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+                <Link
+                  to={content.cta_button_2_link || '/contact'}
+                  className="inline-flex items-center gap-2 bg-white text-teal font-bold px-8 py-3.5 rounded-xl border-2 border-teal/30 shadow-soft hover:shadow-soft-md transition-shadow"
+                >
+                  {content.cta_button_2_text || 'Get in Touch'}
+                </Link>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </Layout>
