@@ -9,6 +9,7 @@ module Api
         if @appointment.save
           AppointmentMailer.customer_confirmation(@appointment).deliver_later
           AppointmentMailer.admin_notification(@appointment).deliver_later
+          WhatsappService.send_appointment_notification(@appointment)
 
           render_success(
             { id: @appointment.id },
