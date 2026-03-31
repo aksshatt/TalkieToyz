@@ -1,0 +1,117 @@
+  
+● Your Shiprocket integration is already fully built. You just need to configure it. Here's what to do:                                                                                                    
+                                                  
+  Step 1: Set Environment Variables                                                                                                                                                                        
+                                                  
+  Add these to your .env (or hosting platform's env config):                                                                                                                                               
+                                                                                                                                                                                                           
+  SHIPROCKET_EMAIL=your-shiprocket-login-email
+  SHIPROCKET_PASSWORD=your-shiprocket-login-password
+
+
+  The API URL defaults to https://apiv2.shiprocket.in/v1/external — no need to set it unless custom.
+
+  Step 2: Get Shiprocket Credentials
+
+  1. Sign up / log in at app.shiprocket.in
+  2. Use the same email/password you log in with — Shiprocket's API uses email+password auth (no separate API keys)
+
+  Step 3: Configure Webhook for Real-Time Updates
+
+  This is the key part for real-time tracking. Your webhook endpoint already exists at:
+
+  POST /api/v1/webhooks/shiprocket
+
+
+  In your Shiprocket dashboard:
+  1. Go to Settings → Webhooks (or Settings → Configure → Webhooks)
+  2. Add a new webhook URL: https://your-backend-domain.com/api/v1/webhooks/shiprocket
+  3. Enable events for: Shipment Status Update (all statuses)
+
+  Once configured, Shiprocket will automatically POST status updates (Shipped, In Transit, Out for Delivery, Delivered, RTO, etc.) to your backend. The webhooks_controller.rb already handles these — it
+  updates the Shipment record, syncs the Order status, and sends email notifications.
+
+  Step 4: Configure Pickup Location
+
+  In your Shiprocket dashboard:
+  1. Go to Settings → Pickup Addresses
+  2. Add your warehouse address and name it "Primary" (this matches pickup_location: 'Primary' in the code)
+
+  Step 5: Update Warehouse Pincode
+
+  In shiprocket_service.rb:128, the pickup pincode is hardcoded:
+
+  pickup_postcode: '110001'  # Your warehouse PIN
+
+  Change this to your actual warehouse pincode, or move it to an env variable.
+
+  How the Flow Works
+
+  ┌───────────────────┬────────────────────────────────────────────────────┬──────────────────────────────────────────────────────────────────────────────────────┐
+  │       Step        │                      Trigger                       │                                     What Happens                                     │
+  ├───────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────┤
+  │ Create Shipment   │ Admin clicks "Create Shipment" in admin panel      │ ShiprocketService.create_shipment() → creates order + assigns AWB                    │
+  ├───────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────┤
+  │ Real-time updates │ Shiprocket sends webhook                           │ webhooks#shiprocket → updates shipment status → syncs order status → sends emails    │
+  ├───────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────┤
+  │ User refreshes    │ User clicks "Refresh Tracking" on OrderDetail page │ POST /orders/:id/track → shipment.refresh_tracking() → calls Shiprocket API directly │
+  └───────────────────┴────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────┘
+
+  So you get two channels of tracking updates:
+  - Push (automatic): Shiprocket webhooks → real-time, no user action needed
+  - Pull (on-demand): "Refresh Tracking" button → user-initiated API call
+
+  No code changes needed — just the env vars and Shiprocket dashboard configuration.
+
+✻ Crunched for 38s
+                             
+❯ shiprocket toh otp se login horha hai toh password kaha se du                                                                                                                                            
+                                                                
+● Shiprocket ne 2024 mein apna login OTP-based kar diya hai, toh ab email+password wala API auth directly kaam nahi karega.                                                                                
+                                                                                                                                                                                                         
+  Fix: Use API User credentials instead.                                                                                                                                                                   
+                                                  
+  Steps:                                                                                                                                                                                                   
+                                                                                                                                                                                                           
+  1. Login to app.shiprocket.in (via OTP)
+  2. Go to Settings → API → Create an API User (or Settings → API Credentials)
+  3. There, create a dedicated API user with an email and password
+  4. Use those credentials in your env:
+
+  SHIPROCKET_EMAIL=your-api-user-email
+  SHIPROCKET_PASSWORD=your-api-user-password
+
+
+  This API user uses email+password auth specifically for the /auth/login API endpoint, separate from the dashboard OTP login. The rest of your integration code stays exactly the same.
+                             
+❯ select modules to access and Allowed IPs for PII Access m ky fill kru                                                                                                                                    
+                                                                        
+● Modules to Access                                                                                                                                                                                        
+                               
+  Sab select karo — your backend uses all of these:                                                                                                                                                        
+                                                  
+  - Orders — create order, cancel order                                                                                                                                                                    
+  - Courier — AWB generation, assign courier, tracking
+  - Shipments — create shipment, cancel shipment, labels
+  - Tracking — track by AWB (this is critical for your tracking feature)
+  - Returns — RTO/return handling
+
+  Agar "Select All" option hai toh use it.
+
+  Allowed IPs for PII Access
+
+  This depends on your deployment:
+
+  ┌────────────────────────────────────────────┬───────────────────────────────────────────────────────────────────────────────┐
+  │                   Setup                    │                                 What to enter                                 │
+  ├────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────┤
+  │ Render / Heroku / Railway (shared hosting) │ Leave blank or enter 0.0.0.0/0 (allow all) — these platforms have dynamic IPs │
+  ├────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────┤
+  │ VPS with static IP (DigitalOcean, AWS EC2) │ Enter your server's public IP                                                 │
+  ├────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────┤
+  │ Local development only                     │ Leave blank for now                                                           │
+  └────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────┘
+
+  Since you're on Render (talkietoys-backend.onrender.com), Render uses dynamic IPs — so you'll most likely need to leave it blank or allow all IPs. If Shiprocket requires at least one entry, put
+  0.0.0.0/0.
+
