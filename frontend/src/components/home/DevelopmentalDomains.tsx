@@ -11,6 +11,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { productService } from '../../services/productService';
 import type { Category } from '../../types/product';
 
@@ -23,7 +24,6 @@ const DevelopmentalDomains = () => {
     const fetchCategories = async () => {
       try {
         const response = await productService.getCategories();
-        // Filter only top-level categories (parent_id is null)
         const topLevelCategories = response.data.filter((cat: Category) => cat.parent_id === null);
         setCategories(topLevelCategories);
       } catch (error) {
@@ -36,7 +36,6 @@ const DevelopmentalDomains = () => {
     fetchCategories();
   }, []);
 
-  // Icon mapping for different domains
   const getIconForDomain = (slug: string) => {
     const iconMap: { [key: string]: React.ReactNode } = {
       'physical-domain': <Activity className="w-8 h-8" />,
@@ -49,7 +48,6 @@ const DevelopmentalDomains = () => {
     return iconMap[slug] || <Hand className="w-8 h-8" />;
   };
 
-  // Color mapping for different domains
   const getColorForDomain = (index: number) => {
     const colors = [
       { color: 'text-teal', bgColor: 'bg-teal-light/30', borderColor: 'border-teal' },
@@ -89,14 +87,20 @@ const DevelopmentalDomains = () => {
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-12">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <h2 className="text-4xl sm:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-4">
             Developmental Domains
           </h2>
           <p className="text-lg text-warmgray-600 max-w-3xl mx-auto">
             Our toys are carefully categorized by developmental areas to help you choose the perfect match for your child's growth journey
           </p>
-        </div>
+        </motion.div>
 
         {/* Domains Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -106,21 +110,35 @@ const DevelopmentalDomains = () => {
             const isExpanded = expandedDomain === category.id;
 
             return (
-              <div key={category.id} className="animate-slide-in" style={{ animationDelay: `${index * 100}ms` }}>
+              <motion.div
+                key={category.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.55, ease: "easeOut", delay: index * 0.08 }}
+              >
                 {/* Main Domain Card */}
-                <div
-                  className={`card-talkie-hover transition-all duration-300 ${
+                <motion.div
+                  className={`card-talkie-hover transition-colors duration-300 ${
                     isExpanded ? `border-l-4 ${colors.borderColor}` : ''
                   }`}
+                  whileHover={{ y: -6, boxShadow: '0 12px 28px rgba(0,0,0,0.13)' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
                 >
                   <div className="p-6">
                     <div className="flex items-start gap-4">
                       {/* Icon */}
                       <Link
                         to={`/products?category=${category.slug}`}
-                        className={`flex-shrink-0 w-16 h-16 rounded-full ${colors.bgColor} flex items-center justify-center shadow-soft hover:scale-110 transition-transform duration-300`}
+                        className={`flex-shrink-0 w-16 h-16 rounded-full ${colors.bgColor} flex items-center justify-center shadow-soft`}
                       >
-                        <div className={colors.color}>{getIconForDomain(category.slug)}</div>
+                        <motion.div
+                          className={colors.color}
+                          whileHover={{ scale: 1.2, rotate: 8 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+                        >
+                          {getIconForDomain(category.slug)}
+                        </motion.div>
                       </Link>
 
                       {/* Content */}
@@ -135,17 +153,23 @@ const DevelopmentalDomains = () => {
                             </h3>
                           </Link>
                           {hasSubcategories && (
-                            <button
+                            <motion.button
                               onClick={() => toggleDomain(category.id)}
                               className="flex-shrink-0 p-1 hover:bg-warmgray-100 rounded-lg transition-colors"
                               aria-label={isExpanded ? 'Collapse subcategories' : 'Expand subcategories'}
+                              whileTap={{ scale: 0.88 }}
                             >
-                              {isExpanded ? (
-                                <ChevronUp className={`w-5 h-5 ${colors.color}`} />
-                              ) : (
-                                <ChevronDown className={`w-5 h-5 ${colors.color}`} />
-                              )}
-                            </button>
+                              <motion.div
+                                animate={{ rotate: isExpanded ? 180 : 0 }}
+                                transition={{ duration: 0.25 }}
+                              >
+                                {isExpanded ? (
+                                  <ChevronUp className={`w-5 h-5 ${colors.color}`} />
+                                ) : (
+                                  <ChevronDown className={`w-5 h-5 ${colors.color}`} />
+                                )}
+                              </motion.div>
+                            </motion.button>
                           )}
                         </div>
                         <p className="text-sm text-warmgray-600 leading-relaxed">
@@ -154,51 +178,73 @@ const DevelopmentalDomains = () => {
                       </div>
                     </div>
 
-                    {/* Subcategories - Expandable */}
-                    {isExpanded && hasSubcategories && (
-                      <div className="mt-4 pt-4 border-t border-warmgray-200 space-y-2 animate-slide-in">
-                        {category.subcategories?.map((subcat) => (
-                          <Link
-                            key={subcat.id}
-                            to={`/products?category=${subcat.slug}`}
-                            className={`block p-3 rounded-lg hover:${colors.bgColor} transition-all group`}
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="text-warmgray-700 font-medium group-hover:text-warmgray-900">
-                                {subcat.name}
-                              </span>
-                              <svg
-                                className={`w-4 h-4 ${colors.color} opacity-0 group-hover:opacity-100 transition-opacity`}
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
+                    {/* Subcategories - Animated expand/collapse */}
+                    <AnimatePresence>
+                      {isExpanded && hasSubcategories && (
+                        <motion.div
+                          className="mt-4 pt-4 border-t border-warmgray-200 space-y-2"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3, ease: "easeOut" }}
+                        >
+                          {category.subcategories?.map((subcat, si) => (
+                            <motion.div
+                              key={subcat.id}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: si * 0.05 }}
+                            >
+                              <Link
+                                to={`/products?category=${subcat.slug}`}
+                                className={`block p-3 rounded-lg hover:${colors.bgColor} transition-all group`}
                               >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    )}
+                                <div className="flex items-center justify-between">
+                                  <span className="text-warmgray-700 font-medium group-hover:text-warmgray-900">
+                                    {subcat.name}
+                                  </span>
+                                  <svg
+                                    className={`w-4 h-4 ${colors.color} opacity-0 group-hover:opacity-100 transition-opacity`}
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                  </svg>
+                                </div>
+                              </Link>
+                            </motion.div>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* View All Link */}
-        <div className="text-center mt-12">
-          <Link
-            to="/products"
-            className="inline-flex items-center gap-2 text-teal font-semibold hover:text-coral transition-colors text-lg"
-          >
-            Explore All Products
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
-        </div>
+        <motion.div
+          className="text-center mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div whileHover={{ x: 4 }} transition={{ type: 'spring', stiffness: 400 }}>
+            <Link
+              to="/products"
+              className="inline-flex items-center gap-2 text-teal font-semibold hover:text-coral transition-colors text-lg"
+            >
+              Explore All Products
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/auth/PrivateRoute';
 import AdminRoute from './components/auth/AdminRoute';
@@ -6,6 +6,7 @@ import ErrorBoundary from './components/common/ErrorBoundary';
 import { useEffect } from 'react';
 import { useAppDispatch } from './store/hooks';
 import { fetchCart } from './store/slices/cartSlice';
+import { AnimatePresence, motion } from 'framer-motion';
 
 // Pages
 import Home from './pages/Home';
@@ -63,8 +64,23 @@ import WishlistPage from './pages/WishlistPage';
 import WhatsAppButton from './components/common/WhatsAppButton';
 import TawkToChat from './components/common/TawkToChat';
 
+const pageVariants = {
+  initial: { opacity: 0, y: 12 },
+  enter: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+  exit: { opacity: 0, y: -8, transition: { duration: 0.2 } },
+} as const;
+
+function PageWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div variants={pageVariants} initial="initial" animate="enter" exit="exit">
+      {children}
+    </motion.div>
+  );
+}
+
 function App() {
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     // Load cart on app mount
@@ -74,20 +90,21 @@ function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
-        <Routes>
+        <AnimatePresence mode="wait" initial={false}>
+        <Routes location={location} key={location.pathname}>
           {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+          <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+          <Route path="/signup" element={<PageWrapper><Signup /></PageWrapper>} />
+          <Route path="/forgot-password" element={<PageWrapper><ForgotPassword /></PageWrapper>} />
+          <Route path="/reset-password" element={<PageWrapper><ResetPassword /></PageWrapper>} />
 
           {/* Product Routes */}
-          <Route path="/products" element={<ProductList />} />
-          <Route path="/products/:slug" element={<ProductDetail />} />
+          <Route path="/products" element={<PageWrapper><ProductList /></PageWrapper>} />
+          <Route path="/products/:slug" element={<PageWrapper><ProductDetail /></PageWrapper>} />
 
           {/* Cart & Checkout Routes */}
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/cart" element={<PageWrapper><Cart /></PageWrapper>} />
           <Route
             path="/checkout"
             element={
@@ -134,9 +151,9 @@ function App() {
           />
 
           {/* Assessment Routes */}
-          <Route path="/assessments" element={<AssessmentList />} />
-          <Route path="/assessments/:slug" element={<AssessmentDetail />} />
-          <Route path="/assessment/results/:id" element={<AssessmentResultsPage />} />
+          <Route path="/assessments" element={<PageWrapper><AssessmentList /></PageWrapper>} />
+          <Route path="/assessments/:slug" element={<PageWrapper><AssessmentDetail /></PageWrapper>} />
+          <Route path="/assessment/results/:id" element={<PageWrapper><AssessmentResultsPage /></PageWrapper>} />
 
           <Route
             path="/my-assessments"
@@ -156,19 +173,19 @@ function App() {
           />
 
           {/* Milestone Routes */}
-          <Route path="/milestones" element={<MilestonesPage />} />
+          <Route path="/milestones" element={<PageWrapper><MilestonesPage /></PageWrapper>} />
 
           {/* Blog Routes */}
-          <Route path="/blog" element={<BlogList />} />
-          <Route path="/blog/:slug" element={<BlogPostDetail />} />
+          <Route path="/blog" element={<PageWrapper><BlogList /></PageWrapper>} />
+          <Route path="/blog/:slug" element={<PageWrapper><BlogPostDetail /></PageWrapper>} />
 
           {/* Resource Routes */}
-          <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/resources" element={<PageWrapper><ResourcesPage /></PageWrapper>} />
 
           {/* Communication Routes */}
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/faq" element={<FAQ />} />
+          <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+          <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+          <Route path="/faq" element={<PageWrapper><FAQ /></PageWrapper>} />
 
           {/* Admin Routes */}
           <Route
@@ -202,6 +219,7 @@ function App() {
           {/* Catch all - redirect to home */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </AnimatePresence>
 
         {/* Floating Communication Components */}
         <WhatsAppButton />

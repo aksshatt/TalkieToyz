@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import ProductCard from '../products/ProductCard';
 import type { ProductSummary } from '../../types/product';
 import { productService } from '../../services/productService';
@@ -72,33 +73,64 @@ const FeaturedCollections = () => {
     <section className="py-16 bg-gradient-to-br from-cream-light via-white to-teal-light/20">
       <div className="max-w-7xl mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-12">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <h2 className="text-4xl sm:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-4">
             Featured Collections
           </h2>
           <p className="text-lg text-warmgray-600 max-w-3xl mx-auto">
             Handpicked educational toys that parents and children love
           </p>
-        </div>
+        </motion.div>
 
         {/* Products Grid */}
         {featuredProducts.length > 0 ? (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {featuredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+              {featuredProducts.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{
+                    duration: 0.5,
+                    ease: "easeOut",
+                    delay: (index % 4) * 0.08,
+                  }}
+                  whileHover={{ y: -6 }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
               ))}
             </div>
 
             {/* View All Button */}
-            <div className="text-center mt-10">
-              <Link
-                to="/products?featured=true"
-                className="btn-primary text-lg px-8 py-4 inline-block"
+            <motion.div
+              className="text-center mt-10"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <motion.div
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-block"
               >
-                View All Featured Toys
-              </Link>
-            </div>
+                <Link
+                  to="/products?featured=true"
+                  className="btn-primary text-lg px-8 py-4 inline-block"
+                >
+                  View All Featured Toys
+                </Link>
+              </motion.div>
+            </motion.div>
           </>
         ) : (
           <div className="text-center py-12">
