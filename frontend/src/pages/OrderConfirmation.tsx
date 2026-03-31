@@ -1,14 +1,45 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { CheckCircle, Package, Home, ShoppingBag } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { motion, AnimatePresence } from 'framer-motion';
 import Layout from '../components/layout/Layout';
 import orderService from '../services/orderService';
+
+const CONFETTI_COLORS = ['#4DD0E1', '#FF85C0', '#FFD54F', '#4FC3F7', '#FF69B4', '#26C6DA', '#FFC107'];
+
+const ConfettiBurst = () => {
+  const pieces = Array.from({ length: 30 }, (_, i) => ({
+    id: i,
+    color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+    left: `${Math.random() * 100}%`,
+    delay: Math.random() * 0.6,
+    duration: 1.4 + Math.random() * 1,
+    rotate: Math.random() * 360,
+    size: 6 + Math.random() * 8,
+  }));
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
+      {pieces.map((p) => (
+        <motion.div
+          key={p.id}
+          className="absolute top-0 rounded-sm"
+          style={{ left: p.left, width: p.size, height: p.size, background: p.color, borderRadius: Math.random() > 0.5 ? '50%' : '2px' }}
+          initial={{ y: -20, opacity: 1, rotate: 0 }}
+          animate={{ y: '110vh', opacity: [1, 1, 0], rotate: p.rotate }}
+          transition={{ duration: p.duration, delay: p.delay, ease: 'easeIn' }}
+        />
+      ))}
+    </div>
+  );
+};
 
 const OrderConfirmation = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const orderId = location.state?.orderId;
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['order', orderId],
@@ -21,6 +52,14 @@ const OrderConfirmation = () => {
       navigate('/orders');
     }
   }, [orderId, navigate]);
+
+  useEffect(() => {
+    if (orderId) {
+      setShowConfetti(true);
+      const t = setTimeout(() => setShowConfetti(false), 3500);
+      return () => clearTimeout(t);
+    }
+  }, [orderId]);
 
   const order = data?.data;
 
@@ -54,20 +93,37 @@ const OrderConfirmation = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-12">
+      <AnimatePresence>{showConfetti && <ConfettiBurst />}</AnimatePresence>
+      <div className="min-h-screen bg-gradient-to-br from-teal-light/20 via-white to-coral-light/20 py-12">
         <div className="max-w-3xl mx-auto px-4">
           {/* Success Animation */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full mb-6 animate-bounce-slow">
-              <CheckCircle className="h-16 w-16 text-green-600" />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-2">
-              Order Placed Successfully! 
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+            className="text-center mb-8"
+          >
+            <motion.div
+              className="inline-flex items-center justify-center w-24 h-24 bg-teal-light/40 rounded-full mb-6 relative"
+              animate={{ scale: [1, 1.08, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <CheckCircle className="h-16 w-16 text-teal" />
+              {[1,2].map(r => (
+                <motion.div key={r} className="absolute inset-0 rounded-full border-2 border-teal/30"
+                  initial={{ scale: 1, opacity: 0.6 }}
+                  animate={{ scale: 1.5 + r * 0.3, opacity: 0 }}
+                  transition={{ duration: 1.5, delay: r * 0.3, repeat: Infinity }}
+                />
+              ))}
+            </motion.div>
+            <h1 className="text-4xl md:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-2">
+              Order Placed Successfully!
             </h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-warmgray-600">
               Thank you for your purchase!
             </p>
-          </div>
+          </motion.div>
 
           {/* Order Details Card */}
           <div className="bg-white rounded-3xl p-8 shadow-playful mb-6">

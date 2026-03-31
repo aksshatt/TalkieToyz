@@ -96,7 +96,7 @@ const ForgotPassword: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Forgot your password? 🔑
+            Forgot your password?
           </motion.h2>
           <motion.p
             className="text-lg text-white/80 leading-relaxed max-w-md"
@@ -203,7 +203,7 @@ const ForgotPassword: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  Check your email! 📬
+                  Check your email
                 </motion.h2>
                 <motion.p
                   className="text-warmgray-500 mb-2 text-sm"

@@ -145,7 +145,7 @@ const Login: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Welcome back 👋
+            Welcome back
           </motion.h2>
           <motion.p
             className="text-lg text-white/80 leading-relaxed max-w-md"
@@ -163,10 +163,10 @@ const Login: React.FC = () => {
             transition={{ delay: 0.6 }}
           >
             {[
-              { icon: '✅', text: 'Professional speech therapy tools' },
-              { icon: '📈', text: 'Track developmental progress' },
-              { icon: '📚', text: 'Curated learning resources' },
-            ].map((item, i) => (
+              'Professional speech therapy tools',
+              'Track developmental progress',
+              'Curated learning resources',
+            ].map((text, i) => (
               <motion.div
                 key={i}
                 className="flex items-center space-x-3"
@@ -174,10 +174,12 @@ const Login: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.7 + i * 0.12, duration: 0.4 }}
               >
-                <div className="w-11 h-11 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-lg border border-white/20">
-                  {item.icon}
+                <div className="w-9 h-9 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/20">
+                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                  </svg>
                 </div>
-                <span className="text-white/90 font-medium">{item.text}</span>
+                <span className="text-white/90 font-medium">{text}</span>
               </motion.div>
             ))}
           </motion.div>

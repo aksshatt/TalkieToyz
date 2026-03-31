@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import NotFound from './pages/NotFound';
 import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/auth/PrivateRoute';
 import AdminRoute from './components/auth/AdminRoute';
@@ -216,8 +217,8 @@ function App() {
             <Route path="audit-log" element={<AuditLog />} />
           </Route>
 
-          {/* Catch all - redirect to home */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* Catch all - 404 page */}
+          <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
         </Routes>
         </AnimatePresence>
 

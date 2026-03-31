@@ -146,7 +146,7 @@ const Signup: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Start your journey 🚀
+            Start your journey
           </motion.h2>
           <motion.p
             className="text-lg text-white/80 leading-relaxed max-w-md mb-8"
