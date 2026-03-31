@@ -63,7 +63,6 @@ import WishlistPage from './pages/WishlistPage';
 
 // Communication Components
 import WhatsAppButton from './components/common/WhatsAppButton';
-import TawkToChat from './components/common/TawkToChat';
 
 const pageVariants = {
   initial: { opacity: 0, y: 12 },
@@ -224,7 +223,6 @@ function App() {
 
         {/* Floating Communication Components */}
         <WhatsAppButton />
-        <TawkToChat />
       </AuthProvider>
     </ErrorBoundary>
   );
