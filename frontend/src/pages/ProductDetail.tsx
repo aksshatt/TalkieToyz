@@ -23,6 +23,7 @@ import Layout from '../components/layout/Layout';
 import ReviewsSection from '../components/reviews/ReviewsSection';
 import RecentlyViewed from '../components/products/RecentlyViewed';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
+import SEO from '../components/common/SEO';
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -97,8 +98,36 @@ const ProductDetail = () => {
     { id: 'reviews', label: `Reviews (${product.review_count})` },
   ] as const;
 
+  const productImage = product.image_urls?.[0]?.url;
+
   return (
     <Layout>
+      <SEO
+        title={product.name}
+        description={product.description?.slice(0, 160) || `Buy ${product.name} - a therapist-designed speech therapy toy for children aged ${product.min_age}–${product.max_age} years.`}
+        image={productImage}
+        url={`/products/${product.slug}`}
+        type="product"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: product.name,
+          description: product.description,
+          image: productImage,
+          url: `https://talkietoyz.shop/products/${product.slug}`,
+          offers: {
+            '@type': 'Offer',
+            price: product.price,
+            priceCurrency: 'INR',
+            availability: product.in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          },
+          aggregateRating: product.review_count > 0 ? {
+            '@type': 'AggregateRating',
+            ratingValue: product.average_rating,
+            reviewCount: product.review_count,
+          } : undefined,
+        }}
+      />
       <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}

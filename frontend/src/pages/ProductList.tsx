@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Grid, List, ChevronLeft, ChevronRight, SlidersHorizontal, ShoppingBag, Sparkles, Star } from 'lucide-react';
+import SEO from '../components/common/SEO';
 import { motion } from 'framer-motion';
 import { useProducts, useCategories } from '../hooks/useProducts';
 import ProductCard from '../components/products/ProductCard';
@@ -99,6 +100,11 @@ const ProductList = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Shop Speech Therapy Toys"
+        description="Browse our collection of therapist-designed speech therapy toys for children. Filter by age, category, and price to find the perfect learning toy."
+        url="/products"
+      />
       <div className="min-h-screen bg-cream-light">
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-sky py-16 px-4">

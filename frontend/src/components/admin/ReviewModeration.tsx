@@ -180,7 +180,7 @@ const ReviewModeration = () => {
                     <img
                       key={idx}
                       src={photo.thumbnail_url}
-                      alt=""
+                      alt={`Review photo ${idx + 1}`}
                       className="w-20 h-20 object-cover rounded"
                     />
                   ))}

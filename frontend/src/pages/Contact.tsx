@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Loader2, Clock, ExternalLink, MessageCircle, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Layout from '../components/layout/Layout';
+import SEO from '../components/common/SEO';
 import { contactService } from '../services/contactService';
 import toast from 'react-hot-toast';
 import type { ContactFormData } from '../types/contact';
@@ -107,6 +108,11 @@ const Contact = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Contact Us"
+        description="Get in touch with TalkieToys. We're here to help with questions about speech therapy toys, orders, and child development resources."
+        url="/contact"
+      />
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-sky py-20 px-4">
         {/* Blobs */}

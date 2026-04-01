@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Layout from '../components/layout/Layout';
 import { Target, ChevronDown, ChevronRight, Baby, Brain, Heart, Sparkles } from 'lucide-react';
+import SEO from '../components/common/SEO';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import axios from '../config/axios';
@@ -84,6 +85,11 @@ const MilestonesPage = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Speech & Development Milestones"
+        description="Understand key speech and developmental milestones for children by age group. Track progress and find toys that support each stage of your child's growth."
+        url="/milestones"
+      />
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-sky py-20 px-4">
         <motion.div className="absolute w-96 h-96 rounded-full bg-white/10 blur-3xl pointer-events-none"

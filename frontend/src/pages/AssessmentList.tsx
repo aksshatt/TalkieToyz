@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ClipboardList, Calendar, CheckCircle, X, Globe, ChevronRight, Brain, Sparkles, Star } from 'lucide-react';
+import SEO from '../components/common/SEO';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import AssessmentCard from '../components/assessment/AssessmentCard';
@@ -47,6 +48,11 @@ const AssessmentList = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Child Development Assessments"
+        description="Take our free speech and developmental assessments designed by therapists. Understand your child's communication milestones and get personalized toy recommendations."
+        url="/assessments"
+      />
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-sky-dark via-sky to-teal py-20 px-4">
         <motion.div

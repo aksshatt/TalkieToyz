@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Layout from '../components/layout/Layout';
 import { FolderOpen, BookOpen, Download, Sparkles, Star } from 'lucide-react';
+import SEO from '../components/common/SEO';
 import { motion } from 'framer-motion';
 import ResourceCard from '../components/resources/ResourceCard';
 import ResourceCategoryFilter from '../components/resources/ResourceCategoryFilter';
@@ -36,6 +37,11 @@ const ResourcesPage = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Free Speech Therapy Resources"
+        description="Download free guides, worksheets, and activity sheets created by speech therapists to support your child's communication development at home."
+        url="/resources"
+      />
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-sky-dark via-sky to-teal py-20 px-4">
         <motion.div className="absolute w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"

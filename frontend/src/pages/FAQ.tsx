@@ -3,6 +3,7 @@ import { Search, HelpCircle, MessageCircle, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
+import SEO from '../components/common/SEO';
 import FaqAccordion from '../components/faq/FaqAccordion';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import { faqService } from '../services/faqService';
@@ -40,6 +41,11 @@ const FAQ = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Frequently Asked Questions"
+        description="Find answers to common questions about TalkieToys speech therapy toys, orders, shipping, and how our products support child development."
+        url="/faq"
+      />
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-sunshine-dark via-sunshine to-coral py-20 px-4">
         <motion.div className="absolute w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"

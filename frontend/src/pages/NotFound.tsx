@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Home, ShoppingBag, BookOpen } from 'lucide-react';
 import Layout from '../components/layout/Layout';
+import SEO from '../components/common/SEO';
 
 const floatingToys = ['🧸', '🎨', '🧩', '📚', '✏️', '🎭', '🎪', '🪀'];
 
 const NotFound = () => {
   return (
     <Layout>
+      <SEO title="Page Not Found" noindex />
       <div className="min-h-[80vh] flex items-center justify-center px-4 relative overflow-hidden">
 
         {/* Animated background blobs */}

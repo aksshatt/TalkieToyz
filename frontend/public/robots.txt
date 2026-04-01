@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /admin/
+Disallow: /checkout
+Disallow: /order-confirmation
+Disallow: /orders
+Disallow: /profile
+Disallow: /my-assessments
+Disallow: /wishlist
+
+Sitemap: https://talkietoyz.shop/sitemap.xml

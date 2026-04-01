@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BookOpen, Search, Rss } from 'lucide-react';
+import SEO from '../components/common/SEO';
 import { motion } from 'framer-motion';
 import BlogPostCard from '../components/blog/BlogPostCard';
 import NewsletterSignup from '../components/blog/NewsletterSignup';
@@ -54,6 +55,11 @@ const BlogList = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Blog - Speech Therapy Tips & Resources"
+        description="Expert articles on speech therapy, child development milestones, and how to support your child's communication journey through play."
+        url="/blog"
+      />
       {/* ── Hero Banner ── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-sky py-20 px-4">
         {/* Animated blobs */}

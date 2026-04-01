@@ -3,6 +3,7 @@ import { Heart, Sparkles, Target, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
+import SEO from '../components/common/SEO';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import { siteContentService } from '../services/siteContentService';
 import type { SiteContentKeys } from '../types/siteContent';
@@ -74,6 +75,11 @@ const About = () => {
 
   return (
     <Layout>
+      <SEO
+        title="About Us"
+        description="Meet the team behind TalkieToys — therapist-designed speech therapy toys that help children communicate, learn, and grow through play."
+        url="/about"
+      />
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-coral-dark via-coral to-sunshine py-20 px-4">
         <motion.div

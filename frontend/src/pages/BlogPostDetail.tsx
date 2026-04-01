@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Layout from '../components/layout/Layout';
+import SEO from '../components/common/SEO';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Clock, User, Calendar, Tag, MessageCircle, Share2 } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -77,6 +78,24 @@ const BlogPostDetail = () => {
 
   return (
     <Layout>
+      <SEO
+        title={post.title}
+        description={post.excerpt?.slice(0, 160) || post.title}
+        image={post.featured_image_url || undefined}
+        url={`/blog/${post.slug}`}
+        type="article"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          headline: post.title,
+          description: post.excerpt,
+          image: post.featured_image_url,
+          url: `https://talkietoyz.shop/blog/${post.slug}`,
+          datePublished: post.published_at,
+          author: { '@type': 'Person', name: post.author.name },
+          publisher: { '@type': 'Organization', name: 'TalkieToys', url: 'https://talkietoyz.shop' },
+        }}
+      />
       {/* Hero Section */}
       <div ref={heroRef} className="relative overflow-hidden">
         {post.featured_image_url ? (
@@ -113,7 +132,7 @@ const BlogPostDetail = () => {
               <div className="max-w-4xl mx-auto">
                 {post.category && (
                   <span className="inline-block bg-teal text-white text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wide">
-                    {post.category.name}
+                    {post.category_display_name || post.category}
                   </span>
                 )}
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-[var(--font-family-fun)] font-bold text-white leading-tight mb-4 drop-shadow-lg">
@@ -162,7 +181,7 @@ const BlogPostDetail = () => {
               {post.category && (
                 <motion.span initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
                   className="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wide">
-                  {post.category.name}
+                  {post.category_display_name || post.category}
                 </motion.span>
               )}
               <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
