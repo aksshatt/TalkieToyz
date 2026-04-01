@@ -110,6 +110,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </AnimatePresence>
         </div>
 
+        {/* Low stock badge */}
+        {product.in_stock && product.stock_quantity > 0 && product.stock_quantity <= 5 && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="absolute bottom-3 left-3 bg-warmgray-900/80 backdrop-blur-sm text-white text-xs font-bold px-2.5 py-1 rounded-full"
+          >
+            Only {product.stock_quantity} left!
+          </motion.div>
+        )}
+
         {!product.in_stock && (
           <div className="absolute inset-0 bg-warmgray-800/70 flex items-center justify-center backdrop-blur-sm">
             <span className="bg-warmgray-700 text-white px-5 py-3 rounded-full font-bold text-lg shadow-soft-lg">

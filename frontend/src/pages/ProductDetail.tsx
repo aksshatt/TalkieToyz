@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   Star,
@@ -21,6 +21,8 @@ import { useAppDispatch } from '../store/hooks';
 import { addToCart } from '../store/slices/cartSlice';
 import Layout from '../components/layout/Layout';
 import ReviewsSection from '../components/reviews/ReviewsSection';
+import RecentlyViewed from '../components/products/RecentlyViewed';
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -28,12 +30,18 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<'description' | 'speech-goals' | 'usage-tips' | 'reviews'>('description');
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const { addProduct } = useRecentlyViewed();
 
   const { data, isLoading, error } = useProduct(slug || '');
   const { data: relatedData } = useRelatedProducts(slug || '');
 
   const product = data?.data;
   const relatedProducts = relatedData?.data || [];
+
+  // Track recently viewed
+  useEffect(() => {
+    if (product) addProduct(product as any);
+  }, [product?.id]);
 
   const handleQuantityChange = (delta: number) => {
     setQuantity((prev) => Math.max(1, Math.min((product?.stock_quantity || 1), prev + delta)));
@@ -461,6 +469,9 @@ const ProductDetail = () => {
         {relatedProducts.length > 0 && (
           <RelatedProductsCarousel products={relatedProducts} />
         )}
+
+        {/* Recently Viewed */}
+        <RecentlyViewed />
       </div>
     </div>
     </Layout>
