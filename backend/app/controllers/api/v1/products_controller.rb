@@ -2,7 +2,7 @@ module Api
   module V1
     class ProductsController < BaseController
       before_action :authenticate_admin!, only: [:create, :update, :destroy]
-      before_action :set_product, only: [:show, :update, :destroy, :related]
+      before_action :set_product, only: [:show, :update, :destroy, :related, :frequently_bought_together]
 
       # GET /api/v1/products
       def index
@@ -59,6 +59,42 @@ module Api
             each_serializer: ProductSummarySerializer
           ).as_json,
           'Related products retrieved successfully'
+        )
+      end
+
+      # GET /api/v1/products/:id/frequently_bought_together
+      def frequently_bought_together
+        # Find products commonly bought in same orders as this product
+        product_ids_in_same_orders = OrderItem
+          .joins(:order)
+          .where(orders: { order_items: OrderItem.where(product_id: @product.id).select(:order_id) })
+          .where.not(product_id: @product.id)
+          .group(:product_id)
+          .order('count_all DESC')
+          .count
+          .first(4)
+          .map(&:first)
+
+        if product_ids_in_same_orders.any?
+          @frequently_bought = Product.active
+                                      .includes(:category, :speech_goals, images_attachments: :blob)
+                                      .where(id: product_ids_in_same_orders)
+        else
+          # Fallback: same category, same speech goals
+          goal_ids = @product.speech_goals.pluck(:id)
+          @frequently_bought = Product.active
+                                      .includes(:category, :speech_goals, images_attachments: :blob)
+                                      .where.not(id: @product.id)
+                                      .by_speech_goals(goal_ids)
+                                      .limit(4)
+        end
+
+        render_success(
+          ActiveModelSerializers::SerializableResource.new(
+            @frequently_bought,
+            each_serializer: ProductSummarySerializer
+          ).as_json,
+          'Frequently bought together retrieved'
         )
       end
 

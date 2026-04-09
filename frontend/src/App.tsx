@@ -60,6 +60,11 @@ import AssessmentResultsAdmin from './pages/admin/AssessmentResultsAdmin';
 import AuditLog from './pages/admin/AuditLog';
 import AssessmentHistoryPage from './pages/AssessmentHistoryPage';
 import WishlistPage from './pages/WishlistPage';
+import ShopByGoalQuiz from './pages/ShopByGoalQuiz';
+import ChildProfilesPage from './pages/ChildProfilesPage';
+import ChildProgressDashboard from './pages/ChildProgressDashboard';
+import LoyaltyDashboard from './pages/LoyaltyDashboard';
+import BundleBuilderPage from './pages/BundleBuilderPage';
 
 // Communication Components
 import WhatsAppButton from './components/common/WhatsAppButton';
@@ -174,6 +179,28 @@ function App() {
 
           {/* Milestone Routes */}
           <Route path="/milestones" element={<PageWrapper><MilestonesPage /></PageWrapper>} />
+
+          {/* Quiz */}
+          <Route path="/quiz" element={<PageWrapper><ShopByGoalQuiz /></PageWrapper>} />
+
+          {/* Speech Kits */}
+          <Route path="/speech-kits" element={<PageWrapper><BundleBuilderPage /></PageWrapper>} />
+
+          {/* Child Profiles & Progress */}
+          <Route
+            path="/children"
+            element={<PrivateRoute><ChildProfilesPage /></PrivateRoute>}
+          />
+          <Route
+            path="/children/:id"
+            element={<PrivateRoute><ChildProgressDashboard /></PrivateRoute>}
+          />
+
+          {/* Loyalty */}
+          <Route
+            path="/loyalty"
+            element={<PrivateRoute><LoyaltyDashboard /></PrivateRoute>}
+          />
 
           {/* Blog Routes */}
           <Route path="/blog" element={<PageWrapper><BlogList /></PageWrapper>} />

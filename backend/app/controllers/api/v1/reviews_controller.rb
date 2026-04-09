@@ -56,6 +56,8 @@ module Api
         if @review.save
           attach_photos if params[:photos].present?
           ReviewRateLimit.increment_for(current_user)
+          LoyaltyPoint.award(user: current_user, source: 'review', reference: @review,
+                             description: "Earned 50 points for reviewing #{@product.name}")
 
           render_success(
             ReviewSerializer.new(@review).as_json,

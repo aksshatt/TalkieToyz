@@ -12,6 +12,10 @@ class Product < ApplicationRecord
   has_many :cart_items, dependent: :destroy
   has_many :order_items, dependent: :destroy
   has_many :reviews, dependent: :destroy
+  has_many :product_questions, dependent: :destroy
+  has_many :success_stories, dependent: :destroy
+  has_many :bundle_items, dependent: :destroy
+  has_many :bundles, through: :bundle_items
 
   # Validations
   validates :name, presence: true, length: { minimum: 2, maximum: 200 }

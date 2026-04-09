@@ -16,6 +16,10 @@ class User < ApplicationRecord
   has_many :reviews, dependent: :destroy
   has_many :assessment_results, dependent: :destroy
   has_many :wishlists, dependent: :destroy
+  has_many :child_profiles, dependent: :destroy
+  has_many :success_stories, dependent: :destroy
+  has_many :loyalty_points, dependent: :destroy
+  has_many :milestone_achievements, dependent: :destroy
   # has_many :progress_logs, dependent: :destroy
   has_many :blog_posts, foreign_key: :author_id, dependent: :destroy
 

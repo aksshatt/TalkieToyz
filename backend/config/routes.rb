@@ -22,9 +22,16 @@ Rails.application.routes.draw do
       resources :products, param: :id do
         member do
           get :related
+          get :frequently_bought_together
         end
         # Reviews (nested under products)
         resources :reviews, only: [:index, :create]
+        # Q&A (nested under products)
+        resources :questions, controller: 'product_questions', only: [:index, :create] do
+          member do
+            patch :answer
+          end
+        end
       end
 
       # Reviews (standalone for update/delete/helpful)
@@ -64,6 +71,35 @@ Rails.application.routes.draw do
 
       # Milestones
       resources :milestones, only: [:index, :show]
+
+      # Milestone Achievements
+      resources :milestone_achievements, only: [:index, :create, :destroy]
+
+      # Success Stories
+      resources :success_stories, only: [:index, :create]
+
+      # Child Profiles
+      resources :child_profiles do
+        member do
+          get :recommendations
+        end
+      end
+
+      # Loyalty Points
+      resources :loyalty_points, only: [:index] do
+        collection do
+          post :redeem
+        end
+      end
+
+      # Bundles (Speech Kits)
+      resources :bundles, param: :id, only: [:index, :show, :create, :update]
+
+      # Goal Quiz
+      scope 'goal_quiz' do
+        get 'questions', to: 'goal_quiz#questions'
+        post 'recommend', to: 'goal_quiz#recommend'
+      end
 
       # Blog Posts
       resources :blog_posts, only: [:index, :show], param: :id do
@@ -245,6 +281,34 @@ Rails.application.routes.draw do
 
         # Activity Logs
         resources :activity_logs, only: [:index]
+
+        # Success Stories Moderation
+        resources :success_stories do
+          member do
+            post :approve
+            post :reject
+            post :feature
+          end
+        end
+
+        # Product Q&A Moderation
+        resources :product_questions do
+          member do
+            patch :answer
+            post :approve
+            post :reject
+          end
+        end
+
+        # Bundles Management
+        resources :bundles, param: :id
+
+        # Loyalty Points (admin overview)
+        resources :loyalty_points, only: [:index] do
+          collection do
+            post :award
+          end
+        end
       end
     end
   end

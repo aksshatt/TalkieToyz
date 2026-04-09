@@ -24,12 +24,17 @@ import ReviewsSection from '../components/reviews/ReviewsSection';
 import RecentlyViewed from '../components/products/RecentlyViewed';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import SEO from '../components/common/SEO';
+import StockUrgencyBadge from '../components/products/StockUrgencyBadge';
+import AskTherapistCTA from '../components/products/AskTherapistCTA';
+import FrequentlyBoughtTogether from '../components/products/FrequentlyBoughtTogether';
+import ProductQA from '../components/products/ProductQA';
+import SuccessStoriesSection from '../components/common/SuccessStoriesSection';
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const dispatch = useAppDispatch();
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<'description' | 'speech-goals' | 'usage-tips' | 'reviews'>('description');
+  const [activeTab, setActiveTab] = useState<'description' | 'speech-goals' | 'usage-tips' | 'reviews' | 'qa'>('description');
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const { addProduct } = useRecentlyViewed();
 
@@ -96,6 +101,7 @@ const ProductDetail = () => {
     { id: 'speech-goals', label: 'Goals' },
     { id: 'usage-tips', label: 'Usage Tips' },
     { id: 'reviews', label: `Reviews (${product.review_count})` },
+    { id: 'qa', label: 'Q&A' },
   ] as const;
 
   const productImage = product.image_urls?.[0]?.url;
@@ -259,18 +265,21 @@ const ProductDetail = () => {
               </div>
 
               {/* Stock Status */}
-              <div className="mb-6">
+              <div className="mb-6 flex flex-wrap items-center gap-2">
                 {product.in_stock ? (
                   <div className="flex items-center gap-2 text-green-700 bg-green-50 px-3 py-2 rounded-md border border-green-200 w-fit">
                     <CheckCircle className="h-4 w-4" />
                     <span className="text-sm font-medium">In Stock</span>
-                    <span className="text-xs text-green-600">({product.stock_quantity} available)</span>
+                    {product.stock_quantity > 5 && (
+                      <span className="text-xs text-green-600">({product.stock_quantity} available)</span>
+                    )}
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 text-red-700 bg-red-50 px-3 py-2 rounded-md border border-red-200 w-fit">
                     <span className="text-sm font-medium">Out of Stock</span>
                   </div>
                 )}
+                <StockUrgencyBadge stockQuantity={product.stock_quantity} />
               </div>
 
               {/* Quantity Selector */}
@@ -330,8 +339,11 @@ const ProductDetail = () => {
                 {isAddingToCart ? 'Adding...' : product.in_stock ? 'Add to Cart' : 'Out of Stock'}
               </button>
 
+              {/* Ask a Therapist CTA */}
+              <AskTherapistCTA productName={product.name} />
+
               {/* Features */}
-              <div className="border-t border-gray-200 pt-6 space-y-3 mb-6">
+              <div className="border-t border-gray-200 pt-6 space-y-3 mb-6 mt-6">
                 <div className="flex items-center gap-3 text-sm text-gray-600">
                   <div className="flex-shrink-0 w-8 h-8 bg-teal/10 rounded-lg flex items-center justify-center">
                     <Truck className="h-4 w-4 text-teal" />
@@ -491,13 +503,25 @@ const ProductDetail = () => {
                 hasVerifiedPurchase={false}
               />
             )}
+
+            {activeTab === 'qa' && (
+              <ProductQA productSlug={product.slug} />
+            )}
           </div>
         </div>
+
+        {/* Frequently Bought Together */}
+        <FrequentlyBoughtTogether productSlug={product.slug} currentProductName={product.name} />
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <RelatedProductsCarousel products={relatedProducts} />
         )}
+
+        {/* Success Stories for this product */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8">
+          <SuccessStoriesSection productId={product.id} />
+        </div>
 
         {/* Recently Viewed */}
         <RecentlyViewed />

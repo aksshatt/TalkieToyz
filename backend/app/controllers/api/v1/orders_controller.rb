@@ -92,6 +92,10 @@ module Api
         # For COD orders, mark as confirmed immediately
         if @order.payment_method == 'cod'
           @order.mark_as_confirmed
+          # Award loyalty points for COD purchase (1 point per rupee)
+          points = @order.total.to_i
+          LoyaltyPoint.award(user: current_user, source: 'purchase', points: points,
+                             reference: @order, description: "Earned #{points} points for order ##{@order.order_number}")
         end
 
         render_success(

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_03_26_000003) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_08_000006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -182,6 +182,33 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_26_000003) do
     t.index ["tags"], name: "index_blog_posts_on_tags", using: :gin
   end
 
+  create_table "bundle_items", force: :cascade do |t|
+    t.bigint "bundle_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "position", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bundle_id", "product_id"], name: "index_bundle_items_on_bundle_id_and_product_id", unique: true
+    t.index ["bundle_id"], name: "index_bundle_items_on_bundle_id"
+    t.index ["product_id"], name: "index_bundle_items_on_product_id"
+  end
+
+  create_table "bundles", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.text "description"
+    t.string "speech_goal"
+    t.decimal "discount_percent", precision: 5, scale: 2, default: "10.0"
+    t.boolean "active", default: true, null: false
+    t.boolean "featured", default: false, null: false
+    t.integer "min_products", default: 3
+    t.integer "max_products", default: 5
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_bundles_on_active"
+    t.index ["slug"], name: "index_bundles_on_slug", unique: true
+  end
+
   create_table "cart_items", force: :cascade do |t|
     t.bigint "cart_id", null: false
     t.bigint "product_id", null: false
@@ -220,6 +247,18 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_26_000003) do
     t.index ["parent_id"], name: "index_categories_on_parent_id"
     t.index ["position"], name: "index_categories_on_position"
     t.index ["slug"], name: "index_categories_on_slug", unique: true
+  end
+
+  create_table "child_profiles", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name", null: false
+    t.date "date_of_birth"
+    t.text "speech_goals", default: [], array: true
+    t.text "notes"
+    t.string "avatar_color", default: "#6366f1"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_child_profiles_on_user_id"
   end
 
   create_table "contact_submissions", force: :cascade do |t|
@@ -286,6 +325,35 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_26_000003) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["jti"], name: "index_jwt_denylists_on_jti", unique: true
+  end
+
+  create_table "loyalty_points", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "points", null: false
+    t.string "source", null: false
+    t.string "reference_type"
+    t.bigint "reference_id"
+    t.string "description"
+    t.boolean "redeemed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reference_type", "reference_id"], name: "index_loyalty_points_on_reference_type_and_reference_id"
+    t.index ["user_id"], name: "index_loyalty_points_on_user_id"
+  end
+
+  create_table "milestone_achievements", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "child_profile_id"
+    t.bigint "milestone_id", null: false
+    t.datetime "achieved_at", null: false
+    t.boolean "certificate_shared", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["child_profile_id", "milestone_id"], name: "idx_on_child_profile_id_milestone_id_c3aa3d032b", unique: true
+    t.index ["child_profile_id"], name: "index_milestone_achievements_on_child_profile_id"
+    t.index ["milestone_id"], name: "index_milestone_achievements_on_milestone_id"
+    t.index ["user_id", "milestone_id"], name: "index_milestone_achievements_on_user_id_and_milestone_id"
+    t.index ["user_id"], name: "index_milestone_achievements_on_user_id"
   end
 
   create_table "milestones", force: :cascade do |t|
@@ -380,6 +448,22 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_26_000003) do
     t.index ["user_id", "created_at"], name: "index_orders_on_user_created"
     t.index ["user_id", "status", "created_at"], name: "index_orders_on_user_status_created"
     t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "product_questions", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "user_id", null: false
+    t.text "question", null: false
+    t.text "answer"
+    t.bigint "answered_by_id"
+    t.datetime "answered_at"
+    t.boolean "approved", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answered_by_id"], name: "index_product_questions_on_answered_by_id"
+    t.index ["product_id", "approved"], name: "index_product_questions_on_product_id_and_approved"
+    t.index ["product_id"], name: "index_product_questions_on_product_id"
+    t.index ["user_id"], name: "index_product_questions_on_user_id"
   end
 
   create_table "product_speech_goals", force: :cascade do |t|
@@ -612,6 +696,25 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_26_000003) do
     t.index ["slug"], name: "index_speech_goals_on_slug", unique: true
   end
 
+  create_table "success_stories", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "child_name", null: false
+    t.integer "age_months"
+    t.string "speech_goal"
+    t.text "before_text", null: false
+    t.text "after_text", null: false
+    t.bigint "product_id"
+    t.boolean "approved", default: false, null: false
+    t.boolean "featured", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["approved", "featured"], name: "index_success_stories_on_approved_and_featured"
+    t.index ["approved"], name: "index_success_stories_on_approved"
+    t.index ["featured"], name: "index_success_stories_on_featured"
+    t.index ["product_id"], name: "index_success_stories_on_product_id"
+    t.index ["user_id"], name: "index_success_stories_on_user_id"
+  end
+
   create_table "user_addresses", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "name", null: false
@@ -644,6 +747,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_26_000003) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "loyalty_points_total", default: 0, null: false
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -668,17 +772,27 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_26_000003) do
   add_foreign_key "assessment_results", "assessments"
   add_foreign_key "assessment_results", "users"
   add_foreign_key "blog_posts", "users", column: "author_id"
+  add_foreign_key "bundle_items", "bundles"
+  add_foreign_key "bundle_items", "products"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "product_variants"
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
   add_foreign_key "categories", "categories", column: "parent_id"
+  add_foreign_key "child_profiles", "users"
   add_foreign_key "contact_submissions", "users"
+  add_foreign_key "loyalty_points", "users"
+  add_foreign_key "milestone_achievements", "child_profiles"
+  add_foreign_key "milestone_achievements", "milestones"
+  add_foreign_key "milestone_achievements", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "product_variants"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "coupons"
   add_foreign_key "orders", "users"
+  add_foreign_key "product_questions", "products"
+  add_foreign_key "product_questions", "users"
+  add_foreign_key "product_questions", "users", column: "answered_by_id"
   add_foreign_key "product_speech_goals", "products"
   add_foreign_key "product_speech_goals", "speech_goals"
   add_foreign_key "product_variants", "products"
@@ -694,6 +808,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_26_000003) do
   add_foreign_key "reviews", "users"
   add_foreign_key "reviews", "users", column: "admin_responder_id"
   add_foreign_key "shipments", "orders"
+  add_foreign_key "success_stories", "products"
+  add_foreign_key "success_stories", "users"
   add_foreign_key "user_addresses", "users"
   add_foreign_key "wishlists", "products"
   add_foreign_key "wishlists", "users"
