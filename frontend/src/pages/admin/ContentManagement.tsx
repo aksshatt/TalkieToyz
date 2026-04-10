@@ -244,7 +244,7 @@ const ContentManagement = () => {
           <input
             type="number"
             value={editForm.display_order || 0}
-            onChange={(e) => setEditForm({ ...editForm, display_order: parseInt(e.target.value) })}
+            onChange={(e) => setEditForm({ ...editForm, display_order: parseInt(e.target.value, 10) })}
             className="input-talkie text-sm py-1 w-20"
           />
         </td>
@@ -354,7 +354,7 @@ const ContentManagement = () => {
                     <input
                       type="number"
                       value={createForm.display_order || 0}
-                      onChange={(e) => setCreateForm({ ...createForm, display_order: parseInt(e.target.value) })}
+                      onChange={(e) => setCreateForm({ ...createForm, display_order: parseInt(e.target.value, 10) })}
                       className="input-talkie"
                     />
                   </div>

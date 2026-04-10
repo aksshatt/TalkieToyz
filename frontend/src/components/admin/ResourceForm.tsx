@@ -84,7 +84,7 @@ const ResourceForm = ({ initialData, categories, onSubmit, onCancel, saving }: R
           <select
             required
             value={formData.resource_category_id}
-            onChange={(e) => setFormData({ ...formData, resource_category_id: parseInt(e.target.value) })}
+            onChange={(e) => setFormData({ ...formData, resource_category_id: parseInt(e.target.value, 10) })}
             className="w-full px-4 py-2 border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20"
           >
             {categories.map((cat) => (

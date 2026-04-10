@@ -27,7 +27,7 @@ const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({ productId
   const submit = useMutation({
     mutationFn: () => successStoriesService.submitStory({
       child_name: form.child_name,
-      age_months: form.age_months ? parseInt(form.age_months) : undefined,
+      age_months: form.age_months ? parseInt(form.age_months, 10) : undefined,
       speech_goal: form.speech_goal || undefined,
       before_text: form.before_text,
       after_text: form.after_text,

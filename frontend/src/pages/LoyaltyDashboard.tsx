@@ -4,6 +4,7 @@ import { Star, Gift, TrendingUp, ShoppingBag, MessageSquare, ClipboardList, Chev
 import Layout from '../components/layout/Layout';
 import SEO from '../components/common/SEO';
 import { loyaltyService, LoyaltyTransaction } from '../services/loyaltyService';
+import toast from 'react-hot-toast';
 
 const SOURCE_ICONS: Record<string, React.ReactNode> = {
   purchase: <ShoppingBag className="w-3.5 h-3.5" />,
@@ -43,10 +44,10 @@ const LoyaltyDashboard: React.FC = () => {
     mutationFn: () => loyaltyService.redeemPoints(redeemAmount),
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ['loyalty_points'] });
-      alert(`Redeemed! ₹${res.data.discount_rupees} discount applied.`);
+      toast.success(`Redeemed! ₹${res.data.discount_rupees} discount applied.`);
     },
     onError: (err: any) => {
-      alert(err?.response?.data?.message || 'Redemption failed');
+      toast.error(err?.response?.data?.message || 'Redemption failed');
     },
   });
 
@@ -81,7 +82,7 @@ const LoyaltyDashboard: React.FC = () => {
                     max={Math.min(balance, 5000)}
                     step={100}
                     value={redeemAmount}
-                    onChange={e => setRedeemAmount(parseInt(e.target.value))}
+                    onChange={e => setRedeemAmount(parseInt(e.target.value, 10))}
                     className="flex-1 accent-amber-400"
                   />
                   <span className="text-sm font-bold w-24 text-right">{redeemAmount} pts = ₹{(redeemAmount / 10).toFixed(0)}</span>

@@ -59,7 +59,7 @@ const AssessmentDetail = () => {
 
   const handleComplete = async (answers: Record<string, any>) => {
     try {
-      const ageInMonths = parseInt(childAge) * 12;
+      const ageInMonths = Math.round((parseFloat(childAge) || 0) * 12);
       const response = await assessmentService.submitAssessment(slug!, {
         child_name: childName,
         child_age_months: ageInMonths,

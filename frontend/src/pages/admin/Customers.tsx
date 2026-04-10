@@ -222,10 +222,9 @@ const Customers: React.FC = () => {
                 Average Orders
               </p>
               <p className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800">
-                {(
-                  customers.reduce((sum, c) => sum + c.total_orders, 0) /
-                  customers.length
-                ).toFixed(1)}
+                {customers.length
+                  ? (customers.reduce((sum, c) => sum + c.total_orders, 0) / customers.length).toFixed(1)
+                  : '0.0'}
               </p>
             </div>
             <div className="p-4 rounded-xl bg-sunshine-light/30">

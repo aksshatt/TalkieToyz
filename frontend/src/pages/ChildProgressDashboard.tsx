@@ -105,7 +105,7 @@ const ChildProgressDashboard: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-  const profileId = parseInt(id || '0');
+  const profileId = parseInt(id || '0', 10);
 
   const { data: profileData, isLoading: profileLoading } = useQuery({
     queryKey: ['child_profile', profileId],

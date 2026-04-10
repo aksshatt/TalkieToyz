@@ -403,15 +403,15 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
       };
 
       if (formData.category_id) {
-        productData.category_id = parseInt(formData.category_id);
+        productData.category_id = parseInt(formData.category_id, 10);
       }
       if (formData.compare_at_price) {
         productData.compare_at_price = parseFloat(formData.compare_at_price);
       }
       if (formData.age_range) {
         const [min, max] = formData.age_range.split('-');
-        productData.min_age = parseInt(min);
-        productData.max_age = parseInt(max);
+        productData.min_age = parseInt(min, 10);
+        productData.max_age = parseInt(max, 10);
       }
 
       if (product) {
@@ -580,7 +580,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
             type="number"
             value={formData.stock_quantity}
             onChange={(e) =>
-              setFormData({ ...formData, stock_quantity: parseInt(e.target.value) || 0 })
+              setFormData({ ...formData, stock_quantity: parseInt(e.target.value, 10) || 0 })
             }
             className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
             required

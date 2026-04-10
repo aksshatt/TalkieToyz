@@ -59,7 +59,7 @@ const ProductList = () => {
       // Handle direct category_id parameter
       setFilters(prev => ({
         ...prev,
-        category_id: parseInt(categoryIdParam),
+        category_id: parseInt(categoryIdParam, 10),
         page: 1
       }));
     }

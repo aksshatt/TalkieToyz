@@ -244,7 +244,7 @@ const FAQManagement = () => {
                       type="number"
                       value={formData.display_order}
                       onChange={(e) =>
-                        setFormData({ ...formData, display_order: parseInt(e.target.value) || 0 })
+                        setFormData({ ...formData, display_order: parseInt(e.target.value, 10) || 0 })
                       }
                       className="input-talkie"
                       min={0}

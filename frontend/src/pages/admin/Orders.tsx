@@ -61,8 +61,22 @@ const Orders: React.FC = () => {
         const transformedOrders = await Promise.all(
           response.data.orders.map(async (o: AdminOrder) => {
             // Fetch full order details to get items
-            const detailResponse = await adminService.getOrder(o.id);
-            const orderDetail = detailResponse.data;
+            let items: OrderItem[] = [];
+            let shipping_address: Address | undefined;
+            try {
+              const detailResponse = await adminService.getOrder(o.id);
+              const orderDetail = detailResponse.data;
+              items = (orderDetail.items || []).map((item: any) => ({
+                id: item.id,
+                product_name: item.product_name || item.item_name || 'Unknown',
+                quantity: item.quantity,
+                price: `₹${(item.price || item.unit_price || 0).toLocaleString()}`,
+                total: `₹${(item.total || item.total_price || 0).toLocaleString()}`,
+              }));
+              shipping_address = orderDetail.shipping_address;
+            } catch {
+              // Detail fetch failed; show order without items
+            }
 
             return {
               id: o.id,
@@ -73,14 +87,8 @@ const Orders: React.FC = () => {
               status: o.status as any,
               payment_method: o.payment_method || 'N/A',
               created_at: new Date(o.created_at).toLocaleDateString('en-IN'),
-              items: (orderDetail.items || []).map((item: any) => ({
-                id: item.id,
-                product_name: item.product_name || item.item_name || 'Unknown',
-                quantity: item.quantity,
-                price: `₹${(item.price || item.unit_price || 0).toLocaleString()}`,
-                total: `₹${(item.total || item.total_price || 0).toLocaleString()}`,
-              })),
-              shipping_address: orderDetail.shipping_address,
+              items,
+              shipping_address,
             };
           })
         );

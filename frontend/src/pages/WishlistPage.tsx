@@ -154,7 +154,7 @@ const WishlistPage = () => {
                         onClick={() => navigate(`/products/${item.product?.slug}`)}>
                         {item.product?.name}
                       </h3>
-                      <p className="text-teal font-bold text-lg mb-3">₹{parseFloat(item.product?.price || 0).toFixed(2)}</p>
+                      <p className="text-teal font-bold text-lg mb-3">₹{parseFloat(item.product?.price || '0').toFixed(2)}</p>
                       <motion.button
                         onClick={() => handleAddToCart(item)}
                         disabled={addingId === item.product_id}
