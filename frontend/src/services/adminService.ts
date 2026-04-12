@@ -155,6 +155,40 @@ export interface AdminCustomersResponse {
   };
 }
 
+export interface PaginationMeta {
+  current_page: number;
+  total_pages: number;
+  total_count: number;
+  per_page: number;
+}
+
+export interface AdminSuccessStory {
+  id: number;
+  child_name: string;
+  age_months: number;
+  speech_goal: string;
+  before_text: string;
+  after_text: string;
+  approved: boolean;
+  featured: boolean;
+  created_at: string;
+  user: { id: number; name: string; email: string };
+  product: { id: number; name: string; slug: string } | null;
+}
+
+export interface AdminProductQuestion {
+  id: number;
+  question: string;
+  answer: string | null;
+  approved: boolean;
+  answered: boolean;
+  answered_at: string | null;
+  created_at: string;
+  product: { id: number; name: string; slug: string };
+  user: { id: number; name: string; email: string };
+  answered_by: { id: number; name: string } | null;
+}
+
 export const adminService = {
   // Dashboard
   getDashboardStats: async (): Promise<{ success: boolean; data: DashboardStats; message: string }> => {
@@ -310,6 +344,87 @@ export const adminService = {
 
   deleteCustomer: async (id: number): Promise<{ success: boolean; message: string }> => {
     const response = await axios.delete(`/admin/customers/${id}`);
+    return response.data;
+  },
+
+  // Success Stories
+  getSuccessStories: async (filters?: {
+    page?: number;
+    per_page?: number;
+    approved?: boolean;
+    featured?: boolean;
+    q?: string;
+  }): Promise<{ success: boolean; message: string; data: { success_stories: AdminSuccessStory[]; meta: PaginationMeta } }> => {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, String(value));
+        }
+      });
+    }
+    const response = await axios.get(`/admin/success_stories${params.toString() ? `?${params.toString()}` : ''}`);
+    return response.data;
+  },
+
+  approveStory: async (id: number): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.post(`/admin/success_stories/${id}/approve`);
+    return response.data;
+  },
+
+  rejectStory: async (id: number): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.post(`/admin/success_stories/${id}/reject`);
+    return response.data;
+  },
+
+  featureStory: async (id: number): Promise<{ success: boolean; message: string; data: AdminSuccessStory }> => {
+    const response = await axios.post(`/admin/success_stories/${id}/feature`);
+    return response.data;
+  },
+
+  deleteStory: async (id: number): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.delete(`/admin/success_stories/${id}`);
+    return response.data;
+  },
+
+  // Product Questions
+  getProductQuestions: async (filters?: {
+    page?: number;
+    per_page?: number;
+    approved?: boolean;
+    answered?: boolean;
+    product_id?: number;
+    q?: string;
+  }): Promise<{ success: boolean; message: string; data: { product_questions: AdminProductQuestion[]; meta: PaginationMeta } }> => {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, String(value));
+        }
+      });
+    }
+    const response = await axios.get(`/admin/product_questions${params.toString() ? `?${params.toString()}` : ''}`);
+    return response.data;
+  },
+
+  approveQuestion: async (id: number): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.post(`/admin/product_questions/${id}/approve`);
+    return response.data;
+  },
+
+  rejectQuestion: async (id: number): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.post(`/admin/product_questions/${id}/reject`);
+    return response.data;
+  },
+
+  answerQuestion: async (id: number, answer: string): Promise<{ success: boolean; message: string; data: AdminProductQuestion }> => {
+    const response = await axios.patch(`/admin/product_questions/${id}/answer`, { answer });
+    return response.data;
+  },
+
+  deleteQuestion: async (id: number): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.delete(`/admin/product_questions/${id}`);
     return response.data;
   },
 };

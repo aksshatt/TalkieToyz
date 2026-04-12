@@ -58,6 +58,8 @@ import ContactSubmissions from './pages/admin/ContactSubmissions';
 import Analytics from './pages/admin/Analytics';
 import AssessmentResultsAdmin from './pages/admin/AssessmentResultsAdmin';
 import AuditLog from './pages/admin/AuditLog';
+import SuccessStories from './pages/admin/SuccessStories';
+import ProductQuestions from './pages/admin/ProductQuestions';
 import AssessmentHistoryPage from './pages/AssessmentHistoryPage';
 import WishlistPage from './pages/WishlistPage';
 import ShopByGoalQuiz from './pages/ShopByGoalQuiz';
@@ -241,6 +243,8 @@ function App() {
             <Route path="assessments" element={<AssessmentResultsAdmin />} />
             <Route path="contact" element={<ContactSubmissions />} />
             <Route path="audit-log" element={<AuditLog />} />
+            <Route path="success-stories" element={<SuccessStories />} />
+            <Route path="product-questions" element={<ProductQuestions />} />
           </Route>
 
           {/* Catch all - 404 page */}
