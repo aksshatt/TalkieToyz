@@ -419,6 +419,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {/* Wave divider */}
           <div className="border-t border-white/10 pt-6 text-center text-warmgray-400">
             <p className="font-medium">&copy; 2025 TalkieToyz. All rights reserved. Made with ❤️ for growing minds.</p>
+            <p className="text-sm text-warmgray-500 mt-1">Designed &amp; built by <span className="text-teal-light font-semibold">Akshat</span></p>
           </div>
         </div>
       </footer>
