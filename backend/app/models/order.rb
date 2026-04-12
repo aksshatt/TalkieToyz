@@ -75,12 +75,16 @@ class Order < ApplicationRecord
 
       order.save!
 
-      # Decrement stock for each ordered item
+      # Decrement stock for each ordered item (pessimistic lock prevents overselling)
       order.order_items.each do |item|
         if item.product_variant_id
-          item.product_variant.decrement!(:stock_quantity, item.quantity)
+          item.product_variant.with_lock do
+            item.product_variant.decrement!(:stock_quantity, item.quantity)
+          end
         else
-          item.product.decrement!(:stock_quantity, item.quantity)
+          item.product.with_lock do
+            item.product.decrement!(:stock_quantity, item.quantity)
+          end
         end
       end
 

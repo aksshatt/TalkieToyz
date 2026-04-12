@@ -82,6 +82,9 @@ axiosInstance.interceptors.response.use(
         const isPublicPath = publicPaths.some(p => window.location.pathname.startsWith(p));
         if (!isPublicPath) {
           window.location.href = '/login';
+          // Return a never-settling promise so no downstream error handlers fire
+          // while the browser is navigating away
+          return new Promise(() => {});
         }
 
         return Promise.reject(refreshError);

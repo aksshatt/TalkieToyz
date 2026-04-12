@@ -760,6 +760,12 @@ const Checkout = () => {
                     Review Order
                   </h2>
 
+                  {(() => {
+                    const reviewAddress =
+                      addressMode === 'select' && selectedAddressId
+                        ? savedAddresses.find((a) => a.id === selectedAddressId) ?? formik.values
+                        : formik.values;
+                    return (
                   <div className="space-y-6">
                     {/* Shipping Address */}
                     <div>
@@ -767,17 +773,17 @@ const Checkout = () => {
                         Shipping Address
                       </h3>
                       <div className="bg-gray-50 rounded-lg p-4 text-sm">
-                        <p className="font-semibold">{formik.values.name}</p>
-                        <p>{formik.values.phone}</p>
-                        <p>{formik.values.address_line_1}</p>
-                        {formik.values.address_line_2 && (
-                          <p>{formik.values.address_line_2}</p>
+                        <p className="font-semibold">{reviewAddress.name}</p>
+                        <p>{reviewAddress.phone}</p>
+                        <p>{reviewAddress.address_line_1}</p>
+                        {reviewAddress.address_line_2 && (
+                          <p>{reviewAddress.address_line_2}</p>
                         )}
                         <p>
-                          {formik.values.city}, {formik.values.state} -{' '}
-                          {formik.values.postal_code}
+                          {reviewAddress.city}, {reviewAddress.state} -{' '}
+                          {reviewAddress.postal_code}
                         </p>
-                        <p>{formik.values.country}</p>
+                        <p>{reviewAddress.country}</p>
                       </div>
                     </div>
 
@@ -886,6 +892,8 @@ const Checkout = () => {
                       </div>
                     </div>
                   </div>
+                  );
+                  })()}
                 </div>
               )}
             </div>

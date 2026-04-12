@@ -344,17 +344,14 @@ module Api
         end
 
         def calculate_average_processing_time
-          # Average time from created to delivered
-          delivered_orders = Order.where(status: 'delivered')
-                                  .where.not(created_at: nil)
+          # Average time from created to delivered — computed in SQL, no full table load
+          result = Order.where(status: 'delivered')
+                        .where.not(created_at: nil)
+                        .pick(Arel.sql(
+                          "AVG(EXTRACT(EPOCH FROM (updated_at - created_at)) / 86400.0)"
+                        ))
 
-          return 0 if delivered_orders.empty?
-
-          total_time = delivered_orders.sum do |order|
-            (order.updated_at - order.created_at) / 86400.0 # Convert to days
-          end
-
-          (total_time / delivered_orders.count).round(2)
+          result ? result.round(2) : 0
         end
 
         def generate_orders_csv(orders)
