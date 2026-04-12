@@ -24,7 +24,7 @@ const AuditLog = () => {
 
   useEffect(() => {
     loadLogs();
-  }, [page, actionFilter]);
+  }, [page, actionFilter, search]);
 
   const loadLogs = async () => {
     setIsLoading(true);
@@ -71,8 +71,7 @@ const AuditLog = () => {
             type="text"
             placeholder="Search resource type..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && loadLogs()}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             className="w-full pl-9 pr-4 py-2 border-2 border-warmgray-200 rounded-lg text-sm focus:border-teal focus:outline-none"
           />
         </div>
@@ -121,8 +120,19 @@ const AuditLog = () => {
                     <div className="font-medium text-warmgray-800">{log.resource_type}</div>
                     <div className="text-xs text-warmgray-400">ID: {log.resource_id}</div>
                   </td>
-                  <td className="px-4 py-3 text-warmgray-600 max-w-[200px] truncate text-xs">
-                    {JSON.stringify(log.details)}
+                  <td className="px-4 py-3 max-w-[220px]">
+                    {log.details && Object.keys(log.details).length > 0 ? (
+                      <div className="space-y-0.5">
+                        {Object.entries(log.details).map(([k, v]) => (
+                          <div key={k} className="flex gap-1 text-xs">
+                            <span className="text-warmgray-400 shrink-0">{k}:</span>
+                            <span className="text-warmgray-700 truncate">{String(v)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-warmgray-300 text-xs">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-warmgray-600">{log.user_name || `User #${log.user_id}`}</td>
                   <td className="px-4 py-3 text-warmgray-500 text-xs whitespace-nowrap">

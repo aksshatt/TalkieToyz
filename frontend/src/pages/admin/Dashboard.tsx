@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   DollarSign,
   ShoppingBag,
@@ -254,9 +255,9 @@ const Dashboard: React.FC = () => {
               <h2 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-800">
                 Recent Orders
               </h2>
-              <button className="text-sm font-semibold text-teal hover:text-teal-dark transition-colors">
+              <Link to="/admin/orders" className="text-sm font-semibold text-teal hover:text-teal-dark transition-colors">
                 View All
-              </button>
+              </Link>
             </div>
             <DataTable columns={orderColumns} data={recentOrders} />
           </div>
@@ -293,9 +294,9 @@ const Dashboard: React.FC = () => {
                 </div>
               )}
             </div>
-            <button className="w-full mt-4 px-4 py-2 bg-coral text-white font-semibold rounded-xl hover:opacity-90 transition-opacity">
+            <Link to="/admin/products" className="block w-full mt-4 px-4 py-2 bg-coral text-white font-semibold rounded-xl hover:opacity-90 transition-opacity text-center">
               Restock Products
-            </button>
+            </Link>
           </div>
         </div>
       </div>

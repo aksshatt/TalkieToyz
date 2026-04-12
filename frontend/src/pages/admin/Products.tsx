@@ -233,7 +233,7 @@ const Products: React.FC = () => {
         title="Add New Product"
         size="lg"
       >
-        <ProductForm onClose={() => setIsAddModalOpen(false)} />
+        <ProductForm onClose={() => setIsAddModalOpen(false)} onSaved={loadProducts} />
       </Modal>
 
       {/* Edit Product Modal */}
@@ -252,6 +252,7 @@ const Products: React.FC = () => {
             setIsEditModalOpen(false);
             setSelectedProduct(null);
           }}
+          onSaved={loadProducts}
         />
       </Modal>
     </div>
@@ -262,9 +263,10 @@ const Products: React.FC = () => {
 interface ProductFormProps {
   product?: Product | null;
   onClose: () => void;
+  onSaved: () => void;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
+const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) => {
   const [categories, setCategories] = useState<Array<{ id: number; name: string }>>([]);
   const [formData, setFormData] = useState({
     name: product?.name || '',
@@ -430,7 +432,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose }) => {
         toast.success('Product added successfully');
       }
       onClose();
-      window.location.reload();
+      onSaved();
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to save product');
     } finally {

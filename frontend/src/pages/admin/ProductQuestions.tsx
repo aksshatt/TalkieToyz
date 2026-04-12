@@ -98,8 +98,8 @@ export default function ProductQuestions() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Product Q&amp;A</h1>
-          <p className="text-sm text-gray-500 mt-1">{totalCount} total questions</p>
+          <h1 className="text-2xl font-bold text-warmgray-800">Product Q&amp;A</h1>
+          <p className="text-sm text-warmgray-500 mt-1">{totalCount} total questions</p>
         </div>
 
         <form onSubmit={handleSearch} className="flex gap-2">
@@ -108,7 +108,7 @@ export default function ProductQuestions() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search questions or users..."
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
+            className="px-3 py-2 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
           />
           <button
             type="submit"
@@ -128,7 +128,7 @@ export default function ProductQuestions() {
             className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
               filter === t.key
                 ? 'bg-teal-500 text-white'
-                : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+                : 'bg-white text-warmgray-600 border border-warmgray-200 hover:bg-warmgray-50'
             }`}
           >
             {t.label}
@@ -139,13 +139,13 @@ export default function ProductQuestions() {
       {loading ? (
         <div className="text-center py-16 text-gray-400">Loading...</div>
       ) : questions.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
-          <p className="text-gray-500">No questions found</p>
+        <div className="text-center py-16 bg-white rounded-xl border border-warmgray-200">
+          <p className="text-warmgray-500">No questions found</p>
         </div>
       ) : (
         <div className="space-y-4">
           {questions.map((q) => (
-            <div key={q.id} className="bg-white rounded-xl border border-gray-200 p-5">
+            <div key={q.id} className="bg-white rounded-xl border border-warmgray-200 p-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -162,19 +162,19 @@ export default function ProductQuestions() {
                     )}
                   </div>
 
-                  <p className="text-xs text-gray-500 mb-2">
+                  <p className="text-xs text-warmgray-500 mb-2">
                     From <span className="font-medium">{q.user.name}</span> ({q.user.email})
                     · {new Date(q.created_at).toLocaleDateString()}
                   </p>
 
-                  <p className="text-gray-900 font-medium mb-2">{q.question}</p>
+                  <p className="text-warmgray-800 font-medium mb-2">{q.question}</p>
 
                   {q.answered && q.answer && (
                     <div className="bg-teal-50 rounded-lg p-3 mt-2">
                       <p className="text-xs font-semibold text-teal-700 mb-1">
                         Answer{q.answered_by ? ` by ${q.answered_by.name}` : ''}:
                       </p>
-                      <p className="text-sm text-gray-700">{q.answer}</p>
+                      <p className="text-sm text-warmgray-700">{q.answer}</p>
                     </div>
                   )}
 
@@ -185,7 +185,7 @@ export default function ProductQuestions() {
                         value={answerText[q.id] || ''}
                         onChange={(e) => setAnswerText((prev) => ({ ...prev, [q.id]: e.target.value }))}
                         placeholder="Type your answer..."
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 resize-none"
+                        className="flex-1 px-3 py-2 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 resize-none"
                       />
                       <button
                         onClick={() => handleAnswer(q.id)}

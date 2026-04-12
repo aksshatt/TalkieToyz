@@ -48,50 +48,46 @@ const Orders: React.FC = () => {
   // Load orders from API
   useEffect(() => {
     loadOrders();
-  }, [statusFilter]);
+  }, [statusFilter, dateFilter]);
+
+  const getDateRange = () => {
+    const now = new Date();
+    if (dateFilter === 'today') {
+      const start = new Date(now); start.setHours(0, 0, 0, 0);
+      return { date_from: start.toISOString(), date_to: now.toISOString() };
+    }
+    if (dateFilter === 'week') {
+      const start = new Date(now); start.setDate(now.getDate() - 6); start.setHours(0, 0, 0, 0);
+      return { date_from: start.toISOString(), date_to: now.toISOString() };
+    }
+    if (dateFilter === 'month') {
+      const start = new Date(now.getFullYear(), now.getMonth(), 1);
+      return { date_from: start.toISOString(), date_to: now.toISOString() };
+    }
+    return {};
+  };
 
   const loadOrders = async () => {
     setIsLoading(true);
     try {
       const response = await adminService.getOrders({
         status: statusFilter !== 'all' ? statusFilter : undefined,
+        ...getDateRange(),
       });
       if (response.success) {
-        // Transform API data to match component interface
-        const transformedOrders = await Promise.all(
-          response.data.orders.map(async (o: AdminOrder) => {
-            // Fetch full order details to get items
-            let items: OrderItem[] = [];
-            let shipping_address: Address | undefined;
-            try {
-              const detailResponse = await adminService.getOrder(o.id);
-              const orderDetail = detailResponse.data;
-              items = (orderDetail.items || []).map((item: any) => ({
-                id: item.id,
-                product_name: item.product_name || item.item_name || 'Unknown',
-                quantity: item.quantity,
-                price: `₹${(item.price || item.unit_price || 0).toLocaleString()}`,
-                total: `₹${(item.total || item.total_price || 0).toLocaleString()}`,
-              }));
-              shipping_address = orderDetail.shipping_address;
-            } catch {
-              // Detail fetch failed; show order without items
-            }
-
-            return {
-              id: o.id,
-              order_number: o.order_number,
-              customer_name: o.customer_name,
-              customer_email: o.customer_email,
-              total: `₹${o.total.toLocaleString()}`,
-              status: o.status as any,
-              payment_method: o.payment_method || 'N/A',
-              created_at: new Date(o.created_at).toLocaleDateString('en-IN'),
-              items,
-              shipping_address,
-            };
-          })
-        );
+        // Use list data directly — detail is fetched on-demand when opening the modal
+        const transformedOrders = response.data.orders.map((o: AdminOrder) => ({
+          id: o.id,
+          order_number: o.order_number,
+          customer_name: o.customer_name,
+          customer_email: o.customer_email,
+          total: `₹${o.total.toLocaleString()}`,
+          status: o.status as any,
+          payment_method: o.payment_method || 'N/A',
+          created_at: new Date(o.created_at).toLocaleDateString('en-IN'),
+          items: [],
+          shipping_address: o.shipping_address,
+        }));
         setOrders(transformedOrders);
       }
     } catch (error: any) {
@@ -160,9 +156,28 @@ const Orders: React.FC = () => {
     },
   ];
 
-  const handleViewDetails = (order: Order) => {
+  const handleViewDetails = async (order: Order) => {
     setSelectedOrder(order);
     setIsDetailModalOpen(true);
+    // Fetch full details (items + address) on demand
+    if (order.items.length === 0) {
+      try {
+        const detailResponse = await adminService.getOrder(order.id);
+        const d = detailResponse.data;
+        const items: OrderItem[] = (d.items || []).map((item: any) => ({
+          id: item.id,
+          product_name: item.product_name || item.item_name || 'Unknown',
+          quantity: item.quantity,
+          price: `₹${(item.price || item.unit_price || 0).toLocaleString()}`,
+          total: `₹${(item.total || item.total_price || 0).toLocaleString()}`,
+        }));
+        setSelectedOrder((prev) =>
+          prev ? { ...prev, items, shipping_address: d.shipping_address } : prev
+        );
+      } catch {
+        // silently fail — order info already shown
+      }
+    }
   };
 
   const handlePrintInvoice = (order: Order) => {
