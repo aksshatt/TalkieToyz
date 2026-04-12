@@ -5,8 +5,11 @@ import { Provider } from 'react-redux'
 import { Toaster } from 'react-hot-toast'
 import { HelmetProvider } from 'react-helmet-async'
 import { store } from './store'
+import { startKeepAlive } from './services/keepAliveService'
 import './index.css'
 import App from './App.tsx'
+
+startKeepAlive()
 
 // Create a client
 const queryClient = new QueryClient({
