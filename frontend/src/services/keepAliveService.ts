@@ -1,5 +1,12 @@
-// Pings the backend health endpoint every 10 minutes to prevent
+// Pings the backend health endpoint every 5 minutes to prevent
 // Render free-tier services from spinning down after 15 min idle.
+//
+// NOTE: This only works while a user has the browser tab open.
+// For 24/7 keep-alive (e.g. when nobody is visiting), set up an external
+// cron service to ping your /health endpoint every 10 minutes:
+//   - cron-job.org (free, recommended)
+//   - UptimeRobot (free, also monitors uptime)
+//   URL to ping: https://<your-render-backend>.onrender.com/health
 
 const PING_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
 
