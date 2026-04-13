@@ -427,4 +427,64 @@ export const adminService = {
     const response = await axios.delete(`/admin/product_questions/${id}`);
     return response.data;
   },
+
+  // Orders export
+  exportOrders: async (filters?: {
+    status?: string;
+    date_from?: string;
+    date_to?: string;
+  }): Promise<Blob> => {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, String(value));
+        }
+      });
+    }
+    const response = await axios.get(
+      `/admin/orders/export${params.toString() ? `?${params.toString()}` : ''}`,
+      { responseType: 'blob' }
+    );
+    return response.data;
+  },
+
+  // Coupons
+  getCoupons: async (filters?: { page?: number; per_page?: number; q?: string; active?: string }): Promise<{ success: boolean; message: string; data: { coupons: any[]; meta: PaginationMeta } }> => {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, String(value));
+        }
+      });
+    }
+    const response = await axios.get(`/admin/coupons${params.toString() ? `?${params.toString()}` : ''}`);
+    return response.data;
+  },
+
+  bulkGenerateCoupons: async (params: {
+    count: number;
+    prefix?: string;
+    discount_type: 'percentage' | 'fixed';
+    discount_value: number;
+    min_order_amount?: number;
+    max_discount_amount?: number;
+    usage_limit?: number;
+    valid_from?: string;
+    valid_until?: string;
+  }): Promise<{ success: boolean; message: string; data: { generated: any[]; errors: any[]; total_generated: number } }> => {
+    const response = await axios.post('/admin/coupons/bulk_generate', params);
+    return response.data;
+  },
+
+  deleteCoupon: async (id: number): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.delete(`/admin/coupons/${id}`);
+    return response.data;
+  },
+
+  toggleCoupon: async (id: number): Promise<{ success: boolean; message: string; data: any }> => {
+    const response = await axios.patch(`/admin/coupons/${id}/toggle`);
+    return response.data;
+  },
 };

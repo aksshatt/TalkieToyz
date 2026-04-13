@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_08_000006) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_12_071214) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -436,6 +436,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_08_000006) do
     t.jsonb "refund_details", default: {}
     t.decimal "weight_kg", precision: 8, scale: 3, default: "0.5"
     t.jsonb "dimensions_cm", default: {"height"=>5, "length"=>10, "breadth"=>10}
+    t.boolean "gift_wrap", default: false, null: false
+    t.text "gift_message"
     t.index ["billing_address"], name: "index_orders_on_billing_address", using: :gin
     t.index ["coupon_id"], name: "index_orders_on_coupon_id"
     t.index ["created_at"], name: "index_orders_on_created_at"

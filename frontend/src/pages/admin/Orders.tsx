@@ -181,7 +181,96 @@ const Orders: React.FC = () => {
   };
 
   const handlePrintInvoice = (order: Order) => {
-    toast.success(`Printing invoice for ${order.order_number}`);
+    const addr = order.shipping_address;
+    const addrStr = addr
+      ? `${addr.name}<br/>${addr.phone}<br/>${addr.address_line_1}${addr.address_line_2 ? ', ' + addr.address_line_2 : ''}<br/>${addr.city}, ${addr.state} – ${addr.postal_code}`
+      : '—';
+
+    const itemsHtml = order.items.length > 0
+      ? order.items.map((item) => `
+          <tr>
+            <td style="padding:8px;border-bottom:1px solid #eee">${item.product_name}</td>
+            <td style="padding:8px;border-bottom:1px solid #eee;text-align:center">${item.quantity}</td>
+            <td style="padding:8px;border-bottom:1px solid #eee;text-align:right">${item.price}</td>
+            <td style="padding:8px;border-bottom:1px solid #eee;text-align:right">${item.total}</td>
+          </tr>`).join('')
+      : `<tr><td colspan="4" style="padding:8px;text-align:center;color:#aaa">No item details available</td></tr>`;
+
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Invoice – ${order.order_number}</title>
+  <style>
+    body{font-family:Arial,sans-serif;color:#333;max-width:700px;margin:40px auto;padding:0 20px}
+    h1{color:#0d9488}table{width:100%;border-collapse:collapse}
+    th{background:#f0fdf4;text-align:left;padding:10px 8px;font-size:13px}
+    @media print{button{display:none}}
+  </style>
+</head>
+<body>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px">
+    <div><h1 style="margin:0">TalkieToys</h1><p style="margin:4px 0;color:#666;font-size:13px">Invoice</p></div>
+    <div style="text-align:right">
+      <p style="margin:0;font-size:18px;font-weight:bold">#${order.order_number}</p>
+      <p style="margin:4px 0;color:#666;font-size:13px">Date: ${order.created_at}</p>
+      <p style="margin:4px 0;font-size:13px">Payment: ${order.payment_method}</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px">
+    <div><strong>Billed To:</strong><br/>${order.customer_name}<br/>${order.customer_email}</div>
+    <div><strong>Ship To:</strong><br/>${addrStr}</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th><th style="text-align:center">Qty</th>
+        <th style="text-align:right">Price</th><th style="text-align:right">Total</th>
+      </tr>
+    </thead>
+    <tbody>${itemsHtml}</tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3" style="padding:12px 8px;text-align:right;font-weight:bold;font-size:16px">Grand Total</td>
+        <td style="padding:12px 8px;text-align:right;font-weight:bold;font-size:16px;color:#0d9488">${order.total}</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <p style="margin-top:48px;text-align:center;color:#aaa;font-size:12px">Thank you for shopping with TalkieToys!</p>
+  <button onclick="window.print()" style="margin-top:24px;padding:10px 24px;background:#0d9488;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px">Print Invoice</button>
+</body>
+</html>`;
+
+    const win = window.open('', '_blank', 'width=800,height=700');
+    if (win) {
+      win.document.write(html);
+      win.document.close();
+      // Auto-print after a short delay so styles load
+      setTimeout(() => win.print(), 400);
+    }
+  };
+
+  const handleExportOrders = async () => {
+    try {
+      const blob = await adminService.exportOrders({
+        status: statusFilter !== 'all' ? statusFilter : undefined,
+        ...getDateRange(),
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `orders_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast.success('Orders exported!');
+    } catch {
+      toast.error('Failed to export orders');
+    }
   };
 
   const handleUpdateStatus = async (newStatus: Order['status']) => {
@@ -213,9 +302,9 @@ const Orders: React.FC = () => {
           </h1>
           <p className="text-warmgray-600">Manage and track all customer orders</p>
         </div>
-        <button className="flex items-center space-x-2 px-6 py-3 bg-teal-gradient text-white font-bold rounded-xl shadow-soft hover-lift">
+        <button onClick={handleExportOrders} className="flex items-center space-x-2 px-6 py-3 bg-teal-gradient text-white font-bold rounded-xl shadow-soft hover-lift">
           <Download className="h-5 w-5" />
-          <span>Export Orders</span>
+          <span>Export CSV</span>
         </button>
       </div>
 

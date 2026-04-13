@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Loader2,
   Plus,
+  Gift,
 } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import StateCitySelector from '../components/common/StateCitySelector';
@@ -18,9 +19,11 @@ import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { fetchCart, resetCart } from '../store/slices/cartSlice';
 import orderService from '../services/orderService';
 import { addressService } from '../services/addressService';
+import shippingService from '../services/shippingService';
 import toast from 'react-hot-toast';
 import type { Address, PaymentMethod } from '../types/order';
 import type { Address as UserAddress } from '../types/address';
+import type { ShippingRate } from '../types/shipment';
 
 // Declare Razorpay on window
 declare global {
@@ -43,9 +46,7 @@ const Checkout = () => {
   const { cart, loading: cartLoading } = useAppSelector((state) => state.cart);
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [deliveryMethod, setDeliveryMethod] = useState<'standard' | 'express'>(
-    'standard'
-  );
+  const [deliveryMethod, setDeliveryMethod] = useState<'standard' | 'express'>('standard');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('razorpay');
   const [isProcessing, setIsProcessing] = useState(false);
   const [savedAddresses, setSavedAddresses] = useState<UserAddress[]>([]);
@@ -53,6 +54,11 @@ const Checkout = () => {
   const [addressMode, setAddressMode] = useState<'select' | 'new'>('select');
   const [saveAddress, setSaveAddress] = useState(false);
   const [isLoadingPincode, setIsLoadingPincode] = useState(false);
+  const [giftWrap, setGiftWrap] = useState(false);
+  const [giftMessage, setGiftMessage] = useState('');
+  const [shippingRates, setShippingRates] = useState<ShippingRate[]>([]);
+  const [loadingRates, setLoadingRates] = useState(false);
+  const [selectedCourierId, setSelectedCourierId] = useState<number | null>(null);
 
   const couponCode = location.state?.couponCode;
   const discount = location.state?.discount || 0;
@@ -194,6 +200,8 @@ const Checkout = () => {
         billing_address: shippingAddress,
         coupon_code: couponCode,
         save_address: addressMode === 'new' && saveAddress,
+        gift_wrap: giftWrap,
+        gift_message: giftWrap ? giftMessage : undefined,
       });
 
       const order = orderResponse.data;
@@ -265,6 +273,31 @@ const Checkout = () => {
     }
   };
 
+  // Fetch shipping rates when moving to step 2
+  const fetchShippingRates = async (postalCode: string) => {
+    if (!postalCode || postalCode.length !== 6) return;
+    setLoadingRates(true);
+    try {
+      const result = await shippingService.calculateRates({ postal_code: postalCode });
+      setShippingRates(result.rates || []);
+    } catch {
+      // Silently fall back to static options if rates API unavailable
+      setShippingRates([]);
+    } finally {
+      setLoadingRates(false);
+    }
+  };
+
+  const getPostalCode = () => {
+    if (addressMode === 'select' && selectedAddressId) {
+      const addr = savedAddresses.find(a => a.id === selectedAddressId);
+      return addr?.postal_code || '';
+    }
+    return formik.values.postal_code;
+  };
+
+  const codAvailable = shippingRates.some(r => r.cod_available);
+
   const handleNext = async () => {
     if (currentStep === 1) {
       // If selecting existing address, just check if one is selected
@@ -273,6 +306,7 @@ const Checkout = () => {
           toast.error('Please select an address');
           return;
         }
+        fetchShippingRates(getPostalCode());
         setCurrentStep(2);
         return;
       }
@@ -280,6 +314,7 @@ const Checkout = () => {
       // If adding new address, validate form
       const errors = await formik.validateForm();
       if (Object.keys(errors).length === 0) {
+        fetchShippingRates(formik.values.postal_code);
         setCurrentStep(2);
       } else {
         formik.setTouched({
@@ -608,72 +643,126 @@ const Checkout = () => {
                     Delivery Method
                   </h2>
 
-                  <div className="space-y-4">
-                    <label
-                      className={`flex items-center justify-between p-6 border-2 rounded-xl cursor-pointer transition-all ${
-                        deliveryMethod === 'standard'
-                          ? 'border-purple-500 bg-purple-50'
-                          : 'border-gray-200 hover:border-purple-200'
-                      }`}
-                    >
-                      <div className="flex items-center gap-4">
-                        <input
-                          type="radio"
-                          name="delivery"
-                          value="standard"
-                          checked={deliveryMethod === 'standard'}
-                          onChange={(e) =>
-                            setDeliveryMethod(
-                              e.target.value as 'standard' | 'express'
-                            )
-                          }
-                          className="w-5 h-5 text-purple-600"
-                        />
-                        <div>
-                          <p className="font-bold text-gray-800">
-                            Standard Delivery
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            5-7 business days
-                          </p>
+                  {loadingRates ? (
+                    <div className="flex items-center gap-3 py-8 justify-center text-gray-500">
+                      <Loader2 className="h-5 w-5 animate-spin text-purple-600" />
+                      <span>Checking available couriers…</span>
+                    </div>
+                  ) : shippingRates.length > 0 ? (
+                    <div className="space-y-3 mb-6">
+                      {shippingRates.map((rate) => (
+                        <label
+                          key={rate.courier_id}
+                          className={`flex items-center justify-between p-5 border-2 rounded-xl cursor-pointer transition-all ${
+                            selectedCourierId === rate.courier_id
+                              ? 'border-purple-500 bg-purple-50'
+                              : 'border-gray-200 hover:border-purple-200'
+                          }`}
+                        >
+                          <div className="flex items-center gap-4">
+                            <input
+                              type="radio"
+                              name="delivery"
+                              checked={selectedCourierId === rate.courier_id}
+                              onChange={() => setSelectedCourierId(rate.courier_id)}
+                              className="w-5 h-5 text-purple-600"
+                            />
+                            <div>
+                              <p className="font-bold text-gray-800">{rate.courier_name}</p>
+                              <p className="text-sm text-gray-500">
+                                {rate.estimated_delivery_days} days · {rate.mode}
+                                {rate.cod_available && (
+                                  <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">COD available</span>
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                          <span className="font-bold text-purple-600">
+                            {rate.rate === 0 ? 'FREE' : `₹${rate.rate.toFixed(2)}`}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="space-y-4 mb-6">
+                      <label
+                        className={`flex items-center justify-between p-6 border-2 rounded-xl cursor-pointer transition-all ${
+                          deliveryMethod === 'standard'
+                            ? 'border-purple-500 bg-purple-50'
+                            : 'border-gray-200 hover:border-purple-200'
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <input
+                            type="radio"
+                            name="delivery"
+                            value="standard"
+                            checked={deliveryMethod === 'standard'}
+                            onChange={(e) => setDeliveryMethod(e.target.value as 'standard' | 'express')}
+                            className="w-5 h-5 text-purple-600"
+                          />
+                          <div>
+                            <p className="font-bold text-gray-800">Standard Delivery</p>
+                            <p className="text-sm text-gray-600">5-7 business days</p>
+                          </div>
                         </div>
-                      </div>
-                      <span className="font-bold text-purple-600">FREE</span>
-                    </label>
+                        <span className="font-bold text-purple-600">FREE</span>
+                      </label>
 
-                    <label
-                      className={`flex items-center justify-between p-6 border-2 rounded-xl cursor-pointer transition-all ${
-                        deliveryMethod === 'express'
-                          ? 'border-purple-500 bg-purple-50'
-                          : 'border-gray-200 hover:border-purple-200'
-                      }`}
-                    >
-                      <div className="flex items-center gap-4">
-                        <input
-                          type="radio"
-                          name="delivery"
-                          value="express"
-                          checked={deliveryMethod === 'express'}
-                          onChange={(e) =>
-                            setDeliveryMethod(
-                              e.target.value as 'standard' | 'express'
-                            )
-                          }
-                          className="w-5 h-5 text-purple-600"
-                        />
-                        <div>
-                          <p className="font-bold text-gray-800">
-                            Express Delivery
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            2-3 business days
-                          </p>
+                      <label
+                        className={`flex items-center justify-between p-6 border-2 rounded-xl cursor-pointer transition-all ${
+                          deliveryMethod === 'express'
+                            ? 'border-purple-500 bg-purple-50'
+                            : 'border-gray-200 hover:border-purple-200'
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <input
+                            type="radio"
+                            name="delivery"
+                            value="express"
+                            checked={deliveryMethod === 'express'}
+                            onChange={(e) => setDeliveryMethod(e.target.value as 'standard' | 'express')}
+                            className="w-5 h-5 text-purple-600"
+                          />
+                          <div>
+                            <p className="font-bold text-gray-800">Express Delivery</p>
+                            <p className="text-sm text-gray-600">2-3 business days</p>
+                          </div>
                         </div>
+                        <span className="font-bold text-purple-600">₹100.00</span>
+                      </label>
+                    </div>
+                  )}
+
+                  {/* Gift Wrapping */}
+                  <div className="border-t-2 border-gray-100 pt-5 mt-2">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={giftWrap}
+                        onChange={(e) => setGiftWrap(e.target.checked)}
+                        className="w-5 h-5 text-purple-600 rounded focus:ring-purple-500"
+                      />
+                      <div className="flex items-center gap-2">
+                        <Gift className="h-5 w-5 text-pink-500" />
+                        <span className="font-semibold text-gray-800">Add gift wrapping</span>
+                        <span className="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full">FREE</span>
                       </div>
-                      <span className="font-bold text-purple-600">
-                        ₹100.00
-                      </span>
                     </label>
+                    {giftWrap && (
+                      <div className="mt-3 ml-8">
+                        <textarea
+                          rows={3}
+                          value={giftMessage}
+                          onChange={(e) => setGiftMessage(e.target.value)}
+                          placeholder="Write a message card (optional)…"
+                          maxLength={200}
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors text-sm resize-none"
+                        />
+                        <p className="text-xs text-gray-400 mt-1">{giftMessage.length}/200</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -722,6 +811,8 @@ const Checkout = () => {
                       className={`flex items-center justify-between p-6 border-2 rounded-xl cursor-pointer transition-all ${
                         paymentMethod === 'cod'
                           ? 'border-purple-500 bg-purple-50'
+                          : shippingRates.length > 0 && !codAvailable
+                          ? 'border-gray-100 bg-gray-50 opacity-60 cursor-not-allowed'
                           : 'border-gray-200 hover:border-purple-200'
                       }`}
                     >
@@ -731,20 +822,16 @@ const Checkout = () => {
                           name="payment"
                           value="cod"
                           checked={paymentMethod === 'cod'}
-                          onChange={(e) =>
-                            setPaymentMethod(
-                              e.target.value as PaymentMethod
-                            )
-                          }
+                          disabled={shippingRates.length > 0 && !codAvailable}
+                          onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
                           className="w-5 h-5 text-purple-600"
                         />
                         <div>
-                          <p className="font-bold text-gray-800">
-                            Cash on Delivery
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Pay when you receive your order
-                          </p>
+                          <p className="font-bold text-gray-800">Cash on Delivery</p>
+                          <p className="text-sm text-gray-600">Pay when you receive your order</p>
+                          {shippingRates.length > 0 && !codAvailable && (
+                            <p className="text-xs text-red-500 mt-0.5">COD not available for your PIN code</p>
+                          )}
                         </div>
                       </div>
                     </label>
@@ -790,36 +877,45 @@ const Checkout = () => {
                     {/* Delivery & Payment */}
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <h3 className="font-bold text-gray-800 mb-2">
-                          Delivery Method
-                        </h3>
+                        <h3 className="font-bold text-gray-800 mb-2">Delivery</h3>
                         <div className="bg-gray-50 rounded-lg p-4 text-sm">
-                          <p className="font-semibold">
-                            {deliveryMethod === 'standard'
-                              ? 'Standard Delivery'
-                              : 'Express Delivery'}
-                          </p>
-                          <p className="text-gray-600">
-                            {deliveryMethod === 'standard'
-                              ? '5-7 business days'
-                              : '2-3 business days'}
-                          </p>
+                          {selectedCourierId && shippingRates.length > 0 ? (() => {
+                            const rate = shippingRates.find(r => r.courier_id === selectedCourierId);
+                            return rate ? (
+                              <>
+                                <p className="font-semibold">{rate.courier_name}</p>
+                                <p className="text-gray-600">{rate.estimated_delivery_days} days</p>
+                                <p className="text-purple-600 font-semibold">{rate.rate === 0 ? 'FREE' : `₹${rate.rate.toFixed(2)}`}</p>
+                              </>
+                            ) : null;
+                          })() : (
+                            <>
+                              <p className="font-semibold">{deliveryMethod === 'standard' ? 'Standard Delivery' : 'Express Delivery'}</p>
+                              <p className="text-gray-600">{deliveryMethod === 'standard' ? '5-7 business days' : '2-3 business days'}</p>
+                            </>
+                          )}
                         </div>
                       </div>
 
                       <div>
-                        <h3 className="font-bold text-gray-800 mb-2">
-                          Payment Method
-                        </h3>
+                        <h3 className="font-bold text-gray-800 mb-2">Payment</h3>
                         <div className="bg-gray-50 rounded-lg p-4 text-sm">
-                          <p className="font-semibold">
-                            {paymentMethod === 'razorpay'
-                              ? 'Online Payment'
-                              : 'Cash on Delivery'}
-                          </p>
+                          <p className="font-semibold">{paymentMethod === 'razorpay' ? 'Online Payment' : 'Cash on Delivery'}</p>
                         </div>
                       </div>
                     </div>
+
+                    {giftWrap && (
+                      <div>
+                        <h3 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                          <Gift className="h-4 w-4 text-pink-500" /> Gift Wrapping
+                        </h3>
+                        <div className="bg-pink-50 rounded-lg p-4 text-sm border border-pink-100">
+                          <p className="font-semibold text-pink-800">Your order will be gift wrapped</p>
+                          {giftMessage && <p className="text-gray-700 mt-1 italic">"{giftMessage}"</p>}
+                        </div>
+                      </div>
+                    )}
 
                     {/* Order Items */}
                     <div>

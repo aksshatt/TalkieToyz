@@ -77,7 +77,9 @@ module Api
           shipping_address: params[:shipping_address],
           billing_address: params[:billing_address],
           coupon: coupon,
-          clear_cart: params[:payment_method] == 'cod'
+          clear_cart: params[:payment_method] == 'cod',
+          gift_wrap: params[:gift_wrap] == true || params[:gift_wrap] == 'true',
+          gift_message: params[:gift_message]
         )
 
         if params[:customer_notes].present?

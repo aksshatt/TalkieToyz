@@ -300,6 +300,16 @@ Rails.application.routes.draw do
           end
         end
 
+        # Coupons Management
+        resources :coupons, only: [:index, :destroy] do
+          member do
+            patch :toggle
+          end
+          collection do
+            post :bulk_generate
+          end
+        end
+
         # Bundles Management
         resources :bundles, param: :id
 

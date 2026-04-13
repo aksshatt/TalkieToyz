@@ -21,6 +21,7 @@ import {
   Shield,
   Heart,
   HelpingHand,
+  Ticket,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -49,6 +50,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'Content', href: '/admin/content', icon: FileText },
     { name: 'Success Stories', href: '/admin/success-stories', icon: Heart },
     { name: 'Product Q&A', href: '/admin/product-questions', icon: HelpingHand },
+    { name: 'Coupons', href: '/admin/coupons', icon: Ticket },
     { name: 'Audit Log', href: '/admin/audit-log', icon: Shield },
   ];
 

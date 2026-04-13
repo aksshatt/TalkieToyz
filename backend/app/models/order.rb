@@ -44,7 +44,7 @@ class Order < ApplicationRecord
   scope :by_status, ->(status) { where(status: status) }
 
   # Class method to create from cart
-  def self.create_from_cart(cart, payment_method:, shipping_address:, billing_address: nil, coupon: nil, clear_cart: true)
+  def self.create_from_cart(cart, payment_method:, shipping_address:, billing_address: nil, coupon: nil, clear_cart: true, gift_wrap: false, gift_message: nil)
     raise 'Cart is empty' if cart.empty?
 
     Order.transaction do
@@ -54,7 +54,9 @@ class Order < ApplicationRecord
         payment_method: payment_method,
         shipping_address: shipping_address,
         billing_address: billing_address || shipping_address,
-        payment_status: payment_method == 'cod' ? 'pending' : 'awaiting_payment'
+        payment_status: payment_method == 'cod' ? 'pending' : 'awaiting_payment',
+        gift_wrap: gift_wrap,
+        gift_message: gift_message
       )
 
       # Calculate amounts
@@ -91,6 +93,20 @@ class Order < ApplicationRecord
       # Only clear cart if explicitly requested (for COD orders)
       # For payment gateway orders, cart will be cleared after payment verification
       cart.clear if clear_cart
+
+      # Send low-stock alert email if any products are now below threshold
+      threshold = ENV.fetch('LOW_STOCK_THRESHOLD', 5).to_i
+      low_products = order.order_items.map { |item|
+        item.product_variant_id ? item.product_variant.product : item.product
+      }.uniq.select { |p| p.stock_quantity <= threshold }
+
+      if low_products.any?
+        begin
+          InventoryMailer.low_stock_alert(low_products).deliver_later
+        rescue => e
+          Rails.logger.error "Inventory alert email failed: #{e.message}"
+        end
+      end
 
       order
     end

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body { font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 24px; }
+    h1  { color: #d97706; font-size: 22px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    th  { background: #fef3c7; text-align: left; padding: 10px 12px; font-size: 13px; border-bottom: 2px solid #fde68a; }
+    td  { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 9999px; font-size: 11px; font-weight: bold; }
+    .critical { background: #fee2e2; color: #b91c1c; }
+    .warning  { background: #fef3c7; color: #92400e; }
+  </style>
+</head>
+<body>
+  <h1>⚠️ Low Stock Alert</h1>
+  <p>The following <%= @products.size %> product(s) are at or below the low-stock threshold of <strong><%= @threshold %> units</strong>:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>SKU</th>
+        <th>Stock</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+      <tr>
+        <td><strong><%= product.name %></strong></td>
+        <td><%= product.sku || '—' %></td>
+        <td><%= product.stock_quantity %></td>
+        <td>
+          <% if product.stock_quantity == 0 %>
+            <span class="badge critical">Out of Stock</span>
+          <% else %>
+            <span class="badge warning">Low Stock</span>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p style="margin-top: 24px; font-size: 13px; color: #6b7280;">
+    Please restock these items soon to avoid losing sales.<br/>
+    <a href="<%= ENV.fetch('FRONTEND_URL', 'https://talkietoyz.shop') %>/admin/products" style="color: #0d9488; font-weight: bold;">View Products in Admin →</a>
+  </p>
+
+  <p style="margin-top: 32px; font-size: 11px; color: #aaa;">This is an automated alert from TalkieToys inventory system.</p>
+</body>
+</html>

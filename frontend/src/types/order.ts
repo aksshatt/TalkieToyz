@@ -91,6 +91,8 @@ export interface CreateOrderData {
   coupon_code?: string;
   notes?: string;
   save_address?: boolean;
+  gift_wrap?: boolean;
+  gift_message?: string;
 }
 
 export interface OrdersResponse {

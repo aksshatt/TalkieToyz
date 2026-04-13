@@ -60,6 +60,7 @@ import AssessmentResultsAdmin from './pages/admin/AssessmentResultsAdmin';
 import AuditLog from './pages/admin/AuditLog';
 import SuccessStories from './pages/admin/SuccessStories';
 import ProductQuestions from './pages/admin/ProductQuestions';
+import CouponGenerator from './pages/admin/CouponGenerator';
 import AssessmentHistoryPage from './pages/AssessmentHistoryPage';
 import WishlistPage from './pages/WishlistPage';
 import ShopByGoalQuiz from './pages/ShopByGoalQuiz';
@@ -245,6 +246,7 @@ function App() {
             <Route path="audit-log" element={<AuditLog />} />
             <Route path="success-stories" element={<SuccessStories />} />
             <Route path="product-questions" element={<ProductQuestions />} />
+            <Route path="coupons" element={<CouponGenerator />} />
           </Route>
 
           {/* Catch all - 404 page */}
