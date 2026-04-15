@@ -110,7 +110,7 @@ const ProductDetail = () => {
     <Layout>
       <SEO
         title={product.name}
-        description={product.description?.slice(0, 160) || `Buy ${product.name} - a therapist-designed speech therapy toy for children aged ${product.min_age}–${product.max_age} years.`}
+        description={product.description?.slice(0, 160) || `Buy ${product.name} - a therapist-designed speech therapy toy${product.min_age != null && product.max_age != null ? ` for children aged ${product.min_age}–${product.max_age} years` : ''}.`}
         image={productImage}
         url={`/products/${product.slug}`}
         type="product"
@@ -173,7 +173,7 @@ const ProductDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
             {/* Image Gallery */}
             <div className="bg-gray-50 p-8">
-              <ImageGallery images={product.image_urls} productName={product.name} />
+              <ImageGallery images={product.image_urls || []} productName={product.name} />
             </div>
 
             {/* Product Details */}
@@ -256,12 +256,14 @@ const ProductDetail = () => {
                     <p className="font-semibold text-gray-900 mt-1">{product.category.name}</p>
                   </div>
                 )}
-                <div>
-                  <span className="text-xs text-gray-500 uppercase tracking-wide">Age Range</span>
-                  <p className="font-semibold text-gray-900 mt-1">
-                    {product.min_age}-{product.max_age} years
-                  </p>
-                </div>
+                {product.min_age != null && product.max_age != null && (
+                  <div>
+                    <span className="text-xs text-gray-500 uppercase tracking-wide">Age Range</span>
+                    <p className="font-semibold text-gray-900 mt-1">
+                      {product.min_age}–{product.max_age} years
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Stock Status */}
@@ -435,9 +437,9 @@ const ProductDetail = () => {
             {activeTab === 'speech-goals' && (
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Speech & Language Goals</h3>
-                {product.speech_goals.length > 0 ? (
+                {(product.speech_goals?.length ?? 0) > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {product.speech_goals.map((goal) => (
+                    {product.speech_goals?.map((goal) => (
                       <div
                         key={goal.id}
                         className="border border-gray-200 rounded-lg p-5 hover:border-teal hover:bg-teal/5 transition-all"

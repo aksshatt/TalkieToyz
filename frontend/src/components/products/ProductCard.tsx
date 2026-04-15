@@ -147,9 +147,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
               {product.category.name}
             </span>
           )}
-          <span className="bg-sky-gradient text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-soft">
-            {product.min_age}–{product.max_age} yrs
-          </span>
+          {product.min_age != null && product.max_age != null && (
+            <span className="bg-sky-gradient text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-soft">
+              {product.min_age}–{product.max_age} yrs
+            </span>
+          )}
         </div>
 
         {/* Stars */}
