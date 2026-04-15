@@ -270,7 +270,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
   const [categories, setCategories] = useState<Array<{ id: number; name: string }>>([]);
   const [formData, setFormData] = useState({
     name: product?.name || '',
-    price: product?.price?.replace('₹', '').replace(',', '') || '',
+    price: product?.price?.replace(/[₹,]/g, '') || '',
     stock_quantity: product?.stock_quantity || 0,
     category_id: '',
     description: '',
@@ -328,6 +328,10 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
           featured: p.featured || false,
           age_range: ageRange,
         });
+        // Update existing images from the detail response (list endpoint may not include them)
+        if (p.image_urls && p.image_urls.length > 0) {
+          setExistingImages(p.image_urls);
+        }
       })
       .catch(() => toast.error('Failed to load product details'))
       .finally(() => setLoadingDetails(false));
