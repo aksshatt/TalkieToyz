@@ -21,6 +21,7 @@ export interface User {
   phone?: string;
   bio?: string;
   avatar_url?: string;
+  approval_status?: 'pending' | 'approved' | 'rejected';
   preferences?: Record<string, any>;
   created_at: string;
   updated_at: string;

@@ -46,6 +46,7 @@ const Signup: React.FC = () => {
   const [serverError, setServerError] = useState<string>('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [pendingApproval, setPendingApproval] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -74,8 +75,12 @@ const Signup: React.FC = () => {
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      await signup(formData);
-      navigate('/', { replace: true });
+      const result = await signup(formData);
+      if ((result as any)?.pending_approval) {
+        setPendingApproval(true);
+      } else {
+        navigate('/', { replace: true });
+      }
     } catch (error: any) {
       if (error.response?.data?.message) setServerError(error.response.data.message);
       else if (error.response?.data?.errors) setServerError(error.response.data.errors.join(', '));
@@ -84,6 +89,48 @@ const Signup: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  if (pendingApproval) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-light/20 via-white to-coral-light/20 p-6">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          className="bg-white rounded-3xl shadow-soft-xl p-10 max-w-md w-full text-center">
+          <motion.div
+            initial={{ scale: 0 }} animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+            className="w-20 h-20 bg-sunshine/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-10 h-10 text-sunshine-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </motion.div>
+          <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-3">
+            Application Submitted!
+          </h2>
+          <p className="text-warmgray-500 leading-relaxed mb-6">
+            Your therapist account has been created and is pending admin approval. You'll receive an email once approved — usually within 1–2 business days.
+          </p>
+          <div className="bg-teal-light/10 rounded-2xl p-4 text-left space-y-3 mb-6">
+            {[
+              { step: '1', text: 'Admin reviews your registration' },
+              { step: '2', text: 'You receive an approval email' },
+              { step: '3', text: 'Log in to access your therapist dashboard' },
+            ].map(({ step, text }) => (
+              <div key={step} className="flex items-center gap-3">
+                <span className="w-6 h-6 rounded-full bg-teal text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{step}</span>
+                <p className="text-sm text-warmgray-700">{text}</p>
+              </div>
+            ))}
+          </div>
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+            <button onClick={() => navigate('/login')}
+              className="w-full bg-teal-gradient text-white font-bold py-3 rounded-xl shadow-soft">
+              Go to Login
+            </button>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex">

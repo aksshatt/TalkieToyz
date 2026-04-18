@@ -69,6 +69,22 @@ import ChildProgressDashboard from './pages/ChildProgressDashboard';
 import LoyaltyDashboard from './pages/LoyaltyDashboard';
 import BundleBuilderPage from './pages/BundleBuilderPage';
 
+// Therapist Pages
+import TherapistRoute from './components/auth/TherapistRoute';
+import TherapistLayout from './components/therapist/TherapistLayout';
+import TherapistPatients from './pages/therapist/TherapistPatients';
+import TherapistPatientDetail from './pages/therapist/TherapistPatientDetail';
+import TherapistMessages from './pages/therapist/TherapistMessages';
+import TherapistTemplates from './pages/therapist/TherapistTemplates';
+
+// Patient Inbox
+import PatientInbox from './pages/patient/PatientInbox';
+
+// Admin Therapist Pages
+import TherapistApprovals from './pages/admin/TherapistApprovals';
+import TherapistManagement from './pages/admin/TherapistManagement';
+import ConversationMonitor from './pages/admin/ConversationMonitor';
+
 // Communication Components
 import WhatsAppButton from './components/common/WhatsAppButton';
 
@@ -205,6 +221,28 @@ function App() {
             element={<PrivateRoute><LoyaltyDashboard /></PrivateRoute>}
           />
 
+          {/* Patient Inbox */}
+          <Route
+            path="/messages"
+            element={<PrivateRoute><PatientInbox /></PrivateRoute>}
+          />
+
+          {/* Therapist Routes */}
+          <Route
+            path="/therapist"
+            element={
+              <TherapistRoute>
+                <TherapistLayout />
+              </TherapistRoute>
+            }
+          >
+            <Route index element={<TherapistPatients />} />
+            <Route path="patients" element={<TherapistPatients />} />
+            <Route path="patients/:id" element={<TherapistPatientDetail />} />
+            <Route path="messages" element={<TherapistMessages />} />
+            <Route path="templates" element={<TherapistTemplates />} />
+          </Route>
+
           {/* Blog Routes */}
           <Route path="/blog" element={<PageWrapper><BlogList /></PageWrapper>} />
           <Route path="/blog/:slug" element={<PageWrapper><BlogPostDetail /></PageWrapper>} />
@@ -247,6 +285,9 @@ function App() {
             <Route path="success-stories" element={<SuccessStories />} />
             <Route path="product-questions" element={<ProductQuestions />} />
             <Route path="coupons" element={<CouponGenerator />} />
+            <Route path="therapist-approvals" element={<TherapistApprovals />} />
+            <Route path="therapist-management" element={<TherapistManagement />} />
+            <Route path="conversations" element={<ConversationMonitor />} />
           </Route>
 
           {/* Catch all - 404 page */}

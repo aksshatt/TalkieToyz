@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_12_071214) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_18_000005) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -281,6 +281,19 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_12_071214) do
     t.index ["user_id"], name: "index_contact_submissions_on_user_id"
   end
 
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "therapist_id", null: false
+    t.bigint "patient_id", null: false
+    t.datetime "last_message_at"
+    t.integer "unread_by_patient", default: 0, null: false
+    t.integer "unread_by_therapist", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["patient_id"], name: "index_conversations_on_patient_id"
+    t.index ["therapist_id", "patient_id"], name: "index_conversations_on_therapist_id_and_patient_id", unique: true
+    t.index ["therapist_id"], name: "index_conversations_on_therapist_id"
+  end
+
   create_table "coupons", force: :cascade do |t|
     t.string "code", null: false
     t.string "discount_type", null: false
@@ -339,6 +352,32 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_12_071214) do
     t.datetime "updated_at", null: false
     t.index ["reference_type", "reference_id"], name: "index_loyalty_points_on_reference_type_and_reference_id"
     t.index ["user_id"], name: "index_loyalty_points_on_user_id"
+  end
+
+  create_table "message_templates", force: :cascade do |t|
+    t.bigint "created_by_id", null: false
+    t.string "title", null: false
+    t.text "content", null: false
+    t.string "category"
+    t.boolean "shared", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_message_templates_on_created_by_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "conversation_id", null: false
+    t.bigint "sender_id", null: false
+    t.string "message_type", default: "text", null: false
+    t.text "content"
+    t.jsonb "metadata", default: {}
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["created_at"], name: "index_messages_on_created_at"
+    t.index ["message_type"], name: "index_messages_on_message_type"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
   create_table "milestone_achievements", force: :cascade do |t|
@@ -717,6 +756,20 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_12_071214) do
     t.index ["user_id"], name: "index_success_stories_on_user_id"
   end
 
+  create_table "therapist_patient_assignments", force: :cascade do |t|
+    t.bigint "therapist_id", null: false
+    t.bigint "patient_id", null: false
+    t.bigint "assigned_by_id", null: false
+    t.text "notes"
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assigned_by_id"], name: "index_therapist_patient_assignments_on_assigned_by_id"
+    t.index ["patient_id"], name: "index_therapist_patient_assignments_on_patient_id"
+    t.index ["therapist_id", "patient_id"], name: "idx_tpa_therapist_patient", unique: true
+    t.index ["therapist_id"], name: "index_therapist_patient_assignments_on_therapist_id"
+  end
+
   create_table "user_addresses", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "name", null: false
@@ -750,6 +803,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_12_071214) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "loyalty_points_total", default: 0, null: false
+    t.string "approval_status", default: "approved"
+    t.index ["approval_status"], name: "index_users_on_approval_status"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -783,7 +838,12 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_12_071214) do
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "child_profiles", "users"
   add_foreign_key "contact_submissions", "users"
+  add_foreign_key "conversations", "users", column: "patient_id"
+  add_foreign_key "conversations", "users", column: "therapist_id"
   add_foreign_key "loyalty_points", "users"
+  add_foreign_key "message_templates", "users", column: "created_by_id"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "milestone_achievements", "child_profiles"
   add_foreign_key "milestone_achievements", "milestones"
   add_foreign_key "milestone_achievements", "users"
@@ -812,6 +872,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_12_071214) do
   add_foreign_key "shipments", "orders"
   add_foreign_key "success_stories", "products"
   add_foreign_key "success_stories", "users"
+  add_foreign_key "therapist_patient_assignments", "users", column: "assigned_by_id"
+  add_foreign_key "therapist_patient_assignments", "users", column: "patient_id"
+  add_foreign_key "therapist_patient_assignments", "users", column: "therapist_id"
   add_foreign_key "user_addresses", "users"
   add_foreign_key "wishlists", "products"
   add_foreign_key "wishlists", "users"

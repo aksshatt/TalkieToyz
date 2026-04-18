@@ -186,6 +186,29 @@ Rails.application.routes.draw do
         end
       end
 
+      # Patient Conversations (authenticated patients)
+      scope 'patient' do
+        resources :conversations, controller: 'patient_conversations', only: [:index, :show] do
+          member do
+            post :messages, action: :create_message
+            patch :read, action: :mark_read
+          end
+        end
+      end
+
+      # Therapist Routes (approved therapists only)
+      namespace :therapist do
+        resources :patients, only: [:index, :show]
+        resources :conversations, only: [:index, :show, :create] do
+          resources :messages, only: [:create] do
+            collection do
+              patch :read, action: :mark_read
+            end
+          end
+        end
+        resources :message_templates
+      end
+
       # Admin Routes (require admin role)
       namespace :admin do
         # Dashboard
@@ -319,6 +342,25 @@ Rails.application.routes.draw do
             post :award
           end
         end
+
+        # Therapist Approvals
+        resources :therapist_approvals, only: [:index] do
+          member do
+            post :approve
+            post :reject
+          end
+        end
+
+        # Therapist-Patient Assignments
+        resources :therapist_assignments, only: [:index, :create, :destroy] do
+          collection do
+            get :therapists
+            get :patients
+          end
+        end
+
+        # Conversation Monitoring (admin read-only)
+        resources :conversations, only: [:index, :show]
       end
     end
   end

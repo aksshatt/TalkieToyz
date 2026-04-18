@@ -6,34 +6,41 @@ module Api
         user = User.new(signup_params)
         user.role ||= :customer
 
+        # Therapists start as pending until admin approves
+        if user.therapist?
+          user.approval_status = 'pending'
+        else
+          user.approval_status = 'approved'
+        end
+
         if user.save
-          # Generate JWT tokens
+          # Generate JWT tokens (issued even for pending therapists; API blocks access)
           token = generate_jwt_token(user)
           refresh_token = generate_refresh_token(user)
 
-          # Send welcome email
+          # Send welcome / pending email
           begin
-            AuthMailer.welcome(user).deliver_now
+            if user.therapist?
+              TherapistMailer.approval_pending(user).deliver_later
+              # Notify admin
+              admin = User.find_by(role: :admin)
+              # Simple admin notification via existing contact mailer or log
+              Rails.logger.info "New therapist signup pending approval: #{user.email}"
+            else
+              AuthMailer.welcome(user).deliver_now
+            end
           rescue => e
-            Rails.logger.error "Welcome email failed: #{e.message}"
+            Rails.logger.error "Signup email failed: #{e.message}"
           end
 
           render json: {
             success: true,
-            message: 'User created successfully',
+            message: user.therapist? ? 'Application submitted. Awaiting admin approval.' : 'User created successfully',
             data: {
-              user: {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                role: user.role,
-                phone: user.phone,
-                bio: user.bio,
-                created_at: user.created_at,
-                updated_at: user.updated_at
-              },
+              user: serialize_user(user),
               access_token: token,
-              refresh_token: refresh_token
+              refresh_token: refresh_token,
+              pending_approval: user.therapist? && user.approval_pending?
             }
           }, status: :created
         else
@@ -58,18 +65,10 @@ module Api
             success: true,
             message: 'Login successful',
             data: {
-              user: {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                role: user.role,
-                phone: user.phone,
-                bio: user.bio,
-                created_at: user.created_at,
-                updated_at: user.updated_at
-              },
+              user: serialize_user(user),
               access_token: token,
-              refresh_token: refresh_token
+              refresh_token: refresh_token,
+              pending_approval: user.therapist? && user.approval_pending?
             }
           }
         else
@@ -171,18 +170,7 @@ module Api
         if user
           render json: {
             success: true,
-            data: {
-              user: {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                role: user.role,
-                phone: user.phone,
-                bio: user.bio,
-                created_at: user.created_at,
-                updated_at: user.updated_at
-              }
-            }
+            data: { user: serialize_user(user) }
           }
         else
           render json: {
@@ -204,18 +192,7 @@ module Api
           render json: {
             success: true,
             message: 'Profile updated successfully',
-            data: {
-              user: {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                role: user.role,
-                phone: user.phone,
-                bio: user.bio,
-                created_at: user.created_at,
-                updated_at: user.updated_at
-              }
-            }
+            data: { user: serialize_user(user) }
           }
         else
           render json: {
@@ -228,12 +205,27 @@ module Api
 
       private
 
+      def serialize_user(user)
+        {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          phone: user.phone,
+          bio: user.bio,
+          avatar_url: user.avatar_url,
+          approval_status: user.approval_status,
+          created_at: user.created_at,
+          updated_at: user.updated_at
+        }
+      end
+
       def signup_params
         # Accept both formats: {user: {...}} or {...} directly
         if params[:user].present?
-          params.require(:user).permit(:email, :password, :password_confirmation, :name, :phone)
+          params.require(:user).permit(:email, :password, :password_confirmation, :name, :phone, :role)
         else
-          params.permit(:email, :password, :password_confirmation, :name, :phone)
+          params.permit(:email, :password, :password_confirmation, :name, :phone, :role)
         end
       end
 

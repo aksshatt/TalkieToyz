@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   # Enums
   enum role: { customer: 0, therapist: 1, admin: 2 }
+  enum approval_status: { pending: 'pending', approved: 'approved', rejected: 'rejected' }, _prefix: :approval
 
   # Associations
   has_one :cart, dependent: :destroy
@@ -22,6 +23,19 @@ class User < ApplicationRecord
   has_many :milestone_achievements, dependent: :destroy
   # has_many :progress_logs, dependent: :destroy
   has_many :blog_posts, foreign_key: :author_id, dependent: :destroy
+
+  # Therapist associations
+  has_many :therapist_assignments, class_name: 'TherapistPatientAssignment', foreign_key: :therapist_id, dependent: :destroy
+  has_many :assigned_patients, through: :therapist_assignments, source: :patient
+  has_many :therapist_conversations, class_name: 'Conversation', foreign_key: :therapist_id, dependent: :destroy
+
+  # Patient associations
+  has_many :patient_assignments, class_name: 'TherapistPatientAssignment', foreign_key: :patient_id, dependent: :destroy
+  has_many :assigned_therapists, through: :patient_assignments, source: :therapist
+  has_many :patient_conversations, class_name: 'Conversation', foreign_key: :patient_id, dependent: :destroy
+
+  has_many :sent_messages, class_name: 'Message', foreign_key: :sender_id, dependent: :destroy
+  has_many :message_templates, foreign_key: :created_by_id, dependent: :destroy
 
   # Validations
   validates :name, presence: true, length: { minimum: 2, maximum: 100 }

@@ -22,6 +22,9 @@ import {
   Heart,
   HelpingHand,
   Ticket,
+  Stethoscope,
+  UserCheck,
+  Eye,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -52,6 +55,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'Product Q&A', href: '/admin/product-questions', icon: HelpingHand },
     { name: 'Coupons', href: '/admin/coupons', icon: Ticket },
     { name: 'Audit Log', href: '/admin/audit-log', icon: Shield },
+    { name: 'Therapist Approvals', href: '/admin/therapist-approvals', icon: UserCheck },
+    { name: 'Therapist Management', href: '/admin/therapist-management', icon: Stethoscope },
+    { name: 'Conversations', href: '/admin/conversations', icon: Eye },
   ];
 
   const isActive = (href: string) => {

@@ -6,7 +6,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (data: LoginData) => Promise<void>;
-  signup: (data: SignupData) => Promise<void>;
+  signup: (data: SignupData) => Promise<{ pending_approval?: boolean }>;
   logout: () => Promise<void>;
   updateUser: (user: User) => void;
 }
@@ -84,10 +84,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const signup = async (data: SignupData) => {
+  const signup = async (data: SignupData): Promise<{ pending_approval?: boolean }> => {
     try {
       const response = await authService.signup(data);
-      const { user: userData, access_token, refresh_token } = response.data;
+      const { user: userData, access_token, refresh_token, pending_approval } = response.data;
 
       // Store tokens and user data
       localStorage.setItem('access_token', access_token);
@@ -95,6 +95,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(userData));
 
       setUser(userData);
+      return { pending_approval };
     } catch (error: any) {
       console.error('Signup error:', error);
       throw error;
