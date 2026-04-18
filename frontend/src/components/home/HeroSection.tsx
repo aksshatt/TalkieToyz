@@ -122,7 +122,7 @@ const HeroSection = () => {
           </motion.div>
 
           {/* Trust Indicators */}
-          <motion.div variants={itemVariants} className="mt-10 flex flex-wrap gap-6 text-white/90">
+          <motion.div variants={itemVariants} className="mt-10 flex flex-wrap gap-6 text-warmgray-900 font-semibold">
             {[
               { color: 'bg-teal', label: 'Safe & Certified' },
               { color: 'bg-sunshine', label: 'Expert Approved' },

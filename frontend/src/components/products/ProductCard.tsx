@@ -161,7 +161,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               <Star key={i} className={`h-4 w-4 ${i < Math.floor(product.average_rating) ? 'text-sunshine fill-sunshine' : 'text-warmgray-200 fill-warmgray-200'}`} />
             ))}
           </div>
-          <span className="text-xs font-semibold text-warmgray-500">({product.review_count})</span>
+          <span className="text-xs font-semibold text-warmgray-500">({product.review_count ?? 0})</span>
         </div>
 
         {/* Price + Cart */}

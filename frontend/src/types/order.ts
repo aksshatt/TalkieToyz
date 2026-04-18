@@ -99,7 +99,7 @@ export interface OrdersResponse {
   success: boolean;
   data: {
     orders: Order[];
-    meta: {
+    pagination: {
       current_page: number;
       total_pages: number;
       total_count: number;

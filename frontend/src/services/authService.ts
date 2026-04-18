@@ -93,7 +93,7 @@ const authService = {
    * Change password
    */
   changePassword: async (data: ChangePasswordData): Promise<{ success: boolean; message: string }> => {
-    const response = await axiosInstance.patch('/auth/password', data);
+    const response = await axiosInstance.patch('/auth/profile', { user: data });
     return response.data;
   },
 
