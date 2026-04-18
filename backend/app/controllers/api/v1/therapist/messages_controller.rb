@@ -10,7 +10,7 @@ module Api
             sender: current_user,
             message_type: params[:message_type] || 'text',
             content: params[:content],
-            metadata: params[:metadata] || {}
+            metadata: params[:metadata]&.to_unsafe_h || {}
           )
 
           if msg.save

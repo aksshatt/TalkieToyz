@@ -151,7 +151,7 @@ const ConversationMonitor: React.FC = () => {
                         ) : msg.message_type === 'assessment' ? (
                           <div className="bg-warmgray-50 border border-warmgray-200 rounded-2xl p-3 min-w-[200px]">
                             <p className="text-xs text-sky font-semibold mb-1">Shared Assessment</p>
-                            <p className="text-sm font-bold text-warmgray-800">{msg.metadata?.assessment_name}</p>
+                            <p className="text-sm font-bold text-warmgray-800">{msg.metadata?.assessment_title}</p>
                           </div>
                         ) : null}
                         <p className={`text-xs text-warmgray-400 mt-1 ${isTherapist ? 'text-left' : 'text-right'}`}>{formatTime(msg.created_at)}</p>

@@ -160,7 +160,7 @@ const PatientInbox: React.FC = () => {
                           <Link to={`/assessments/${msg.metadata?.assessment_slug}`}
                             className="block bg-warmgray-50 hover:bg-sky-light/10 border-2 border-warmgray-200 hover:border-sky/30 rounded-2xl p-3 min-w-[200px] transition-colors">
                             <p className="text-xs text-sky font-bold mb-1">Recommended Assessment</p>
-                            <p className="text-sm font-bold text-warmgray-800">{msg.metadata?.assessment_name}</p>
+                            <p className="text-sm font-bold text-warmgray-800">{msg.metadata?.assessment_title}</p>
                             <p className="text-xs text-sky mt-1 font-semibold">Take assessment →</p>
                           </Link>
                         ) : null}
