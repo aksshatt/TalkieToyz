@@ -122,7 +122,7 @@ const HeroSection = () => {
           </motion.div>
 
           {/* Trust Indicators */}
-          <motion.div variants={itemVariants} className="mt-10 flex flex-wrap gap-6 text-warmgray-900 font-semibold">
+          <motion.div variants={itemVariants} className="mt-10 flex flex-wrap gap-3">
             {[
               { color: 'bg-teal', label: 'Safe & Certified' },
               { color: 'bg-sunshine', label: 'Expert Approved' },
@@ -130,17 +130,17 @@ const HeroSection = () => {
             ].map((item, i) => (
               <motion.div
                 key={item.label}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-1.5 shadow-soft"
                 initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.0 + i * 0.12, duration: 0.45 }}
               >
                 <motion.div
-                  className={`w-2 h-2 ${item.color} rounded-full`}
+                  className={`w-2.5 h-2.5 ${item.color} rounded-full flex-shrink-0`}
                   animate={{ scale: [1, 1.4, 1] }}
                   transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
                 />
-                <span className="text-lg sm:text-xl md:text-2xl font-medium">{item.label}</span>
+                <span className="text-sm sm:text-base font-semibold text-warmgray-800">{item.label}</span>
               </motion.div>
             ))}
           </motion.div>
