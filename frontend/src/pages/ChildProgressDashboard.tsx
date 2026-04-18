@@ -80,12 +80,30 @@ const MilestoneCard: React.FC<{
                 onClick={() => {
                   if (navigator.share) {
                     navigator.share({ title: `Milestone: ${milestone.title}`, text: `We just achieved: ${milestone.title}! 🎉` });
+                  } else {
+                    navigator.clipboard.writeText(`We just achieved: ${milestone.title}! 🎉`);
                   }
                   setShowCert(false);
                 }}
                 className="flex-1 flex items-center justify-center gap-2 border border-indigo-200 text-indigo-600 py-2 rounded-xl text-sm hover:bg-indigo-50"
               >
                 <Share2 className="w-4 h-4" /> Share
+              </button>
+              <button
+                onClick={() => {
+                  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Milestone Certificate</title><style>body{font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f5f3ff}.cert{border:4px solid #6366f1;border-radius:16px;padding:48px;max-width:500px;text-align:center;background:#fff}.trophy{font-size:64px;margin-bottom:16px}.title{font-size:28px;font-weight:800;color:#1f2937;margin-bottom:8px}.sub{color:#6b7280;margin-bottom:24px}.milestone{font-size:22px;font-weight:700;color:#4f46e5;margin-bottom:24px}.date{color:#9ca3af;font-size:14px}</style></head><body><div class="cert"><div class="trophy">🏆</div><div class="title">Achievement Unlocked!</div><div class="sub">This certifies that</div><div class="milestone">${milestone.title}</div><div class="date">Achieved on ${achievement ? new Date(achievement.achieved_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</div></div></body></html>`;
+                  const blob = new Blob([html], { type: 'text/html' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `milestone-${milestone.title.replace(/\s+/g, '-').toLowerCase()}.html`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                  setShowCert(false);
+                }}
+                className="flex-1 flex items-center justify-center gap-2 border border-amber-200 text-amber-700 py-2 rounded-xl text-sm hover:bg-amber-50"
+              >
+                <Download className="w-4 h-4" /> Download
               </button>
               <button
                 onClick={() => setShowCert(false)}

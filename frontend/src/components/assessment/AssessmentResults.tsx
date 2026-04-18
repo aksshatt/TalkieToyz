@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CheckCircle, TrendingUp, Lightbulb, Download, Share2, Calendar, Award, Target } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import type { AssessmentResult } from '../../types/assessment';
 import BookAppointmentModal from '../common/BookAppointmentModal';
 
@@ -61,7 +62,7 @@ const AssessmentResults = ({ result }: AssessmentResultsProps) => {
     } else {
       // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      toast.success('Link copied to clipboard!');
     }
   };
 
@@ -92,7 +93,7 @@ const AssessmentResults = ({ result }: AssessmentResultsProps) => {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading PDF:', error);
-      alert('Failed to download PDF. Please try again.');
+      toast.error('Failed to download PDF. Please try again.');
     }
   };
 

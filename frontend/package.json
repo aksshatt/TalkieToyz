@@ -20,6 +20,8 @@
     "axios": "^1.13.2",
     "formik": "^2.4.9",
     "framer-motion": "^12.38.0",
+    "highcharts": "^12.6.0",
+    "highcharts-react-official": "^3.2.3",
     "lucide-react": "^0.562.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

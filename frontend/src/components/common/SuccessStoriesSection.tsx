@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Star, ChevronLeft, ChevronRight, Plus, X } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { successStoriesService, SuccessStory } from '../../services/successStoriesService';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -37,7 +38,7 @@ const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({ productId
       queryClient.invalidateQueries({ queryKey: ['success_stories'] });
       setShowForm(false);
       setForm({ child_name: '', age_months: '', speech_goal: '', before_text: '', after_text: '' });
-      alert('Thank you! Your story has been submitted for review.');
+      toast.success('Thank you! Your story has been submitted for review.');
     },
   });
 

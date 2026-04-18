@@ -4,7 +4,8 @@ import { useAuth } from '../contexts/AuthContext';
 import authService from '../services/authService';
 import { validateName, validatePhone } from '../utils/validation';
 import Layout from '../components/layout/Layout';
-import { User, Mail, Phone, FileText, ShoppingBag, LogOut, Edit2, Save, X, Shield, Heart, ClipboardList } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { User, Mail, Phone, FileText, ShoppingBag, LogOut, Edit2, Save, X, Shield, Heart, ClipboardList, Lock, Eye, EyeOff, Camera } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Profile: React.FC = () => {
@@ -14,11 +15,20 @@ const Profile: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [formData, setFormData] = useState({ name: user?.name || '', phone: user?.phone || '', bio: user?.bio || '' });
+  const [formData, setFormData] = useState({ name: user?.name || '', phone: user?.phone || '', bio: user?.bio || '', avatar_url: user?.avatar_url || '' });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
+  // Password change state
+  const [showPasswordSection, setShowPasswordSection] = useState(false);
+  const [pwLoading, setPwLoading] = useState(false);
+  const [pwData, setPwData] = useState({ current_password: '', password: '', password_confirmation: '' });
+  const [pwErrors, setPwErrors] = useState<{ [key: string]: string }>({});
+  const [showCurrentPw, setShowCurrentPw] = useState(false);
+  const [showNewPw, setShowNewPw] = useState(false);
+  const [showConfirmPw, setShowConfirmPw] = useState(false);
+
   useEffect(() => {
-    if (user) setFormData({ name: user.name || '', phone: user.phone || '', bio: user.bio || '' });
+    if (user) setFormData({ name: user.name || '', phone: user.phone || '', bio: user.bio || '', avatar_url: user.avatar_url || '' });
   }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -56,8 +66,35 @@ const Profile: React.FC = () => {
   };
 
   const handleCancel = () => {
-    setFormData({ name: user?.name || '', phone: user?.phone || '', bio: user?.bio || '' });
+    setFormData({ name: user?.name || '', phone: user?.phone || '', bio: user?.bio || '', avatar_url: user?.avatar_url || '' });
     setErrors({}); setServerError(''); setIsEditing(false);
+  };
+
+  const validatePassword = (): boolean => {
+    const errs: { [key: string]: string } = {};
+    if (!pwData.current_password) errs.current_password = 'Current password is required';
+    if (!pwData.password || pwData.password.length < 8) errs.password = 'New password must be at least 8 characters';
+    if (pwData.password !== pwData.password_confirmation) errs.password_confirmation = 'Passwords do not match';
+    setPwErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validatePassword()) return;
+    setPwLoading(true);
+    try {
+      await authService.changePassword(pwData);
+      toast.success('Password changed successfully!');
+      setPwData({ current_password: '', password: '', password_confirmation: '' });
+      setPwErrors({});
+      setShowPasswordSection(false);
+    } catch (error: any) {
+      const msg = error.response?.data?.message || error.response?.data?.errors?.join(', ') || 'Failed to change password';
+      toast.error(msg);
+    } finally {
+      setPwLoading(false);
+    }
   };
 
   const handleLogout = async () => { await logout(); navigate('/login'); };
@@ -228,6 +265,26 @@ const Profile: React.FC = () => {
                       />
                     </div>
 
+                    {/* Avatar URL */}
+                    <div>
+                      <label htmlFor="avatar_url" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                        <Camera className="h-4 w-4 text-teal" /> Profile Photo URL
+                      </label>
+                      <input type="url" id="avatar_url" name="avatar_url" value={formData.avatar_url} onChange={handleChange}
+                        disabled={!isEditing || isLoading} placeholder="https://example.com/your-photo.jpg"
+                        className={`w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-4 text-sm border-warmgray-200 focus:border-teal focus:ring-teal/10 ${
+                          !isEditing ? 'bg-warmgray-50 text-warmgray-600' : 'bg-white focus:bg-white'
+                        } disabled:cursor-not-allowed`}
+                      />
+                      {formData.avatar_url && (
+                        <div className="mt-2 flex items-center gap-2">
+                          <img src={formData.avatar_url} alt="Preview" className="w-10 h-10 rounded-full object-cover border-2 border-warmgray-200"
+                            onError={e => { e.currentTarget.style.display = 'none'; }} />
+                          <span className="text-xs text-warmgray-400">Preview</span>
+                        </div>
+                      )}
+                    </div>
+
                     <AnimatePresence>
                       {isEditing && (
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
@@ -249,6 +306,106 @@ const Profile: React.FC = () => {
               </div>
             </motion.div>
           </div>
+
+          {/* Change Password */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
+            className="mt-6 bg-white rounded-2xl shadow-soft overflow-hidden">
+            <button
+              onClick={() => setShowPasswordSection(v => !v)}
+              className="w-full bg-gradient-to-r from-warmgray-50 to-warmgray-100/50 px-6 py-4 border-b border-warmgray-100 flex items-center justify-between hover:bg-warmgray-100/60 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 bg-teal-light/30 rounded-xl flex items-center justify-center">
+                  <Lock className="h-4 w-4 text-teal" />
+                </div>
+                <span className="font-[var(--font-family-fun)] font-bold text-warmgray-900">Change Password</span>
+              </div>
+              <motion.div animate={{ rotate: showPasswordSection ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                <X className={`h-4 w-4 transition-colors ${showPasswordSection ? 'text-warmgray-600' : 'text-warmgray-400 rotate-45'}`} />
+              </motion.div>
+            </button>
+
+            <AnimatePresence>
+              {showPasswordSection && (
+                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25 }} className="overflow-hidden">
+                  <form onSubmit={handlePasswordSubmit} className="p-6 space-y-4">
+                    {/* Current Password */}
+                    <div>
+                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                        <Lock className="h-4 w-4 text-teal" /> Current Password
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showCurrentPw ? 'text' : 'password'}
+                          value={pwData.current_password}
+                          onChange={e => { setPwData(p => ({ ...p, current_password: e.target.value })); setPwErrors(p => ({ ...p, current_password: '' })); }}
+                          placeholder="Enter current password"
+                          className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.current_password ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'}`}
+                        />
+                        <button type="button" onClick={() => setShowCurrentPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700">
+                          {showCurrentPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                      </div>
+                      {pwErrors.current_password && <p className="mt-1 text-xs text-coral-dark font-medium">{pwErrors.current_password}</p>}
+                    </div>
+
+                    {/* New Password */}
+                    <div>
+                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                        <Lock className="h-4 w-4 text-teal" /> New Password
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showNewPw ? 'text' : 'password'}
+                          value={pwData.password}
+                          onChange={e => { setPwData(p => ({ ...p, password: e.target.value })); setPwErrors(p => ({ ...p, password: '' })); }}
+                          placeholder="Minimum 8 characters"
+                          className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.password ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'}`}
+                        />
+                        <button type="button" onClick={() => setShowNewPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700">
+                          {showNewPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                      </div>
+                      {pwErrors.password && <p className="mt-1 text-xs text-coral-dark font-medium">{pwErrors.password}</p>}
+                    </div>
+
+                    {/* Confirm Password */}
+                    <div>
+                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                        <Lock className="h-4 w-4 text-teal" /> Confirm New Password
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showConfirmPw ? 'text' : 'password'}
+                          value={pwData.password_confirmation}
+                          onChange={e => { setPwData(p => ({ ...p, password_confirmation: e.target.value })); setPwErrors(p => ({ ...p, password_confirmation: '' })); }}
+                          placeholder="Repeat new password"
+                          className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.password_confirmation ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'}`}
+                        />
+                        <button type="button" onClick={() => setShowConfirmPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700">
+                          {showConfirmPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                      </div>
+                      {pwErrors.password_confirmation && <p className="mt-1 text-xs text-coral-dark font-medium">{pwErrors.password_confirmation}</p>}
+                    </div>
+
+                    <div className="flex gap-3 pt-1">
+                      <motion.button type="submit" disabled={pwLoading} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+                        className="flex-1 bg-gradient-to-r from-teal to-teal-dark text-white font-bold py-3 rounded-xl shadow-soft hover:shadow-soft-md transition-shadow flex items-center justify-center gap-2 disabled:opacity-60 text-sm">
+                        <Save className="h-4 w-4" />
+                        {pwLoading ? 'Updating…' : 'Update Password'}
+                      </motion.button>
+                      <button type="button" onClick={() => { setShowPasswordSection(false); setPwData({ current_password: '', password: '', password_confirmation: '' }); setPwErrors({}); }}
+                        className="px-5 py-3 border-2 border-warmgray-200 text-warmgray-700 rounded-xl hover:bg-warmgray-50 transition-colors font-semibold text-sm flex items-center gap-2">
+                        <X className="h-4 w-4" /> Cancel
+                      </button>
+                    </div>
+                  </form>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </div>
       </div>
     </Layout>
