@@ -63,6 +63,7 @@ const Login: React.FC = () => {
       const user = userStr ? JSON.parse(userStr) : null;
       let redirectPath = '/';
       if (user?.role === 'admin') redirectPath = '/admin';
+      else if (user?.role === 'therapist') redirectPath = '/therapist';
       else if (location.state?.from?.pathname) redirectPath = location.state.from.pathname;
       navigate(redirectPath, { replace: true });
     } catch (error: any) {

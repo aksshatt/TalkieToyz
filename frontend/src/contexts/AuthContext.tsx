@@ -88,6 +88,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authService.signup(data);
       const { user: userData, access_token, refresh_token, pending_approval } = response.data;
+      // response is already the full body; response.data is the nested data object
 
       // Store tokens and user data
       localStorage.setItem('access_token', access_token);
