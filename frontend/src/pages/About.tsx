@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Heart, Sparkles, Target, ArrowRight } from 'lucide-react';
+import { Heart, Sparkles, Target, ArrowRight, MapPin, Phone, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
@@ -256,6 +256,80 @@ const About = () => {
                 <p className="text-warmgray-700 text-sm leading-relaxed">
                   {content.madhuram_description || 'Founder & Speech-Hearing Professional providing comprehensive therapy services for children.'}
                 </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Location Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="bg-white rounded-3xl shadow-soft-xl overflow-hidden mb-10"
+          >
+            <div className="p-8 md:p-10">
+              <h3 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-2 text-center">
+                Visit Us
+              </h3>
+              <p className="text-warmgray-500 text-center mb-8">Come meet us in Jabalpur</p>
+
+              <div className="grid md:grid-cols-2 gap-8 items-start">
+                {/* Map */}
+                <div className="rounded-2xl overflow-hidden shadow-soft-lg h-72 md:h-80">
+                  <iframe
+                    title="TalkieToys Location"
+                    src="https://www.google.com/maps?q=4th+gate+Near+Madan+Mahal+Railway+Station+Rd+Wright+Town+Jabalpur+Madhya+Pradesh+482002&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+
+                {/* Info */}
+                <div className="flex flex-col gap-5">
+                  <div className="flex items-start gap-4 bg-teal/5 rounded-2xl p-5 border border-teal/10">
+                    <div className="flex-shrink-0 w-10 h-10 bg-teal-gradient rounded-xl flex items-center justify-center shadow-soft">
+                      <MapPin className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-warmgray-800 mb-1">Address</p>
+                      <p className="text-warmgray-600 text-sm leading-relaxed">
+                        4th Gate, Near Madan Mahal Railway Station Rd,<br />
+                        Wright Town, Jabalpur,<br />
+                        Madhya Pradesh 482002
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4 bg-coral/5 rounded-2xl p-5 border border-coral/10">
+                    <div className="flex-shrink-0 w-10 h-10 bg-coral-gradient rounded-xl flex items-center justify-center shadow-soft">
+                      <Phone className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-warmgray-800 mb-1">Phone</p>
+                      <a
+                        href="tel:+919340113875"
+                        className="text-coral font-semibold text-sm hover:underline"
+                      >
+                        093401 13875
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4 bg-sunshine/5 rounded-2xl p-5 border border-sunshine/10">
+                    <div className="flex-shrink-0 w-10 h-10 bg-sunshine-gradient rounded-xl flex items-center justify-center shadow-soft">
+                      <Clock className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-warmgray-800 mb-1">Hours</p>
+                      <p className="text-warmgray-600 text-sm">Opens 10:30 am · Monday – Saturday</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
