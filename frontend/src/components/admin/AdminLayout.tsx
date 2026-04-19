@@ -79,7 +79,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } bg-white border-r-2 border-warmgray-200 w-64`}
       >
-        <div className="h-full flex flex-col">
+        <div className="h-full flex flex-col overflow-hidden">
           {/* Logo */}
           <div className="p-3 border-b-2 border-warmgray-100">
             <Link to="/" className="flex items-center space-x-2">
@@ -95,7 +95,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+          <nav className="flex-1 min-h-0 px-4 py-6 space-y-2 overflow-y-auto">
             {navigation.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.href);
