@@ -69,7 +69,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     { to: '/', Icon: Home, label: 'Home' },
     { to: '/products', Icon: ShoppingBag, label: 'Shop' },
     { to: '/assessments', Icon: Brain, label: 'Assess' },
-    ...(isAuthenticated ? [{ to: '/messages', Icon: MessageSquare, label: 'Messages', badge: unreadMessages }] : []),
+    ...(isAuthenticated && user?.role !== 'therapist' ? [{ to: '/messages', Icon: MessageSquare, label: 'Messages', badge: unreadMessages }] : []),
     { to: '/cart', Icon: ShoppingCart, label: 'Cart', badge: cartItemsCount },
     { to: isAuthenticated ? '/profile' : '/login', Icon: User, label: isAuthenticated ? 'Profile' : 'Login' },
   ];
@@ -164,8 +164,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               {/* Therapist Panel Button */}
               {isAuthenticated && user?.role === 'therapist' && (
                 <Link to="/therapist"
-                  className="hidden sm:flex items-center gap-1.5 bg-teal-gradient text-white text-xs font-bold px-3 py-2 rounded-full shadow-soft hover:shadow-soft-md transition-all">
+                  className="hidden sm:flex items-center gap-1.5 bg-teal-gradient text-white text-xs font-bold px-3 py-2 rounded-full shadow-soft hover:shadow-soft-md transition-all relative">
                   <Stethoscope className="w-3.5 h-3.5" /> Therapist Panel
+                  {unreadMessages > 0 && (
+                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-coral rounded-full border-2 border-white" />
+                  )}
                 </Link>
               )}
               {/* Cart */}
@@ -193,14 +196,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
               {isAuthenticated ? (
                 <>
-                  <Link to="/messages" className="relative p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Messages">
-                    <MessageSquare className="h-6 w-6 text-warmgray-700" />
-                    {unreadMessages > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-coral text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-soft">
-                        {unreadMessages > 9 ? '9+' : unreadMessages}
-                      </span>
-                    )}
-                  </Link>
+                  {user?.role !== 'therapist' && (
+                    <Link to="/messages" className="relative p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Messages">
+                      <MessageSquare className="h-6 w-6 text-warmgray-700" />
+                      {unreadMessages > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-coral text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-soft">
+                          {unreadMessages > 9 ? '9+' : unreadMessages}
+                        </span>
+                      )}
+                    </Link>
+                  )}
                   <Link to="/wishlist" className="p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Wishlist">
                     <Heart className="h-6 w-6 text-warmgray-700" />
                   </Link>
@@ -308,10 +313,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                           <Stethoscope className="w-5 h-5" /> Therapist Panel
                         </Link>
                       )}
-                      <Link to="/messages" onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-warmgray-700 hover:text-teal hover:bg-teal-light/20 transition-colors">
-                        <MessageSquare className="w-5 h-5" /> Messages
-                      </Link>
+                      {user?.role !== 'therapist' && (
+                        <Link to="/messages" onClick={() => setIsMobileMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-warmgray-700 hover:text-teal hover:bg-teal-light/20 transition-colors">
+                          <MessageSquare className="w-5 h-5" /> Messages
+                        </Link>
+                      )}
                       <button
                         onClick={() => { logout(); setIsMobileMenuOpen(false); }}
                         className="w-full text-left px-4 py-3 rounded-xl font-semibold text-warmgray-700 hover:text-coral hover:bg-coral-light/20 transition-colors"
