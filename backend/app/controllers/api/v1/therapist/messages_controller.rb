@@ -39,6 +39,14 @@ module Api
         end
 
         def notify_admin(msg)
+          # Notify patient
+          begin
+            TherapistMailer.patient_message_notification(@conversation.patient, @conversation, msg).deliver_later
+          rescue => e
+            Rails.logger.error("Patient notification failed: #{e.message}")
+          end
+
+          # Notify admin (silent monitoring)
           admin = User.find_by(role: :admin)
           return unless admin
           begin

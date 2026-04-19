@@ -34,6 +34,16 @@ class TherapistMailer < ApplicationMailer
     mail(to: @therapist.email, subject: "New message from #{@patient.name}")
   end
 
+  # Notify patient when therapist sends them a message
+  def patient_message_notification(patient, conversation, message)
+    @patient      = patient
+    @conversation = conversation
+    @message      = message
+    @therapist    = conversation.therapist
+    @inbox_url    = "#{ENV.fetch('FRONTEND_URL', 'https://talkietoyz.shop')}/messages"
+    mail(to: @patient.email, subject: "New message from your therapist #{@therapist.name}")
+  end
+
   # Notify admin when any message is sent
   def admin_message_notification(admin, conversation, message)
     @admin        = admin

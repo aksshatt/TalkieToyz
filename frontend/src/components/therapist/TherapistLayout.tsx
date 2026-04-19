@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Users, MessageSquare, BookOpen, LogOut, Menu, X, Stethoscope } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useUnreadMessages } from '../../hooks/useUnreadMessages';
 
 const NAV = [
   { to: '/therapist/patients',  icon: Users,         label: 'My Patients' },
@@ -14,6 +15,7 @@ const TherapistLayout: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { unreadCount } = useUnreadMessages();
 
   const handleLogout = async () => { await logout(); navigate('/login'); };
 
@@ -65,7 +67,12 @@ const TherapistLayout: React.FC = () => {
               }
             >
               <Icon className="w-5 h-5 flex-shrink-0" />
-              {label}
+              <span className="flex-1">{label}</span>
+              {to === '/therapist/messages' && unreadCount > 0 && (
+                <span className="bg-coral text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
