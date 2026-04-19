@@ -10,7 +10,7 @@ const ConversationMonitor: React.FC = () => {
 
   const { data: convsData, isLoading: convsLoading } = useQuery({
     queryKey: ['admin_conversations'],
-    queryFn: adminTherapistService.getConversations,
+    queryFn: () => adminTherapistService.getConversations(),
     refetchInterval: 8000,
   });
 

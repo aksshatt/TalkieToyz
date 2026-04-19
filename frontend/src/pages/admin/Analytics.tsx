@@ -142,7 +142,7 @@ const Analytics = () => {
       borderRadius: 10, shadow: false, backgroundColor: '#fff', borderColor: '#f0ede8',
       style: { fontSize: '12px' },
       formatter() {
-        return `<b>${this.point.name}</b><br/>₹${Number(this.y).toLocaleString('en-IN')}<br/>${this.point.options.custom?.units ?? 0} units`;
+        return `<b>${this.points?.[0]?.key ?? (this as any).point?.name}</b><br/>₹${Number(this.y).toLocaleString('en-IN')}<br/>${(this as any).point?.options?.custom?.units ?? 0} units`;
       },
     },
     plotOptions: {

@@ -25,7 +25,7 @@ const TherapistManagement: React.FC = () => {
 
   const { data: assignmentsData } = useQuery({
     queryKey: ['admin_assignments'],
-    queryFn: adminTherapistService.getAssignments,
+    queryFn: () => adminTherapistService.getAssignments(),
   });
 
   const assignMutation = useMutation({
