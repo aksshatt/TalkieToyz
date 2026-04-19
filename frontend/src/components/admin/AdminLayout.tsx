@@ -55,6 +55,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'Product Q&A', href: '/admin/product-questions', icon: HelpingHand },
     { name: 'Coupons', href: '/admin/coupons', icon: Ticket },
     { name: 'Audit Log', href: '/admin/audit-log', icon: Shield },
+  ];
+
+  const therapistNavigation = [
     { name: 'Therapist Approvals', href: '/admin/therapist-approvals', icon: UserCheck },
     { name: 'Therapist Management', href: '/admin/therapist-management', icon: Stethoscope },
     { name: 'Conversations', href: '/admin/conversations', icon: Eye },
@@ -92,7 +95,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-2">
+          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             {navigation.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.href);
@@ -111,6 +114,29 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 </Link>
               );
             })}
+
+            {/* Therapist Section */}
+            <div className="pt-2">
+              <p className="text-xs font-bold text-warmgray-400 uppercase tracking-wider px-4 pb-2 pt-2">Therapist</p>
+              {therapistNavigation.map((item) => {
+                const Icon = item.icon;
+                const active = isActive(item.href);
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-semibold transition-all ${
+                      active
+                        ? 'bg-teal-gradient text-white shadow-soft'
+                        : 'text-warmgray-700 hover:bg-warmgray-100'
+                    }`}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
           </nav>
 
           {/* User Info & Logout */}
