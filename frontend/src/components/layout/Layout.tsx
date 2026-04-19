@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import {
   ShoppingCart, User, LogOut, Menu, X, Heart, ClipboardList,
-  Home, ShoppingBag, Brain, BookOpen, ChevronUp,
+  Home, ShoppingBag, Brain, BookOpen, ChevronUp, MessageSquare,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAppSelector } from '../../store/hooks';
@@ -66,7 +66,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const mobileNavItems = [
     { to: '/', Icon: Home, label: 'Home' },
     { to: '/products', Icon: ShoppingBag, label: 'Shop' },
-    { to: '/assessments', Icon: Brain, label: 'Quiz' },
+    { to: '/assessments', Icon: Brain, label: 'Assess' },
+    ...(isAuthenticated ? [{ to: '/messages', Icon: MessageSquare, label: 'Messages' }] : []),
     { to: '/cart', Icon: ShoppingCart, label: 'Cart', badge: cartItemsCount },
     { to: isAuthenticated ? '/profile' : '/login', Icon: User, label: isAuthenticated ? 'Profile' : 'Login' },
   ];
@@ -183,6 +184,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
               {isAuthenticated ? (
                 <>
+                  <Link to="/messages" className="p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Messages">
+                    <MessageSquare className="h-6 w-6 text-warmgray-700" />
+                  </Link>
                   <Link to="/wishlist" className="p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Wishlist">
                     <Heart className="h-6 w-6 text-warmgray-700" />
                   </Link>
@@ -282,7 +286,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: navLinks.length * 0.05 }}
+                      className="space-y-1"
                     >
+                      <Link to="/messages" onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-warmgray-700 hover:text-teal hover:bg-teal-light/20 transition-colors">
+                        <MessageSquare className="w-5 h-5" /> Messages
+                      </Link>
                       <button
                         onClick={() => { logout(); setIsMobileMenuOpen(false); }}
                         className="w-full text-left px-4 py-3 rounded-xl font-semibold text-warmgray-700 hover:text-coral hover:bg-coral-light/20 transition-colors"
