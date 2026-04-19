@@ -8,6 +8,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import therapistService, { Message, MessageTemplate } from '../../services/therapistService';
+import axiosInstance from '../../config/axios';
 import { useAuth } from '../../contexts/AuthContext';
 
 type Tab = 'chat' | 'results' | 'share';
@@ -112,8 +113,7 @@ const TherapistPatientDetail: React.FC = () => {
     queryKey: ['share_products', productSearch],
     queryFn: async () => {
       if (!productSearch.trim()) return { data: [] };
-      const { default: axios } = await import('../../config/axios');
-      const res = await axios.get('/products', { params: { q: productSearch, per_page: 8 } });
+      const res = await axiosInstance.get('/products', { params: { q: productSearch, per_page: 8 } });
       return res.data;
     },
     enabled: productSearch.length > 1,
@@ -121,8 +121,7 @@ const TherapistPatientDetail: React.FC = () => {
   const { data: assessmentSearchData } = useQuery({
     queryKey: ['share_assessments', assessmentSearch],
     queryFn: async () => {
-      const { default: axios } = await import('../../config/axios');
-      const res = await axios.get('/assessments', { params: { q: assessmentSearch || undefined, per_page: 10 } });
+      const res = await axiosInstance.get('/assessments', { params: { q: assessmentSearch || undefined, per_page: 10 } });
       return res.data;
     },
     enabled: tab === 'share',

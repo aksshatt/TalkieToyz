@@ -4,6 +4,25 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-query': ['@tanstack/react-query'],
+          'vendor-ui': ['framer-motion', 'lucide-react'],
+          'vendor-charts': ['highcharts', 'highcharts-react-official'],
+          'admin': [
+            './src/pages/admin/Dashboard.tsx',
+            './src/pages/admin/Analytics.tsx',
+            './src/pages/admin/Products.tsx',
+            './src/pages/admin/Orders.tsx',
+            './src/pages/admin/Customers.tsx',
+          ],
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({
@@ -35,7 +54,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        // Cache product pages and static assets for offline browsing
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4 MiB
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
