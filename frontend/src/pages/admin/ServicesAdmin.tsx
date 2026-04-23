@@ -7,16 +7,26 @@ import { adminServicesService, type ServiceItem } from '../../services/servicesS
 const ServicesAdmin: React.FC = () => {
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [editing, setEditing] = useState<ServiceItem | null>(null);
   const [creating, setCreating] = useState(false);
 
   const load = async () => {
     try {
       setLoading(true);
+      setLoadError(null);
       const list = await adminServicesService.list();
-      setServices(list);
-    } catch {
-      toast.error('Failed to load services');
+      setServices(Array.isArray(list) ? list : []);
+    } catch (err: any) {
+      const status = err?.response?.status;
+      const msg =
+        err?.response?.data?.message ||
+        (status === 403 ? 'Admin access required. Please re-login as an admin user.' :
+         status === 404 ? 'Services endpoint not found. Backend may need migrations (rails db:migrate) and redeploy.' :
+         status >= 500 ? 'Server error loading services. Check backend logs / db:migrate.' :
+         'Failed to load services');
+      setLoadError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -61,6 +71,21 @@ const ServicesAdmin: React.FC = () => {
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="h-40 bg-warmgray-100 rounded-2xl animate-pulse" />
           ))}
+        </div>
+      ) : loadError ? (
+        <div className="bg-coral/10 border-2 border-coral/30 text-warmgray-800 rounded-2xl p-6 text-center">
+          <p className="font-bold text-coral mb-2">Could not load services</p>
+          <p className="text-sm mb-4">{loadError}</p>
+          <button onClick={load} className="bg-teal-gradient text-white font-semibold px-5 py-2 rounded-full">
+            Retry
+          </button>
+        </div>
+      ) : services.length === 0 ? (
+        <div className="bg-white rounded-2xl shadow-soft p-10 text-center text-warmgray-600">
+          <p className="mb-4">No services yet.</p>
+          <button onClick={() => setCreating(true)} className="bg-teal-gradient text-white font-semibold px-5 py-2 rounded-full">
+            Add your first service
+          </button>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
