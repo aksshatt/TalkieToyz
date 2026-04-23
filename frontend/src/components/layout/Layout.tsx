@@ -69,9 +69,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const mobileNavItems = [
     { to: '/', Icon: Home, label: 'Home' },
+    { to: '/services', Icon: Stethoscope, label: 'Services' },
     { to: '/products', Icon: ShoppingBag, label: 'Shop' },
     { to: '/assessments', Icon: Brain, label: 'Assess' },
-    ...(isAuthenticated && user?.role !== 'therapist' ? [{ to: '/messages', Icon: MessageSquare, label: 'Messages', badge: unreadMessages }] : []),
     { to: '/cart', Icon: ShoppingCart, label: 'Cart', badge: cartItemsCount },
     { to: isAuthenticated ? '/profile' : '/login', Icon: User, label: isAuthenticated ? 'Profile' : 'Login' },
   ];
