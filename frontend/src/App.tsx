@@ -39,6 +39,11 @@ import ResourcesPage from './pages/ResourcesPage';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
 import About from './pages/About';
+import Services from './pages/Services';
+import BookSession from './pages/BookSession';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
+import ServicesAdmin from './pages/admin/ServicesAdmin';
 
 // Admin Pages
 import AdminLayout from './components/admin/AdminLayout';
@@ -253,6 +258,10 @@ function App() {
           {/* Communication Routes */}
           <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
           <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+          <Route path="/services" element={<PageWrapper><Services /></PageWrapper>} />
+          <Route path="/book" element={<PageWrapper><BookSession /></PageWrapper>} />
+          <Route path="/terms" element={<PageWrapper><Terms /></PageWrapper>} />
+          <Route path="/privacy" element={<PageWrapper><Privacy /></PageWrapper>} />
           <Route path="/faq" element={<PageWrapper><FAQ /></PageWrapper>} />
 
           {/* Admin Routes */}
@@ -279,6 +288,7 @@ function App() {
             <Route path="faqs" element={<FAQManagement />} />
             <Route path="content" element={<ContentManagement />} />
             <Route path="appointments" element={<Appointments />} />
+            <Route path="services" element={<ServicesAdmin />} />
             <Route path="assessments" element={<AssessmentResultsAdmin />} />
             <Route path="contact" element={<ContactSubmissions />} />
             <Route path="audit-log" element={<AuditLog />} />

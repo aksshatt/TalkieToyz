@@ -28,7 +28,11 @@ module Api
           :email,
           :phone,
           :message,
-          :preferred_language
+          :preferred_language,
+          :service_id,
+          :preferred_date,
+          :child_name,
+          :child_age
         )
       end
     end

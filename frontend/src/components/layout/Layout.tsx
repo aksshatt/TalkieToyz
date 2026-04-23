@@ -8,6 +8,7 @@ import { useAppSelector } from '../../store/hooks';
 import { useUnreadMessages } from '../../hooks/useUnreadMessages';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import SuggestionForm from './SuggestionForm';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ interface LayoutProps {
 
 const navLinks = [
   { to: '/products', label: 'Products' },
+  { to: '/services', label: 'Services' },
   { to: '/assessments', label: 'Assessments' },
   { to: '/milestones', label: 'Milestones' },
   { to: '/blog', label: 'Blog' },
@@ -123,15 +125,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className={`max-w-7xl mx-auto px-4 transition-all duration-300 ${isScrolled ? 'py-2' : 'py-3'}`}>
           <div className="flex items-center justify-between gap-6">
 
-            {/* Logo */}
-            <Link to="/" className="flex-shrink-0">
+            {/* Logo + Brand */}
+            <Link to="/" className="flex items-center gap-3 flex-shrink-0">
               <motion.img
                 src="/logo.png"
-                alt="TalkieToyz"
+                alt="Talkie Toyz"
                 className={`w-auto transition-all duration-300 ${isScrolled ? 'h-12 sm:h-14' : 'h-16 sm:h-20'}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
               />
+              <div className="flex flex-col leading-tight">
+                <span className={`font-[var(--font-family-fun)] font-extrabold bg-gradient-to-r from-teal via-sky to-coral bg-clip-text text-transparent transition-all duration-300 ${isScrolled ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'}`}>
+                  Talkie Toyz
+                </span>
+                <span className="text-[10px] sm:text-xs font-semibold text-warmgray-500 tracking-wide">
+                  Play. Learn. Grow.
+                </span>
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
@@ -420,23 +430,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <h3 className="text-xl font-[var(--font-family-fun)] font-bold mb-4">Stay Connected</h3>
-              <p className="text-warmgray-300 mb-4 text-sm">Get learning tips, new toy launches, and special offers!</p>
-              <form className="space-y-3">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="w-full px-4 py-3 rounded-full bg-white/10 border border-white/20 text-white placeholder-warmgray-400 focus:outline-none focus:ring-2 focus:ring-teal-light transition-all"
-                />
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="w-full bg-teal-gradient text-white font-bold py-3 rounded-full hover:shadow-soft-lg transition-all"
-                >
-                  Subscribe
-                </motion.button>
-              </form>
+              <h3 className="text-xl font-[var(--font-family-fun)] font-bold mb-4">Share Suggestions</h3>
+              <p className="text-warmgray-300 mb-4 text-sm">We’d love to hear your ideas, feedback, or questions — drop us a note!</p>
+              <SuggestionForm />
               <div className="flex gap-3 mt-6">
                 {[
                   { label: 'Facebook', path: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' },
@@ -453,9 +449,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
 
           {/* Wave divider */}
-          <div className="border-t border-white/10 pt-6 text-center text-warmgray-400">
-            <p className="font-medium">&copy; 2025 TalkieToyz. All rights reserved. Made with ❤️ for growing minds.</p>
-            <p className="text-sm text-warmgray-500 mt-1">Designed &amp; developed by Akshat</p>
+          <div className="border-t border-white/10 mt-6 pt-6 text-center text-warmgray-400">
+            <p className="font-medium">&copy; 2025 Talkie Toyz. All rights reserved. Made with ❤️ for growing minds.</p>
+            <div className="flex flex-wrap justify-center gap-4 mt-2 text-sm">
+              <Link to="/terms" className="text-warmgray-400 hover:text-teal-light transition-colors">Terms &amp; Conditions</Link>
+              <Link to="/privacy" className="text-warmgray-400 hover:text-teal-light transition-colors">Privacy Policy</Link>
+            </div>
+            <p className="text-sm text-warmgray-500 mt-2">Designed &amp; developed by Akshat</p>
           </div>
         </div>
       </footer>

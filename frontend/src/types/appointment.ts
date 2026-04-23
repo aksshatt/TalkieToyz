@@ -4,6 +4,10 @@ export interface AppointmentFormData {
   phone: string;
   message?: string;
   preferred_language: string;
+  service_id?: number;
+  preferred_date?: string | null;
+  child_name?: string;
+  child_age?: string;
 }
 
 export interface Appointment extends AppointmentFormData {
@@ -11,6 +15,8 @@ export interface Appointment extends AppointmentFormData {
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
   user_id?: number;
   user_name?: string;
+  service_name?: string | null;
+  service_price?: number | null;
   created_at: string;
   updated_at: string;
 }

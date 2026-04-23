@@ -45,6 +45,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'Customers', href: '/admin/customers', icon: Users },
     { name: 'Reviews', href: '/admin/reviews', icon: Star },
     { name: 'Appointments', href: '/admin/appointments', icon: Calendar },
+    { name: 'Services', href: '/admin/services', icon: HelpingHand },
     { name: 'Assessments', href: '/admin/assessments', icon: ClipboardList },
     { name: 'Blog', href: '/admin/blog', icon: Newspaper },
     { name: 'Resources', href: '/admin/resources', icon: BookOpen },

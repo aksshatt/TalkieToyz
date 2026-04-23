@@ -40,7 +40,7 @@ module Api
           if @product.save
             log_activity('create', 'Product', @product.id, { name: @product.name })
             render_success(
-              admin_product_details(@product),
+              admin_product_details(@product.reload),
               'Product created successfully',
               status: :created
             )
@@ -57,7 +57,15 @@ module Api
             images_to_remove.each(&:purge_later)
           end
 
-          if @product.update(product_params)
+          # Separate new images so has_many_attached doesn't replace existing attachments
+          attrs = product_params.to_h
+          new_images = attrs.delete('images') || attrs.delete(:images)
+
+          if @product.update(attrs)
+            if new_images.present?
+              Array(new_images).each { |img| @product.images.attach(img) if img.present? }
+            end
+
             log_activity('update', 'Product', @product.id, { name: @product.name })
             render_success(
               admin_product_details(@product.reload),
@@ -161,7 +169,8 @@ module Api
 
         def safe_image_url(image)
           return nil unless image&.attached?
-          rails_blob_url(image)
+          host = ENV.fetch('BACKEND_URL', 'https://talkietoys-backend.onrender.com')
+          Rails.application.routes.url_helpers.rails_blob_url(image, host: host)
         rescue => e
           Rails.logger.error("Failed to generate image URL: #{e.message}\n#{e.backtrace.first(3).join("\n")}")
           nil

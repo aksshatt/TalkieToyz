@@ -57,6 +57,37 @@
                           <a href="tel:<%= @appointment.phone %>" style="color:#0d9488;font-size:15px;font-weight:600;text-decoration:none;"><%= @appointment.phone %></a>
                         </td>
                       </tr>
+                      <% if @appointment.service.present? %>
+                      <tr>
+                        <td style="padding:8px 0;border-bottom:1px solid #e7e5e4;">
+                          <span style="color:#78716c;font-size:13px;">Service</span>
+                        </td>
+                        <td style="padding:8px 0;border-bottom:1px solid #e7e5e4;">
+                          <span style="color:#1c1917;font-size:15px;font-weight:700;"><%= @appointment.service.name %></span>
+                          <span style="color:#0d9488;font-size:14px;font-weight:700;"> · ₹<%= @appointment.service.price.to_f.round(2) %></span>
+                        </td>
+                      </tr>
+                      <% end %>
+                      <% if @appointment.preferred_date.present? %>
+                      <tr>
+                        <td style="padding:8px 0;border-bottom:1px solid #e7e5e4;">
+                          <span style="color:#78716c;font-size:13px;">Preferred Slot</span>
+                        </td>
+                        <td style="padding:8px 0;border-bottom:1px solid #e7e5e4;">
+                          <span style="color:#1c1917;font-size:15px;font-weight:600;"><%= @appointment.preferred_date.strftime('%B %d, %Y at %I:%M %p') %></span>
+                        </td>
+                      </tr>
+                      <% end %>
+                      <% if @appointment.child_name.present? || @appointment.child_age.present? %>
+                      <tr>
+                        <td style="padding:8px 0;border-bottom:1px solid #e7e5e4;">
+                          <span style="color:#78716c;font-size:13px;">Child</span>
+                        </td>
+                        <td style="padding:8px 0;border-bottom:1px solid #e7e5e4;">
+                          <span style="color:#1c1917;font-size:15px;font-weight:600;"><%= @appointment.child_name %><%= " (#{@appointment.child_age})" if @appointment.child_age.present? %></span>
+                        </td>
+                      </tr>
+                      <% end %>
                       <tr>
                         <td style="padding:8px 0;border-bottom:1px solid #e7e5e4;">
                           <span style="color:#78716c;font-size:13px;">Preferred Language</span>

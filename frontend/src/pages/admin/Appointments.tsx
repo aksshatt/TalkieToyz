@@ -139,6 +139,12 @@ const Appointments = () => {
                   Contact
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
+                  Service
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
+                  Preferred Slot
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
                   Language
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
@@ -176,6 +182,24 @@ const Appointments = () => {
                         </a>
                       </div>
                     </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {appointment.service_name ? (
+                      <div>
+                        <div className="text-sm font-semibold text-warmgray-900">{appointment.service_name}</div>
+                        {appointment.service_price != null && (
+                          <div className="text-xs text-teal font-bold">₹{appointment.service_price}</div>
+                        )}
+                        {appointment.child_name && (
+                          <div className="text-xs text-warmgray-500">Child: {appointment.child_name}{appointment.child_age ? `, ${appointment.child_age}` : ''}</div>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-xs text-warmgray-400">—</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-warmgray-700">
+                    {appointment.preferred_date ? formatDate(appointment.preferred_date) : <span className="text-warmgray-400">—</span>}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-sm text-warmgray-900">{appointment.preferred_language}</span>
@@ -253,6 +277,33 @@ const Appointments = () => {
                   {selectedAppointment.phone}
                 </a>
               </div>
+
+              {selectedAppointment.service_name && (
+                <div className="bg-teal/5 border border-teal/20 rounded-xl p-4">
+                  <label className="block text-xs font-bold text-teal uppercase tracking-wide mb-2">Booked Service</label>
+                  <p className="text-warmgray-900 font-semibold">{selectedAppointment.service_name}</p>
+                  {selectedAppointment.service_price != null && (
+                    <p className="text-teal font-bold mt-1">₹{selectedAppointment.service_price}</p>
+                  )}
+                </div>
+              )}
+
+              {(selectedAppointment.child_name || selectedAppointment.child_age) && (
+                <div>
+                  <label className="block text-sm font-semibold text-warmgray-700 mb-1">Child</label>
+                  <p className="text-warmgray-900">
+                    {selectedAppointment.child_name}
+                    {selectedAppointment.child_age ? ` (${selectedAppointment.child_age})` : ''}
+                  </p>
+                </div>
+              )}
+
+              {selectedAppointment.preferred_date && (
+                <div>
+                  <label className="block text-sm font-semibold text-warmgray-700 mb-1">Preferred Date &amp; Time</label>
+                  <p className="text-warmgray-900">{formatDate(selectedAppointment.preferred_date)}</p>
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm font-semibold text-warmgray-700 mb-1">Preferred Language</label>

@@ -126,8 +126,14 @@ Rails.application.routes.draw do
       # Contact Submissions (public)
       resources :contact_submissions, only: [:create]
 
+      # Suggestions (public)
+      resources :suggestions, only: [:create]
+
       # Appointments (public - create only)
       resources :appointments, only: [:create]
+
+      # Services (public)
+      resources :services, only: [:index, :show]
 
       # Site Contents (CMS - public)
       get 'site_contents/:page', to: 'site_contents#show', as: :site_content_page
@@ -287,6 +293,9 @@ Rails.application.routes.draw do
 
         # Appointments Management
         resources :appointments, only: [:index, :show, :update]
+
+        # Services Management (pricing)
+        resources :services
 
         # Assessment Results Management
         resources :assessment_results, only: [:index, :show] do

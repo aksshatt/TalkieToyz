@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_18_000005) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_23_000003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -101,7 +101,12 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_18_000005) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "service_id"
+    t.datetime "preferred_date"
+    t.string "child_name"
+    t.string "child_age"
     t.index ["created_at"], name: "index_appointments_on_created_at"
+    t.index ["service_id"], name: "index_appointments_on_service_id"
     t.index ["status"], name: "index_appointments_on_status"
     t.index ["user_id"], name: "index_appointments_on_user_id"
   end
@@ -683,6 +688,23 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_18_000005) do
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
+  create_table "services", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.text "description"
+    t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
+    t.integer "duration_minutes", default: 45
+    t.integer "display_order", default: 0
+    t.boolean "active", default: true
+    t.string "image_url"
+    t.string "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_services_on_active"
+    t.index ["display_order"], name: "index_services_on_display_order"
+    t.index ["slug"], name: "index_services_on_slug", unique: true
+  end
+
   create_table "shipments", force: :cascade do |t|
     t.bigint "order_id", null: false
     t.string "shiprocket_order_id"
@@ -756,6 +778,17 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_18_000005) do
     t.index ["user_id"], name: "index_success_stories_on_user_id"
   end
 
+  create_table "suggestions", force: :cascade do |t|
+    t.text "message", null: false
+    t.string "name"
+    t.string "email"
+    t.boolean "reviewed", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_suggestions_on_created_at"
+    t.index ["reviewed"], name: "index_suggestions_on_reviewed"
+  end
+
   create_table "therapist_patient_assignments", force: :cascade do |t|
     t.bigint "therapist_id", null: false
     t.bigint "patient_id", null: false
@@ -825,6 +858,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_18_000005) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "addresses", "users"
   add_foreign_key "admin_activity_logs", "users"
+  add_foreign_key "appointments", "services"
   add_foreign_key "appointments", "users"
   add_foreign_key "assessment_results", "assessments"
   add_foreign_key "assessment_results", "users"
