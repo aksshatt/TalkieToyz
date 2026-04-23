@@ -3,7 +3,8 @@ module Api
     class ReviewsController < BaseController
       before_action :authenticate_user!, except: [:index]
       before_action :set_product, only: [:index, :create]
-      before_action :set_review, only: [:update, :destroy, :mark_helpful, :unmark_helpful]
+      before_action :set_review, only: [:mark_helpful, :unmark_helpful]
+      before_action :set_own_review, only: [:update, :destroy]
       before_action :check_rate_limit, only: [:create]
 
       # GET /api/v1/products/:product_id/reviews
@@ -136,6 +137,11 @@ module Api
         @review = Review.approved.find(params[:id])
       rescue ActiveRecord::RecordNotFound
         render_error('Review not found', nil, status: :not_found)
+      end
+
+      def set_own_review
+        @review = current_user.reviews.find_by(id: params[:id])
+        render_error('Review not found', nil, status: :not_found) unless @review
       end
 
       def check_rate_limit

@@ -7,12 +7,12 @@ class ChildProfile < ApplicationRecord
 
   def age_in_months
     return nil unless date_of_birth
-    ((Date.today - date_of_birth).to_f / 30.44).floor
+    ((Time.current.to_date - date_of_birth).to_f / 30.44).floor
   end
 
   def age_in_years
     return nil unless date_of_birth
-    ((Date.today - date_of_birth).to_f / 365.25).floor
+    ((Time.current.to_date - date_of_birth).to_f / 365.25).floor
   end
 
   def age_display

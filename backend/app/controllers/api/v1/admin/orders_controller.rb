@@ -2,7 +2,9 @@ module Api
   module V1
     module Admin
       class OrdersController < BaseController
-        before_action :set_order, only: [:show, :update_status, :refund, :create_shipment, :cancel_shipment, :shipping_label]
+        before_action :authenticate_user!
+        before_action :require_admin
+        before_action :set_order, only: [:show, :update_status, :refund, :create_shipment, :cancel_shipment, :shipping_label, :create_return]
 
         # GET /api/v1/admin/orders
         def index
@@ -227,6 +229,28 @@ module Api
           render_error('Shipment cancellation failed', [e.message])
         end
 
+        # POST /api/v1/admin/orders/:id/create_return
+        def create_return
+          unless @order.shipment.present?
+            return render_error('Original shipment required before creating return', nil, status: :unprocessable_entity)
+          end
+
+          result = ShiprocketService.create_return(@order)
+
+          if result
+            log_activity('create_return', 'Order', @order.id, {
+              order_number: @order.order_number,
+              return_order_id: result['order_id']
+            })
+            render_success({ return: result }, 'Return/RTO created successfully')
+          else
+            render_error('Failed to create return', nil, status: :unprocessable_entity)
+          end
+        rescue => e
+          Rails.logger.error("Return creation error: #{e.message}")
+          render_error('Return creation failed', [e.message])
+        end
+
         # GET /api/v1/admin/orders/:id/shipping_label
         def shipping_label
           unless @order.shipment.present?
@@ -251,6 +275,12 @@ module Api
           @order = Order.find(params[:id])
         rescue ActiveRecord::RecordNotFound
           render_error('Order not found', nil, status: :not_found)
+        end
+
+        def require_admin
+          unless current_user&.admin?
+            render_error('Admin access required', nil, status: :forbidden)
+          end
         end
 
         def apply_filters(orders)

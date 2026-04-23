@@ -65,15 +65,15 @@ module Api
       # GET /api/v1/products/:id/frequently_bought_together
       def frequently_bought_together
         # Find products commonly bought in same orders as this product
+        order_ids_with_product = OrderItem.where(product_id: @product.id).select(:order_id)
         product_ids_in_same_orders = OrderItem
-          .joins(:order)
-          .where(orders: { order_items: OrderItem.where(product_id: @product.id).select(:order_id) })
+          .where(order_id: order_ids_with_product)
           .where.not(product_id: @product.id)
           .group(:product_id)
-          .order('count_all DESC')
+          .order(Arel.sql('COUNT(*) DESC'))
+          .limit(4)
           .count
-          .first(4)
-          .map(&:first)
+          .keys
 
         if product_ids_in_same_orders.any?
           @frequently_bought = Product.active
@@ -153,7 +153,9 @@ module Api
         params.require(:product).permit(
           :name, :description, :long_description, :price, :compare_at_price,
           :stock_quantity, :sku, :slug, :min_age, :max_age, :featured,
-          :category_id, specifications: {}, speech_goal_ids: []
+          :category_id, :hsn_code, :weight_kg,
+          specifications: {}, speech_goal_ids: [],
+          dimensions_cm: [:length, :breadth, :height]
         )
       end
 
@@ -227,7 +229,8 @@ module Api
         params[:variants].each do |variant_params|
           if variant_params[:id].present?
             # Update existing variant
-            variant = @product.product_variants.find(variant_params[:id])
+            variant = @product.product_variants.find_by(id: variant_params[:id])
+            next unless variant
             variant.update(
               name: variant_params[:name],
               sku: variant_params[:sku],

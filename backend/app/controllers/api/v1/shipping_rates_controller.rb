@@ -27,21 +27,17 @@ module Api
 
       private
 
-      WAREHOUSE_PINCODE = ENV.fetch('WAREHOUSE_PINCODE', '110001').freeze
+      def warehouse_pincode
+        ENV.fetch('SHIPROCKET_PICKUP_POSTCODE', ENV.fetch('WAREHOUSE_PINCODE', '110001'))
+      end
 
       def fetch_rates(postal_code, weight_kg, payment_method)
-        token = ShiprocketService.send(:authenticate)
-
-        response = HTTParty.get(
-          "#{ShiprocketService::SHIPROCKET_CONFIG[:api_url]}/courier/serviceability",
-          query: {
-            pickup_postcode: WAREHOUSE_PINCODE,
-            delivery_postcode: postal_code,
-            weight: weight_kg,
-            cod: payment_method == 'cod' ? 1 : 0
-          },
-          headers: { 'Authorization' => "Bearer #{token}" }
-        )
+        response = ShiprocketService.authorized_request(:get, '/courier/serviceability', query: {
+          pickup_postcode: warehouse_pincode,
+          delivery_postcode: postal_code,
+          weight: weight_kg,
+          cod: payment_method == 'cod' ? 1 : 0
+        })
 
         return [] unless response.success?
 

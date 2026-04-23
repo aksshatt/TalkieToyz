@@ -40,6 +40,18 @@ module Api
             return render_error('discount_value must be greater than 0', nil, status: :unprocessable_entity)
           end
 
+          if discount_type == 'percentage' && discount_value > 100
+            return render_error('percentage discount cannot exceed 100', nil, status: :unprocessable_entity)
+          end
+
+          if min_order_amount && min_order_amount < 0
+            return render_error('min_order_amount cannot be negative', nil, status: :unprocessable_entity)
+          end
+
+          if max_discount_amount && max_discount_amount < 0
+            return render_error('max_discount_amount cannot be negative', nil, status: :unprocessable_entity)
+          end
+
           generated = []
           errors    = []
           count.times do

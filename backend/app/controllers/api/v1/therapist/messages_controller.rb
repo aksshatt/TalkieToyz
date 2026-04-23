@@ -5,12 +5,17 @@ module Api
         before_action :find_conversation
 
         # POST /api/v1/therapist/conversations/:conversation_id/messages
+        ALLOWED_METADATA_KEYS = %w[
+          product_id product_slug product_name image_url
+          assessment_id assessment_slug assessment_title
+        ].freeze
+
         def create
           msg = @conversation.messages.build(
             sender: current_user,
             message_type: params[:message_type] || 'text',
             content: params[:content],
-            metadata: params[:metadata]&.to_unsafe_h || {}
+            metadata: filtered_metadata
           )
 
           if msg.save
@@ -32,6 +37,13 @@ module Api
         end
 
         private
+
+        def filtered_metadata
+          raw = params[:metadata]
+          return {} unless raw.respond_to?(:to_unsafe_h)
+          hash = raw.to_unsafe_h.stringify_keys
+          hash.slice(*ALLOWED_METADATA_KEYS)
+        end
 
         def find_conversation
           @conversation = Conversation.find_by(id: params[:conversation_id], therapist_id: current_user.id)

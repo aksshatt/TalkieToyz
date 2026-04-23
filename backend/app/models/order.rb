@@ -44,7 +44,7 @@ class Order < ApplicationRecord
   scope :by_status, ->(status) { where(status: status) }
 
   # Class method to create from cart
-  def self.create_from_cart(cart, payment_method:, shipping_address:, billing_address: nil, coupon: nil, clear_cart: true, gift_wrap: false, gift_message: nil)
+  def self.create_from_cart(cart, payment_method:, shipping_address:, billing_address: nil, coupon: nil, clear_cart: true, gift_wrap: false, gift_message: nil, shipping_cost: 0, selected_courier_id: nil)
     raise 'Cart is empty' if cart.empty?
 
     Order.transaction do
@@ -62,8 +62,31 @@ class Order < ApplicationRecord
       # Calculate amounts
       order.subtotal = cart.subtotal
       order.tax = cart.tax_amount
-      order.shipping_cost = 0 # Could be calculated based on shipping method
+      order.shipping_cost = shipping_cost.to_f
       order.discount = coupon&.calculate_discount(order.subtotal) || 0
+      order.selected_courier_id = selected_courier_id if order.respond_to?(:selected_courier_id=) && selected_courier_id.present?
+
+      # Aggregate weight & max dimensions from cart products (if set on product level)
+      products = cart.cart_items.includes(:product).map(&:product).compact
+      product_weights = products.map.with_index { |p, i|
+        qty = cart.cart_items[i].quantity
+        (p.respond_to?(:weight_kg) && p.weight_kg ? p.weight_kg.to_f : 0) * qty
+      }
+      total_weight = product_weights.sum
+      if total_weight > 0
+        order.weight_kg = total_weight
+      end
+      if products.any? { |p| p.respond_to?(:dimensions_cm) && p.dimensions_cm.present? }
+        max_dims = { 'length' => 0, 'breadth' => 0, 'height' => 0 }
+        products.each do |p|
+          next unless p.respond_to?(:dimensions_cm) && p.dimensions_cm.present?
+          d = p.dimensions_cm
+          max_dims['length']  = [max_dims['length'],  d['length'].to_f].max
+          max_dims['breadth'] = [max_dims['breadth'], d['breadth'].to_f].max
+          max_dims['height']  = [max_dims['height'],  d['height'].to_f].max
+        end
+        order.dimensions_cm = max_dims if max_dims.values.any?(&:positive?)
+      end
 
       # Create order items from cart items
       cart.cart_items.includes(:product, :product_variant).each do |cart_item|
@@ -217,12 +240,20 @@ class Order < ApplicationRecord
   end
 
   def create_shiprocket_shipment(courier_id = nil)
-    unless can_create_shipment?
-      return { success: false, error: 'Order is not ready for shipment' }
+    self.with_lock do
+      reload
+      unless can_create_shipment?
+        return { success: false, error: 'Order is not ready for shipment' }
+      end
+
+      if shipment.present?
+        return { success: false, error: 'Shipment already exists' }
+      end
     end
 
-    if shipment.present?
-      return { success: false, error: 'Shipment already exists' }
+    # Pre-check pickup location — avoid Shiprocket "Wrong Pickup location" after order-create
+    unless ShiprocketService.verify_pickup_location
+      return { success: false, error: "Pickup location '#{ENV.fetch('SHIPROCKET_PICKUP_LOCATION', 'Primary')}' not found in Shiprocket. Add it under Settings → Pickup Addresses." }
     end
 
     begin
@@ -296,12 +327,17 @@ class Order < ApplicationRecord
 
   def auto_create_shipment
     Rails.logger.info("Auto-creating shipment for order #{order_number}")
+    prior_status = status_before_last_save
     result = create_shiprocket_shipment
 
     if result[:success]
       Rails.logger.info("Shipment created successfully for order #{order_number}")
     else
       Rails.logger.error("Failed to auto-create shipment for order #{order_number}: #{result[:error]}")
+      # Revert to prior status so order isn't stuck in processing without shipment
+      if prior_status.present? && prior_status != status
+        update_columns(status: Order.statuses[prior_status])
+      end
     end
   rescue => e
     Rails.logger.error("Auto-create shipment error for order #{order_number}: #{e.message}")

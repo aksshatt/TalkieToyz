@@ -71,6 +71,11 @@ module Api
 
         # Create order from cart
         # Only clear cart for COD orders - for payment gateway orders, cart will be cleared after payment verification
+        shipping_cost = params[:shipping_cost].present? ? params[:shipping_cost].to_f : 0
+        if shipping_cost < 0
+          return render_error('shipping_cost cannot be negative', nil, status: :unprocessable_entity)
+        end
+
         @order = Order.create_from_cart(
           cart,
           payment_method: params[:payment_method],
@@ -79,7 +84,9 @@ module Api
           coupon: coupon,
           clear_cart: params[:payment_method] == 'cod',
           gift_wrap: params[:gift_wrap] == true || params[:gift_wrap] == 'true',
-          gift_message: params[:gift_message]
+          gift_message: params[:gift_message],
+          shipping_cost: shipping_cost,
+          selected_courier_id: params[:selected_courier_id]
         )
 
         if params[:customer_notes].present?
@@ -93,11 +100,12 @@ module Api
 
         # For COD orders, mark as confirmed immediately
         if @order.payment_method == 'cod'
-          @order.mark_as_confirmed
-          # Award loyalty points for COD purchase (1 point per rupee)
-          points = @order.total.to_i
-          LoyaltyPoint.award(user: current_user, source: 'purchase', points: points,
-                             reference: @order, description: "Earned #{points} points for order ##{@order.order_number}")
+          Order.transaction do
+            @order.mark_as_confirmed
+            points = @order.total.to_i
+            LoyaltyPoint.award(user: current_user, source: 'purchase', points: points,
+                               reference: @order, description: "Earned #{points} points for order ##{@order.order_number}")
+          end
         end
 
         render_success(
@@ -243,11 +251,9 @@ module Api
 
       # POST /api/v1/orders/:id/create_razorpay_order
       def create_razorpay_order
-        order = Order.find(params[:id])
-
-        # Only allow users to create Razorpay order for their own orders
-        unless order.user_id == current_user.id
-          return render_error('Access denied', nil, status: :forbidden)
+        order = current_user.orders.find_by(id: params[:id])
+        unless order
+          return render_error('Order not found', nil, status: :not_found)
         end
 
         # Check if order is already paid or not using Razorpay
@@ -275,11 +281,9 @@ module Api
 
       # POST /api/v1/orders/:id/payment/verify
       def verify_payment
-        order = Order.find(params[:id])
-
-        # Only allow users to verify payment for their own orders
-        unless order.user_id == current_user.id
-          return render_error('Access denied', nil, status: :forbidden)
+        order = current_user.orders.find_by(id: params[:id])
+        unless order
+          return render_error('Order not found', nil, status: :not_found)
         end
 
         # Verify Razorpay signature

@@ -348,11 +348,14 @@ module Api
 
           return 0 if users_with_orders.empty?
 
-          total_days = users_with_orders.sum do |user|
+          valid_users = users_with_orders.select { |u| u.first_order_date.present? && u.created_at.present? }
+          return 0 if valid_users.empty?
+
+          total_days = valid_users.sum do |user|
             (user.first_order_date.to_date - user.created_at.to_date).to_i
           end
 
-          (total_days.to_f / users_with_orders.count).round(2)
+          (total_days.to_f / valid_users.size).round(2)
         end
       end
     end

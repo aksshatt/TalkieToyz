@@ -33,7 +33,7 @@ module Api
         pdf = AssessmentResultPdfService.new(@assessment_result).generate
 
         send_data pdf.render,
-                  filename: "assessment_result_#{@assessment_result.child_name}_#{Date.today}.pdf",
+                  filename: "assessment_result_#{@assessment_result.child_name}_#{Time.current.to_date}.pdf",
                   type: 'application/pdf',
                   disposition: 'attachment'
       end

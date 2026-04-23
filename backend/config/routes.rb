@@ -236,6 +236,7 @@ Rails.application.routes.draw do
             post :create_shipment
             post :cancel_shipment
             get :shipping_label
+            post :create_return
           end
           collection do
             post :bulk_update_status

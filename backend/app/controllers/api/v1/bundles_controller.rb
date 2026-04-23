@@ -53,10 +53,15 @@ module Api
       end
 
       def set_bundle_products
-        product_ids = params[:product_ids] || []
+        product_ids = (params[:product_ids] || []).map(&:to_i).reject(&:zero?)
+        found_ids = Product.where(id: product_ids).pluck(:id)
+        missing = product_ids - found_ids
+        if missing.any?
+          raise ActiveRecord::Rollback.new("Invalid product IDs: #{missing.join(', ')}")
+        end
         @bundle.bundle_items.destroy_all
         product_ids.each_with_index do |pid, idx|
-          @bundle.bundle_items.create(product_id: pid, position: idx)
+          @bundle.bundle_items.create!(product_id: pid, position: idx)
         end
       end
 

@@ -20,32 +20,33 @@ module Api
       def add_item
         product = Product.active.find(params[:product_id])
         product_variant = nil
-
-        # Check for product variant if specified
-        if params[:product_variant_id].present?
-          product_variant = product.variants.find(params[:product_variant_id])
-
-          unless product_variant.active? && product_variant.stock_quantity > 0
-            return render_error('Product variant is out of stock or inactive', nil, status: :unprocessable_entity)
-          end
-
-          available_stock = product_variant.stock_quantity
-        else
-          unless product.in_stock?
-            return render_error('Product is out of stock', nil, status: :unprocessable_entity)
-          end
-
-          available_stock = product.stock_quantity
-        end
-
         quantity = params[:quantity]&.to_i || 1
 
-        if quantity > available_stock
-          return render_error(
-            'Requested quantity exceeds available stock',
-            { available: available_stock },
-            status: :unprocessable_entity
-          )
+        ActiveRecord::Base.transaction do
+          if params[:product_variant_id].present?
+            product_variant = product.variants.lock.find(params[:product_variant_id])
+
+            unless product_variant.active? && product_variant.stock_quantity > 0
+              return render_error('Product variant is out of stock or inactive', nil, status: :unprocessable_entity)
+            end
+
+            available_stock = product_variant.stock_quantity
+          else
+            product.lock!
+            unless product.in_stock?
+              return render_error('Product is out of stock', nil, status: :unprocessable_entity)
+            end
+
+            available_stock = product.stock_quantity
+          end
+
+          if quantity > available_stock
+            return render_error(
+              'Requested quantity exceeds available stock',
+              { available: available_stock },
+              status: :unprocessable_entity
+            )
+          end
         end
 
         cart_item = @cart.add_item(product, quantity, product_variant)

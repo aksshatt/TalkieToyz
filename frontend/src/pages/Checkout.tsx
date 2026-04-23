@@ -59,6 +59,7 @@ const Checkout = () => {
   const [shippingRates, setShippingRates] = useState<ShippingRate[]>([]);
   const [loadingRates, setLoadingRates] = useState(false);
   const [selectedCourierId, setSelectedCourierId] = useState<number | null>(null);
+  const [finalizedAddress, setFinalizedAddress] = useState<Address | null>(null);
 
   const couponCode = location.state?.couponCode;
   const discount = location.state?.discount || 0;
@@ -150,45 +151,34 @@ const Checkout = () => {
     validateOnChange: addressMode === 'new',
     validateOnBlur: addressMode === 'new',
     onSubmit: async (values) => {
-      if (currentStep === 1) {
-        // Validate address on step 1
-        if (addressMode === 'select') {
-          if (!selectedAddressId) {
-            toast.error('Please select an address');
-            return;
-          }
-        }
-        setCurrentStep(currentStep + 1);
-      } else if (currentStep < 4) {
-        setCurrentStep(currentStep + 1);
-      } else {
-        // Final submission - use selected address or new address
-        let shippingAddress: Address;
-        if (addressMode === 'select' && selectedAddressId) {
-          const selectedAddr = savedAddresses.find(
-            (addr) => addr.id === selectedAddressId
-          );
-          if (selectedAddr) {
-            shippingAddress = {
-              name: selectedAddr.name,
-              phone: selectedAddr.phone,
-              address_line_1: selectedAddr.address_line_1,
-              address_line_2: selectedAddr.address_line_2,
-              city: selectedAddr.city,
-              state: selectedAddr.state,
-              postal_code: selectedAddr.postal_code,
-              country: selectedAddr.country,
-            };
-          } else {
-            shippingAddress = values;
-          }
-        } else {
-          shippingAddress = values;
-        }
-        await handlePlaceOrder(shippingAddress);
+      if (currentStep < 4) {
+        return;
       }
+      const shippingAddress = finalizedAddress ?? values;
+      if (!isValidAddress(shippingAddress)) {
+        toast.error('Shipping address is incomplete');
+        setCurrentStep(1);
+        return;
+      }
+      await handlePlaceOrder(shippingAddress);
     },
   });
+
+  const isValidAddress = (addr: Address | null | undefined): addr is Address => {
+    if (!addr) return false;
+    const required: (keyof Address)[] = ['name', 'phone', 'address_line_1', 'city', 'state', 'postal_code', 'country'];
+    return required.every((k) => typeof addr[k] === 'string' && (addr[k] as string).trim().length > 0);
+  };
+
+  const selectedRate = shippingRates.find((r) => r.courier_id === selectedCourierId) || null;
+
+  const shippingCost = (() => {
+    if (selectedRate) return Number(selectedRate.rate) || 0;
+    if (shippingRates.length === 0) {
+      return deliveryMethod === 'express' ? 100 : 0;
+    }
+    return 0;
+  })();
 
   const handlePlaceOrder = async (shippingAddress: Address) => {
     setIsProcessing(true);
@@ -202,9 +192,15 @@ const Checkout = () => {
         save_address: addressMode === 'new' && saveAddress,
         gift_wrap: giftWrap,
         gift_message: giftWrap ? giftMessage : undefined,
+        shipping_cost: shippingCost,
+        selected_courier_id: selectedCourierId ?? undefined,
       });
 
-      const order = orderResponse.data;
+      const order = orderResponse?.data;
+      if (!order || !order.id) {
+        toast.error('Order creation failed');
+        return;
+      }
 
       if (paymentMethod === 'razorpay') {
         // Create Razorpay order
@@ -288,45 +284,63 @@ const Checkout = () => {
     }
   };
 
-  const getPostalCode = () => {
-    if (addressMode === 'select' && selectedAddressId) {
-      const addr = savedAddresses.find(a => a.id === selectedAddressId);
-      return addr?.postal_code || '';
-    }
-    return formik.values.postal_code;
-  };
-
   const codAvailable = shippingRates.some(r => r.cod_available);
+
+  const buildAddressFromSaved = (id: number): Address | null => {
+    const a = savedAddresses.find((x) => x.id === id);
+    if (!a) return null;
+    return {
+      name: a.name,
+      phone: a.phone,
+      address_line_1: a.address_line_1,
+      address_line_2: a.address_line_2,
+      city: a.city,
+      state: a.state,
+      postal_code: a.postal_code,
+      country: a.country,
+    };
+  };
 
   const handleNext = async () => {
     if (currentStep === 1) {
-      // If selecting existing address, just check if one is selected
+      let addr: Address | null = null;
+      let postal = '';
+
       if (addressMode === 'select') {
         if (!selectedAddressId) {
           toast.error('Please select an address');
           return;
         }
-        fetchShippingRates(getPostalCode());
-        setCurrentStep(2);
+        addr = buildAddressFromSaved(selectedAddressId);
+        postal = addr?.postal_code || '';
+      } else {
+        const errors = await formik.validateForm();
+        if (Object.keys(errors).length > 0) {
+          formik.setTouched({
+            name: true,
+            phone: true,
+            address_line_1: true,
+            city: true,
+            state: true,
+            postal_code: true,
+            country: true,
+          });
+          return;
+        }
+        addr = { ...formik.values };
+        postal = formik.values.postal_code;
+      }
+
+      if (!isValidAddress(addr)) {
+        toast.error('Address is incomplete');
         return;
       }
 
-      // If adding new address, validate form
-      const errors = await formik.validateForm();
-      if (Object.keys(errors).length === 0) {
-        fetchShippingRates(formik.values.postal_code);
-        setCurrentStep(2);
-      } else {
-        formik.setTouched({
-          name: true,
-          phone: true,
-          address_line_1: true,
-          city: true,
-          state: true,
-          postal_code: true,
-          country: true,
-        });
+      setFinalizedAddress(addr);
+      if (postal && postal.length === 6) {
+        await fetchShippingRates(postal);
       }
+      setCurrentStep(2);
     } else if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
     }
@@ -340,7 +354,13 @@ const Checkout = () => {
 
   const calculateTotal = () => {
     if (!cart) return 0;
-    return parseFloat(cart.total) - discount;
+    // Work in paise (integer cents) to avoid float drift
+    const subtotal = Math.round(parseFloat(cart.subtotal) * 100);
+    const tax = Math.round(parseFloat(cart.tax_amount) * 100);
+    const shipping = Math.round(shippingCost * 100);
+    const disc = Math.round(discount * 100);
+    const totalPaise = Math.max(0, subtotal + tax + shipping - disc);
+    return totalPaise / 100;
   };
 
   if (!cart) {
@@ -848,10 +868,7 @@ const Checkout = () => {
                   </h2>
 
                   {(() => {
-                    const reviewAddress =
-                      addressMode === 'select' && selectedAddressId
-                        ? savedAddresses.find((a) => a.id === selectedAddressId) ?? formik.values
-                        : formik.values;
+                    const reviewAddress = finalizedAddress ?? formik.values;
                     return (
                   <div className="space-y-6">
                     {/* Shipping Address */}
@@ -968,9 +985,7 @@ const Checkout = () => {
                         <div className="flex justify-between">
                           <span>Delivery</span>
                           <span>
-                            {deliveryMethod === 'standard'
-                              ? 'FREE'
-                              : '₹100.00'}
+                            {shippingCost === 0 ? 'FREE' : `₹${shippingCost.toFixed(2)}`}
                           </span>
                         </div>
                         {discount > 0 && (

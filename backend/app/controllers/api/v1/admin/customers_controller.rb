@@ -2,6 +2,8 @@ module Api
   module V1
     module Admin
       class CustomersController < BaseController
+        before_action :authenticate_user!
+        before_action :require_admin
         before_action :set_customer, only: [:show, :update, :destroy]
 
         # GET /api/v1/admin/customers
@@ -16,9 +18,20 @@ module Api
           @customers = @customers.page(params[:page])
                                 .per(params[:per_page] || 20)
 
+          ids = @customers.map(&:id)
+          order_counts = Order.where(user_id: ids).group(:user_id).count
+          paid_totals = Order.where(user_id: ids, payment_status: 'paid').group(:user_id).sum(:total)
+          last_orders = Order.where(user_id: ids).group(:user_id).maximum(:created_at)
+
           render_success(
             {
-              customers: @customers.map { |c| customer_summary(c) },
+              customers: @customers.map { |c|
+                customer_summary(c,
+                  total_orders: order_counts[c.id] || 0,
+                  total_spent: (paid_totals[c.id] || 0).to_f.round(2),
+                  last_order_at: last_orders[c.id]&.iso8601
+                )
+              },
               meta: pagination_meta(@customers)
             },
             'Customers retrieved successfully'
@@ -92,6 +105,12 @@ module Api
           render_error('Customer not found', nil, status: :not_found)
         end
 
+        def require_admin
+          unless current_user&.admin?
+            render_error('Admin access required', nil, status: :forbidden)
+          end
+        end
+
         def customer_params
           params.require(:customer).permit(:name, :email, :phone, :bio)
         end
@@ -120,16 +139,16 @@ module Api
           customers
         end
 
-        def customer_summary(customer)
+        def customer_summary(customer, total_orders: nil, total_spent: nil, last_order_at: nil)
           {
             id: customer.id,
             name: customer.name,
             email: customer.email,
             phone: customer.phone,
-            total_orders: customer.orders.count,
-            total_spent: customer.orders.where(payment_status: 'paid').sum(:total).to_f.round(2),
+            total_orders: total_orders.nil? ? customer.orders.count : total_orders,
+            total_spent: total_spent.nil? ? customer.orders.where(payment_status: 'paid').sum(:total).to_f.round(2) : total_spent,
             created_at: customer.created_at.iso8601,
-            last_order_at: customer.orders.maximum(:created_at)&.iso8601
+            last_order_at: last_order_at.nil? ? customer.orders.maximum(:created_at)&.iso8601 : last_order_at
           }
         end
 
@@ -210,6 +229,10 @@ module Api
         def generate_customers_csv(customers)
           require 'csv'
 
+          ids = customers.map(&:id)
+          order_counts = Order.where(user_id: ids).group(:user_id).count
+          paid_totals = Order.where(user_id: ids, payment_status: 'paid').group(:user_id).sum(:total)
+
           CSV.generate(headers: true) do |csv|
             csv << ['ID', 'Name', 'Email', 'Phone', 'Total Orders', 'Total Spent', 'Created At']
 
@@ -219,8 +242,8 @@ module Api
                 customer.name,
                 customer.email,
                 customer.phone,
-                customer.orders.count,
-                customer.orders.where(payment_status: 'paid').sum(:total),
+                order_counts[customer.id] || 0,
+                paid_totals[customer.id] || 0,
                 customer.created_at.strftime('%Y-%m-%d %H:%M:%S')
               ]
             end

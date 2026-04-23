@@ -29,7 +29,9 @@ const AssessmentResultsAdmin = () => {
   useEffect(() => {
     assessmentService.admin.getStatistics()
       .then((r) => setStats(r.data))
-      .catch(() => {});
+      .catch((err) => {
+        console.error('Failed to load assessment statistics:', err);
+      });
   }, []);
 
   const loadResults = async () => {

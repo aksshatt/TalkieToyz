@@ -23,6 +23,11 @@ class Rack::Attack
     end
   end
 
+  # Throttle coupon validation (prevents brute-force code enumeration)
+  throttle('coupon_validate/ip', limit: 10, period: 1.minute) do |req|
+    req.ip if req.path == '/api/v1/coupons/validate' && req.post?
+  end
+
   # Throttle general API requests per IP
   throttle('api/ip', limit: 300, period: 1.minute) do |req|
     req.ip if req.path.start_with?('/api/')

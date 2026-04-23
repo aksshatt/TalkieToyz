@@ -311,6 +311,31 @@ export const adminService = {
     return response.data;
   },
 
+  createShipment: async (id: number, courier_id?: number): Promise<any> => {
+    const response = await axios.post(`/admin/orders/${id}/create_shipment`, courier_id ? { courier_id } : {});
+    return response.data;
+  },
+
+  cancelShipment: async (id: number): Promise<any> => {
+    const response = await axios.post(`/admin/orders/${id}/cancel_shipment`);
+    return response.data;
+  },
+
+  getShippingLabel: async (id: number): Promise<any> => {
+    const response = await axios.get(`/admin/orders/${id}/shipping_label`);
+    return response.data;
+  },
+
+  createReturn: async (id: number): Promise<any> => {
+    const response = await axios.post(`/admin/orders/${id}/create_return`);
+    return response.data;
+  },
+
+  refundOrder: async (id: number, amount?: number, reason?: string): Promise<any> => {
+    const response = await axios.post(`/admin/orders/${id}/refund`, { amount, reason });
+    return response.data;
+  },
+
   // Customers
   getCustomers: async (filters?: {
     page?: number;

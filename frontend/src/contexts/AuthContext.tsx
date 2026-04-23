@@ -37,18 +37,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const accessToken = localStorage.getItem('access_token');
 
         if (storedUser && accessToken) {
-          // Parse stored user
-          const parsedUser = JSON.parse(storedUser);
-          setUser(parsedUser);
-
-          // Verify token is still valid by fetching current user
+          // Verify token is still valid by fetching current user BEFORE committing user state.
+          // Prevents brief logged-in flicker if the token was revoked server-side.
           try {
             const response = await authService.getCurrentUser();
             setUser(response.data.user);
-            // Update stored user with fresh data
             localStorage.setItem('user', JSON.stringify(response.data.user));
           } catch (error) {
-            // Token is invalid, clear storage
             console.error('Token validation failed:', error);
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');

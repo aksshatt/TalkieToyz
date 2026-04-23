@@ -47,7 +47,8 @@ const ProductDetail = () => {
   // Track recently viewed
   useEffect(() => {
     if (product) addProduct(product as any);
-  }, [product?.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product]);
 
   const handleQuantityChange = (delta: number) => {
     setQuantity((prev) => Math.max(1, Math.min((product?.stock_quantity || 1), prev + delta)));

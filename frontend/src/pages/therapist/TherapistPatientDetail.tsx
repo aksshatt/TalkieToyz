@@ -128,11 +128,17 @@ const TherapistPatientDetail: React.FC = () => {
   });
 
   // Initialize conversation
+  const [convoInitError, setConvoInitError] = useState(false);
   useEffect(() => {
     if (patient && !conversationId) {
+      setConvoInitError(false);
       therapistService.getOrCreateConversation(patientId).then(res => {
         setConversationId(res.data.id);
-      }).catch(() => {});
+      }).catch((err) => {
+        console.error('Failed to init conversation:', err);
+        setConvoInitError(true);
+        toast.error('Could not open chat. Please retry.');
+      });
     }
   }, [patient, patientId, conversationId]);
 
@@ -143,7 +149,9 @@ const TherapistPatientDetail: React.FC = () => {
   // Mark read when opening chat
   useEffect(() => {
     if (conversationId && tab === 'chat') {
-      therapistService.markRead(conversationId).catch(() => {});
+      therapistService.markRead(conversationId).catch((err) => {
+        console.error('markRead failed:', err);
+      });
     }
   }, [conversationId, tab]);
 
@@ -297,7 +305,7 @@ const TherapistPatientDetail: React.FC = () => {
               />
               <motion.button
                 onClick={sendText}
-                disabled={!text.trim() || sendMutation.isPending}
+                disabled={!text.trim() || sendMutation.isPending || !conversationId || convoInitError}
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                 className="p-3 bg-teal-gradient text-white rounded-2xl shadow-soft disabled:opacity-50 flex-shrink-0">
                 <Send className="w-5 h-5" />

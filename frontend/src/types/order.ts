@@ -93,6 +93,8 @@ export interface CreateOrderData {
   save_address?: boolean;
   gift_wrap?: boolean;
   gift_message?: string;
+  shipping_cost?: number;
+  selected_courier_id?: number;
 }
 
 export interface OrdersResponse {

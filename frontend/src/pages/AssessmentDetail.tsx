@@ -59,7 +59,9 @@ const AssessmentDetail = () => {
 
   const handleComplete = async (answers: Record<string, any>) => {
     try {
-      const ageInMonths = Math.round((parseFloat(childAge) || 0) * 12);
+      const parsedAge = parseFloat(childAge);
+      const safeAge = Number.isFinite(parsedAge) ? Math.min(Math.max(parsedAge, 0), 30) : 0;
+      const ageInMonths = Math.round(safeAge * 12);
       const response = await assessmentService.submitAssessment(slug!, {
         child_name: childName,
         child_age_months: ageInMonths,

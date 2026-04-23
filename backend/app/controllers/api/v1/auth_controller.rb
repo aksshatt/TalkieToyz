@@ -109,10 +109,11 @@ module Api
           end
 
           new_access_token = generate_jwt_token(user)
+          new_refresh_token = generate_refresh_token(user)
 
           render json: {
             success: true,
-            data: { access_token: new_access_token, refresh_token: token }
+            data: { access_token: new_access_token, refresh_token: new_refresh_token }
           }
         rescue JWT::DecodeError, JWT::ExpiredSignature
           render json: { success: false, message: 'Invalid or expired refresh token' }, status: :unauthorized

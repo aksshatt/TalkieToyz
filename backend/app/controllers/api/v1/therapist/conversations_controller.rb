@@ -47,7 +47,9 @@ module Api
         private
 
         def find_conversation
-          Conversation.find_by(id: params[:id], therapist_id: current_user.id)
+          Conversation.where(id: params[:id])
+                      .where('therapist_id = :uid OR patient_id = :uid', uid: current_user.id)
+                      .first
         end
 
         def serialize_conversation(c)

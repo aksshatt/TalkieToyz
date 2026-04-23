@@ -41,11 +41,13 @@ module Api
           therapist = User.therapist.find_by(id: params[:id])
           return render json: { success: false, message: 'Therapist not found' }, status: :not_found unless therapist
 
+          reason = ActionController::Base.helpers.strip_tags(params[:reason].to_s).strip.first(500)
+
           therapist.update!(approval_status: 'rejected')
-          log_activity('reject_therapist', 'User', therapist.id, { therapist_name: therapist.name, reason: params[:reason] })
+          log_activity('reject_therapist', 'User', therapist.id, { therapist_name: therapist.name, reason: reason })
 
           begin
-            TherapistMailer.rejected(therapist, params[:reason]).deliver_later
+            TherapistMailer.rejected(therapist, reason).deliver_later
           rescue => e
             Rails.logger.error("Rejection email failed: #{e.message}")
           end
