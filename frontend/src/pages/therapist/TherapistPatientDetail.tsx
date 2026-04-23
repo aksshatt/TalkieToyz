@@ -377,9 +377,9 @@ const TherapistPatientDetail: React.FC = () => {
             <input value={productSearch} onChange={e => setProductSearch(e.target.value)}
               placeholder="Search products to share…"
               className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl text-sm focus:border-teal focus:outline-none mb-3" />
-            {productSearchData?.data?.products?.length > 0 && (
+            {(productSearchData?.data?.length ?? 0) > 0 && (
               <div className="space-y-2 max-h-60 overflow-y-auto">
-                {productSearchData.data.products.map((p: any) => (
+                {productSearchData.data.map((p: any) => (
                   <div key={p.id} className="flex items-center gap-3 p-3 rounded-xl border border-warmgray-100 hover:border-teal/30 hover:bg-teal-light/5 transition-all cursor-pointer"
                     onClick={() => shareProduct(p)}>
                     {p.image_urls?.[0] ? (
@@ -401,7 +401,7 @@ const TherapistPatientDetail: React.FC = () => {
                 ))}
               </div>
             )}
-            {productSearch.length > 1 && !productSearchData?.data?.products?.length && (
+            {productSearch.length > 1 && !productSearchData?.data?.length && (
               <p className="text-sm text-warmgray-400 text-center py-4">No products found</p>
             )}
             {productSearch.length <= 1 && (
