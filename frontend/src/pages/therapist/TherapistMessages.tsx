@@ -8,7 +8,7 @@ const TherapistMessages: React.FC = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['therapist_conversations'],
     queryFn: therapistService.getConversations,
-    refetchInterval: 10000,
+    refetchInterval: 3000,
   });
 
   const conversations = data?.data || [];

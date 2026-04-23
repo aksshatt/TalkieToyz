@@ -15,14 +15,14 @@ const PatientInbox: React.FC = () => {
   const { data: convsData, isLoading: convsLoading } = useQuery({
     queryKey: ['patient_conversations'],
     queryFn: patientConversationService.getConversations,
-    refetchInterval: 8000,
+    refetchInterval: 3000,
   });
 
   const { data: convData } = useQuery({
     queryKey: ['patient_conversation', selectedConvId],
     queryFn: () => patientConversationService.getConversation(selectedConvId!),
     enabled: !!selectedConvId,
-    refetchInterval: 5000,
+    refetchInterval: 3000,
   });
 
   const sendMutation = useMutation({

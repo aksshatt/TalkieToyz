@@ -11,14 +11,14 @@ const ConversationMonitor: React.FC = () => {
   const { data: convsData, isLoading: convsLoading } = useQuery({
     queryKey: ['admin_conversations'],
     queryFn: () => adminTherapistService.getConversations(),
-    refetchInterval: 8000,
+    refetchInterval: 3000,
   });
 
   const { data: msgData } = useQuery({
     queryKey: ['admin_conversation_messages', selectedConvId],
     queryFn: () => adminTherapistService.getConversationMessages(selectedConvId!),
     enabled: !!selectedConvId,
-    refetchInterval: 5000,
+    refetchInterval: 3000,
   });
 
   useEffect(() => {

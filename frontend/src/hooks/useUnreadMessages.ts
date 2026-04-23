@@ -16,14 +16,14 @@ export function useUnreadMessages() {
     queryKey: ['patient_conversations_unread'],
     queryFn: patientConversationService.getConversations,
     enabled: isPatient,
-    refetchInterval: 10000,
+    refetchInterval: 3000,
   });
 
   const { data: therapistConvs } = useQuery({
     queryKey: ['therapist_conversations_unread'],
     queryFn: therapistService.getConversations,
     enabled: isTherapist,
-    refetchInterval: 10000,
+    refetchInterval: 3000,
   });
 
   const unreadCount = isPatient
