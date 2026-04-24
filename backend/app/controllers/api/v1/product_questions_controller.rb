@@ -66,8 +66,10 @@ module Api
           answered: q.answered?,
           answered_at: q.answered_at,
           created_at: q.created_at,
-          user: { id: q.user.id, name: q.user.name },
-          answered_by: q.answered_by ? { id: q.answered_by.id, name: q.answered_by.name, role: q.answered_by.role } : nil
+          # Do not expose the asker's user id publicly — name is enough for
+          # display and the id enables correlation with other endpoints.
+          user: { name: q.user&.name || 'Anonymous' },
+          answered_by: q.answered_by ? { name: q.answered_by.name, role: q.answered_by.role } : nil
         }
       end
     end

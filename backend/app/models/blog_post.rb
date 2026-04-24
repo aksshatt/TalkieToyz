@@ -119,7 +119,18 @@ class BlogPost < ApplicationRecord
   private
 
   def generate_slug
-    self.slug = title.parameterize if title.present?
+    return unless title.present?
+
+    base = title.parameterize
+    candidate = base
+    suffix = 2
+    # Append -2, -3 ... until a free slug is found. Excludes self so editing
+    # a post with the same slug doesn't collide.
+    while self.class.where.not(id: id).exists?(slug: candidate)
+      candidate = "#{base}-#{suffix}"
+      suffix += 1
+    end
+    self.slug = candidate
   end
 
   def calculate_reading_time

@@ -66,8 +66,11 @@ export default function CouponGenerator() {
         min_order_amount: minOrderAmount ? parseFloat(minOrderAmount) : undefined,
         max_discount_amount: maxDiscountAmount ? parseFloat(maxDiscountAmount) : undefined,
         usage_limit: usageLimit,
-        valid_from: validFrom || undefined,
-        valid_until: validUntil || undefined,
+        // Backend stores these as datetime. Treat valid_from as start-of-day
+        // and valid_until as end-of-day so date-only inputs behave as users
+        // expect (a coupon dated Dec 31 is valid all of Dec 31).
+        valid_from: validFrom ? `${validFrom}T00:00:00` : undefined,
+        valid_until: validUntil ? `${validUntil}T23:59:59` : undefined,
       });
       setGenerated(res.data.generated);
       toast.success(`${res.data.total_generated} coupon(s) generated!`);

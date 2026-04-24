@@ -17,10 +17,11 @@ module Api
         product = Product.active.find(params[:product_id])
         @item = current_user.wishlists.find_or_initialize_by(product: product)
 
-        if @item.new_record? && @item.save
+        if !@item.new_record?
+          # Idempotent: already wishlisted is not an error.
+          render_success({ id: @item.id, product_id: product.id }, 'Already in wishlist')
+        elsif @item.save
           render_success({ id: @item.id, product_id: product.id }, 'Added to wishlist', status: :created)
-        elsif !@item.new_record?
-          render_error('Already in wishlist', nil, status: :unprocessable_entity)
         else
           render_error('Failed to add to wishlist', @item.errors.full_messages)
         end

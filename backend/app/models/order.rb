@@ -191,13 +191,13 @@ class Order < ApplicationRecord
       # Stock was decremented at order creation; restore it so inventory isn't leaked
       # when a Razorpay payment never completes. Skip if order was already cancelled
       # (stock was restored via mark_as_cancelled) to avoid double-credit.
-      next if already_cancelled
-
-      order_items.each do |item|
-        if item.product_variant_id
-          item.product_variant.with_lock { item.product_variant.increment!(:stock_quantity, item.quantity) }
-        else
-          item.product.with_lock { item.product.increment!(:stock_quantity, item.quantity) }
+      unless already_cancelled
+        order_items.each do |item|
+          if item.product_variant_id
+            item.product_variant.with_lock { item.product_variant.increment!(:stock_quantity, item.quantity) }
+          else
+            item.product.with_lock { item.product.increment!(:stock_quantity, item.quantity) }
+          end
         end
       end
     end

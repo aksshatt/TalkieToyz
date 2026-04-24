@@ -123,7 +123,7 @@ module Api
         def set_site_content
           @site_content = SiteContent.find(params[:id])
         rescue ActiveRecord::RecordNotFound
-          render_error('Site content not found', :not_found)
+          render_error('Site content not found', nil, status: :not_found)
         end
 
         def site_content_params

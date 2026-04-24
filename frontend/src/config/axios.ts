@@ -26,7 +26,11 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle token refresh
+// Single in-flight refresh — prevents multiple concurrent 401s from each
+// burning the refresh token (server typically rotates it on use, so the
+// second refresh call fails and logs the user out).
+let refreshInFlight: Promise<string> | null = null;
+
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
@@ -51,23 +55,30 @@ axiosInstance.interceptors.response.use(
           throw new Error('No refresh token available');
         }
 
-        // Try to refresh the token
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1'}/auth/refresh`,
-          { refresh_token: refreshToken }
-        );
-
-        const { access_token, refresh_token: newRefreshToken } = response.data.data;
-
-        // Store new tokens
-        localStorage.setItem('access_token', access_token);
-        if (newRefreshToken) {
-          localStorage.setItem('refresh_token', newRefreshToken);
+        if (!refreshInFlight) {
+          refreshInFlight = axios
+            .post(
+              `${import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1'}/auth/refresh`,
+              { refresh_token: refreshToken }
+            )
+            .then((response) => {
+              const { access_token, refresh_token: newRefreshToken } = response.data.data;
+              localStorage.setItem('access_token', access_token);
+              if (newRefreshToken) {
+                localStorage.setItem('refresh_token', newRefreshToken);
+              }
+              return access_token as string;
+            })
+            .finally(() => {
+              refreshInFlight = null;
+            });
         }
+
+        const newAccessToken = await refreshInFlight;
 
         // Update the authorization header
         if (originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${access_token}`;
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         }
 
         // Retry the original request
