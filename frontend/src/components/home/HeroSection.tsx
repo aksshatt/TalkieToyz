@@ -130,7 +130,7 @@ const HeroSection = () => {
             ].map((item, i) => (
               <motion.div
                 key={item.label}
-                className="flex items-center gap-2"
+                className="inline-flex items-center gap-2 bg-warmgray-900/70 backdrop-blur-sm border border-white/20 rounded-full px-3 py-1.5 shadow-soft"
                 initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.0 + i * 0.12, duration: 0.45 }}
@@ -140,10 +140,7 @@ const HeroSection = () => {
                   animate={{ scale: [1, 1.4, 1] }}
                   transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
                 />
-                <span
-                  className="text-sm sm:text-base font-bold text-white"
-                  style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)' }}
-                >
+                <span className="text-xs sm:text-sm font-bold text-white whitespace-nowrap">
                   {item.label}
                 </span>
               </motion.div>
