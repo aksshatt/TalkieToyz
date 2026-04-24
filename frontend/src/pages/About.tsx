@@ -369,17 +369,24 @@ const About = () => {
                 className="relative bg-white rounded-3xl p-7 shadow-soft border-t-4 border-teal overflow-hidden"
               >
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-teal-light/30 rounded-full blur-2xl pointer-events-none" />
-                <div className="relative">
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-teal-gradient rounded-2xl mb-4 shadow-soft">
-                    <Sparkles className="w-6 h-6 text-white" />
+                <div className="relative flex gap-5">
+                  <div className="flex-shrink-0 w-20 h-20 bg-white rounded-2xl shadow-soft border border-teal/15 flex items-center justify-center p-2">
+                    <img
+                      src="/logo.png"
+                      alt="Talkie Toyz logo"
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
                   </div>
-                  <h4 className="font-extrabold text-xl text-teal mb-2">
-                    {content.talkie_toyz_title || 'Talkie Toyz'}
-                  </h4>
-                  <p className="text-warmgray-700 text-sm leading-relaxed">
-                    {content.talkie_toyz_description ||
-                      'Founder & Creator of therapeutic toys designed specifically for speech and communication development.'}
-                  </p>
+                  <div className="min-w-0">
+                    <h4 className="font-extrabold text-xl text-teal mb-2">
+                      {content.talkie_toyz_title || 'Talkie Toyz'}
+                    </h4>
+                    <p className="text-warmgray-700 text-sm leading-relaxed">
+                      {content.talkie_toyz_description ||
+                        'Founder & Creator of therapeutic toys designed specifically for speech and communication development.'}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
               <motion.div
@@ -387,17 +394,24 @@ const About = () => {
                 className="relative bg-white rounded-3xl p-7 shadow-soft border-t-4 border-coral overflow-hidden"
               >
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-coral-light/30 rounded-full blur-2xl pointer-events-none" />
-                <div className="relative">
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-coral-gradient rounded-2xl mb-4 shadow-soft">
-                    <Heart className="w-6 h-6 text-white" />
+                <div className="relative flex gap-5">
+                  <div className="flex-shrink-0 w-20 h-20 bg-white rounded-2xl shadow-soft border border-coral/15 flex items-center justify-center p-2">
+                    <img
+                      src="/madhuram-logo.png"
+                      alt="Madhuram Multi Rehabilitation Centre logo"
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
                   </div>
-                  <h4 className="font-extrabold text-xl text-coral mb-2">
-                    {content.madhuram_title || 'Madhuram Multi Rehabilitation Centre'}
-                  </h4>
-                  <p className="text-warmgray-700 text-sm leading-relaxed">
-                    {content.madhuram_description ||
-                      'Founder & Speech-Hearing Professional providing comprehensive therapy services for children.'}
-                  </p>
+                  <div className="min-w-0">
+                    <h4 className="font-extrabold text-xl text-coral mb-2">
+                      {content.madhuram_title || 'Madhuram Multi Rehabilitation Centre'}
+                    </h4>
+                    <p className="text-warmgray-700 text-sm leading-relaxed">
+                      {content.madhuram_description ||
+                        'Founder & Speech-Hearing Professional providing comprehensive therapy services for children.'}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             </div>
