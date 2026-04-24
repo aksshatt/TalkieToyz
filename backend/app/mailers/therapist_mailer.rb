@@ -51,6 +51,8 @@ class TherapistMailer < ApplicationMailer
     @message      = message
     @sender       = message.sender
     @monitor_url  = "#{ENV.fetch('FRONTEND_URL', 'https://talkietoyz.shop')}/admin/conversations"
-    mail(to: @admin.email, subject: "[TalkieToys] New chat message — #{@sender.name} → #{conversation.patient.name}")
+    sender_name  = @sender&.name || 'Unknown'
+    patient_name = conversation.patient&.name || 'Unknown patient'
+    mail(to: @admin.email, subject: "[TalkieToys] New chat message — #{sender_name} → #{patient_name}")
   end
 end

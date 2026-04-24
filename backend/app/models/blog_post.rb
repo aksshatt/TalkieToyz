@@ -93,10 +93,14 @@ class BlogPost < ApplicationRecord
   def approve_comment(comment_id)
     return false if comments.blank?
 
-    comment = comments.find { |c| c['id'] == comment_id }
-    return false unless comment
+    idx = comments.index { |c| c['id'] == comment_id }
+    return false unless idx
 
-    comment['approved'] = true
+    # Reassign the whole array so ActiveRecord sees the change (mutating
+    # a JSON column in place does not mark the attribute dirty).
+    updated = comments.deep_dup
+    updated[idx]['approved'] = true
+    self.comments = updated
     save
   end
 

@@ -13,7 +13,7 @@ class MilestoneAchievement < ApplicationRecord
   def award_loyalty_points
     LoyaltyPoint.award(
       user: user,
-      source: 'assessment',
+      source: 'milestone',
       points: 20,
       reference: self,
       description: "Milestone unlocked: #{milestone.title}"

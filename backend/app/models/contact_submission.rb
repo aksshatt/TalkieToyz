@@ -28,7 +28,7 @@ class ContactSubmission < ApplicationRecord
   scope :status_spam, -> { where(status: STATUSES[:spam]) }
 
   # Callbacks
-  after_create :send_notification_emails
+  after_commit :send_notification_emails, on: :create
 
   def self.statuses
     STATUSES

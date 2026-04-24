@@ -46,19 +46,27 @@ class Review < ApplicationRecord
   end
 
   def mark_helpful_by(user)
-    return false if helpful_votes.exists?(user: user)
+    # Serialize check + create + counter increment so concurrent double-clicks
+    # can't both pass the existence check and produce a double-increment.
+    transaction do
+      return false if helpful_votes.exists?(user: user)
 
-    helpful_votes.create(user: user)
-    increment!(:helpful_count)
+      helpful_votes.create!(user: user)
+      increment!(:helpful_count)
+    end
     true
+  rescue ActiveRecord::RecordNotUnique
+    false
   end
 
   def unmark_helpful_by(user)
-    vote = helpful_votes.find_by(user: user)
-    return false unless vote
+    transaction do
+      vote = helpful_votes.find_by(user: user)
+      return false unless vote
 
-    vote.destroy
-    decrement!(:helpful_count)
+      vote.destroy
+      decrement!(:helpful_count)
+    end
     true
   end
 

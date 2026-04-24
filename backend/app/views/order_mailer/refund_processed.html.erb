@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body style="margin:0;padding:0;background-color:#f5f0eb;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f5f0eb;">
+    <tr>
+      <td align="center" style="padding:40px 16px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#0d9488 0%,#0f766e 60%,#44403c 100%);padding:40px 48px;text-align:center;">
+              <h1 style="margin:0;color:#ffffff;font-size:32px;font-weight:800;letter-spacing:-0.5px;">TalkieToys</h1>
+              <p style="margin:8px 0 0;color:rgba(255,255,255,0.8);font-size:14px;letter-spacing:0.5px;text-transform:uppercase;">Refund Processed</p>
+              <div style="width:48px;height:3px;background:rgba(255,255,255,0.4);border-radius:2px;margin:16px auto 0;"></div>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background:#ffffff;padding:48px;">
+              <h2 style="margin:0 0 8px;color:#1c1917;font-size:22px;font-weight:700;">Hi <%= @user.name %>,</h2>
+              <p style="margin:0 0 24px;color:#57534e;font-size:15px;line-height:1.7;">
+                Your refund for order <strong style="color:#0d9488;"><%= @order.order_number %></strong> has been processed.
+              </p>
+
+              <% if @order.refund_amount.present? %>
+                <p style="margin:0 0 24px;color:#57534e;font-size:15px;line-height:1.7;">
+                  Amount refunded: <strong style="color:#0d9488;">&#8377;<%= @order.refund_amount %></strong>.
+                  Funds typically appear in your account within 5&ndash;7 business days.
+                </p>
+              <% end %>
+
+              <p style="margin:0;color:#57534e;font-size:14px;line-height:1.7;">
+                If you have any questions, reply to this email or contact support.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#faf7f2;padding:24px 48px;text-align:center;color:#78716c;font-size:12px;">
+              &copy; <%= Date.current.year %> TalkieToys &middot; Speech Therapy Toys for Every Child
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

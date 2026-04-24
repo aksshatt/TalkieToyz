@@ -1,11 +1,12 @@
 class LoyaltyPoint < ApplicationRecord
   belongs_to :user
 
-  SOURCES = %w[purchase review assessment referral redemption bonus].freeze
+  SOURCES = %w[purchase review assessment milestone referral redemption bonus].freeze
   POINTS_PER_SOURCE = {
     'purchase' => 1,    # 1 point per rupee spent (calculated at time of award)
     'review' => 50,
     'assessment' => 30,
+    'milestone' => 20,
     'referral' => 100,
     'bonus' => 0        # arbitrary
   }.freeze

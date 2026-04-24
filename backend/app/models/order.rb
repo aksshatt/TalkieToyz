@@ -67,13 +67,16 @@ class Order < ApplicationRecord
       order.discount = coupon&.calculate_discount(order.subtotal) || 0
       order.selected_courier_id = selected_courier_id if order.respond_to?(:selected_courier_id=) && selected_courier_id.present?
 
-      # Aggregate weight & max dimensions from cart products (if set on product level)
-      products = cart.cart_items.includes(:product).map(&:product).compact
-      product_weights = products.map.with_index { |p, i|
-        qty = cart.cart_items[i].quantity
-        (p.respond_to?(:weight_kg) && p.weight_kg ? p.weight_kg.to_f : 0) * qty
-      }
-      total_weight = product_weights.sum
+      # Aggregate weight & max dimensions from cart products (if set on product level).
+      # Iterate cart_items directly so each quantity pairs with its own product;
+      # a previous map/compact version drifted when any product was nil.
+      cart_items_with_product = cart.cart_items.includes(:product).to_a
+      products = cart_items_with_product.map(&:product).compact
+      total_weight = cart_items_with_product.sum do |ci|
+        p = ci.product
+        next 0 unless p && p.respond_to?(:weight_kg) && p.weight_kg
+        p.weight_kg.to_f * ci.quantity
+      end
       if total_weight > 0
         order.weight_kg = total_weight
       end
@@ -259,15 +262,16 @@ class Order < ApplicationRecord
   end
 
   def create_shiprocket_shipment(courier_id = nil)
-    self.with_lock do
+    # Guard outside the transaction so the check-then-create window is at
+    # least short. The DB-level uniqueness on shipments.order_id is the
+    # final backstop against duplicate shipments.
+    with_lock do
       reload
       unless can_create_shipment?
         return { success: false, error: 'Order is not ready for shipment' }
       end
 
-      if shipment.present?
-        return { success: false, error: 'Shipment already exists' }
-      end
+      return { success: false, error: 'Shipment already exists' } if shipment.present?
     end
 
     # Pre-check pickup location — avoid Shiprocket "Wrong Pickup location" after order-create

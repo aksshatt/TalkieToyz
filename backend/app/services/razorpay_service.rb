@@ -65,7 +65,7 @@ class RazorpayService
     # Initiate refund
     def create_refund(payment_id, amount)
       payment = Razorpay::Payment.fetch(payment_id)
-      payment.refund(amount: (amount * 100).to_i) # Amount in paise
+      payment.refund(amount: (amount.to_f * 100).round.to_i) # Amount in paise
     rescue Razorpay::Error => e
       Rails.logger.error "Razorpay Refund Error: #{e.message}"
       nil
@@ -74,7 +74,7 @@ class RazorpayService
     # Capture payment (for authorized payments)
     def capture_payment(payment_id, amount)
       payment = Razorpay::Payment.fetch(payment_id)
-      payment.capture(amount: (amount * 100).to_i) # Amount in paise
+      payment.capture(amount: (amount.to_f * 100).round.to_i) # Amount in paise
     rescue Razorpay::Error => e
       Rails.logger.error "Razorpay Payment Capture Error: #{e.message}"
       nil

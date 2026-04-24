@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { blogService } from '../../services/blogService';
 import type { Resource } from '../../types/blog';
 
@@ -28,9 +29,10 @@ const ResourceManagement = () => {
     if (window.confirm('Are you sure?')) {
       try {
         await blogService.admin.deleteResource(slug);
+        toast.success('Resource deleted');
         loadResources();
-      } catch (err) {
-        console.error('Failed to delete:', err);
+      } catch (err: any) {
+        toast.error(err?.response?.data?.message || 'Failed to delete resource');
       }
     }
   };
