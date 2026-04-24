@@ -14,16 +14,18 @@ const SearchBar = ({
 }: SearchBarProps) => {
   const [query, setQuery] = useState('');
   const onSearchRef = useRef(onSearch);
-  const lastSentRef = useRef<string | null>(null);
+  const didMountRef = useRef(false);
 
   useEffect(() => {
     onSearchRef.current = onSearch;
   }, [onSearch]);
 
   useEffect(() => {
-    if (lastSentRef.current === query) return;
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
     const timer = setTimeout(() => {
-      lastSentRef.current = query;
       onSearchRef.current(query);
     }, debounceMs);
 
@@ -32,7 +34,6 @@ const SearchBar = ({
 
   const handleClear = () => {
     setQuery('');
-    lastSentRef.current = '';
     onSearchRef.current('');
   };
 
