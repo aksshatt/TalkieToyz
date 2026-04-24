@@ -248,6 +248,7 @@ module Api
           user_id: user.id,
           email: user.email,
           role: user.role,
+          type: 'access',
           exp: 24.hours.from_now.to_i
         }
         JWT.encode(payload, jwt_secret, 'HS256')

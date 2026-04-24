@@ -1,6 +1,9 @@
 class ShiprocketService
   TOKEN_CACHE_KEY = 'shiprocket:auth_token'.freeze
-  TOKEN_CACHE_TTL = 9.days
+  # Shiprocket issues 10-day tokens but occasionally invalidates early. Cache
+  # for 6 hours so we refresh well inside the server's stated TTL; 401 responses
+  # still trigger a forced re-auth via authorized_request.
+  TOKEN_CACHE_TTL = 6.hours
   MAX_RETRIES = 2
   VOLUMETRIC_DIVISOR = 5000.0 # cm³ → kg for air; Shiprocket standard
 

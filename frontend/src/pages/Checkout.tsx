@@ -62,7 +62,10 @@ const Checkout = () => {
   const [finalizedAddress, setFinalizedAddress] = useState<Address | null>(null);
 
   const couponCode = location.state?.couponCode;
-  const discount = location.state?.discount || 0;
+  const rawDiscount = location.state?.discount;
+  const discount = typeof rawDiscount === 'number'
+    ? rawDiscount
+    : (parseFloat(String(rawDiscount ?? '0')) || 0);
 
   useEffect(() => {
     dispatch(fetchCart());
@@ -284,7 +287,22 @@ const Checkout = () => {
     }
   };
 
-  const codAvailable = shippingRates.some(r => r.cod_available);
+  // COD only valid if the currently-selected courier supports it. If no courier
+  // is selected yet, fall back to "any rate supports COD" so the option isn't
+  // prematurely disabled before the user picks.
+  const codAvailable = selectedRate
+    ? !!selectedRate.cod_available
+    : shippingRates.some(r => r.cod_available);
+
+  // If user switches to a courier that does not support COD after choosing
+  // COD, fall back to the online payment option so we don't submit an invalid
+  // combo.
+  useEffect(() => {
+    if (paymentMethod === 'cod' && selectedRate && !selectedRate.cod_available) {
+      setPaymentMethod('razorpay');
+      toast('Selected courier does not support COD; switched to online payment.');
+    }
+  }, [selectedRate, paymentMethod]);
 
   const buildAddressFromSaved = (id: number): Address | null => {
     const a = savedAddresses.find((x) => x.id === id);
@@ -341,6 +359,18 @@ const Checkout = () => {
         await fetchShippingRates(postal);
       }
       setCurrentStep(2);
+    } else if (currentStep === 2) {
+      // Block leaving shipping step until rates loaded and a courier picked
+      // (otherwise shippingCost is 0 and the order total is wrong).
+      if (loadingRates) {
+        toast.error('Please wait for shipping rates to load');
+        return;
+      }
+      if (shippingRates.length > 0 && !selectedCourierId) {
+        toast.error('Please select a shipping option');
+        return;
+      }
+      setCurrentStep(currentStep + 1);
     } else if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
     }

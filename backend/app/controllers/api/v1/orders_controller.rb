@@ -58,6 +58,13 @@ module Api
           unless coupon&.valid_for_order?(cart.subtotal)
             return render_error('Invalid or expired coupon code', nil, status: :unprocessable_entity)
           end
+
+          # One-use-per-user: reject if this user already has a non-cancelled order redeeming
+          # this coupon. Prevents unlimited reuse by the same account.
+          already_used = current_user.orders.where(coupon_id: coupon.id).where.not(status: :cancelled).exists?
+          if already_used
+            return render_error('Coupon already used', nil, status: :unprocessable_entity)
+          end
         end
 
         # Validate required parameters

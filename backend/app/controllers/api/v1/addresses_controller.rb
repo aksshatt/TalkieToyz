@@ -69,13 +69,21 @@ module Api
 
       # POST /api/v1/addresses/:id/set_default
       def set_default
-        if @address.update(is_default: true)
-          render_success(
-            UserAddressSerializer.new(@address).as_json,
-            'Default address updated successfully'
-          )
-        else
-          render_error('Failed to set default address', @address.errors.full_messages)
+        # Serialize per-user so two concurrent set_default requests cannot leave
+        # multiple addresses flagged is_default.
+        UserAddress.transaction do
+          User.lock.find(current_user.id)
+          UserAddress.where(user_id: current_user.id, is_default: true)
+                     .where.not(id: @address.id)
+                     .update_all(is_default: false)
+          if @address.update(is_default: true)
+            render_success(
+              UserAddressSerializer.new(@address).as_json,
+              'Default address updated successfully'
+            )
+          else
+            render_error('Failed to set default address', @address.errors.full_messages)
+          end
         end
       end
 
