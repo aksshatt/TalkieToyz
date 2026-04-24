@@ -73,7 +73,7 @@ const Profile: React.FC = () => {
   const validatePassword = (): boolean => {
     const errs: { [key: string]: string } = {};
     if (!pwData.current_password) errs.current_password = 'Current password is required';
-    if (!pwData.password || pwData.password.length < 8) errs.password = 'New password must be at least 8 characters';
+    if (!pwData.password || pwData.password.length < 6) errs.password = 'New password must be at least 6 characters';
     if (pwData.password !== pwData.password_confirmation) errs.password_confirmation = 'Passwords do not match';
     setPwErrors(errs);
     return Object.keys(errs).length === 0;
@@ -101,7 +101,13 @@ const Profile: React.FC = () => {
 
   if (!user) return null;
 
-  const initials = user.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
+  const initials = (user.name || '')
+    .split(' ')
+    .filter(Boolean)
+    .map((n: string) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2) || '?';
 
   const quickLinks = [
     { to: '/orders', icon: ShoppingBag, label: 'My Orders', color: 'text-teal', bg: 'bg-teal-light/20 hover:bg-teal-light/40' },

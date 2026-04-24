@@ -7,11 +7,13 @@ module Api
 
       # GET /api/v1/orders
       def index
+        per_page = [[params[:per_page].to_i, 1].max, 100].min
+        per_page = 20 if params[:per_page].blank?
         @orders = current_user.orders
                               .includes(order_items: [:product, :product_variant], coupon: [], shipment: [])
                               .recent
                               .page(params[:page])
-                              .per(params[:per_page] || 20)
+                              .per(per_page)
 
         # Filter by status if provided
         @orders = @orders.by_status(params[:status]) if params[:status].present?

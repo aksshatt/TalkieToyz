@@ -126,8 +126,8 @@ module Api
           refund_amount = params[:amount]&.to_f || @order.total.to_f
           reason = params[:reason] || 'Admin initiated refund'
 
-          # Validate refund amount
-          if refund_amount <= 0 || refund_amount > @order.total.to_f
+          # Validate refund amount (Razorpay rejects refunds below ₹1).
+          if refund_amount < 1 || refund_amount > @order.total.to_f
             return render_error(
               'Invalid refund amount',
               ["Amount must be between 0 and #{@order.total}"],

@@ -36,6 +36,7 @@ const ShopByGoalQuiz: React.FC = () => {
   const products = recommendMutation.data?.data?.products || [];
 
   const handleAnswer = (value: string) => {
+    if (!currentQuestion) return;
     const newAnswers = { ...answers, [currentQuestion.id]: value };
     setAnswers(newAnswers);
 

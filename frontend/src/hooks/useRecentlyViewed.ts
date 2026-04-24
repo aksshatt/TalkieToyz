@@ -11,7 +11,10 @@ export const useRecentlyViewed = () => {
     try {
       const stored = localStorage.getItem(KEY);
       if (stored) setItems(JSON.parse(stored));
-    } catch { /* ignore */ }
+    } catch {
+      // Corrupt entry — drop it so the hook recovers on next visit.
+      try { localStorage.removeItem(KEY); } catch { /* ignore */ }
+    }
   }, []);
 
   const addProduct = (product: ProductSummary) => {

@@ -8,6 +8,7 @@ import therapistService from '../services/therapistService';
 export function useUnreadMessages() {
   const { user, isAuthenticated } = useAuth();
   const prevCountRef = useRef<number>(0);
+  const initializedRef = useRef<boolean>(false);
 
   const isPatient = isAuthenticated && user?.role === 'customer';
   const isTherapist = isAuthenticated && user?.role === 'therapist';
@@ -33,7 +34,10 @@ export function useUnreadMessages() {
     : 0;
 
   useEffect(() => {
-    if (unreadCount > prevCountRef.current && prevCountRef.current !== 0) {
+    // Skip the first render so we don't toast the baseline unread count, but
+    // do fire for subsequent increases — including cases where the user has
+    // cleared unread (count === 0) and a new message arrives.
+    if (initializedRef.current && unreadCount > prevCountRef.current) {
       const senderLabel = isTherapist ? 'A patient' : 'Your therapist';
       toast(`${senderLabel} sent you a new message!`, {
         icon: '💬',
@@ -42,6 +46,7 @@ export function useUnreadMessages() {
       });
     }
     prevCountRef.current = unreadCount;
+    initializedRef.current = true;
   }, [unreadCount, isTherapist]);
 
   return { unreadCount };

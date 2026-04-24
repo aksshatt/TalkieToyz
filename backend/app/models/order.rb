@@ -35,7 +35,8 @@ class Order < ApplicationRecord
   before_validation :generate_order_number, if: -> { order_number.blank? }
   before_validation :calculate_total
   after_create :increment_coupon_usage
-  after_create :send_order_confirmation_email
+  # Use after_commit so a rolled-back order never enqueues a confirmation email.
+  after_commit :send_order_confirmation_email, on: :create
   after_update :send_status_update_email, if: :saved_change_to_status?
   after_update :auto_create_shipment, if: :should_auto_create_shipment?
 
@@ -313,7 +314,10 @@ class Order < ApplicationRecord
   end
 
   def calculate_total
-    self.total = subtotal + tax + shipping_cost - discount
+    # Clamp at 0 so an over-sized coupon/discount can never produce a negative
+    # order total (which would cascade into negative Razorpay amounts).
+    raw = subtotal.to_f + tax.to_f + shipping_cost.to_f - discount.to_f
+    self.total = raw.negative? ? 0 : raw
   end
 
   def increment_coupon_usage

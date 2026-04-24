@@ -73,7 +73,7 @@ module Api
         shipment.update(
           status: status,
           delivered_date: payload['delivered_date'],
-          shipment_details: shipment.shipment_details.merge(webhook_data: payload)
+          shipment_details: (shipment.shipment_details || {}).merge(webhook_data: payload)
         )
 
         # Sync order status
@@ -184,7 +184,7 @@ module Api
         return unless order
 
         order.update(
-          refund_details: order.refund_details.merge(
+          refund_details: (order.refund_details || {}).merge(
             razorpay_refund_id: refund_id,
             refund_created_at: Time.current,
             webhook_payload: payload
@@ -203,12 +203,12 @@ module Api
         return unless order
 
         order.update(
-          refund_details: order.refund_details.merge(
+          refund_details: (order.refund_details || {}).merge(
             refund_processed_at: Time.current,
             webhook_payload: payload
           ),
           refund_status: :refund_completed,
-          refund_amount: refund_amount / 100.0, # Convert from paise to rupees
+          refund_amount: (refund_amount.to_i / 100.0), # Convert from paise to rupees (nil-safe)
           refunded_at: Time.current
         )
 
