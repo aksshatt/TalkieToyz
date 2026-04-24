@@ -571,8 +571,8 @@ const BookSession: React.FC = () => {
                 <span className="text-xs font-bold uppercase tracking-wide">Need help?</span>
               </div>
               <p className="text-sm mb-2 text-white/90">Talk to our care team for guidance.</p>
-              <a href="tel:+919999999999" className="font-extrabold underline underline-offset-2">
-                +91 99999 99999
+              <a href="tel:+919340113875" className="font-extrabold underline underline-offset-2">
+                +91 93401 13875
               </a>
             </div>
           </aside>
