@@ -58,14 +58,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
     >
       {/* Image area */}
       <Link to={`/products/${product.slug}`} className="block relative overflow-hidden bg-gradient-to-br from-cream-light via-teal-light/20 to-coral-light/20">
-        <motion.img
-          src={imageUrl}
-          alt={product.name}
-          className="w-full h-48 object-cover"
+        <motion.div
+          className="w-full h-48"
           animate={{ scale: isHovered ? 1.08 : 1 }}
           transition={{ duration: 0.45, ease: 'easeOut' }}
-          onError={(e) => { e.currentTarget.src = '/placeholder-product.png'; }}
-        />
+        >
+          <img
+            src={imageUrl}
+            alt={product.name}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-48 object-cover"
+            onError={(e) => { e.currentTarget.src = '/placeholder-product.png'; }}
+          />
+        </motion.div>
 
         {/* Quick-view button */}
         <motion.div
