@@ -45,7 +45,7 @@ const OrderConfirmation = () => {
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['order', orderId],
-    queryFn: () => orderService.getOrder(orderId),
+    queryFn: () => orderService.getOrder(orderId as number),
     enabled: !!orderId,
   });
 
