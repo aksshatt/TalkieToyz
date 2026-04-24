@@ -95,10 +95,10 @@ const About = () => {
   };
 
   const stats = [
-    { icon: Users, value: '2000+', label: 'Happy Families' },
-    { icon: GraduationCap, value: '10+', label: 'Years Experience' },
+    { icon: Users, value: '200+', label: 'Happy Families' },
+    { icon: GraduationCap, value: '5+', label: 'Years Experience' },
     { icon: Award, value: 'RCI', label: 'Certified' },
-    { icon: Star, value: '4.9', label: 'Avg Rating' },
+    { icon: Star, value: '4.8', label: 'Avg Rating' },
   ];
 
   const values = [
