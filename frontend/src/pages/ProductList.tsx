@@ -49,19 +49,17 @@ const ProductList = () => {
       // Find category by slug (including subcategories)
       const category = findCategoryBySlug(categorySlug);
       if (category) {
-        setFilters(prev => ({
-          ...prev,
-          category_id: category.id,
-          page: 1
-        }));
+        setFilters(prev => {
+          if (prev.category_id === category.id) return prev;
+          return { ...prev, category_id: category.id, page: 1 };
+        });
       }
     } else if (categoryIdParam) {
-      // Handle direct category_id parameter
-      setFilters(prev => ({
-        ...prev,
-        category_id: parseInt(categoryIdParam, 10),
-        page: 1
-      }));
+      const parsedId = parseInt(categoryIdParam, 10);
+      setFilters(prev => {
+        if (prev.category_id === parsedId) return prev;
+        return { ...prev, category_id: parsedId, page: 1 };
+      });
     }
   }, [searchParams, categories]);
 
