@@ -150,7 +150,7 @@ const HeroSection = () => {
       </div>
 
       {/* Bottom Soft Fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/50 to-transparent pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
       <BookAppointmentModal isOpen={showBooking} onClose={() => setShowBooking(false)} />
     </section>
   );
