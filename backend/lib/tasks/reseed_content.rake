@@ -8,6 +8,7 @@ namespace :db do
     load Rails.root.join('db', 'seeds', 'blog_posts_seed.rb')
     load Rails.root.join('db', 'seeds', 'resources_seed.rb')
     load Rails.root.join('db', 'seeds', 'site_content_seed.rb')
+    load Rails.root.join('db', 'seeds', 'services_seed.rb')
 
     puts ""
     puts "Seed complete!"
@@ -17,5 +18,6 @@ namespace :db do
     puts "Blog Posts: #{BlogPost.count}" if defined?(BlogPost)
     puts "Resources: #{Resource.count}" if defined?(Resource)
     puts "Site Contents: #{SiteContent.count}" if defined?(SiteContent)
+    puts "Services: #{Service.count}" if defined?(Service)
   end
 end
