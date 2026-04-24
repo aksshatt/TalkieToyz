@@ -286,12 +286,30 @@ module Api
           return render_error('Order not found', nil, status: :not_found)
         end
 
+        # Ensure the razorpay_order_id from client matches the one we created for this order.
+        # Prevents attacker from submitting a valid signature from a different (e.g. cheaper) razorpay order.
+        if order.payment_intent_id.blank? || order.payment_intent_id != params[:razorpay_order_id]
+          Rails.logger.warn("Razorpay order_id mismatch: order=#{order.id} expected=#{order.payment_intent_id.inspect} got=#{params[:razorpay_order_id].inspect}")
+          order.payment_failed!
+          return render_error('Payment verification failed', nil, status: :unprocessable_entity)
+        end
+
         # Verify Razorpay signature
         if RazorpayService.verify_payment_signature(
           razorpay_order_id: params[:razorpay_order_id],
           razorpay_payment_id: params[:razorpay_payment_id],
           razorpay_signature: params[:razorpay_signature]
         )
+          # Verify captured amount matches order total (defense-in-depth vs tampered order records).
+          payment = RazorpayService.fetch_payment(params[:razorpay_payment_id])
+          expected_amount_paise = (order.total.to_f * 100).round.to_i
+          actual_amount_paise = payment&.amount.to_i
+          if payment.nil? || actual_amount_paise != expected_amount_paise
+            Rails.logger.warn("Razorpay amount mismatch: order=#{order.id} expected=#{expected_amount_paise} got=#{actual_amount_paise}")
+            order.payment_failed!
+            return render_error('Payment amount mismatch', nil, status: :unprocessable_entity)
+          end
+
           # Store payment details
           order.update(
             payment_details: {

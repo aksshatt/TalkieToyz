@@ -122,7 +122,7 @@ module Api
 
         # Update order with payment details
         order.update(
-          payment_details: order.payment_details.merge(
+          payment_details: (order.payment_details || {}).merge(
             razorpay_payment_id: payment_id,
             authorized_at: Time.current,
             webhook_payload: payload
@@ -142,7 +142,7 @@ module Api
 
         # Mark payment as successful
         order.update(
-          payment_details: order.payment_details.merge(
+          payment_details: (order.payment_details || {}).merge(
             razorpay_payment_id: payment_id,
             captured_at: Time.current,
             captured_amount: amount,
@@ -163,7 +163,7 @@ module Api
         return unless order
 
         order.update(
-          payment_details: order.payment_details.merge(
+          payment_details: (order.payment_details || {}).merge(
             failed_at: Time.current,
             failure_reason: error_description,
             webhook_payload: payload

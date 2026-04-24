@@ -41,14 +41,19 @@ class LoyaltyPoint < ApplicationRecord
   end
 
   def self.redeem(user:, points:)
-    raise ArgumentError, 'Insufficient points' if balance_for(user) < points
+    # Serialize concurrent redemptions per-user so two requests cannot both pass the
+    # balance check and overdraw the account.
+    transaction do
+      locked_user = User.lock.find(user.id)
+      raise ArgumentError, 'Insufficient points' if balance_for(locked_user) < points
 
-    create!(
-      user: user,
-      points: -points,
-      source: 'redemption',
-      description: "Redeemed #{points} points for discount"
-    )
+      create!(
+        user: locked_user,
+        points: -points,
+        source: 'redemption',
+        description: "Redeemed #{points} points for discount"
+      )
+    end
   end
 
   private

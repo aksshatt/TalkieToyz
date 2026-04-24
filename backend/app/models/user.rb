@@ -43,7 +43,7 @@ class User < ApplicationRecord
   validates :role, presence: true
 
   # Callbacks
-  after_create :create_cart
+  after_create :ensure_cart
 
   # Scopes
   scope :active, -> { where(deleted_at: nil) }
@@ -64,7 +64,7 @@ class User < ApplicationRecord
 
   private
 
-  def create_cart
-    Cart.create(user: self)
+  def ensure_cart
+    Cart.create!(user: self) unless cart
   end
 end

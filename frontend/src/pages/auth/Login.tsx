@@ -60,7 +60,13 @@ const Login: React.FC = () => {
     try {
       await login(formData);
       const userStr = localStorage.getItem('user');
-      const user = userStr ? JSON.parse(userStr) : null;
+      let user: { role?: string } | null = null;
+      try {
+        user = userStr ? JSON.parse(userStr) : null;
+      } catch {
+        user = null;
+        localStorage.removeItem('user');
+      }
       let redirectPath = '/';
       if (user?.role === 'admin') redirectPath = '/admin';
       else if (user?.role === 'therapist') redirectPath = '/therapist';

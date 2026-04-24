@@ -159,8 +159,8 @@ const Cart = () => {
                           </div>
 
                           <div className="text-right">
-                            <p className="text-xs text-warmgray-400">₹{parseFloat(item.item_price).toFixed(2)} each</p>
-                            <p className="font-[var(--font-family-fun)] font-bold text-teal text-lg">₹{parseFloat(item.total_price).toFixed(2)}</p>
+                            <p className="text-xs text-warmgray-400">₹{(parseFloat(item.item_price) || 0).toFixed(2)} each</p>
+                            <p className="font-[var(--font-family-fun)] font-bold text-teal text-lg">₹{(parseFloat(item.total_price) || 0).toFixed(2)}</p>
                           </div>
 
                           <motion.button onClick={() => handleRemoveItem(item.id)} disabled={isUpdating} whileTap={{ scale: 0.85 }}

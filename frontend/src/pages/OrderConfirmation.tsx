@@ -38,7 +38,9 @@ const ConfettiBurst = () => {
 const OrderConfirmation = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const orderId = location.state?.orderId;
+  const rawOrderId = location.state?.orderId;
+  const parsedOrderId = typeof rawOrderId === 'number' ? rawOrderId : parseInt(String(rawOrderId ?? ''), 10);
+  const orderId = Number.isFinite(parsedOrderId) && parsedOrderId > 0 ? parsedOrderId : null;
   const [showConfetti, setShowConfetti] = useState(false);
 
   const { data, isLoading, isError, refetch } = useQuery({

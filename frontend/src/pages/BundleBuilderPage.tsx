@@ -22,10 +22,16 @@ const BundleCard: React.FC<{ bundle: Bundle; index: number }> = ({ bundle, index
   const dispatch = useAppDispatch();
   const [added, setAdded] = useState(false);
 
-  const handleAddAllToCart = () => {
-    bundle.products.forEach(p => dispatch(addToCart({ product_id: p.id, quantity: 1 })));
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2500);
+  const handleAddAllToCart = async () => {
+    try {
+      for (const p of bundle.products) {
+        await dispatch(addToCart({ product_id: p.id, quantity: 1 })).unwrap();
+      }
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2500);
+    } catch {
+      setAdded(false);
+    }
   };
 
   const gradient = BUNDLE_GRADIENTS[index % BUNDLE_GRADIENTS.length];
