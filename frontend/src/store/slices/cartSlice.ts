@@ -25,14 +25,16 @@ export const fetchCart = createAsyncThunk('cart/fetchCart', async () => {
 
 export const addToCart = createAsyncThunk(
   'cart/addToCart',
-  async (data: AddToCartData, { rejectWithValue }) => {
+  async (data: AddToCartData & { silent?: boolean }, { rejectWithValue }) => {
+    // Strip the UI-only `silent` flag before hitting the API.
+    const { silent, ...payload } = data;
     try {
-      const response = await cartService.addItem(data);
-      toast.success('Item added to cart!');
+      const response = await cartService.addItem(payload);
+      if (!silent) toast.success('Item added to cart!');
       return response.data;
     } catch (error: any) {
       const message = error.response?.data?.message || 'Failed to add item to cart';
-      toast.error(message);
+      if (!silent) toast.error(message);
       return rejectWithValue(message);
     }
   }

@@ -83,7 +83,16 @@ class Assessment < ApplicationRecord
   private
 
   def generate_slug
-    self.slug = title.parameterize if title.present?
+    return unless title.present?
+
+    base = title.parameterize
+    candidate = base
+    suffix = 2
+    while self.class.where.not(id: id).exists?(slug: candidate)
+      candidate = "#{base}-#{suffix}"
+      suffix += 1
+    end
+    self.slug = candidate
   end
 
   def questions_structure

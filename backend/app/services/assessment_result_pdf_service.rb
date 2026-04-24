@@ -30,7 +30,7 @@ class AssessmentResultPdfService
         ['Age:', age_display],
         ['Mother Tongue:', @assessment_result.mother_tongue.presence || 'Not specified'],
         ['Assessment:', @assessment.title],
-        ['Completed:', @assessment_result.completed_at.strftime('%B %d, %Y at %I:%M %p')]
+        ['Completed:', @assessment_result.completed_at&.strftime('%B %d, %Y at %I:%M %p') || 'In progress']
       ]
 
       pdf.table(child_info, cell_style: { borders: [], padding: [5, 10] }, column_widths: [130, 340]) do

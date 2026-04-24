@@ -37,9 +37,9 @@ const WishlistPage = () => {
   const handleAddToCart = async (item: any) => {
     setAddingId(item.product_id);
     try {
+      // addToCart thunk already toasts on success / failure, so don't duplicate here.
       await dispatch(addToCart({ product_id: item.product_id, quantity: 1 })).unwrap();
-      toast.success('Added to cart!');
-    } catch { toast.error('Failed to add to cart'); }
+    } catch { /* thunk already surfaced the error toast */ }
     finally { setAddingId(null); }
   };
 

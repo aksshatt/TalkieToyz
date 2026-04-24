@@ -25,7 +25,7 @@ const BundleCard: React.FC<{ bundle: Bundle; index: number }> = ({ bundle, index
   const handleAddAllToCart = async () => {
     try {
       for (const p of bundle.products) {
-        await dispatch(addToCart({ product_id: p.id, quantity: 1 })).unwrap();
+        await dispatch(addToCart({ product_id: p.id, quantity: 1, silent: true })).unwrap();
       }
       setAdded(true);
       setTimeout(() => setAdded(false), 2500);

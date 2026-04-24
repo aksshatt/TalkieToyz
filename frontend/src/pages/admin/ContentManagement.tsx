@@ -56,9 +56,9 @@ const ContentManagement = () => {
     if (searchQuery) {
       filtered = filtered.filter(
         (c) =>
-          c.key.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          c.key?.toLowerCase().includes(searchQuery.toLowerCase()) ||
           c.label?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          c.value.toLowerCase().includes(searchQuery.toLowerCase())
+          (c.value || '').toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 

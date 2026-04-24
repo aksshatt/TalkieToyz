@@ -43,7 +43,7 @@ const OrderHistory = () => {
   const handleReorder = async (order: Order) => {
     try {
       for (const item of order.order_items) {
-        await dispatch(addToCart({ product_id: item.product.id, quantity: item.quantity, product_variant_id: item.product_variant?.id })).unwrap();
+        await dispatch(addToCart({ product_id: item.product.id, quantity: item.quantity, product_variant_id: item.product_variant?.id, silent: true })).unwrap();
       }
       toast.success('Items added to cart!');
     } catch { toast.error('Failed to add items to cart'); }

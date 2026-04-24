@@ -9,6 +9,7 @@ class CartItem < ApplicationRecord
   validates :product_id, uniqueness: { scope: [:cart_id, :product_variant_id] }
   validate :product_must_be_available
   validate :variant_must_belong_to_product
+  validate :quantity_within_stock
 
   # Methods
   def total_price
@@ -50,6 +51,17 @@ class CartItem < ApplicationRecord
   def variant_must_belong_to_product
     if product_variant && product && product_variant.product_id != product.id
       errors.add(:product_variant, 'does not belong to the selected product')
+    end
+  end
+
+  def quantity_within_stock
+    return unless quantity.present? && quantity.positive?
+
+    stock = available_stock
+    return if stock.nil?
+
+    if quantity > stock
+      errors.add(:quantity, "exceeds available stock (#{stock})")
     end
   end
 end

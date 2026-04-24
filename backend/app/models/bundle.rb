@@ -26,6 +26,15 @@ class Bundle < ApplicationRecord
   private
 
   def generate_slug
-    self.slug = name.parameterize if name.present?
+    return unless name.present?
+
+    base = name.parameterize
+    candidate = base
+    suffix = 2
+    while self.class.where.not(id: id).exists?(slug: candidate)
+      candidate = "#{base}-#{suffix}"
+      suffix += 1
+    end
+    self.slug = candidate
   end
 end

@@ -9,6 +9,9 @@ class Conversation < ApplicationRecord
 
   def self.between(therapist_id, patient_id)
     find_or_create_by(therapist_id: therapist_id, patient_id: patient_id)
+  rescue ActiveRecord::RecordNotUnique
+    # Another request raced us to create the same conversation; re-read it.
+    find_by(therapist_id: therapist_id, patient_id: patient_id)
   end
 
   def mark_read_for(user)
