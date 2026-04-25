@@ -215,6 +215,44 @@ const ProductList = () => {
         </div>
       </div>
 
+      {/* Active filter chips */}
+      {(() => {
+        const chips: { label: string; onRemove: () => void }[] = [];
+        if (filters.category_id) {
+          const cat = categories.flatMap(c => [c, ...(c.subcategories || [])]).find(c => c.id === filters.category_id);
+          chips.push({ label: `Category: ${cat?.name || filters.category_id}`, onRemove: () => setFilters({ ...filters, category_id: undefined, page: 1 }) });
+        }
+        if (filters.age) chips.push({ label: `Age: ${filters.age}+`, onRemove: () => setFilters({ ...filters, age: undefined, page: 1 }) });
+        if (filters.min_price != null || filters.max_price != null) chips.push({ label: `Price: ₹${filters.min_price ?? 0}–₹${filters.max_price ?? '∞'}`, onRemove: () => setFilters({ ...filters, min_price: undefined, max_price: undefined, page: 1 }) });
+        if (filters.in_stock) chips.push({ label: 'In Stock', onRemove: () => setFilters({ ...filters, in_stock: undefined, page: 1 }) });
+        if (filters.featured) chips.push({ label: 'Featured', onRemove: () => setFilters({ ...filters, featured: undefined, page: 1 }) });
+        if (filters.q) chips.push({ label: `Search: "${filters.q}"`, onRemove: () => setFilters({ ...filters, q: undefined, page: 1 }) });
+        if (chips.length === 0) return null;
+        return (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-bold text-warmgray-500 uppercase">Active:</span>
+              {chips.map((chip) => (
+                <button
+                  key={chip.label}
+                  onClick={chip.onRemove}
+                  className="inline-flex items-center gap-1.5 bg-teal-light/40 text-teal text-xs font-bold px-3 py-1.5 rounded-full hover:bg-teal-light/60"
+                >
+                  {chip.label}
+                  <span className="text-teal/70">✕</span>
+                </button>
+              ))}
+              <button
+                onClick={() => setFilters({ page: 1, per_page: 12, sort: 'newest' })}
+                className="text-xs font-bold text-coral hover:underline ml-2"
+              >
+                Clear all
+              </button>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-6">

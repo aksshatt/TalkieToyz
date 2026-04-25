@@ -135,8 +135,22 @@ const ProductDetail = () => {
           } : undefined,
         }}
       />
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-50 py-8 pb-28 lg:pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumbs */}
+        <nav className="mb-4 text-sm text-warmgray-600 flex items-center gap-1.5 flex-wrap" aria-label="Breadcrumb">
+          <Link to="/" className="hover:text-teal">Home</Link>
+          <span className="text-warmgray-400">/</span>
+          <Link to="/products" className="hover:text-teal">Products</Link>
+          {product.category && (
+            <>
+              <span className="text-warmgray-400">/</span>
+              <Link to={`/products?category=${product.category.slug}`} className="hover:text-teal">{product.category.name}</Link>
+            </>
+          )}
+          <span className="text-warmgray-400">/</span>
+          <span className="text-warmgray-900 font-semibold truncate max-w-[12rem] md:max-w-md">{product.name}</span>
+        </nav>
         {/* Breadcrumb */}
         <nav className="mb-8">
           <ol className="flex items-center gap-2 text-sm text-gray-600">

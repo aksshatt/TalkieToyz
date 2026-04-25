@@ -26,14 +26,19 @@ const HeroSection = () => {
         animate={{ scale: 1 }}
         transition={{ duration: 9, ease: 'easeOut' }}
       >
-        <img
-          src="/hero-image1.jpg"
-          alt="Diverse toddlers playing with educational toys on a soft mat"
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=2000&auto=format&fit=crop';
-          }}
-        />
+        <picture>
+          <source srcSet="/hero-image1.webp" type="image/webp" />
+          <img
+            src="/hero-image1.jpg"
+            alt="Diverse toddlers playing with educational toys on a soft mat"
+            className="w-full h-full object-cover"
+            fetchPriority="high"
+            decoding="async"
+            onError={(e) => {
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=2000&auto=format&fit=crop';
+            }}
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-r from-warmgray-900/75 via-warmgray-900/50 to-transparent md:from-warmgray-900/70 md:via-warmgray-900/40 md:to-transparent"></div>
       </motion.div>
 
