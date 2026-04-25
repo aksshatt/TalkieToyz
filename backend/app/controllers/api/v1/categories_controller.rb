@@ -3,6 +3,7 @@ module Api
     class CategoriesController < BaseController
       # GET /api/v1/categories
       def index
+        expires_in 5.minutes, public: true
         @categories = Category.active.top_level.by_position.includes(:subcategories, :products)
 
         render_success(

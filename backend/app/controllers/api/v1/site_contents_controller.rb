@@ -4,6 +4,7 @@ module Api
       # GET /api/v1/site_contents/:page
       # Returns all active content for a specific page
       def show
+        expires_in 5.minutes, public: true
         @contents = SiteContent.active.by_page(params[:page]).ordered
 
         render_success(

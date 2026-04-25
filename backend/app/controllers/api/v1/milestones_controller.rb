@@ -5,6 +5,7 @@ module Api
 
       # GET /api/v1/milestones
       def index
+        expires_in 5.minutes, public: true
         @milestones = Milestone.active
 
         # Apply filters

@@ -3,6 +3,7 @@ module Api
     class SpeechGoalsController < BaseController
       # GET /api/v1/speech_goals
       def index
+        expires_in 5.minutes, public: true
         @speech_goals = SpeechGoal.active
 
         render_success(

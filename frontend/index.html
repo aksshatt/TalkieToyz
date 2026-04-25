@@ -31,8 +31,11 @@
     <link rel="preconnect" href="https://checkout.razorpay.com" />
     <link rel="dns-prefetch" href="https://checkout.razorpay.com" />
 
-    <!-- Razorpay SDK -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Preload above-the-fold hero image -->
+    <link rel="preload" as="image" href="/hero-image1.jpg" fetchpriority="high" />
+
+    <!-- Razorpay SDK (defer, only needed at checkout) -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
   </head>
   <body>
     <div id="root"></div>

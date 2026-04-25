@@ -2,6 +2,7 @@ module Api
   module V1
     class ServicesController < BaseController
       def index
+        expires_in 5.minutes, public: true
         services = Service.active.ordered
         render_success(services.map { |s| serialize(s) }, 'Services retrieved')
       end

@@ -3,6 +3,7 @@ module Api
     class FaqsController < BaseController
       # GET /api/v1/faqs
       def index
+        expires_in 5.minutes, public: true
         @faqs = Faq.active
 
         # Filter by category
