@@ -29,14 +29,16 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <App />
         <Toaster
-          position="top-right"
+          position={typeof window !== 'undefined' && window.innerWidth < 640 ? 'top-center' : 'top-right'}
           toastOptions={{
             duration: 3000,
             style: {
               background: '#363636',
               color: '#fff',
               borderRadius: '12px',
-              padding: '16px',
+              padding: '14px 16px',
+              fontSize: '14px',
+              maxWidth: '90vw',
             },
             success: {
               iconTheme: {
