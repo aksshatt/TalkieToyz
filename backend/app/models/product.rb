@@ -68,7 +68,11 @@ class Product < ApplicationRecord
   end
 
   def average_rating
-    reviews.average(:rating).to_f.round(2)
+    if has_attribute?(:cached_average_rating)
+      cached_average_rating.to_f
+    else
+      reviews.average(:rating).to_f.round(2)
+    end
   end
 
   def soft_delete

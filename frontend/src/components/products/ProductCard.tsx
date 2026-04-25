@@ -24,7 +24,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const [addedFeedback, setAddedFeedback] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const addingRef = useRef(false);
-  const imageUrl = product.image_urls?.[0]?.thumbnail_url || product.image_urls?.[0]?.url || '/placeholder-product.png';
+  const img = product.image_urls?.[0];
+  const imageUrl = img?.thumbnail_url || img?.url || '/placeholder-product.png';
+  const srcSet = img?.thumbnail_url && img?.medium_url
+    ? `${img.thumbnail_url} 300w, ${img.medium_url} 600w${img.large_url ? `, ${img.large_url} 1200w` : ''}`
+    : undefined;
 
   const categoryColor = product.category
     ? categoryColors[product.category.id % categoryColors.length]
@@ -65,6 +69,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
         >
           <img
             src={imageUrl}
+            srcSet={srcSet}
+            sizes="(min-width: 1280px) 320px, (min-width: 640px) 50vw, 100vw"
             alt={product.name}
             loading="lazy"
             decoding="async"

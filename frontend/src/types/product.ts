@@ -33,6 +33,8 @@ export interface ProductVariant {
 export interface ImageUrl {
   url: string;
   thumbnail_url?: string;
+  medium_url?: string;
+  large_url?: string;
   filename: string;
   content_type: string;
 }

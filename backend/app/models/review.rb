@@ -27,9 +27,22 @@ class Review < ApplicationRecord
   scope :highest_rated, -> { order(rating: :desc) }
   scope :lowest_rated, -> { order(rating: :asc) }
 
+  # Callbacks - keep cached aggregates on product fresh
+  after_commit :refresh_product_review_cache, on: [:create, :update, :destroy]
+
   # Methods
   def approve!
     update(approved: true)
+  end
+
+  def refresh_product_review_cache
+    return unless product_id
+    Product.where(id: product_id).first&.then do |p|
+      approved_reviews = p.reviews.where(approved: true, deleted_at: nil)
+      avg = approved_reviews.average(:rating).to_f.round(2)
+      cnt = approved_reviews.count
+      Product.where(id: p.id).update_all(reviews_count: cnt, cached_average_rating: avg)
+    end
   end
 
   def soft_delete
