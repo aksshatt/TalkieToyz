@@ -25,7 +25,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const addingRef = useRef(false);
   const img = product.image_urls?.[0];
+  const altImg = product.image_urls?.[1];
   const imageUrl = img?.thumbnail_url || img?.url || '/placeholder-product.png';
+  const altImageUrl = altImg?.thumbnail_url || altImg?.url;
   const srcSet = img?.thumbnail_url && img?.medium_url
     ? `${img.thumbnail_url} 300w, ${img.medium_url} 600w${img.large_url ? `, ${img.large_url} 1200w` : ''}`
     : undefined;
@@ -74,9 +76,18 @@ const ProductCard = ({ product }: ProductCardProps) => {
             alt={product.name}
             loading="lazy"
             decoding="async"
-            className="w-full h-48 object-cover"
+            className={`w-full h-48 object-cover transition-opacity duration-300 ${altImageUrl && isHovered ? 'opacity-0' : 'opacity-100'}`}
             onError={(e) => { e.currentTarget.src = '/placeholder-product.png'; }}
           />
+          {altImageUrl && (
+            <img
+              src={altImageUrl}
+              alt={`${product.name} alternate view`}
+              loading="lazy"
+              decoding="async"
+              className={`absolute inset-0 w-full h-48 object-cover transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+            />
+          )}
         </motion.div>
 
         {/* Quick-view button */}
