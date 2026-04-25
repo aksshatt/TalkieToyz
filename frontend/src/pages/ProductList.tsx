@@ -5,6 +5,7 @@ import SEO from '../components/common/SEO';
 import { motion } from 'framer-motion';
 import { useProducts, useCategories } from '../hooks/useProducts';
 import ProductCard from '../components/products/ProductCard';
+import RecentlyViewed from '../components/products/RecentlyViewed';
 import FilterSidebar from '../components/products/FilterSidebar';
 import SearchBar from '../components/products/SearchBar';
 import { ProductCardSkeleton } from '../components/common/LoadingSkeleton';
@@ -388,6 +389,8 @@ const ProductList = () => {
           </main>
         </div>
       </div>
+
+      <RecentlyViewed />
     </div>
     </Layout>
   );
