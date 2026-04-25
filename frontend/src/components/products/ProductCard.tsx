@@ -5,6 +5,7 @@ import type { ProductSummary } from '../../types/product';
 import { useAppDispatch } from '../../store/hooks';
 import { addToCart } from '../../store/slices/cartSlice';
 import { motion, AnimatePresence } from 'framer-motion';
+import QuickAddModal from './QuickAddModal';
 
 interface ProductCardProps {
   product: ProductSummary;
@@ -23,6 +24,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [showQuickAdd, setShowQuickAdd] = useState(false);
   const addingRef = useRef(false);
   const img = product.image_urls?.[0];
   const altImg = product.image_urls?.[1];
@@ -97,15 +99,21 @@ const ProductCard = ({ product }: ProductCardProps) => {
           animate={{ opacity: isHovered ? 1 : 0 }}
           transition={{ duration: 0.2 }}
         >
-          <motion.div
+          <motion.button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setShowQuickAdd(true);
+            }}
             initial={{ scale: 0.7, opacity: 0 }}
             animate={{ scale: isHovered ? 1 : 0.7, opacity: isHovered ? 1 : 0 }}
             transition={{ duration: 0.2, delay: 0.05 }}
-            className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-1.5 text-sm font-semibold text-warmgray-800 shadow-soft-lg"
+            className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-1.5 text-sm font-bold text-warmgray-800 shadow-soft-lg hover:bg-white"
           >
             <Eye className="w-4 h-4" />
-            Quick View
-          </motion.div>
+            Quick Add
+          </motion.button>
         </motion.div>
 
         {/* Badges */}
@@ -234,6 +242,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </motion.button>
         </div>
       </div>
+
+      {showQuickAdd && (
+        <QuickAddModal product={product} onClose={() => setShowQuickAdd(false)} />
+      )}
     </motion.div>
   );
 };

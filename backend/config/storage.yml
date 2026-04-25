@@ -20,6 +20,18 @@ cloudinary:
   api_key: <%= ENV['CLOUDINARY_API_KEY'] %>
   api_secret: <%= ENV['CLOUDINARY_API_SECRET'] %>
 
+# Cloudflare R2 — S3-compatible, zero egress.
+# Set ACTIVE_STORAGE_SERVICE=cloudflare in production env after configuring.
+cloudflare:
+  service: S3
+  endpoint: <%= ENV['R2_ENDPOINT'] %>
+  access_key_id: <%= ENV['R2_ACCESS_KEY_ID'] %>
+  secret_access_key: <%= ENV['R2_SECRET_ACCESS_KEY'] %>
+  region: auto
+  bucket: <%= ENV['R2_BUCKET'] || "talkietoys-#{Rails.env}" %>
+  force_path_style: true
+  public: true
+
 # Remember not to checkin your GCS keyfile to a repository
 # google:
 #   service: GCS
