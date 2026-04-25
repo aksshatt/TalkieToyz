@@ -529,6 +529,38 @@ const ProductDetail = () => {
         {/* Recently Viewed */}
         <RecentlyViewed />
       </div>
+
+      {/* Mobile sticky add-to-cart bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-warmgray-200 shadow-soft-lg p-3 pb-safe">
+        <div className="flex items-center gap-3">
+          <div className="flex-shrink-0">
+            <div className="text-xs text-warmgray-500">Price</div>
+            <div className="text-lg font-extrabold text-teal">₹{product.price}</div>
+          </div>
+          <button
+            disabled={!product.in_stock || isAddingToCart}
+            onClick={async () => {
+              setIsAddingToCart(true);
+              try {
+                await dispatch(addToCart({ product_id: product.id, quantity })).unwrap();
+                setQuantity(1);
+              } catch {
+                // handled in slice
+              } finally {
+                setIsAddingToCart(false);
+              }
+            }}
+            className={`flex-1 inline-flex items-center justify-center gap-2 py-3.5 rounded-full font-extrabold transition-all ${
+              product.in_stock && !isAddingToCart
+                ? 'bg-teal-gradient text-white shadow-soft-md'
+                : 'bg-warmgray-200 text-warmgray-400 cursor-not-allowed'
+            }`}
+          >
+            <ShoppingCart className="h-5 w-5" />
+            {isAddingToCart ? 'Adding...' : product.in_stock ? 'Add to Cart' : 'Out of Stock'}
+          </button>
+        </div>
+      </div>
     </div>
     </Layout>
   );
