@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { lazy, Suspense, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/auth/PrivateRoute';
 import AdminRoute from './components/auth/AdminRoute';
@@ -116,6 +116,7 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <MotionConfig reducedMotion="user">
       <AuthProvider>
         <Suspense fallback={<RouteFallback />}>
           <AnimatePresence mode="wait" initial={false}>
@@ -237,6 +238,7 @@ function App() {
         <WhatsAppButton />
         <ScrollToTopButton />
       </AuthProvider>
+      </MotionConfig>
     </ErrorBoundary>
   );
 }

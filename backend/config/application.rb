@@ -45,5 +45,8 @@ module Backend
     config.active_job.queue_adapter = :sidekiq
 
     config.middleware.use Rack::Attack
+
+    # gzip JSON responses (saves 60–80% on large lists)
+    config.middleware.use Rack::Deflater
   end
 end
