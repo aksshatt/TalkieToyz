@@ -321,7 +321,7 @@ class ShiprocketService
           selling_price: item.unit_price.to_f,
           discount: 0,
           tax: 0,
-          hsn: (product.respond_to?(:hsn_code) ? product.hsn_code : nil) || ''
+          hsn: (product.respond_to?(:hsn_code) ? product.hsn_code.presence : nil) || DEFAULT_HSN_CODE
         }
       end
     end

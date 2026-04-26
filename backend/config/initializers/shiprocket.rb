@@ -14,3 +14,6 @@ DEFAULT_SHIPPING_DIMENSIONS = {
 
 # Default weight (in kg)
 DEFAULT_WEIGHT_KG = ENV.fetch('DEFAULT_WEIGHT_KG', 0.5).to_f
+
+# Default HSN code (toys = 9503)
+DEFAULT_HSN_CODE = ENV.fetch('DEFAULT_HSN_CODE', '9503')
