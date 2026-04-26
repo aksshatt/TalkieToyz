@@ -196,7 +196,7 @@ module Api
             total_active_products: Product.active.count,
             low_stock_products: products_with_low_stock,
             out_of_stock_products: out_of_stock,
-            average_product_rating: Product.active.average(:average_rating).to_f.round(2)
+            average_product_rating: Review.average(:rating).to_f.round(2)
           }
         end
 
