@@ -40,11 +40,9 @@ const Terms: React.FC = () => {
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-warmgray-900 mb-2">4. Payments &amp; Refunds</h2>
+            <h2 className="text-xl font-bold text-warmgray-900 mb-2">4. Payments</h2>
             <p>
-              All fees must be paid in advance or as per agreed schedule. Refunds, if applicable, will be processed
-              within 7–14 business days. Therapy sessions are non-refundable once delivered. Products purchased are
-              covered under our return policy.
+              All fees must be paid in advance or as per agreed schedule.
             </p>
           </section>
 

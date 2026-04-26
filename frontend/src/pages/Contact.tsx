@@ -291,7 +291,6 @@ const Contact = () => {
                         <option value="Product Question">Product Question</option>
                         <option value="Order Support">Order Support</option>
                         <option value="Shipping & Delivery">Shipping & Delivery</option>
-                        <option value="Returns & Refunds">Returns & Refunds</option>
                         <option value="Therapy Consultation">Therapy Consultation</option>
                         <option value="Partnership">Partnership</option>
                         <option value="Other">Other</option>

@@ -461,9 +461,6 @@ const BookSession: React.FC = () => {
                   </>
                 )}
               </motion.button>
-              <p className="text-center text-xs text-warmgray-500">
-                By booking, you agree to our friendly reschedule & refund policy.
-              </p>
             </motion.form>
 
             {/* Testimonials */}

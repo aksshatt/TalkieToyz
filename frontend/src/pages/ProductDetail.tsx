@@ -9,7 +9,6 @@ import {
   Minus,
   CheckCircle,
   Truck,
-  RefreshCw,
   Shield,
   ChevronLeft
 } from 'lucide-react';
@@ -366,12 +365,6 @@ const ProductDetail = () => {
                     <Truck className="h-4 w-4 text-teal" />
                   </div>
                   <span>Free shipping on orders over ₹2000</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <div className="flex-shrink-0 w-8 h-8 bg-teal/10 rounded-lg flex items-center justify-center">
-                    <RefreshCw className="h-4 w-4 text-teal" />
-                  </div>
-                  <span>30-day hassle-free returns</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-gray-600">
                   <div className="flex-shrink-0 w-8 h-8 bg-teal/10 rounded-lg flex items-center justify-center">
