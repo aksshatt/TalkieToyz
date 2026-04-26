@@ -131,8 +131,9 @@ module Api
           params.require(:product).permit(
             :name, :description, :long_description, :price, :compare_at_price,
             :stock_quantity, :sku, :min_age, :max_age, :category_id,
-            :featured, :active, specifications: {}, speech_goal_ids: [],
-            images: []
+            :featured, :active, :weight_kg, :hsn_code,
+            specifications: {}, speech_goal_ids: [], images: [],
+            dimensions_cm: [:length, :breadth, :height]
           )
         end
 

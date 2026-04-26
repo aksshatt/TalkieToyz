@@ -278,6 +278,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
     compare_at_price: '',
     featured: false,
     age_range: '',
+    weight_kg: '',
+    length_cm: '',
+    breadth_cm: '',
+    height_cm: '',
+    hsn_code: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loadingDetails, setLoadingDetails] = useState(!!product);
@@ -327,6 +332,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
           compare_at_price: p.compare_at_price != null ? String(p.compare_at_price) : '',
           featured: p.featured || false,
           age_range: ageRange,
+          weight_kg: p.weight_kg != null ? String(p.weight_kg) : '',
+          length_cm: p.dimensions_cm?.length != null ? String(p.dimensions_cm.length) : '',
+          breadth_cm: p.dimensions_cm?.breadth != null ? String(p.dimensions_cm.breadth) : '',
+          height_cm: p.dimensions_cm?.height != null ? String(p.dimensions_cm.height) : '',
+          hsn_code: p.hsn_code || '',
         });
         // Update existing images from the detail response (list endpoint may not include them)
         if (p.image_urls && p.image_urls.length > 0) {
@@ -419,6 +429,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
         productData.min_age = parseInt(min, 10);
         productData.max_age = parseInt(max, 10);
       }
+      if (formData.weight_kg) productData.weight_kg = parseFloat(formData.weight_kg);
+      if (formData.hsn_code) productData.hsn_code = formData.hsn_code;
+      const dims: Record<string, number> = {};
+      if (formData.length_cm) dims.length = parseFloat(formData.length_cm);
+      if (formData.breadth_cm) dims.breadth = parseFloat(formData.breadth_cm);
+      if (formData.height_cm) dims.height = parseFloat(formData.height_cm);
+      if (Object.keys(dims).length > 0) productData.dimensions_cm = dims;
 
       if (product) {
         await adminService.updateProduct(
@@ -629,6 +646,44 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
             <option value="6-8">6-8 years</option>
             <option value="8-12">8-12 years</option>
           </select>
+        </div>
+
+        {/* Shipping: weight + dimensions */}
+        <div className="md:col-span-2 border-t border-warmgray-200 pt-4 mt-2">
+          <h3 className="text-sm font-bold text-warmgray-700 mb-3">Shipping (used by Shiprocket)</h3>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-warmgray-600 mb-1">Weight (kg)</label>
+              <input type="number" step="0.01" value={formData.weight_kg}
+                onChange={(e) => setFormData({ ...formData, weight_kg: e.target.value })}
+                className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-lg focus:outline-none focus:border-teal" placeholder="0.6" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-warmgray-600 mb-1">Length (cm)</label>
+              <input type="number" step="0.1" value={formData.length_cm}
+                onChange={(e) => setFormData({ ...formData, length_cm: e.target.value })}
+                className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-lg focus:outline-none focus:border-teal" placeholder="30" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-warmgray-600 mb-1">Breadth (cm)</label>
+              <input type="number" step="0.1" value={formData.breadth_cm}
+                onChange={(e) => setFormData({ ...formData, breadth_cm: e.target.value })}
+                className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-lg focus:outline-none focus:border-teal" placeholder="22" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-warmgray-600 mb-1">Height (cm)</label>
+              <input type="number" step="0.1" value={formData.height_cm}
+                onChange={(e) => setFormData({ ...formData, height_cm: e.target.value })}
+                className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-lg focus:outline-none focus:border-teal" placeholder="4" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-warmgray-600 mb-1">HSN Code</label>
+              <input type="text" value={formData.hsn_code}
+                onChange={(e) => setFormData({ ...formData, hsn_code: e.target.value })}
+                className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-lg focus:outline-none focus:border-teal" placeholder="9503" />
+            </div>
+          </div>
+          <p className="text-xs text-warmgray-500 mt-2">Leave blank to use defaults (0.5kg, 10×10×5cm).</p>
         </div>
 
         {/* Featured */}

@@ -227,7 +227,14 @@ export const adminService = {
     if (images && images.length > 0) {
       const formData = new FormData();
       Object.entries(product).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
+        if (value === undefined || value === null) return;
+        if (typeof value === 'object' && !Array.isArray(value)) {
+          Object.entries(value as Record<string, unknown>).forEach(([k, v]) => {
+            if (v !== undefined && v !== null && v !== '') {
+              formData.append(`product[${key}][${k}]`, String(v));
+            }
+          });
+        } else {
           formData.append(`product[${key}]`, String(value));
         }
       });
@@ -247,7 +254,14 @@ export const adminService = {
     if ((images && images.length > 0) || (removeImageIds && removeImageIds.length > 0)) {
       const formData = new FormData();
       Object.entries(product).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
+        if (value === undefined || value === null) return;
+        if (typeof value === 'object' && !Array.isArray(value)) {
+          Object.entries(value as Record<string, unknown>).forEach(([k, v]) => {
+            if (v !== undefined && v !== null && v !== '') {
+              formData.append(`product[${key}][${k}]`, String(v));
+            }
+          });
+        } else {
           formData.append(`product[${key}]`, String(value));
         }
       });

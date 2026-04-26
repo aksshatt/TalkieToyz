@@ -2,7 +2,7 @@ class ProductSerializer < ApplicationSerializer
   attributes :id, :name, :description, :long_description, :price, :compare_at_price,
              :stock_quantity, :sku, :slug, :min_age, :max_age, :specifications,
              :images, :featured, :view_count, :in_stock, :on_sale, :discount_percentage,
-             :average_rating, :review_count
+             :average_rating, :review_count, :weight_kg, :dimensions_cm, :hsn_code
 
   belongs_to :category, serializer: CategorySerializer
   has_many :speech_goals, serializer: SpeechGoalSerializer
