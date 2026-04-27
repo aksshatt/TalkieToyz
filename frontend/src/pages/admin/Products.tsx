@@ -34,7 +34,7 @@ const Products: React.FC = () => {
   const loadProducts = async () => {
     setIsLoading(true);
     try {
-      const response = await adminService.getProducts();
+      const response = await adminService.getProducts({ per_page: 1000 });
       if (response.success) {
         // Transform API data to match component interface
         const transformedProducts = response.data.products.map((p: AdminProduct) => ({
