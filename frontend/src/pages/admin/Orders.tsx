@@ -71,6 +71,7 @@ const Orders: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await adminService.getOrders({
+        per_page: 1000,
         status: statusFilter !== 'all' ? statusFilter : undefined,
         ...getDateRange(),
       });

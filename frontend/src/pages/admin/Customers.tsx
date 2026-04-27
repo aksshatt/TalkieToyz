@@ -41,7 +41,7 @@ const Customers: React.FC = () => {
   const loadCustomers = async () => {
     setIsLoading(true);
     try {
-      const response = await adminService.getCustomers();
+      const response = await adminService.getCustomers({ per_page: 1000 });
       if (response.success) {
         // Transform API data to match component interface
         const transformedCustomers = await Promise.all(
