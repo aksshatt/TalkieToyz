@@ -43,48 +43,17 @@ const Customers: React.FC = () => {
     try {
       const response = await adminService.getCustomers({ per_page: 1000 });
       if (response.success) {
-        // Transform API data to match component interface
-        const transformedCustomers = await Promise.all(
-          response.data.customers.map(async (c: AdminCustomer) => {
-            // Fetch full customer details to get orders
-            try {
-              const detailResponse = await adminService.getCustomer(c.id);
-              const customerDetail = detailResponse.data;
-
-              return {
-                id: c.id,
-                name: c.name,
-                email: c.email,
-                phone: c.phone,
-                role: 'customer',
-                total_orders: c.total_orders,
-                total_spent: `₹${c.total_spent.toLocaleString()}`,
-                created_at: new Date(c.created_at).toLocaleDateString('en-IN'),
-                orders: (customerDetail.orders || []).map((order: any) => ({
-                  id: order.id,
-                  order_number: order.order_number,
-                  total: `₹${order.total.toLocaleString()}`,
-                  status: order.status,
-                  created_at: new Date(order.created_at).toLocaleDateString('en-IN'),
-                  payment_status: order.payment_status,
-                })),
-              };
-            } catch {
-              // If detail fetch fails, use basic data
-              return {
-                id: c.id,
-                name: c.name,
-                email: c.email,
-                phone: c.phone,
-                role: 'customer',
-                total_orders: c.total_orders,
-                total_spent: `₹${c.total_spent.toLocaleString()}`,
-                created_at: new Date(c.created_at).toLocaleDateString('en-IN'),
-                orders: [],
-              };
-            }
-          })
-        );
+        const transformedCustomers = response.data.customers.map((c: AdminCustomer) => ({
+          id: c.id,
+          name: c.name,
+          email: c.email,
+          phone: c.phone,
+          role: 'customer',
+          total_orders: c.total_orders,
+          total_spent: `₹${c.total_spent.toLocaleString()}`,
+          created_at: new Date(c.created_at).toLocaleDateString('en-IN'),
+          orders: [],
+        }));
         setCustomers(transformedCustomers);
       }
     } catch (error: any) {
@@ -149,9 +118,24 @@ const Customers: React.FC = () => {
     },
   ];
 
-  const handleViewDetails = (customer: Customer) => {
+  const handleViewDetails = async (customer: Customer) => {
     setSelectedCustomer(customer);
     setIsDetailModalOpen(true);
+    try {
+      const detailResponse = await adminService.getCustomer(customer.id);
+      const detail = detailResponse.data;
+      const orders = (detail.orders || []).map((order: any) => ({
+        id: order.id,
+        order_number: order.order_number,
+        total: `₹${order.total.toLocaleString()}`,
+        status: order.status,
+        created_at: new Date(order.created_at).toLocaleDateString('en-IN'),
+        payment_status: order.payment_status,
+      }));
+      setSelectedCustomer((prev) => (prev && prev.id === customer.id ? { ...prev, orders } : prev));
+    } catch {
+      toast.error('Failed to load customer orders');
+    }
   };
 
   const getStatusColor = (status: string) => {
