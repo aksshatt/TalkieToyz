@@ -186,6 +186,15 @@ const Orders: React.FC = () => {
           >
             <Printer className="h-4 w-4 text-sky" />
           </button>
+          {!order.shipment && canCreateShipment(order) && (
+            <button
+              onClick={() => handleCreateShipmentForOrder(order)}
+              className="p-2 hover:bg-teal-light/30 rounded-lg transition-colors"
+              title="Create Shipment"
+            >
+              <Truck className="h-4 w-4 text-teal" />
+            </button>
+          )}
         </div>
       ),
     },
@@ -338,18 +347,19 @@ const Orders: React.FC = () => {
     return !blocked.includes(o.status);
   };
 
-  const handleCreateShipment = async () => {
-    if (!selectedOrder) return;
+  const handleCreateShipmentForOrder = async (order: Order) => {
     const t = toast.loading('Creating shipment in Shiprocket...');
     try {
-      const res = await adminService.createShipment(selectedOrder.id);
+      const res = await adminService.createShipment(order.id);
       if (res.success) {
         toast.success(`Shipment created${res.data?.shipment?.awb_code ? ` (AWB ${res.data.shipment.awb_code})` : ''}`, { id: t });
-        setSelectedOrder({
-          ...selectedOrder,
-          shipment: res.data?.shipment || null,
-          status: (res.data?.order?.status || 'processing') as Order['status'],
-        });
+        if (selectedOrder?.id === order.id) {
+          setSelectedOrder({
+            ...selectedOrder,
+            shipment: res.data?.shipment || null,
+            status: (res.data?.order?.status || 'processing') as Order['status'],
+          });
+        }
         loadOrders();
       } else {
         toast.error(res.message || 'Failed to create shipment', { id: t });
@@ -358,6 +368,11 @@ const Orders: React.FC = () => {
       const msg = error.response?.data?.message || error.response?.data?.errors?.[0] || 'Failed to create shipment';
       toast.error(msg, { id: t });
     }
+  };
+
+  const handleCreateShipment = async () => {
+    if (!selectedOrder) return;
+    await handleCreateShipmentForOrder(selectedOrder);
   };
 
   // Orders are already filtered by status in the API call
