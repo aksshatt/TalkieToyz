@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, Printer, Filter, Download, Truck } from 'lucide-react';
+import { Eye, Printer, Filter, Download, Truck, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import DataTable from '../../components/admin/DataTable';
 import type { Column } from '../../components/admin/DataTable';
 import Modal from '../../components/admin/Modal';
@@ -53,11 +53,28 @@ const Orders: React.FC = () => {
   const [dateFilter, setDateFilter] = useState<string>('all');
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const PER_PAGE = 25;
 
-  // Load orders from API
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setSearchTerm(searchInput.trim());
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchInput]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [statusFilter, dateFilter]);
+
   useEffect(() => {
     loadOrders();
-  }, [statusFilter, dateFilter]);
+  }, [statusFilter, dateFilter, page, searchTerm]);
 
   const getDateRange = () => {
     const now = new Date();
@@ -80,11 +97,17 @@ const Orders: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await adminService.getOrders({
-        per_page: 1000,
+        page,
+        per_page: PER_PAGE,
         status: statusFilter !== 'all' ? statusFilter : undefined,
+        search: searchTerm || undefined,
         ...getDateRange(),
       });
       if (response.success) {
+        if (response.data.meta) {
+          setTotalPages(response.data.meta.total_pages || 1);
+          setTotalCount(response.data.meta.total_count || response.data.orders.length);
+        }
         // Use list data directly — detail is fetched on-demand when opening the modal
         const transformedOrders = response.data.orders.map((o: AdminOrder) => ({
           id: o.id,
@@ -401,6 +424,20 @@ const Orders: React.FC = () => {
         </div>
       </div>
 
+      {/* Search */}
+      <div className="card-talkie bg-white">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-warmgray-400" />
+          <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Search orders..."
+            className="w-full pl-12 pr-4 py-3 border-2 border-warmgray-200 rounded-lg focus:outline-none focus:border-teal transition-colors"
+          />
+        </div>
+      </div>
+
       {/* Orders Table */}
       {isLoading ? (
         <div className="text-center py-12">
@@ -408,13 +445,41 @@ const Orders: React.FC = () => {
           <p className="mt-4 text-warmgray-600">Loading orders...</p>
         </div>
       ) : (
-        <DataTable
-          columns={columns}
-          data={filteredOrders}
-          searchable
-          searchPlaceholder="Search orders..."
-          emptyMessage="No orders found"
-        />
+        <>
+          <DataTable
+            columns={columns}
+            data={filteredOrders}
+            emptyMessage="No orders found"
+          />
+
+          {totalCount > 0 && (
+            <div className="flex items-center justify-between bg-white rounded-xl border-2 border-warmgray-200 px-4 py-3">
+              <span className="text-sm text-warmgray-600">
+                Showing {(page - 1) * PER_PAGE + 1}–
+                {Math.min(page * PER_PAGE, totalCount)} of {totalCount}
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page <= 1}
+                  className="p-2 border-2 border-warmgray-200 rounded-lg hover:bg-warmgray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <span className="text-sm font-semibold text-warmgray-700 px-3">
+                  Page {page} of {totalPages}
+                </span>
+                <button
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page >= totalPages}
+                  className="p-2 border-2 border-warmgray-200 rounded-lg hover:bg-warmgray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Order Detail Modal */}
