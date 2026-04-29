@@ -4,20 +4,23 @@ module Api
       # POST /api/v1/shipping_rates
       def create
         postal_code = params[:postal_code].to_s.strip
-        weight_kg   = (params[:weight_kg] || 0.5).to_f
         payment_method = params[:payment_method] || 'prepaid'
 
         unless postal_code =~ /\A\d{6}\z/
           return render_error('Invalid postal code', ['Postal code must be 6 digits'], status: :bad_request)
         end
 
-        rates = fetch_rates(postal_code, weight_kg, payment_method)
+        weight_kg, dims = cart_weight_and_dims
+        weight_kg = (params[:weight_kg] || weight_kg).to_f
+        weight_kg = 0.5 if weight_kg <= 0
+
+        rates = fetch_rates(postal_code, weight_kg, dims, payment_method)
         rates = fallback_rates(postal_code, weight_kg, payment_method) if rates.empty?
 
         render_success(
           {
             rates: rates,
-            destination: { postal_code: postal_code, weight_kg: weight_kg }
+            destination: { postal_code: postal_code, weight_kg: weight_kg, dimensions_cm: dims }
           },
           'Shipping rates retrieved'
         )
@@ -32,11 +35,45 @@ module Api
         ENV.fetch('SHIPROCKET_PICKUP_POSTCODE', ENV.fetch('WAREHOUSE_PINCODE', '110001'))
       end
 
-      def fetch_rates(postal_code, weight_kg, payment_method)
+      def cart_weight_and_dims
+        default_dims = { 'length' => 10, 'breadth' => 10, 'height' => 5 }
+        cart = current_user&.cart
+        items = cart&.cart_items&.includes(:product) || []
+        return [0.5, default_dims] if items.empty?
+
+        total_weight = 0.0
+        max_l = max_b = max_h = 0
+        total_h = 0
+        items.each do |it|
+          p = it.product
+          w = (p&.weight_kg || 0.5).to_f
+          total_weight += w * it.quantity.to_i
+          d = p&.dimensions_cm.is_a?(Hash) ? p.dimensions_cm : default_dims
+          l = d['length'].to_i
+          b = d['breadth'].to_i
+          h = d['height'].to_i
+          max_l = l if l > max_l
+          max_b = b if b > max_b
+          max_h = h if h > max_h
+          total_h += h * it.quantity.to_i
+        end
+
+        dims = {
+          'length'  => [max_l, 1].max,
+          'breadth' => [max_b, 1].max,
+          'height'  => [total_h, max_h, 1].max
+        }
+        [[total_weight, 0.1].max, dims]
+      end
+
+      def fetch_rates(postal_code, weight_kg, dims, payment_method)
         response = ShiprocketService.authorized_request(:get, '/courier/serviceability', query: {
           pickup_postcode: warehouse_pincode,
           delivery_postcode: postal_code,
           weight: weight_kg,
+          length: dims['length'],
+          breadth: dims['breadth'],
+          height: dims['height'],
           cod: payment_method == 'cod' ? 1 : 0
         })
 
