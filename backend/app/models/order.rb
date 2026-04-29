@@ -275,7 +275,10 @@ class Order < ApplicationRecord
 
     # Pre-check pickup location — avoid Shiprocket "Wrong Pickup location" after order-create
     unless ShiprocketService.verify_pickup_location
-      return { success: false, error: "Pickup location '#{ENV.fetch('SHIPROCKET_PICKUP_LOCATION', 'Primary')}' not found in Shiprocket. Add it under Settings → Pickup Addresses." }
+      configured = ENV.fetch('SHIPROCKET_PICKUP_LOCATION', 'Primary')
+      available = ShiprocketService.list_pickup_locations
+      hint = available.any? ? " Available in Shiprocket: #{available.join(', ')}." : ' No pickup addresses found in your Shiprocket account.'
+      return { success: false, error: "Pickup location '#{configured}' not found in Shiprocket.#{hint} Set SHIPROCKET_PICKUP_LOCATION env to one of these nicknames or add a matching address under Settings → Pickup Addresses." }
     end
 
     begin

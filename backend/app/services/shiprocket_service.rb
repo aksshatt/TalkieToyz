@@ -172,6 +172,17 @@ class ShiprocketService
       false
     end
 
+    # Return array of pickup nicknames present in the Shiprocket account.
+    def list_pickup_locations
+      response = authorized_request(:get, '/settings/company/pickup')
+      return [] unless response.success?
+      locations = response.parsed_response.dig('data', 'shipping_address') || []
+      locations.map { |l| l['pickup_location'] }.compact
+    rescue => e
+      Rails.logger.error("Shiprocket pickup list error: #{e.message}")
+      []
+    end
+
     # Cancel shipment
     def cancel_shipment(awb_codes)
       response = authorized_request(:post, '/orders/cancel/shipment/awbs', body: { awbs: Array(awb_codes) })
