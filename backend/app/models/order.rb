@@ -274,11 +274,11 @@ class Order < ApplicationRecord
     end
 
     # Pre-check pickup location — avoid Shiprocket "Wrong Pickup location" after order-create
-    unless ShiprocketService.verify_pickup_location
+    unless ENV['SHIPROCKET_SKIP_PICKUP_VERIFY'] == 'true' || ShiprocketService.verify_pickup_location
       configured = ENV.fetch('SHIPROCKET_PICKUP_LOCATION', 'Primary')
       available = ShiprocketService.list_pickup_locations
-      hint = available.any? ? " Available in Shiprocket: #{available.join(', ')}." : ' No pickup addresses found in your Shiprocket account.'
-      return { success: false, error: "Pickup location '#{configured}' not found in Shiprocket.#{hint} Set SHIPROCKET_PICKUP_LOCATION env to one of these nicknames or add a matching address under Settings → Pickup Addresses." }
+      hint = available.any? ? " Available in Shiprocket: #{available.join(', ')}." : ' Pickup list API returned no addresses (possible auth/permission issue — check Rails logs for "Shiprocket pickup list status").'
+      return { success: false, error: "Pickup location '#{configured}' not found in Shiprocket.#{hint} Set SHIPROCKET_PICKUP_LOCATION env to one of these nicknames, or set SHIPROCKET_SKIP_PICKUP_VERIFY=true to bypass this check." }
     end
 
     begin

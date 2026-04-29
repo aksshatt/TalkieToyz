@@ -163,21 +163,21 @@ class ShiprocketService
 
     # Verify pickup location exists in Shiprocket
     def verify_pickup_location(nickname = ENV.fetch('SHIPROCKET_PICKUP_LOCATION', 'Primary'))
-      response = authorized_request(:get, '/settings/company/pickup')
-      return false unless response.success?
-      locations = response.parsed_response.dig('data', 'shipping_address') || []
-      locations.any? { |l| l['pickup_location']&.casecmp?(nickname) }
-    rescue => e
-      Rails.logger.error("Shiprocket pickup verify error: #{e.message}")
-      false
+      list_pickup_locations.any? { |n| n.to_s.casecmp?(nickname) }
     end
 
     # Return array of pickup nicknames present in the Shiprocket account.
     def list_pickup_locations
       response = authorized_request(:get, '/settings/company/pickup')
+      Rails.logger.info("Shiprocket pickup list status=#{response.code} body=#{response.body.to_s[0, 500]}")
       return [] unless response.success?
-      locations = response.parsed_response.dig('data', 'shipping_address') || []
-      locations.map { |l| l['pickup_location'] }.compact
+      data = response.parsed_response.is_a?(Hash) ? response.parsed_response : {}
+      candidates = [
+        data.dig('data', 'shipping_address'),
+        data['shipping_address'],
+        data['data']
+      ].find { |x| x.is_a?(Array) } || []
+      candidates.map { |l| l.is_a?(Hash) ? (l['pickup_location'] || l['nickname']) : nil }.compact
     rescue => e
       Rails.logger.error("Shiprocket pickup list error: #{e.message}")
       []
