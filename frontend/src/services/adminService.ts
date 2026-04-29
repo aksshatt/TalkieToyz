@@ -57,6 +57,9 @@ export interface AdminProduct {
   total_sold?: number;
   image_url?: string;
   image_urls?: Array<{ id: number; url: string }>;
+  weight_kg?: number | null;
+  dimensions_cm?: { length?: number; breadth?: number; height?: number } | null;
+  hsn_code?: string | null;
 }
 
 export interface AdminProductsResponse {
