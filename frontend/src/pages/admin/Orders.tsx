@@ -311,8 +311,8 @@ const Orders: React.FC = () => {
   const canCreateShipment = (o: Order | null): boolean => {
     if (!o) return false;
     if (o.shipment) return false;
-    if (!(o.payment_status === 'paid' || o.payment_method === 'cod')) return false;
-    return o.status === 'confirmed' || o.status === 'processing';
+    const blocked = ['cancelled', 'refunded', 'delivered', 'shipped'];
+    return !blocked.includes(o.status);
   };
 
   const handleCreateShipment = async () => {
@@ -580,8 +580,7 @@ const Orders: React.FC = () => {
                   No shipment yet.
                   {!canCreateShipment(selectedOrder) && (
                     <span className="block mt-1 text-xs text-warmgray-500">
-                      Requires payment paid (or COD) and status confirmed/processing.
-                      Current: status={selectedOrder.status}, payment={selectedOrder.payment_status || 'n/a'}.
+                      Order is {selectedOrder.status} — cannot create shipment.
                     </span>
                   )}
                 </p>

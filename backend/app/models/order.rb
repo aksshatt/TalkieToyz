@@ -255,10 +255,9 @@ class Order < ApplicationRecord
 
   # Shipment Methods
   def can_create_shipment?
-    # Order must be paid (or COD) and in confirmed or processing status
-    (payment_status == 'paid' || payment_method == 'cod') &&
-    status.in?(['confirmed', 'processing']) &&
-    !cancelled?
+    # Block only for terminal/invalid states; admin can create shipment for any
+    # active order regardless of payment status.
+    !status.in?(['cancelled', 'refunded', 'delivered', 'shipped'])
   end
 
   def create_shiprocket_shipment(courier_id = nil)
