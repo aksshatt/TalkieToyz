@@ -12,6 +12,7 @@ module Api
         end
 
         rates = fetch_rates(postal_code, weight_kg, payment_method)
+        rates = fallback_rates(postal_code, weight_kg, payment_method) if rates.empty?
 
         render_success(
           {
@@ -59,6 +60,59 @@ module Api
       rescue => e
         Rails.logger.error("Shiprocket serviceability check failed: #{e.message}")
         []
+      end
+
+      # Dynamic fallback when Shiprocket returns no couriers.
+      # Zone-based formula: base + (per_kg * weight) * zone_multiplier.
+      def fallback_rates(postal_code, weight_kg, payment_method)
+        zone_mult = zone_multiplier(warehouse_pincode, postal_code)
+        billable_kg = [weight_kg.to_f, 0.5].max
+        cod_surcharge = payment_method == 'cod' ? 30.0 : 0.0
+
+        surface_rate = ((40.0 + 35.0 * billable_kg) * zone_mult + cod_surcharge).round(2)
+        air_rate     = ((75.0 + 60.0 * billable_kg) * zone_mult + cod_surcharge).round(2)
+
+        [
+          {
+            courier_id: -1,
+            courier_name: 'Standard Delivery',
+            rate: surface_rate,
+            estimated_delivery_days: '5-7',
+            cod_available: true,
+            mode: 'surface',
+            description: 'Standard surface delivery',
+            rating: 4.0,
+            is_surface: true,
+            is_air: false
+          },
+          {
+            courier_id: -2,
+            courier_name: 'Express Delivery',
+            rate: air_rate,
+            estimated_delivery_days: '2-3',
+            cod_available: false,
+            mode: 'air',
+            description: 'Express air delivery',
+            rating: 4.5,
+            is_surface: false,
+            is_air: true
+          }
+        ]
+      end
+
+      # Approximate zone from first digit of pincode (India). Same digit = local,
+      # adjacent = regional, far = national, NE/remote = bulkier multiplier.
+      def zone_multiplier(pickup, delivery)
+        p = pickup.to_s[0].to_i
+        d = delivery.to_s[0].to_i
+        diff = (p - d).abs
+        case diff
+        when 0 then 1.0   # same zone
+        when 1 then 1.2   # adjacent
+        when 2 then 1.4
+        when 3 then 1.6
+        else        1.8   # far/remote
+        end
       end
     end
   end

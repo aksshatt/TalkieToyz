@@ -177,8 +177,9 @@ const Checkout = () => {
 
   const shippingCost = (() => {
     if (selectedRate) return Number(selectedRate.rate) || 0;
-    if (shippingRates.length === 0) {
-      return deliveryMethod === 'express' ? 100 : 0;
+    if (shippingRates.length > 0) {
+      const first = shippingRates[0];
+      return Number(first.rate) || 0;
     }
     return 0;
   })();
@@ -277,10 +278,15 @@ const Checkout = () => {
     if (!postalCode || postalCode.length !== 6) return;
     setLoadingRates(true);
     try {
-      const result = await shippingService.calculateRates({ postal_code: postalCode });
+      const itemCount = cart?.cart_items.reduce((sum, i) => sum + i.quantity, 0) || 1;
+      const weightKg = Math.max(0.5, itemCount * 0.5);
+      const result = await shippingService.calculateRates({
+        postal_code: postalCode,
+        weight_kg: weightKg,
+        payment_method: paymentMethod === 'cod' ? 'cod' : 'prepaid',
+      });
       setShippingRates(result.rates || []);
     } catch {
-      // Silently fall back to static options if rates API unavailable
       setShippingRates([]);
     } finally {
       setLoadingRates(false);
