@@ -172,7 +172,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {/* Right Actions */}
             <div className="flex items-center space-x-1 sm:space-x-2">
               {/* Therapist Panel Button */}
-              {isAuthenticated && user?.role === 'therapist' && (
+              {isAuthenticated && user?.role === 'therapist' && user?.approval_status === 'approved' && (
                 <Link to="/therapist"
                   className="hidden sm:flex items-center gap-1.5 bg-teal-gradient text-white text-xs font-bold px-3 py-2 rounded-full shadow-soft hover:shadow-soft-md transition-all relative">
                   <Stethoscope className="w-3.5 h-3.5" /> Therapist Panel
@@ -206,7 +206,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
               {isAuthenticated ? (
                 <>
-                  {user?.role !== 'therapist' && (
+                  {!(user?.role === 'therapist' && user?.approval_status === 'approved') && (
                     <Link to="/messages" className="relative p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Messages">
                       <MessageSquare className="h-6 w-6 text-warmgray-700" />
                       {unreadMessages > 0 && (
@@ -317,13 +317,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       transition={{ delay: navLinks.length * 0.05 }}
                       className="space-y-1"
                     >
-                      {user?.role === 'therapist' && (
+                      {user?.role === 'therapist' && user?.approval_status === 'approved' && (
                         <Link to="/therapist" onClick={() => setIsMobileMenuOpen(false)}
                           className="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-teal bg-teal-light/20 transition-colors">
                           <Stethoscope className="w-5 h-5" /> Therapist Panel
                         </Link>
                       )}
-                      {user?.role !== 'therapist' && (
+                      {!(user?.role === 'therapist' && user?.approval_status === 'approved') && (
                         <Link to="/messages" onClick={() => setIsMobileMenuOpen(false)}
                           className="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-warmgray-700 hover:text-teal hover:bg-teal-light/20 transition-colors">
                           <MessageSquare className="w-5 h-5" /> Messages

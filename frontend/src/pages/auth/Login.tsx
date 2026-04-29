@@ -60,7 +60,7 @@ const Login: React.FC = () => {
     try {
       await login(formData);
       const userStr = localStorage.getItem('user');
-      let user: { role?: string } | null = null;
+      let user: { role?: string; approval_status?: string } | null = null;
       try {
         user = userStr ? JSON.parse(userStr) : null;
       } catch {
@@ -69,7 +69,7 @@ const Login: React.FC = () => {
       }
       let redirectPath = '/';
       if (user?.role === 'admin') redirectPath = '/admin';
-      else if (user?.role === 'therapist') redirectPath = '/therapist';
+      else if (user?.role === 'therapist' && user?.approval_status === 'approved') redirectPath = '/therapist';
       else if (location.state?.from?.pathname) redirectPath = location.state.from.pathname;
       navigate(redirectPath, { replace: true });
     } catch (error: any) {
