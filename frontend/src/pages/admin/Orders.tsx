@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, Printer, Filter, Download } from 'lucide-react';
+import { Eye, Printer, Filter, Download, Truck } from 'lucide-react';
 import DataTable from '../../components/admin/DataTable';
 import type { Column } from '../../components/admin/DataTable';
 import Modal from '../../components/admin/Modal';
@@ -14,9 +14,18 @@ interface Order {
   total: string;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   payment_method: string;
+  payment_status?: string;
   created_at: string;
   items: OrderItem[];
   shipping_address?: Address;
+  shipment?: {
+    id: number;
+    awb_code?: string;
+    courier_name?: string;
+    tracking_url?: string;
+    label_url?: string;
+    status?: string;
+  } | null;
 }
 
 interface OrderItem {
@@ -85,9 +94,11 @@ const Orders: React.FC = () => {
           total: `₹${o.total.toLocaleString()}`,
           status: o.status as any,
           payment_method: o.payment_method || 'N/A',
+          payment_status: o.payment_status,
           created_at: new Date(o.created_at).toLocaleDateString('en-IN'),
           items: [],
           shipping_address: o.shipping_address,
+          shipment: (o as any).shipment || null,
         }));
         setOrders(transformedOrders);
       }
@@ -173,7 +184,15 @@ const Orders: React.FC = () => {
           total: `₹${(item.total || item.total_price || 0).toLocaleString()}`,
         }));
         setSelectedOrder((prev) =>
-          prev ? { ...prev, items, shipping_address: d.shipping_address } : prev
+          prev
+            ? {
+                ...prev,
+                items,
+                shipping_address: d.shipping_address,
+                payment_status: (d as any).payment_status ?? prev.payment_status,
+                shipment: (d as any).shipment ?? prev.shipment ?? null,
+              }
+            : prev
         );
       } catch {
         // silently fail — order info already shown
@@ -286,6 +305,35 @@ const Orders: React.FC = () => {
       } catch (error: any) {
         toast.error(error.response?.data?.message || 'Failed to update order status');
       }
+    }
+  };
+
+  const canCreateShipment = (o: Order | null): boolean => {
+    if (!o) return false;
+    if (o.shipment) return false;
+    if (!(o.payment_status === 'paid' || o.payment_method === 'cod')) return false;
+    return o.status === 'confirmed' || o.status === 'processing';
+  };
+
+  const handleCreateShipment = async () => {
+    if (!selectedOrder) return;
+    const t = toast.loading('Creating shipment in Shiprocket...');
+    try {
+      const res = await adminService.createShipment(selectedOrder.id);
+      if (res.success) {
+        toast.success(`Shipment created${res.data?.shipment?.awb_code ? ` (AWB ${res.data.shipment.awb_code})` : ''}`, { id: t });
+        setSelectedOrder({
+          ...selectedOrder,
+          shipment: res.data?.shipment || null,
+          status: (res.data?.order?.status || 'processing') as Order['status'],
+        });
+        loadOrders();
+      } else {
+        toast.error(res.message || 'Failed to create shipment', { id: t });
+      }
+    } catch (error: any) {
+      const msg = error.response?.data?.message || error.response?.data?.errors?.[0] || 'Failed to create shipment';
+      toast.error(msg, { id: t });
     }
   };
 
@@ -499,8 +547,64 @@ const Orders: React.FC = () => {
               </div>
             )}
 
+            {/* Shipment Info */}
+            <div className="border-t-2 border-warmgray-100 pt-6">
+              <h3 className="text-lg font-bold text-warmgray-800 mb-4">Shipment</h3>
+              {selectedOrder.shipment ? (
+                <div className="p-4 bg-warmgray-50 rounded-lg space-y-1 text-sm">
+                  <p>
+                    <span className="font-semibold text-warmgray-700">AWB:</span>{' '}
+                    <span className="font-mono">{selectedOrder.shipment.awb_code || '—'}</span>
+                  </p>
+                  <p>
+                    <span className="font-semibold text-warmgray-700">Courier:</span>{' '}
+                    {selectedOrder.shipment.courier_name || '—'}
+                  </p>
+                  <p>
+                    <span className="font-semibold text-warmgray-700">Status:</span>{' '}
+                    {selectedOrder.shipment.status || '—'}
+                  </p>
+                  {selectedOrder.shipment.tracking_url && (
+                    <a
+                      href={selectedOrder.shipment.tracking_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-teal underline"
+                    >
+                      Track shipment
+                    </a>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-warmgray-600">
+                  No shipment yet.
+                  {!canCreateShipment(selectedOrder) && (
+                    <span className="block mt-1 text-xs text-warmgray-500">
+                      Requires payment paid (or COD) and status confirmed/processing.
+                      Current: status={selectedOrder.status}, payment={selectedOrder.payment_status || 'n/a'}.
+                    </span>
+                  )}
+                </p>
+              )}
+            </div>
+
             {/* Actions */}
             <div className="flex items-center justify-end space-x-4 border-t-2 border-warmgray-100 pt-6">
+              {!selectedOrder.shipment && (
+                <button
+                  onClick={handleCreateShipment}
+                  disabled={!canCreateShipment(selectedOrder)}
+                  className="flex items-center space-x-2 px-6 py-3 bg-teal-gradient text-white font-bold rounded-xl shadow-soft hover-lift disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
+                  title={
+                    canCreateShipment(selectedOrder)
+                      ? 'Push order to Shiprocket'
+                      : 'Order not eligible for shipment'
+                  }
+                >
+                  <Truck className="h-5 w-5" />
+                  <span>Create Shipment</span>
+                </button>
+              )}
               <button
                 onClick={() => handlePrintInvoice(selectedOrder)}
                 className="flex items-center space-x-2 px-6 py-3 border-2 border-teal text-teal font-bold rounded-xl hover:bg-teal-light/30 transition-colors"
