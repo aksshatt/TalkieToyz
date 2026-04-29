@@ -641,14 +641,24 @@ const Orders: React.FC = () => {
                   )}
                 </div>
               ) : (
-                <p className="text-sm text-warmgray-600">
-                  No shipment yet.
-                  {!canCreateShipment(selectedOrder) && (
-                    <span className="block mt-1 text-xs text-warmgray-500">
-                      Order is {selectedOrder.status} — cannot create shipment.
-                    </span>
-                  )}
-                </p>
+                <div className="space-y-3">
+                  <p className="text-sm text-warmgray-600">
+                    No shipment yet.
+                    {!canCreateShipment(selectedOrder) && (
+                      <span className="block mt-1 text-xs text-warmgray-500">
+                        Order is {selectedOrder.status} — cannot create shipment.
+                      </span>
+                    )}
+                  </p>
+                  <button
+                    onClick={handleCreateShipment}
+                    disabled={!canCreateShipment(selectedOrder)}
+                    className="flex items-center space-x-2 px-5 py-2.5 bg-teal-gradient text-white font-bold rounded-xl shadow-soft hover-lift disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
+                  >
+                    <Truck className="h-5 w-5" />
+                    <span>Create Shipment</span>
+                  </button>
+                </div>
               )}
             </div>
 
