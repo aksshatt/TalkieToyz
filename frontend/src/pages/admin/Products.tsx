@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Plus, Edit, Trash2, Eye, Image as ImageIcon, Upload, X } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Image as ImageIcon, Upload, X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import DataTable from '../../components/admin/DataTable';
 import type { Column } from '../../components/admin/DataTable';
 import Modal from '../../components/admin/Modal';
@@ -25,18 +25,36 @@ const Products: React.FC = () => {
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const PER_PAGE = 25;
 
-  // Load products from API
+  // Debounce search input → searchTerm
   useEffect(() => {
-    loadProducts();
-  }, []);
+    const t = setTimeout(() => {
+      setSearchTerm(searchInput.trim());
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchInput]);
 
-  const loadProducts = async () => {
+  // Fetch on page or searchTerm change
+  useEffect(() => {
+    loadProducts(page, searchTerm);
+  }, [page, searchTerm]);
+
+  const loadProducts = async (pageNum: number = page, search: string = searchTerm) => {
     setIsLoading(true);
     try {
-      const response = await adminService.getProducts({ per_page: 1000 });
+      const response = await adminService.getProducts({
+        page: pageNum,
+        per_page: PER_PAGE,
+        search: search || undefined,
+      });
       if (response.success) {
-        // Transform API data to match component interface
         const transformedProducts = response.data.products.map((p: AdminProduct) => ({
           id: p.id,
           name: p.name,
@@ -48,6 +66,10 @@ const Products: React.FC = () => {
           image_urls: p.image_urls,
         }));
         setProducts(transformedProducts);
+        if (response.data.meta) {
+          setTotalPages(response.data.meta.total_pages || 1);
+          setTotalCount(response.data.meta.total_count || transformedProducts.length);
+        }
       }
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to load products');
@@ -55,6 +77,8 @@ const Products: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  const reload = () => loadProducts(page, searchTerm);
 
   const columns: Column<Product>[] = [
     {
@@ -144,7 +168,7 @@ const Products: React.FC = () => {
         const response = await adminService.deleteProduct(id);
         if (response.success) {
           toast.success('Product deleted successfully');
-          loadProducts(); // Reload products after deletion
+          reload();
         }
       } catch (error: any) {
         toast.error(error.response?.data?.message || 'Failed to delete product');
@@ -210,6 +234,18 @@ const Products: React.FC = () => {
         </div>
       )}
 
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-warmgray-400" />
+        <input
+          type="text"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          placeholder="Search products..."
+          className="w-full pl-12 pr-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
+        />
+      </div>
+
       {/* Products Table */}
       {isLoading ? (
         <div className="text-center py-12">
@@ -217,13 +253,42 @@ const Products: React.FC = () => {
           <p className="mt-4 text-warmgray-600">Loading products...</p>
         </div>
       ) : (
-        <DataTable
-          columns={columns}
-          data={products}
-          searchable
-          searchPlaceholder="Search products..."
-          emptyMessage="No products found"
-        />
+        <>
+          <DataTable
+            columns={columns}
+            data={products}
+            emptyMessage="No products found"
+          />
+
+          {/* Pagination */}
+          {totalCount > 0 && (
+            <div className="flex items-center justify-between bg-white rounded-xl border-2 border-warmgray-200 px-4 py-3">
+              <span className="text-sm text-warmgray-600">
+                Showing {(page - 1) * PER_PAGE + 1}–
+                {Math.min(page * PER_PAGE, totalCount)} of {totalCount}
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page <= 1}
+                  className="p-2 border-2 border-warmgray-200 rounded-lg hover:bg-warmgray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <span className="text-sm font-semibold text-warmgray-700 px-3">
+                  Page {page} of {totalPages}
+                </span>
+                <button
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page >= totalPages}
+                  className="p-2 border-2 border-warmgray-200 rounded-lg hover:bg-warmgray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Add Product Modal */}
@@ -233,7 +298,7 @@ const Products: React.FC = () => {
         title="Add New Product"
         size="lg"
       >
-        <ProductForm onClose={() => setIsAddModalOpen(false)} onSaved={loadProducts} />
+        <ProductForm onClose={() => setIsAddModalOpen(false)} onSaved={reload} />
       </Modal>
 
       {/* Edit Product Modal */}
@@ -252,7 +317,7 @@ const Products: React.FC = () => {
             setIsEditModalOpen(false);
             setSelectedProduct(null);
           }}
-          onSaved={loadProducts}
+          onSaved={reload}
         />
       </Modal>
     </div>
