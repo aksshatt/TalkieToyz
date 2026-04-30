@@ -1010,12 +1010,6 @@ const Checkout = () => {
                           <span>₹{parseFloat(cart.subtotal).toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>Tax</span>
-                          <span>
-                            ₹{parseFloat(cart.tax_amount).toFixed(2)}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
                           <span>Delivery</span>
                           <span>
                             {shippingCost === 0 ? 'FREE' : `₹${shippingCost.toFixed(2)}`}

@@ -1,5 +1,5 @@
 class Cart < ApplicationRecord
-  TAX_RATE = 0.10 # 10% tax
+  TAX_RATE = 0.0
 
   # Associations
   belongs_to :user

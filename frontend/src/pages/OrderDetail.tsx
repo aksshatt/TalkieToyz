@@ -459,10 +459,6 @@ const OrderDetail = () => {
                 <span>₹{parseFloat(order.subtotal).toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Tax</span>
-                <span>₹{parseFloat(order.tax).toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
                 <span className="text-gray-600">Shipping</span>
                 <span>₹{parseFloat(order.shipping_cost).toFixed(2)}</span>
               </div>

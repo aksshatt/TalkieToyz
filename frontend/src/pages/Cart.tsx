@@ -220,9 +220,6 @@ const Cart = () => {
                   <div className="flex justify-between text-warmgray-600">
                     <span>Subtotal</span><span className="font-semibold">₹{parseFloat(cart.subtotal).toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-warmgray-600">
-                    <span>Tax (10%)</span><span className="font-semibold">₹{parseFloat(cart.tax_amount).toFixed(2)}</span>
-                  </div>
                   {appliedCoupon && (
                     <div className="flex justify-between text-teal font-semibold">
                       <span>Discount</span><span>-₹{couponDiscount.toFixed(2)}</span>

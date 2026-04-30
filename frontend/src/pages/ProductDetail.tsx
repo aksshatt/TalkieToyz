@@ -256,7 +256,6 @@ const ProductDetail = () => {
                     </>
                   )}
                 </div>
-                <p className="text-sm text-gray-500">Inclusive of all taxes</p>
               </div>
 
               {/* Short Description */}

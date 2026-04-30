@@ -255,7 +255,6 @@ const OrderHistory = () => {
                               <h4 className="font-bold text-warmgray-800 text-sm mb-2">Price Details</h4>
                               <div className="bg-white rounded-xl p-4 shadow-soft text-sm space-y-1.5">
                                 <div className="flex justify-between text-warmgray-600"><span>Subtotal</span><span>₹{parseFloat(order.subtotal).toFixed(2)}</span></div>
-                                <div className="flex justify-between text-warmgray-600"><span>Tax</span><span>₹{parseFloat(order.tax).toFixed(2)}</span></div>
                                 <div className="flex justify-between text-warmgray-600"><span>Shipping</span><span>₹{parseFloat(order.shipping_cost).toFixed(2)}</span></div>
                                 {parseFloat(order.discount) > 0 && (
                                   <div className="flex justify-between text-teal font-semibold"><span>Discount</span><span>-₹{parseFloat(order.discount).toFixed(2)}</span></div>
