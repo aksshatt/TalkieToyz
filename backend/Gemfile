@@ -49,7 +49,6 @@ end
 # Authentication & Authorization
 gem 'devise'
 gem 'devise-jwt'
-gem 'pundit'
 
 # CORS
 gem 'rack-cors'

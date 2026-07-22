@@ -16,7 +16,7 @@ module Api
 
           # Pagination
           @orders = @orders.page(params[:page])
-                          .per(params[:per_page] || 20)
+                          .per([[params[:per_page].to_i, 1].max, 100].min.nonzero? || 20)
 
           render_success(
             {
@@ -86,17 +86,16 @@ module Api
 
         # GET /api/v1/admin/orders/export
         def export
-          @orders = Order.includes(:user, :order_items)
-
-          # Apply filters
+          @orders = Order.joins(:user).select(
+            'orders.*, users.name as customer_name, users.email as customer_email'
+          )
           @orders = apply_filters(@orders)
 
-          csv_data = generate_orders_csv(@orders)
-
-          send_data csv_data,
-                    filename: "orders_#{Date.current}.csv",
-                    type: 'text/csv',
-                    disposition: 'attachment'
+          headers['Content-Type'] = 'text/csv'
+          headers['Content-Disposition'] = "attachment; filename=\"orders_#{Date.current}.csv\""
+          headers.delete('Content-Length')
+          headers['X-Accel-Buffering'] = 'no'
+          self.response_body = orders_csv_stream(@orders)
         end
 
         # GET /api/v1/admin/orders/statistics
@@ -384,24 +383,21 @@ module Api
           result ? result.round(2) : 0
         end
 
-        def generate_orders_csv(orders)
-          require 'csv'
-
-          CSV.generate(headers: true) do |csv|
-            csv << ['Order Number', 'Customer', 'Email', 'Total', 'Status', 'Payment Status',
-                    'Payment Method', 'Created At']
-
-            orders.each do |order|
-              csv << [
+        def orders_csv_stream(scope)
+          Enumerator.new do |y|
+            y << CSV.generate_line(['Order Number', 'Customer', 'Email', 'Total', 'Status',
+                                    'Payment Status', 'Payment Method', 'Created At'])
+            scope.find_each(batch_size: 500) do |order|
+              y << CSV.generate_line([
                 order.order_number,
-                sanitize_csv_field(order.user.name),
-                sanitize_csv_field(order.user.email),
+                sanitize_csv_field(order.customer_name),
+                sanitize_csv_field(order.customer_email),
                 order.total,
                 order.status,
                 order.payment_status,
                 order.payment_method,
                 order.created_at.strftime('%Y-%m-%d %H:%M:%S')
-              ]
+              ])
             end
           end
         end

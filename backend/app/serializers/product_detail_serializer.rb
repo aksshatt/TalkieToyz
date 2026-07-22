@@ -25,7 +25,7 @@ class ProductDetailSerializer < ApplicationSerializer
   end
 
   def review_count
-    object.reviews.count
+    object.reviews_count
   end
 
   def image_urls

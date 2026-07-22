@@ -88,8 +88,8 @@ module Api
         @order = Order.create_from_cart(
           cart,
           payment_method: params[:payment_method],
-          shipping_address: params[:shipping_address],
-          billing_address: params[:billing_address],
+          shipping_address: permitted_address(params[:shipping_address]),
+          billing_address: permitted_address(params[:billing_address]),
           coupon: coupon,
           clear_cart: params[:payment_method] == 'cod',
           gift_wrap: params[:gift_wrap] == true || params[:gift_wrap] == 'true',
@@ -103,8 +103,8 @@ module Api
         end
 
         # Save shipping address for future use if requested
-        if params[:save_address].present? && params[:save_address] == true
-          save_shipping_address(params[:shipping_address])
+        if params[:save_address] == true || params[:save_address] == 'true'
+          save_shipping_address(permitted_address(params[:shipping_address]))
         end
 
         # For COD orders, mark as confirmed immediately
@@ -134,22 +134,12 @@ module Api
         updates[:notes] = params[:notes] if params[:notes].present?
 
         if @order.update(updates)
-          # Update shipped_at or delivered_at based on status and send emails
+          # Update shipped_at / delivered_at timestamps (emails handled by model callback)
           case @order.status.to_sym
           when :shipped
             @order.update(shipped_at: Time.current) unless @order.shipped_at.present?
-            begin
-              OrderMailer.order_shipped(@order.id).deliver_now
-            rescue => e
-              Rails.logger.error "Order shipped email failed: #{e.message}"
-            end
           when :delivered
             @order.update(delivered_at: Time.current) unless @order.delivered_at.present?
-            begin
-              OrderMailer.order_delivered(@order.id).deliver_now
-            rescue => e
-              Rails.logger.error "Order delivered email failed: #{e.message}"
-            end
           end
 
           render_success(
@@ -195,7 +185,7 @@ module Api
 
         if @order.mark_as_cancelled
           begin
-            OrderMailer.order_cancelled(@order.id).deliver_now
+            OrderMailer.order_cancelled(@order.id).deliver_later
           rescue => e
             Rails.logger.error "Order cancelled email failed: #{e.message}"
           end
@@ -333,9 +323,6 @@ module Api
           # Clear cart after successful payment
           current_user.cart.clear
 
-          # Trigger email notification job
-          OrderMailer.order_confirmation(order.id).deliver_now
-
           render_success(
             OrderSerializer.new(order).as_json,
             'Payment verified successfully'
@@ -365,6 +352,14 @@ module Api
         unless current_user.admin?
           render_error('Admin access required', nil, status: :forbidden)
         end
+      end
+
+      def permitted_address(raw)
+        return nil unless raw.is_a?(ActionController::Parameters) || raw.is_a?(Hash)
+        raw.to_unsafe_h.slice(
+          'name', 'phone', 'address_line_1', 'address_line_2',
+          'city', 'state', 'pincode', 'country', 'landmark'
+        )
       end
 
       def save_shipping_address(address_data)

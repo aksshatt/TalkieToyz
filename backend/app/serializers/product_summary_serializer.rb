@@ -33,12 +33,12 @@ class ProductSummarySerializer < ApplicationSerializer
 
     host = ENV.fetch('BACKEND_URL', 'https://talkietoys-backend.onrender.com')
     helpers = Rails.application.routes.url_helpers
-    object.images.limit(2).filter_map do |image|
+    object.images.limit(1).filter_map do |image|
       result = { url: helpers.rails_blob_url(image, host: host) }
       if image.representable?
-        result[:thumbnail_url] = helpers.rails_representation_url(image.variant(resize_to_limit: [300, 300]), host: host)
-        result[:medium_url]    = helpers.rails_representation_url(image.variant(resize_to_limit: [600, 600]), host: host)
-        result[:large_url]     = helpers.rails_representation_url(image.variant(resize_to_limit: [1200, 1200]), host: host)
+        result[:thumbnail_url] = helpers.rails_representation_url(
+          image.variant(resize_to_limit: [300, 300]), host: host
+        )
       end
       result
     rescue => e

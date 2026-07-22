@@ -21,6 +21,7 @@ class User < ApplicationRecord
   has_many :success_stories, dependent: :destroy
   has_many :loyalty_points, dependent: :destroy
   has_many :milestone_achievements, dependent: :destroy
+  has_many :refresh_tokens, dependent: :delete_all
   # has_many :progress_logs, dependent: :destroy
   has_many :blog_posts, foreign_key: :author_id, dependent: :destroy
 

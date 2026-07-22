@@ -93,7 +93,7 @@ const TherapistPatientDetail: React.FC = () => {
     queryKey: ['therapist_conversation', conversationId],
     queryFn: () => therapistService.getConversation(conversationId!),
     enabled: !!conversationId,
-    refetchInterval: 3000,
+    refetchInterval: 30000,
   });
   const messages: Message[] = convData?.data?.messages || [];
 

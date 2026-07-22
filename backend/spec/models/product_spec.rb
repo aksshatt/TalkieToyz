@@ -148,7 +148,7 @@ RSpec.describe Product, type: :model do
         create(:review, product: product, rating: 4)
         create(:review, product: product, rating: 5)
 
-        expect(product.average_rating).to eq(4.5)
+        expect(product.reload.average_rating).to eq(4.5)
       end
 
       it 'returns 0 when no reviews' do

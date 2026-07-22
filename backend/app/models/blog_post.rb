@@ -57,7 +57,7 @@ class BlogPost < ApplicationRecord
 
   # Methods
   def increment_view_count
-    increment!(:view_count)
+    BlogPost.update_counters(id, view_count: 1)
   end
 
   def soft_delete

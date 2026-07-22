@@ -11,12 +11,11 @@ module Api
           secret = ENV['DEVISE_JWT_SECRET_KEY'] || Rails.application.credentials.secret_key_base
           payload = JWT.decode(token, secret, true, algorithms: ['HS256']).first
 
-          # Access tokens must carry type=='access' (or be a legacy token without
-          # a type field, for backward compatibility with sessions issued before
-          # the field was added). Explicit non-access types (e.g. 'refresh') are
-          # rejected so refresh tokens cannot be swapped in as bearer credentials.
           token_type = payload['type']
           return @current_user = nil if token_type.present? && token_type != 'access'
+
+          # Reject tokens that have been explicitly revoked via logout
+          return @current_user = nil if JwtDenylist.exists?(jti: token)
 
           @current_user = User.find_by(id: payload['user_id'])
         rescue JWT::DecodeError, JWT::ExpiredSignature

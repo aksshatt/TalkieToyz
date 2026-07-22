@@ -6,12 +6,14 @@ module Api
         def index
           log_activity('view', 'Dashboard')
 
-          stats = {
-            overview: overview_stats,
-            recent_orders: recent_orders_stats,
-            top_products: top_products_stats,
-            revenue: revenue_stats
-          }
+          stats = Rails.cache.fetch('admin:dashboard_stats', expires_in: 5.minutes) do
+            {
+              overview: overview_stats,
+              recent_orders: recent_orders_stats,
+              top_products: top_products_stats,
+              revenue: revenue_stats
+            }
+          end
 
           render_success(stats, 'Dashboard stats retrieved successfully')
         end

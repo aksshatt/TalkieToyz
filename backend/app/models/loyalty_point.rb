@@ -39,6 +39,9 @@ class LoyaltyPoint < ApplicationRecord
       reference_id: ref_id,
       description: description || "Earned #{pts} points for #{source}"
     )
+  rescue ActiveRecord::RecordNotUnique
+    # Already awarded for this reference — idempotent, ignore
+    nil
   end
 
   def self.redeem(user:, points:)

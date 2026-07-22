@@ -51,7 +51,10 @@ class Coupon < ApplicationRecord
   end
 
   def increment_usage!
-    increment!(:usage_count)
+    with_lock do
+      raise ActiveRecord::Rollback unless usage_available?
+      increment!(:usage_count)
+    end
   end
 
   def can_be_used?

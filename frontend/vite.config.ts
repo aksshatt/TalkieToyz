@@ -12,6 +12,12 @@ export default defineConfig({
           'vendor-query': ['@tanstack/react-query'],
           'vendor-ui': ['framer-motion', 'lucide-react'],
           'vendor-charts': ['highcharts', 'highcharts-react-official'],
+          'vendor-tiptap': [
+            '@tiptap/react',
+            '@tiptap/starter-kit',
+            '@tiptap/extension-image',
+            '@tiptap/extension-link',
+          ],
           'admin': [
             './src/pages/admin/Dashboard.tsx',
             './src/pages/admin/Analytics.tsx',

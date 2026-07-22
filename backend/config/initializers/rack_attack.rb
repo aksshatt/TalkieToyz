@@ -1,25 +1,25 @@
 class Rack::Attack
   # Throttle login attempts by email param
   throttle('login/email', limit: 10, period: 1.minute) do |req|
-    if req.path == '/api/v1/users/sign_in' && req.post?
-      req.params['user']&.dig('email')&.downcase&.gsub(/\s+/, '')
+    if req.path == '/api/v1/auth/login' && req.post?
+      req.params['email']&.downcase&.gsub(/\s+/, '')
     end
   end
 
   # Throttle login attempts by IP
   throttle('login/ip', limit: 20, period: 1.minute) do |req|
-    req.ip if req.path == '/api/v1/users/sign_in' && req.post?
+    req.ip if req.path == '/api/v1/auth/login' && req.post?
   end
 
   # Throttle signup by IP
   throttle('signup/ip', limit: 10, period: 1.hour) do |req|
-    req.ip if req.path == '/api/v1/users' && req.post?
+    req.ip if req.path == '/api/v1/auth/signup' && req.post?
   end
 
   # Throttle password reset requests
   throttle('password_reset/email', limit: 5, period: 1.hour) do |req|
-    if req.path.include?('password') && req.post?
-      req.params.dig('user', 'email')&.downcase
+    if req.path == '/api/v1/auth/password/reset' && req.post?
+      req.params['email']&.downcase
     end
   end
 

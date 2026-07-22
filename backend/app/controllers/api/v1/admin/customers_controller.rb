@@ -16,7 +16,7 @@ module Api
 
           # Pagination
           @customers = @customers.page(params[:page])
-                                .per(params[:per_page] || 20)
+                                .per([[params[:per_page].to_i, 1].max, 100].min.nonzero? || 20)
 
           ids = @customers.map(&:id)
           order_counts = Order.where(user_id: ids).group(:user_id).count
@@ -71,12 +71,11 @@ module Api
         def export
           @customers = User.where(role: 'customer')
 
-          csv_data = generate_customers_csv(@customers)
-
-          send_data csv_data,
-                    filename: "customers_#{Date.current}.csv",
-                    type: 'text/csv',
-                    disposition: 'attachment'
+          headers['Content-Type'] = 'text/csv'
+          headers['Content-Disposition'] = "attachment; filename=\"customers_#{Date.current}.csv\""
+          headers.delete('Content-Length')
+          headers['X-Accel-Buffering'] = 'no'
+          self.response_body = customers_csv_stream(@customers)
         end
 
         # GET /api/v1/admin/customers/statistics
@@ -153,6 +152,20 @@ module Api
         end
 
         def customer_details(customer)
+          # Single aggregate query for counts/sums
+          stats = customer.orders
+                          .select('COUNT(*) as total_count, ' \
+                                  'COALESCE(SUM(CASE WHEN payment_status = \'paid\' THEN total ELSE 0 END), 0) as paid_total, ' \
+                                  'COUNT(CASE WHEN payment_status = \'paid\' THEN 1 END) as paid_count')
+                          .first
+
+          total_count = stats.total_count.to_i
+          paid_total  = stats.paid_total.to_f
+          paid_count  = stats.paid_count.to_i
+          avg_order   = paid_count > 0 ? (paid_total / paid_count).round(2) : 0
+
+          recent_orders = customer.orders.order(created_at: :desc).limit(5).to_a
+
           {
             id: customer.id,
             name: customer.name,
@@ -161,10 +174,10 @@ module Api
             bio: customer.bio,
             created_at: customer.created_at.iso8601,
             updated_at: customer.updated_at.iso8601,
-            orders_count: customer.orders.count,
-            total_spent: customer.orders.where(payment_status: 'paid').sum(:total).to_f.round(2),
-            average_order_value: calculate_customer_average_order_value(customer),
-            last_order: customer.orders.order(created_at: :desc).first&.then do |order|
+            orders_count: total_count,
+            total_spent: paid_total.round(2),
+            average_order_value: avg_order,
+            last_order: recent_orders.first&.then do |order|
               {
                 id: order.id,
                 order_number: order.order_number,
@@ -173,7 +186,7 @@ module Api
                 created_at: order.created_at.iso8601
               }
             end,
-            order_history: customer.orders.order(created_at: :desc).limit(5).map do |order|
+            order_history: recent_orders.map do |order|
               {
                 id: order.id,
                 order_number: order.order_number,
@@ -184,14 +197,6 @@ module Api
               }
             end
           }
-        end
-
-        def calculate_customer_average_order_value(customer)
-          paid_orders = customer.orders.where(payment_status: 'paid')
-          return 0 if paid_orders.empty?
-
-          total = paid_orders.sum(:total).to_f
-          (total / paid_orders.count).round(2)
         end
 
         def calculate_average_order_value_by_customer
@@ -211,7 +216,7 @@ module Api
           User.where(role: 'customer')
               .joins(:orders)
               .where(orders: { payment_status: 'paid' })
-              .select('users.*, SUM(orders.total) as total_revenue')
+              .select('users.*, SUM(orders.total) as total_revenue, COUNT(orders.id) as orders_count')
               .group('users.id')
               .order('total_revenue DESC')
               .limit(limit)
@@ -221,31 +226,29 @@ module Api
               name: customer.name,
               email: customer.email,
               total_revenue: customer.total_revenue.to_f.round(2),
-              orders_count: customer.orders.where(payment_status: 'paid').count
+              orders_count: customer.orders_count.to_i
             }
           end
         end
 
-        def generate_customers_csv(customers)
-          require 'csv'
-
-          ids = customers.map(&:id)
-          order_counts = Order.where(user_id: ids).group(:user_id).count
-          paid_totals = Order.where(user_id: ids, payment_status: 'paid').group(:user_id).sum(:total)
-
-          CSV.generate(headers: true) do |csv|
-            csv << ['ID', 'Name', 'Email', 'Phone', 'Total Orders', 'Total Spent', 'Created At']
-
-            customers.each do |customer|
-              csv << [
-                customer.id,
-                customer.name,
-                customer.email,
-                customer.phone,
-                order_counts[customer.id] || 0,
-                paid_totals[customer.id] || 0,
-                customer.created_at.strftime('%Y-%m-%d %H:%M:%S')
-              ]
+        def customers_csv_stream(scope)
+          Enumerator.new do |y|
+            y << CSV.generate_line(['ID', 'Name', 'Email', 'Phone', 'Total Orders', 'Total Spent', 'Created At'])
+            scope.find_in_batches(batch_size: 500) do |batch|
+              ids = batch.map(&:id)
+              order_counts = Order.where(user_id: ids).group(:user_id).count
+              paid_totals  = Order.where(user_id: ids, payment_status: 'paid').group(:user_id).sum(:total)
+              batch.each do |customer|
+                y << CSV.generate_line([
+                  customer.id,
+                  customer.name,
+                  customer.email,
+                  customer.phone,
+                  order_counts[customer.id] || 0,
+                  paid_totals[customer.id] || 0,
+                  customer.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                ])
+              end
             end
           end
         end

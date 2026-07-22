@@ -37,7 +37,7 @@ module Api
       # GET /api/v1/products/:id
       def show
         # Increment view count
-        @product.increment!(:view_count)
+        Product.update_counters(@product.id, view_count: 1)
 
         render_success(
           ProductDetailSerializer.new(@product).as_json,
@@ -64,38 +64,34 @@ module Api
 
       # GET /api/v1/products/:id/frequently_bought_together
       def frequently_bought_together
-        # Find products commonly bought in same orders as this product
-        order_ids_with_product = OrderItem.where(product_id: @product.id).select(:order_id)
-        product_ids_in_same_orders = OrderItem
-          .where(order_id: order_ids_with_product)
-          .where.not(product_id: @product.id)
-          .group(:product_id)
-          .order(Arel.sql('COUNT(*) DESC'))
-          .limit(4)
-          .count
-          .keys
+        cached = Rails.cache.fetch("product:#{@product.id}:fbt", expires_in: 1.hour) do
+          order_ids_with_product = OrderItem.where(product_id: @product.id).select(:order_id)
+          product_ids_in_same_orders = OrderItem
+            .where(order_id: order_ids_with_product)
+            .where.not(product_id: @product.id)
+            .group(:product_id)
+            .order(Arel.sql('COUNT(*) DESC'))
+            .limit(4)
+            .count
+            .keys
 
-        if product_ids_in_same_orders.any?
-          @frequently_bought = Product.active
-                                      .includes(:category, :speech_goals, images_attachments: :blob)
-                                      .where(id: product_ids_in_same_orders)
-        else
-          # Fallback: same category, same speech goals
-          goal_ids = @product.speech_goals.pluck(:id)
-          @frequently_bought = Product.active
-                                      .includes(:category, :speech_goals, images_attachments: :blob)
-                                      .where.not(id: @product.id)
-                                      .by_speech_goals(goal_ids)
-                                      .limit(4)
+          if product_ids_in_same_orders.any?
+            Product.active
+                   .includes(:category, :speech_goals, images_attachments: :blob)
+                   .where(id: product_ids_in_same_orders)
+                   .map { |p| ProductSummarySerializer.new(p).as_json }
+          else
+            goal_ids = @product.speech_goals.pluck(:id)
+            Product.active
+                   .includes(:category, :speech_goals, images_attachments: :blob)
+                   .where.not(id: @product.id)
+                   .by_speech_goals(goal_ids)
+                   .limit(4)
+                   .map { |p| ProductSummarySerializer.new(p).as_json }
+          end
         end
 
-        render_success(
-          ActiveModelSerializers::SerializableResource.new(
-            @frequently_bought,
-            each_serializer: ProductSummarySerializer
-          ).as_json,
-          'Frequently bought together retrieved'
-        )
+        render_success(cached, 'Frequently bought together retrieved')
       end
 
       # POST /api/v1/products

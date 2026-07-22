@@ -14,11 +14,17 @@ module Api
 
           # Pagination
           @products = @products.page(params[:page])
-                              .per(params[:per_page] || 20)
+                              .per([[params[:per_page].to_i, 1].max, 100].min.nonzero? || 20)
+
+          product_ids = @products.map(&:id)
+          sold_by_product = OrderItem.joins(:order)
+                                     .where(product_id: product_ids, orders: { payment_status: 'paid' })
+                                     .group(:product_id)
+                                     .sum(:quantity)
 
           render_success(
             {
-              products: @products.map { |p| admin_product_summary(p) },
+              products: @products.map { |p| admin_product_summary(p, sold_by_product) },
               meta: pagination_meta(@products)
             },
             'Products retrieved successfully'
@@ -109,14 +115,15 @@ module Api
 
         # GET /api/v1/admin/products/export
         def export
-          @products = Product.includes(:category, :speech_goals)
+          @products = Product.joins('LEFT JOIN categories ON categories.id = products.category_id')
+                             .select('products.*, categories.name as category_name')
+          @products = apply_filters(@products)
 
-          csv_data = generate_products_csv(@products)
-
-          send_data csv_data,
-                    filename: "products_#{Date.current}.csv",
-                    type: 'text/csv',
-                    disposition: 'attachment'
+          headers['Content-Type'] = 'text/csv'
+          headers['Content-Disposition'] = "attachment; filename=\"products_#{Date.current}.csv\""
+          headers.delete('Content-Length')
+          headers['X-Accel-Buffering'] = 'no'
+          self.response_body = products_csv_stream(@products)
         end
 
         private
@@ -151,7 +158,8 @@ module Api
           products
         end
 
-        def admin_product_summary(product)
+        def admin_product_summary(product, sold_by_product = nil)
+          total_sold = sold_by_product ? sold_by_product[product.id].to_i : calculate_total_sold(product)
           {
             id: product.id,
             name: product.name,
@@ -162,7 +170,7 @@ module Api
             active: product.active,
             featured: product.featured,
             created_at: product.created_at.iso8601,
-            total_sold: calculate_total_sold(product),
+            total_sold: total_sold,
             image_url: safe_image_url(product.images.first),
             image_urls: product.images.attached? ? product.images.map { |img| { id: img.id, url: safe_image_url(img) } }.compact : []
           }
@@ -205,23 +213,20 @@ module Api
           'in_stock'
         end
 
-        def generate_products_csv(products)
-          require 'csv'
-
-          CSV.generate(headers: true) do |csv|
-            csv << ['ID', 'Name', 'SKU', 'Price', 'Stock', 'Category', 'Active', 'Created At']
-
-            products.each do |product|
-              csv << [
+        def products_csv_stream(scope)
+          Enumerator.new do |y|
+            y << CSV.generate_line(['ID', 'Name', 'SKU', 'Price', 'Stock', 'Category', 'Active', 'Created At'])
+            scope.find_each(batch_size: 500) do |product|
+              y << CSV.generate_line([
                 product.id,
                 product.name,
                 product.sku,
                 product.price,
                 product.stock_quantity,
-                product.category&.name,
+                product.category_name,
                 product.active,
                 product.created_at.strftime('%Y-%m-%d %H:%M:%S')
-              ]
+              ])
             end
           end
         end

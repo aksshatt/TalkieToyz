@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { TrendingUp, ShoppingBag, Users, DollarSign } from 'lucide-react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
@@ -26,23 +27,17 @@ const PURPLE = '#a78bfa';
 const CHART_COLORS = [TEAL, CORAL, SUNSHINE, SKY, PURPLE];
 
 const Analytics = () => {
-  const [data, setData] = useState<AnalyticsData | null>(null);
-  const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState('30days');
 
-  useEffect(() => { loadAnalytics(); }, [period]);
-
-  const loadAnalytics = async () => {
-    try {
-      setLoading(true);
+  const { data, isLoading: loading } = useQuery<AnalyticsData>({
+    queryKey: ['admin-analytics', period],
+    queryFn: async () => {
       const res = await api.get(`/admin/analytics?period=${period}`);
-      setData(res.data.data);
-    } catch {
-      toast.error('Failed to load analytics');
-    } finally {
-      setLoading(false);
-    }
-  };
+      return res.data.data;
+    },
+    staleTime: 15 * 60 * 1000,
+    onError: () => toast.error('Failed to load analytics'),
+  } as any);
 
   const totalRevenue = data?.revenue_trends?.reduce((sum, d) => sum + Number(d.revenue), 0) || 0;
   const totalOrders = data?.conversion_metrics?.total_orders || 0;

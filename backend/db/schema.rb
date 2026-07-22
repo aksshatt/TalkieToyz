@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_23_000003) do
+ActiveRecord::Schema[7.1].define(version: 2026_07_16_110416) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_trgm"
   enable_extension "plpgsql"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
@@ -221,7 +222,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_23_000003) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "product_variant_id"
-    t.index ["cart_id", "product_id"], name: "index_cart_items_on_cart_id_and_product_id", unique: true
+    t.index ["cart_id", "product_id", "product_variant_id"], name: "index_cart_items_on_cart_product_variant", unique: true, where: "(product_variant_id IS NOT NULL)"
+    t.index ["cart_id", "product_id"], name: "index_cart_items_on_cart_product_no_variant", unique: true, where: "(product_variant_id IS NULL)"
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
     t.index ["product_variant_id"], name: "index_cart_items_on_product_variant_id"
@@ -356,6 +358,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_23_000003) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["reference_type", "reference_id"], name: "index_loyalty_points_on_reference_type_and_reference_id"
+    t.index ["user_id", "redeemed"], name: "idx_loyalty_points_user_redeemed"
+    t.index ["user_id", "source", "reference_type", "reference_id"], name: "idx_loyalty_points_unique_reference", unique: true, where: "(reference_id IS NOT NULL)"
     t.index ["user_id"], name: "index_loyalty_points_on_user_id"
   end
 
@@ -379,6 +383,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_23_000003) do
     t.datetime "read_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["conversation_id", "created_at"], name: "idx_messages_conversation_created"
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
     t.index ["created_at"], name: "index_messages_on_created_at"
     t.index ["message_type"], name: "index_messages_on_message_type"
@@ -395,6 +400,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_23_000003) do
     t.datetime "updated_at", null: false
     t.index ["child_profile_id", "milestone_id"], name: "idx_on_child_profile_id_milestone_id_c3aa3d032b", unique: true
     t.index ["child_profile_id"], name: "index_milestone_achievements_on_child_profile_id"
+    t.index ["milestone_id", "child_profile_id"], name: "index_milestone_achievements_on_milestone_child_unique", unique: true, where: "(child_profile_id IS NOT NULL)"
     t.index ["milestone_id"], name: "index_milestone_achievements_on_milestone_id"
     t.index ["user_id", "milestone_id"], name: "index_milestone_achievements_on_user_id_and_milestone_id"
     t.index ["user_id"], name: "index_milestone_achievements_on_user_id"
@@ -560,15 +566,22 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_23_000003) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "hsn_code"
+    t.decimal "weight_kg", precision: 8, scale: 3
+    t.jsonb "dimensions_cm", default: {}
+    t.integer "reviews_count", default: 0, null: false
+    t.decimal "cached_average_rating", precision: 3, scale: 2, default: "0.0", null: false
     t.index ["active", "deleted_at", "category_id", "created_at"], name: "index_products_on_active_deleted_category_created"
     t.index ["active", "deleted_at", "created_at"], name: "index_products_on_active_deleted_created"
     t.index ["active"], name: "index_products_on_active"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["deleted_at"], name: "index_products_on_deleted_at"
     t.index ["featured"], name: "index_products_on_featured"
+    t.index ["hsn_code"], name: "index_products_on_hsn_code"
     t.index ["images"], name: "index_products_on_images", using: :gin
     t.index ["max_age"], name: "index_products_on_max_age"
     t.index ["min_age"], name: "index_products_on_min_age"
+    t.index ["name"], name: "idx_products_name_trgm", opclass: :gin_trgm_ops, using: :gin
     t.index ["price"], name: "index_products_on_price"
     t.index ["sku"], name: "index_products_on_sku", unique: true
     t.index ["slug"], name: "index_products_on_slug", unique: true
@@ -598,6 +611,15 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_23_000003) do
     t.index ["product_id"], name: "index_progress_logs_on_product_id"
     t.index ["user_id", "child_name", "log_date"], name: "index_progress_logs_on_user_id_and_child_name_and_log_date"
     t.index ["user_id"], name: "index_progress_logs_on_user_id"
+  end
+
+  create_table "refresh_tokens", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "token_digest", null: false
+    t.datetime "expires_at", null: false
+    t.index ["expires_at"], name: "index_refresh_tokens_on_expires_at"
+    t.index ["token_digest"], name: "index_refresh_tokens_on_token_digest", unique: true
+    t.index ["user_id"], name: "index_refresh_tokens_on_user_id"
   end
 
   create_table "resource_categories", force: :cascade do |t|
@@ -840,6 +862,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_23_000003) do
     t.index ["approval_status"], name: "index_users_on_approval_status"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["name"], name: "idx_users_name_trgm", opclass: :gin_trgm_ops, using: :gin
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
   end
@@ -896,6 +919,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_23_000003) do
   add_foreign_key "progress_logs", "milestones"
   add_foreign_key "progress_logs", "products"
   add_foreign_key "progress_logs", "users"
+  add_foreign_key "refresh_tokens", "users"
   add_foreign_key "resources", "resource_categories"
   add_foreign_key "review_helpful_votes", "reviews"
   add_foreign_key "review_helpful_votes", "users"

@@ -27,7 +27,7 @@ module Api
               # Simple admin notification via existing contact mailer or log
               Rails.logger.info "New therapist signup pending approval: #{user.email}"
             else
-              AuthMailer.welcome(user).deliver_now
+              AuthMailer.welcome(user).deliver_later
             end
           rescue => e
             Rails.logger.error "Signup email failed: #{e.message}"
@@ -82,42 +82,64 @@ module Api
 
       # DELETE /api/v1/auth/logout
       def logout
-        render json: {
-          success: true,
-          message: 'Logged out successfully'
-        }
+        # Revoke access token
+        access_token = extract_bearer_token
+        if access_token
+          begin
+            secret = jwt_secret
+            payload = JWT.decode(access_token, secret, true, algorithms: ['HS256']).first
+            exp = payload['exp'] ? Time.at(payload['exp']) : 24.hours.from_now
+            JwtDenylist.create!(jti: access_token, exp: exp)
+          rescue JWT::DecodeError, JWT::ExpiredSignature, ActiveRecord::RecordNotUnique
+            nil
+          end
+        end
+
+        # Revoke refresh token
+        raw_refresh = params[:refresh_token]
+        RefreshToken.revoke!(raw_refresh) if raw_refresh.present?
+
+        render json: { success: true, message: 'Logged out successfully' }
       end
 
       # POST /api/v1/auth/refresh
       def refresh
-        token = params[:refresh_token]
-        unless token
+        raw_token = params[:refresh_token]
+        unless raw_token.present?
           return render json: { success: false, message: 'Refresh token required' }, status: :unprocessable_entity
         end
 
-        begin
-          secret = ENV['DEVISE_JWT_SECRET_KEY'] || Rails.application.credentials.secret_key_base
-          payload = JWT.decode(token, secret, true, algorithms: ['HS256']).first
-
-          unless payload['type'] == 'refresh'
-            return render json: { success: false, message: 'Invalid token type' }, status: :unauthorized
-          end
-
-          user = User.find_by(id: payload['user_id'])
-          unless user
-            return render json: { success: false, message: 'User not found' }, status: :unauthorized
-          end
-
-          new_access_token = generate_jwt_token(user)
-          new_refresh_token = generate_refresh_token(user)
-
-          render json: {
-            success: true,
-            data: { access_token: new_access_token, refresh_token: new_refresh_token }
-          }
+        # Verify JWT signature and expiry first (cheap, no DB hit)
+        payload = begin
+          JWT.decode(raw_token, jwt_secret, true, algorithms: ['HS256']).first
         rescue JWT::DecodeError, JWT::ExpiredSignature
-          render json: { success: false, message: 'Invalid or expired refresh token' }, status: :unauthorized
+          return render json: { success: false, message: 'Invalid or expired refresh token' }, status: :unauthorized
         end
+
+        unless payload['type'] == 'refresh'
+          return render json: { success: false, message: 'Invalid token type' }, status: :unauthorized
+        end
+
+        # Check DB — token must exist and not be revoked
+        stored = RefreshToken.find_by_raw(raw_token)
+        unless stored
+          return render json: { success: false, message: 'Refresh token revoked or not found' }, status: :unauthorized
+        end
+
+        user = stored.user
+        unless user
+          return render json: { success: false, message: 'User not found' }, status: :unauthorized
+        end
+
+        # Rotate: delete used token, issue a new pair
+        stored.destroy
+        new_access_token  = generate_jwt_token(user)
+        new_refresh_token = generate_refresh_token(user)
+
+        render json: {
+          success: true,
+          data: { access_token: new_access_token, refresh_token: new_refresh_token }
+        }
       end
 
       # POST /api/v1/auth/password/reset
@@ -129,7 +151,7 @@ module Api
             raw_token = user.send(:set_reset_password_token)
             frontend_url = ENV.fetch('FRONTEND_URL', 'https://talkietoyz.shop')
             reset_url = "#{frontend_url}/reset-password?token=#{raw_token}"
-            AuthMailer.reset_password(user, reset_url).deliver_now
+            AuthMailer.reset_password(user, reset_url).deliver_later
           rescue => e
             Rails.logger.error "Password reset email failed: #{e.message}"
           end
@@ -151,6 +173,9 @@ module Api
         )
 
         if user.errors.empty?
+          # Invalidate all existing sessions on password change
+          RefreshToken.revoke_all_for!(user)
+
           render json: {
             success: true,
             message: 'Password has been reset successfully. You can now log in.'
@@ -255,13 +280,16 @@ module Api
       end
 
       def generate_refresh_token(user)
+        expires_at = 7.days.from_now
         payload = {
           user_id: user.id,
           email: user.email,
           type: 'refresh',
-          exp: 7.days.from_now.to_i
+          exp: expires_at.to_i
         }
-        JWT.encode(payload, jwt_secret, 'HS256')
+        raw_token = JWT.encode(payload, jwt_secret, 'HS256')
+        RefreshToken.store!(user: user, raw_token: raw_token, expires_at: expires_at)
+        raw_token
       end
 
       def jwt_secret

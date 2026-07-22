@@ -24,7 +24,7 @@ class ProductSerializer < ApplicationSerializer
   end
 
   def review_count
-    object.reviews.approved.count
+    object.reviews_count
   end
 
   def images

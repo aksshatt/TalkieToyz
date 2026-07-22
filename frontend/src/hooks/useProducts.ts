@@ -6,6 +6,7 @@ export const useProducts = (filters: ProductFilters = {}) => {
   return useQuery({
     queryKey: ['products', filters],
     queryFn: () => productService.getProducts(filters),
+    staleTime: 60 * 1000,
   });
 };
 
@@ -14,6 +15,7 @@ export const useProduct = (slug: string) => {
     queryKey: ['product', slug],
     queryFn: () => productService.getProduct(slug),
     enabled: !!slug,
+    staleTime: 60 * 1000,
   });
 };
 
@@ -22,6 +24,7 @@ export const useRelatedProducts = (slug: string) => {
     queryKey: ['related-products', slug],
     queryFn: () => productService.getRelatedProducts(slug),
     enabled: !!slug,
+    staleTime: 60 * 1000,
   });
 };
 

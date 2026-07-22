@@ -34,8 +34,8 @@ class Order < ApplicationRecord
   # Callbacks
   before_validation :generate_order_number, if: -> { order_number.blank? }
   before_validation :calculate_total
-  after_create :increment_coupon_usage
-  # Use after_commit so a rolled-back order never enqueues a confirmation email.
+  # Both run after_commit so a rolled-back transaction never increments usage or sends email.
+  after_commit :increment_coupon_usage, on: :create
   after_commit :send_order_confirmation_email, on: :create
   after_update :send_status_update_email, if: :saved_change_to_status?
   after_update :auto_create_shipment, if: :should_auto_create_shipment?
@@ -180,8 +180,7 @@ class Order < ApplicationRecord
 
   def payment_successful!
     update(payment_status: 'paid', status: :confirmed)
-    # Send confirmation email for Razorpay payments
-    OrderMailer.order_confirmation(id).deliver_later(queue: 'mailers') if payment_method == 'razorpay'
+    # after_commit :send_order_confirmation_email handles the confirmation email
   end
 
   def payment_failed!
@@ -354,20 +353,6 @@ class Order < ApplicationRecord
   end
 
   def auto_create_shipment
-    Rails.logger.info("Auto-creating shipment for order #{order_number}")
-    prior_status = status_before_last_save
-    result = create_shiprocket_shipment
-
-    if result[:success]
-      Rails.logger.info("Shipment created successfully for order #{order_number}")
-    else
-      Rails.logger.error("Failed to auto-create shipment for order #{order_number}: #{result[:error]}")
-      # Revert to prior status so order isn't stuck in processing without shipment
-      if prior_status.present? && prior_status != status
-        update_columns(status: Order.statuses[prior_status])
-      end
-    end
-  rescue => e
-    Rails.logger.error("Auto-create shipment error for order #{order_number}: #{e.message}")
+    CreateShipmentJob.perform_later(id)
   end
 end
