@@ -175,13 +175,13 @@ const Checkout = () => {
 
   const selectedRate = shippingRates.find((r) => r.courier_id === selectedCourierId) || null;
 
+  const FREE_SHIPPING_THRESHOLD = 1999;
+  const FIXED_SHIPPING_COST = 99;
+
   const shippingCost = (() => {
-    if (selectedRate) return Number(selectedRate.rate) || 0;
-    if (shippingRates.length > 0) {
-      const first = shippingRates[0];
-      return Number(first.rate) || 0;
-    }
-    return 0;
+    const subtotal = parseFloat(cart?.subtotal || '0');
+    if (subtotal >= FREE_SHIPPING_THRESHOLD) return 0;
+    return FIXED_SHIPPING_COST;
   })();
 
   const handlePlaceOrder = async (shippingAddress: Address) => {
@@ -363,16 +363,6 @@ const Checkout = () => {
       }
       setCurrentStep(2);
     } else if (currentStep === 2) {
-      // Block leaving shipping step until rates loaded and a courier picked
-      // (otherwise shippingCost is 0 and the order total is wrong).
-      if (loadingRates) {
-        toast.error('Please wait for shipping rates to load');
-        return;
-      }
-      if (shippingRates.length > 0 && !selectedCourierId) {
-        toast.error('Please select a shipping option');
-        return;
-      }
       setCurrentStep(currentStep + 1);
     } else if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
@@ -696,97 +686,36 @@ const Checkout = () => {
                     Delivery Method
                   </h2>
 
-                  {loadingRates ? (
-                    <div className="flex items-center gap-3 py-8 justify-center text-gray-500">
-                      <Loader2 className="h-5 w-5 animate-spin text-purple-600" />
-                      <span>Checking available couriers…</span>
-                    </div>
-                  ) : shippingRates.length > 0 ? (
-                    <div className="space-y-3 mb-6">
-                      {shippingRates.map((rate) => (
-                        <label
-                          key={rate.courier_id}
-                          className={`flex items-center justify-between p-5 border-2 rounded-xl cursor-pointer transition-all ${
-                            selectedCourierId === rate.courier_id
-                              ? 'border-purple-500 bg-purple-50'
-                              : 'border-gray-200 hover:border-purple-200'
-                          }`}
-                        >
-                          <div className="flex items-center gap-4">
-                            <input
-                              type="radio"
-                              name="delivery"
-                              checked={selectedCourierId === rate.courier_id}
-                              onChange={() => setSelectedCourierId(rate.courier_id)}
-                              className="w-5 h-5 text-purple-600"
-                            />
-                            <div>
-                              <p className="font-bold text-gray-800">{rate.courier_name}</p>
-                              <p className="text-sm text-gray-500">
-                                {rate.estimated_delivery_days} days · {rate.mode}
-                                {rate.cod_available && (
-                                  <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">COD available</span>
-                                )}
-                              </p>
-                            </div>
-                          </div>
-                          <span className="font-bold text-purple-600">
-                            {rate.rate === 0 ? 'FREE' : `₹${rate.rate.toFixed(2)}`}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="space-y-4 mb-6">
-                      <label
-                        className={`flex items-center justify-between p-6 border-2 rounded-xl cursor-pointer transition-all ${
-                          deliveryMethod === 'standard'
-                            ? 'border-purple-500 bg-purple-50'
-                            : 'border-gray-200 hover:border-purple-200'
-                        }`}
-                      >
+                  <div className="space-y-4 mb-6">
+                    {shippingCost === 0 ? (
+                      <div className="flex items-center justify-between p-6 border-2 border-green-400 bg-green-50 rounded-xl">
                         <div className="flex items-center gap-4">
-                          <input
-                            type="radio"
-                            name="delivery"
-                            value="standard"
-                            checked={deliveryMethod === 'standard'}
-                            onChange={(e) => setDeliveryMethod(e.target.value as 'standard' | 'express')}
-                            className="w-5 h-5 text-purple-600"
-                          />
+                          <Truck className="h-6 w-6 text-green-600" />
                           <div>
                             <p className="font-bold text-gray-800">Standard Delivery</p>
-                            <p className="text-sm text-gray-600">5-7 business days</p>
+                            <p className="text-sm text-green-700 font-medium">Free delivery on orders above ₹1,999</p>
                           </div>
                         </div>
-                        <span className="font-bold text-purple-600">FREE</span>
-                      </label>
-
-                      <label
-                        className={`flex items-center justify-between p-6 border-2 rounded-xl cursor-pointer transition-all ${
-                          deliveryMethod === 'express'
-                            ? 'border-purple-500 bg-purple-50'
-                            : 'border-gray-200 hover:border-purple-200'
-                        }`}
-                      >
-                        <div className="flex items-center gap-4">
-                          <input
-                            type="radio"
-                            name="delivery"
-                            value="express"
-                            checked={deliveryMethod === 'express'}
-                            onChange={(e) => setDeliveryMethod(e.target.value as 'standard' | 'express')}
-                            className="w-5 h-5 text-purple-600"
-                          />
-                          <div>
-                            <p className="font-bold text-gray-800">Express Delivery</p>
-                            <p className="text-sm text-gray-600">2-3 business days</p>
+                        <span className="font-bold text-green-600 text-lg">FREE</span>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex items-center justify-between p-6 border-2 border-purple-500 bg-purple-50 rounded-xl">
+                          <div className="flex items-center gap-4">
+                            <Truck className="h-6 w-6 text-purple-600" />
+                            <div>
+                              <p className="font-bold text-gray-800">Standard Delivery</p>
+                              <p className="text-sm text-gray-600">Delivered within 5-7 business days</p>
+                            </div>
                           </div>
+                          <span className="font-bold text-purple-600 text-lg">₹99</span>
                         </div>
-                        <span className="font-bold text-purple-600">₹100.00</span>
-                      </label>
-                    </div>
-                  )}
+                        <p className="text-sm text-gray-500 text-center">
+                          Add items worth <span className="font-semibold text-purple-600">₹{(FREE_SHIPPING_THRESHOLD - parseFloat(cart?.subtotal || '0')).toFixed(0)}</span> more to get <span className="font-semibold text-green-600">FREE delivery</span>
+                        </p>
+                      </>
+                    )}
+                  </div>
 
                   {/* Gift Wrapping */}
                   <div className="border-t-2 border-gray-100 pt-5 mt-2">
@@ -864,8 +793,6 @@ const Checkout = () => {
                       className={`flex items-center justify-between p-6 border-2 rounded-xl cursor-pointer transition-all ${
                         paymentMethod === 'cod'
                           ? 'border-purple-500 bg-purple-50'
-                          : shippingRates.length > 0 && !codAvailable
-                          ? 'border-gray-100 bg-gray-50 opacity-60 cursor-not-allowed'
                           : 'border-gray-200 hover:border-purple-200'
                       }`}
                     >
@@ -875,16 +802,12 @@ const Checkout = () => {
                           name="payment"
                           value="cod"
                           checked={paymentMethod === 'cod'}
-                          disabled={shippingRates.length > 0 && !codAvailable}
                           onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
                           className="w-5 h-5 text-purple-600"
                         />
                         <div>
                           <p className="font-bold text-gray-800">Cash on Delivery</p>
                           <p className="text-sm text-gray-600">Pay when you receive your order</p>
-                          {shippingRates.length > 0 && !codAvailable && (
-                            <p className="text-xs text-red-500 mt-0.5">COD not available for your PIN code</p>
-                          )}
                         </div>
                       </div>
                     </label>
@@ -929,21 +852,11 @@ const Checkout = () => {
                       <div>
                         <h3 className="font-bold text-gray-800 mb-2">Delivery</h3>
                         <div className="bg-gray-50 rounded-lg p-4 text-sm">
-                          {selectedCourierId && shippingRates.length > 0 ? (() => {
-                            const rate = shippingRates.find(r => r.courier_id === selectedCourierId);
-                            return rate ? (
-                              <>
-                                <p className="font-semibold">{rate.courier_name}</p>
-                                <p className="text-gray-600">{rate.estimated_delivery_days} days</p>
-                                <p className="text-purple-600 font-semibold">{rate.rate === 0 ? 'FREE' : `₹${rate.rate.toFixed(2)}`}</p>
-                              </>
-                            ) : null;
-                          })() : (
-                            <>
-                              <p className="font-semibold">{deliveryMethod === 'standard' ? 'Standard Delivery' : 'Express Delivery'}</p>
-                              <p className="text-gray-600">{deliveryMethod === 'standard' ? '5-7 business days' : '2-3 business days'}</p>
-                            </>
-                          )}
+                          <p className="font-semibold">Standard Delivery</p>
+                          <p className="text-gray-600">5-7 business days</p>
+                          <p className={`font-semibold mt-1 ${shippingCost === 0 ? 'text-green-600' : 'text-purple-600'}`}>
+                            {shippingCost === 0 ? 'FREE' : '₹99'}
+                          </p>
                         </div>
                       </div>
 

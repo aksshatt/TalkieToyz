@@ -27,10 +27,9 @@ const HeroSection = () => {
         transition={{ duration: 9, ease: 'easeOut' }}
       >
         <picture>
-          <source srcSet="/hero-image1.webp" type="image/webp" />
           <img
             src="/hero-image1.jpg"
-            alt="Diverse toddlers playing with educational toys on a soft mat"
+            alt="Teacher showing flashcard to child in a learning environment"
             className="w-full h-full object-cover"
             fetchPriority="high"
             decoding="async"
