@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   # Health check endpoint
   get "health" => "health#index"
+  get "ping", to: proc { [200, { "Content-Type" => "text/plain" }, ["pong"]] }
 
   # API versioning
   namespace :api do
