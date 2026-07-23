@@ -256,13 +256,6 @@ const Checkout = () => {
         });
 
         razorpay.open();
-      } else {
-        // COD order
-        dispatch(resetCart());
-        toast.success('Order placed successfully!');
-        navigate('/order-confirmation', {
-          state: { orderId: order.id },
-        });
       }
     } catch (error: any) {
       toast.error(
@@ -280,7 +273,7 @@ const Checkout = () => {
     try {
       const result = await shippingService.calculateRates({
         postal_code: postalCode,
-        payment_method: paymentMethod === 'cod' ? 'cod' : 'prepaid',
+        payment_method: 'prepaid',
       });
       setShippingRates(result.rates || []);
     } catch {
@@ -290,22 +283,6 @@ const Checkout = () => {
     }
   };
 
-  // COD only valid if the currently-selected courier supports it. If no courier
-  // is selected yet, fall back to "any rate supports COD" so the option isn't
-  // prematurely disabled before the user picks.
-  const codAvailable = selectedRate
-    ? !!selectedRate.cod_available
-    : shippingRates.some(r => r.cod_available);
-
-  // If user switches to a courier that does not support COD after choosing
-  // COD, fall back to the online payment option so we don't submit an invalid
-  // combo.
-  useEffect(() => {
-    if (paymentMethod === 'cod' && selectedRate && !selectedRate.cod_available) {
-      setPaymentMethod('razorpay');
-      toast('Selected courier does not support COD; switched to online payment.');
-    }
-  }, [selectedRate, paymentMethod]);
 
   const buildAddressFromSaved = (id: number): Address | null => {
     const a = savedAddresses.find((x) => x.id === id);
@@ -392,25 +369,25 @@ const Checkout = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-12">
+      <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-6 sm:py-12">
         <div className="max-w-4xl mx-auto px-4">
           {/* Progress Steps */}
-          <div className="bg-white rounded-2xl p-6 shadow-playful mb-8">
+          <div className="bg-white rounded-2xl p-3 sm:p-6 shadow-playful mb-8">
             <div className="flex items-center justify-between">
               {steps.map((step, index) => (
-                <div key={step.id} className="flex items-center flex-1">
-                  <div className="flex flex-col items-center">
+                <div key={step.id} className="flex items-center flex-1 min-w-0">
+                  <div className="flex flex-col items-center min-w-0">
                     <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                      className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
                         currentStep >= step.id
                           ? 'bg-purple-500 text-white'
                           : 'bg-gray-200 text-gray-500'
                       } transition-colors`}
                     >
-                      <step.icon className="h-6 w-6" />
+                      <step.icon className="h-4 w-4 sm:h-6 sm:w-6" />
                     </div>
                     <span
-                      className={`text-sm font-semibold mt-2 ${
+                      className={`text-[10px] sm:text-sm font-semibold mt-1 sm:mt-2 text-center ${
                         currentStep >= step.id
                           ? 'text-purple-600'
                           : 'text-gray-500'
@@ -421,7 +398,7 @@ const Checkout = () => {
                   </div>
                   {index < steps.length - 1 && (
                     <div
-                      className={`flex-1 h-1 mx-4 ${
+                      className={`flex-1 h-1 mx-1 sm:mx-4 ${
                         currentStep > step.id
                           ? 'bg-purple-500'
                           : 'bg-gray-200'
@@ -435,12 +412,12 @@ const Checkout = () => {
 
           {/* Form Content */}
           <form onSubmit={formik.handleSubmit}>
-            <div className="bg-white rounded-2xl p-8 shadow-playful mb-6">
+            <div className="bg-white rounded-2xl p-4 sm:p-8 shadow-playful mb-6">
               {/* Step 1: Shipping Address */}
               {currentStep === 1 && (
                 <div>
-                  <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-6 flex items-center gap-3">
-                    <MapPin className="h-8 w-8 text-purple-600" />
+                  <h2 className="text-xl sm:text-3xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-6 flex items-center gap-2 sm:gap-3">
+                    <MapPin className="h-5 w-5 sm:h-8 sm:w-8 text-purple-600 flex-shrink-0" />
                     Shipping Address
                   </h2>
 
@@ -681,8 +658,8 @@ const Checkout = () => {
               {/* Step 2: Delivery Method */}
               {currentStep === 2 && (
                 <div>
-                  <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-6 flex items-center gap-3">
-                    <Truck className="h-8 w-8 text-purple-600" />
+                  <h2 className="text-xl sm:text-3xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-6 flex items-center gap-2 sm:gap-3">
+                    <Truck className="h-5 w-5 sm:h-8 sm:w-8 text-purple-600 flex-shrink-0" />
                     Delivery Method
                   </h2>
 
@@ -752,8 +729,8 @@ const Checkout = () => {
               {/* Step 3: Payment Method */}
               {currentStep === 3 && (
                 <div>
-                  <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-6 flex items-center gap-3">
-                    <CreditCard className="h-8 w-8 text-purple-600" />
+                  <h2 className="text-xl sm:text-3xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-6 flex items-center gap-2 sm:gap-3">
+                    <CreditCard className="h-5 w-5 sm:h-8 sm:w-8 text-purple-600 flex-shrink-0" />
                     Payment Method
                   </h2>
 
@@ -789,28 +766,6 @@ const Checkout = () => {
                       </div>
                     </label>
 
-                    <label
-                      className={`flex items-center justify-between p-6 border-2 rounded-xl cursor-pointer transition-all ${
-                        paymentMethod === 'cod'
-                          ? 'border-purple-500 bg-purple-50'
-                          : 'border-gray-200 hover:border-purple-200'
-                      }`}
-                    >
-                      <div className="flex items-center gap-4">
-                        <input
-                          type="radio"
-                          name="payment"
-                          value="cod"
-                          checked={paymentMethod === 'cod'}
-                          onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
-                          className="w-5 h-5 text-purple-600"
-                        />
-                        <div>
-                          <p className="font-bold text-gray-800">Cash on Delivery</p>
-                          <p className="text-sm text-gray-600">Pay when you receive your order</p>
-                        </div>
-                      </div>
-                    </label>
                   </div>
                 </div>
               )}
@@ -818,8 +773,8 @@ const Checkout = () => {
               {/* Step 4: Order Review */}
               {currentStep === 4 && (
                 <div>
-                  <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-6 flex items-center gap-3">
-                    <CheckCircle className="h-8 w-8 text-purple-600" />
+                  <h2 className="text-xl sm:text-3xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-6 flex items-center gap-2 sm:gap-3">
+                    <CheckCircle className="h-5 w-5 sm:h-8 sm:w-8 text-purple-600 flex-shrink-0" />
                     Review Order
                   </h2>
 
@@ -863,7 +818,7 @@ const Checkout = () => {
                       <div>
                         <h3 className="font-bold text-gray-800 mb-2">Payment</h3>
                         <div className="bg-gray-50 rounded-lg p-4 text-sm">
-                          <p className="font-semibold">{paymentMethod === 'razorpay' ? 'Online Payment' : 'Cash on Delivery'}</p>
+                          <p className="font-semibold">Online Payment</p>
                         </div>
                       </div>
                     </div>

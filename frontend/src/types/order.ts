@@ -10,7 +10,7 @@ export type OrderStatus =
   | 'cancelled'
   | 'refunded';
 
-export type PaymentMethod = 'razorpay' | 'cod';
+export type PaymentMethod = 'razorpay';
 
 export type PaymentStatus =
   | 'pending'

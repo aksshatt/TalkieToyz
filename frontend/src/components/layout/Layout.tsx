@@ -77,7 +77,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   ];
 
   return (
-    <div className="min-h-screen pb-16 lg:pb-0">
+    <div className="min-h-screen pb-16 lg:pb-0 overflow-x-hidden w-full">
 
       {/* ── Scroll Progress Bar ── */}
       <div className="fixed top-0 left-0 right-0 h-1 z-[70] bg-warmgray-100">

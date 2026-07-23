@@ -66,6 +66,10 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+  }
+
   body {
     font-family: var(--font-family-sans);
     -webkit-font-smoothing: antialiased;
@@ -73,6 +77,8 @@
     background: linear-gradient(135deg, #FFFEF7 0%, #FFF9E6 25%, #B2EBF2 50%, #FFE1F2 75%, #FFF9C4 100%);
     background-size: 400% 400%;
     animation: gentle-gradient 20s ease infinite;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   h1, h2, h3, h4, h5, h6 {
