@@ -30,7 +30,7 @@ const HeroSection = () => {
           <img
             src="/hero-image1.jpg"
             alt="Teacher showing flashcard to child in a learning environment"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-[center_20%]"
             fetchPriority="high"
             decoding="async"
             onError={(e) => {
