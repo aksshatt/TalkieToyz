@@ -50,9 +50,13 @@ const ChildProgressDashboard = lazy(() => import('./pages/ChildProgressDashboard
 const LoyaltyDashboard = lazy(() => import('./pages/LoyaltyDashboard'));
 const BundleBuilderPage = lazy(() => import('./pages/BundleBuilderPage'));
 const PatientInbox = lazy(() => import('./pages/patient/PatientInbox'));
+const ProgressLogs = lazy(() => import('./pages/ProgressLogs'));
+const ReferralPage = lazy(() => import('./pages/ReferralPage'));
+const NotificationPreferences = lazy(() => import('./pages/NotificationPreferences'));
 
 // Therapist
 const TherapistLayout = lazy(() => import('./components/therapist/TherapistLayout'));
+const TherapistDashboard = lazy(() => import('./pages/therapist/TherapistDashboard'));
 const TherapistPatients = lazy(() => import('./pages/therapist/TherapistPatients'));
 const TherapistPatientDetail = lazy(() => import('./pages/therapist/TherapistPatientDetail'));
 const TherapistMessages = lazy(() => import('./pages/therapist/TherapistMessages'));
@@ -83,6 +87,7 @@ const TherapistApprovals = lazy(() => import('./pages/admin/TherapistApprovals')
 const TherapistManagement = lazy(() => import('./pages/admin/TherapistManagement'));
 const ConversationMonitor = lazy(() => import('./pages/admin/ConversationMonitor'));
 const ServicesAdmin = lazy(() => import('./pages/admin/ServicesAdmin'));
+const ReviewsAdmin = lazy(() => import('./pages/admin/Reviews'));
 
 const pageVariants = {
   initial: { opacity: 0, y: 12 },
@@ -170,12 +175,17 @@ function App() {
               {/* Patient Inbox */}
               <Route path="/messages" element={<PrivateRoute><PatientInbox /></PrivateRoute>} />
 
+              {/* User features */}
+              <Route path="/progress-logs" element={<PrivateRoute><ProgressLogs /></PrivateRoute>} />
+              <Route path="/referral" element={<PrivateRoute><ReferralPage /></PrivateRoute>} />
+              <Route path="/notification-preferences" element={<PrivateRoute><NotificationPreferences /></PrivateRoute>} />
+
               {/* Therapist */}
               <Route
                 path="/therapist"
                 element={<TherapistRoute><TherapistLayout /></TherapistRoute>}
               >
-                <Route index element={<TherapistPatients />} />
+                <Route index element={<TherapistDashboard />} />
                 <Route path="patients" element={<TherapistPatients />} />
                 <Route path="patients/:id" element={<TherapistPatientDetail />} />
                 <Route path="messages" element={<TherapistMessages />} />
@@ -208,7 +218,7 @@ function App() {
                 <Route path="orders" element={<Orders />} />
                 <Route path="customers" element={<Customers />} />
                 <Route path="analytics" element={<Analytics />} />
-                <Route path="reviews" element={<ReviewModeration />} />
+                <Route path="reviews" element={<ReviewsAdmin />} />
                 <Route path="blog" element={<BlogManagement />} />
                 <Route path="blog/new" element={<BlogPostFormPage />} />
                 <Route path="blog/edit/:slug" element={<BlogPostFormPage />} />

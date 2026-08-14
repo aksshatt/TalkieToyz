@@ -135,6 +135,22 @@ const therapistService = {
   deleteTemplate: async (id: number): Promise<void> => {
     await axiosInstance.delete(`/therapist/message_templates/${id}`);
   },
+
+  getCredentials: async (): Promise<{ success: boolean; data: any }> => {
+    const res = await axiosInstance.get('/therapist/credentials');
+    return res.data;
+  },
+
+  updateCredentials: async (data: {
+    experience_years?: number;
+    bio?: string;
+    certifications?: { name: string; issuer: string; year: number }[];
+    specializations?: string[];
+    languages_spoken?: string[];
+  }): Promise<{ success: boolean; data: any }> => {
+    const res = await axiosInstance.patch('/therapist/credentials', data);
+    return res.data;
+  },
 };
 
 export default therapistService;

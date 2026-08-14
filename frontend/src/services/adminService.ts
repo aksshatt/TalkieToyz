@@ -440,6 +440,46 @@ export const adminService = {
     return response.data;
   },
 
+  // Reviews Moderation
+  getReviews: async (filters?: {
+    page?: number;
+    per_page?: number;
+    pending?: boolean;
+    approved?: boolean;
+    product_id?: number;
+    rating?: number;
+    q?: string;
+  }): Promise<{ success: boolean; data: any[]; meta: PaginationMeta }> => {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') params.append(key, String(value));
+      });
+    }
+    const response = await axios.get(`/admin/reviews${params.toString() ? `?${params.toString()}` : ''}`);
+    return response.data;
+  },
+
+  approveReview: async (id: number): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.post(`/admin/reviews/${id}/approve`);
+    return response.data;
+  },
+
+  rejectReview: async (id: number): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.post(`/admin/reviews/${id}/reject`);
+    return response.data;
+  },
+
+  addReviewResponse: async (id: number, response_text: string): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.post(`/admin/reviews/${id}/add_response`, { response: response_text });
+    return response.data;
+  },
+
+  deleteReview: async (id: number): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.delete(`/admin/reviews/${id}`);
+    return response.data;
+  },
+
   // Product Questions
   getProductQuestions: async (filters?: {
     page?: number;

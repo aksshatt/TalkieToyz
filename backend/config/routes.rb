@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       post 'auth/refresh', to: 'auth#refresh'
       post 'auth/password/reset', to: 'auth#forgot_password'
       post 'auth/password/reset/confirm', to: 'auth#reset_password'
+      get  'auth/confirm', to: 'auth#confirm_email'
+      post 'auth/resend_confirmation', to: 'auth#resend_confirmation'
 
       # Products (full CRUD)
       resources :products, param: :id do
@@ -204,8 +206,22 @@ Rails.application.routes.draw do
       end
 
       # Therapist Routes (approved therapists only)
+      # Progress Logs (authenticated)
+      resources :progress_logs, only: [:index, :show, :create, :update, :destroy]
+
+      # Referrals (authenticated)
+      resources :referrals, only: [:index] do
+        collection do
+          post :apply
+        end
+      end
+
+      # Notification Preferences (authenticated)
+      resource :notification_preferences, only: [:show, :update]
+
       namespace :therapist do
         resources :patients, only: [:index, :show]
+        resource :credentials, only: [:show, :update], controller: 'therapist/credentials'
         resources :conversations, only: [:index, :show, :create] do
           resources :messages, only: [:create] do
             collection do

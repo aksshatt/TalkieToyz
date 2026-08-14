@@ -102,6 +102,34 @@ module Api
         render json: { success: true, message: 'Logged out successfully' }
       end
 
+      # GET /api/v1/auth/confirm?token=xxx
+      def confirm_email
+        user = User.find_by(confirmation_token: params[:token])
+
+        if user.nil?
+          return render json: { success: false, message: 'Invalid confirmation token' }, status: :not_found
+        end
+
+        if user.confirmed?
+          return render json: { success: true, message: 'Email already confirmed' }
+        end
+
+        user.confirm
+        render json: { success: true, message: 'Email confirmed successfully' }
+      end
+
+      # POST /api/v1/auth/resend_confirmation
+      def resend_confirmation
+        user = User.find_by(email: params[:email]&.downcase)
+
+        if user.nil? || user.confirmed?
+          return render json: { success: true, message: 'If the email exists and is unconfirmed, a link has been sent' }
+        end
+
+        user.send_confirmation_instructions
+        render json: { success: true, message: 'Confirmation email sent' }
+      end
+
       # POST /api/v1/auth/refresh
       def refresh
         raw_token = params[:refresh_token]
@@ -241,6 +269,9 @@ module Api
           bio: user.bio,
           avatar_url: user.avatar_url,
           approval_status: user.approval_status,
+          email_verified: user.confirmed?,
+          referral_code: user.referral_code,
+          loyalty_points_total: user.loyalty_points_total,
           created_at: user.created_at,
           updated_at: user.updated_at
         }

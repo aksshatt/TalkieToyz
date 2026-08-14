@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
+         :recoverable, :rememberable, :validatable, :confirmable,
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
 
   # Enums
@@ -22,8 +22,11 @@ class User < ApplicationRecord
   has_many :loyalty_points, dependent: :destroy
   has_many :milestone_achievements, dependent: :destroy
   has_many :refresh_tokens, dependent: :delete_all
-  # has_many :progress_logs, dependent: :destroy
+  has_many :progress_logs, dependent: :destroy
   has_many :blog_posts, foreign_key: :author_id, dependent: :destroy
+
+  belongs_to :referrer, class_name: 'User', foreign_key: :referred_by_id, optional: true
+  has_many :referrals, class_name: 'User', foreign_key: :referred_by_id
 
   # Therapist associations
   has_many :therapist_assignments, class_name: 'TherapistPatientAssignment', foreign_key: :therapist_id, dependent: :destroy
@@ -45,6 +48,7 @@ class User < ApplicationRecord
 
   # Callbacks
   after_create :ensure_cart
+  before_create :generate_referral_code
 
   # Scopes
   scope :active, -> { where(deleted_at: nil) }
@@ -63,9 +67,36 @@ class User < ApplicationRecord
     deleted_at.present?
   end
 
+  # Notification preference helpers — stored in preferences jsonb
+  def notification_preferences
+    preferences.fetch('notifications', default_notification_preferences)
+  end
+
+  def update_notification_preferences(prefs)
+    update!(preferences: preferences.merge('notifications' => notification_preferences.merge(prefs.stringify_keys)))
+  end
+
   private
 
   def ensure_cart
     Cart.create!(user: self) unless cart
+  end
+
+  def generate_referral_code
+    self.referral_code ||= loop do
+      code = "TT#{SecureRandom.alphanumeric(6).upcase}"
+      break code unless User.exists?(referral_code: code)
+    end
+  end
+
+  def default_notification_preferences
+    {
+      'order_updates' => true,
+      'whatsapp' => true,
+      'email' => true,
+      'sms' => false,
+      'promotions' => true,
+      'loyalty_points' => true
+    }
   end
 end
