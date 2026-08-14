@@ -219,6 +219,9 @@ Rails.application.routes.draw do
       # Notification Preferences (authenticated)
       resource :notification_preferences, only: [:show, :update]
 
+      # Festival theme (public)
+      get 'festival_theme', to: 'festival_theme#current'
+
       namespace :therapist do
         resources :patients, only: [:index, :show]
         resource :credentials, only: [:show, :update], controller: 'therapist/credentials'

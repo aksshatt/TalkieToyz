@@ -1,0 +1,216 @@
+# Indian festivals and national holidays for TalkieToys themed days
+# Dates: YYYY-MM-DD. Update annually.
+# theme: color palette override (hex values)
+# decoration: type hint for frontend
+# email_subject / email_headline / email_body: promo email copy (no discount codes)
+
+festivals:
+  - key: republic_day
+    name: "Republic Day"
+    date: "2026-01-26"
+    theme:
+      primary: "#FF9933"
+      secondary: "#138808"
+      accent: "#FFFFFF"
+      banner_bg: "#FF9933"
+    decoration: tricolor
+    emoji: "🇮🇳"
+    email_subject: "Happy Republic Day from TalkieToys! 🇮🇳"
+    email_headline: "Happy 77th Republic Day!"
+    email_body: "On this proud day, we celebrate the spirit of India. Every child's voice matters — and helping them find it is our mission. Thank you for being part of the TalkieToys family."
+
+  - key: holi
+    name: "Holi"
+    date: "2026-03-04"
+    theme:
+      primary: "#FF4081"
+      secondary: "#FFEB3B"
+      accent: "#4CAF50"
+      banner_bg: "#FF4081"
+    decoration: colors
+    emoji: "🎨"
+    email_subject: "Happy Holi from TalkieToys! 🎨"
+    email_headline: "Rang Barse! Happy Holi!"
+    email_body: "This festival of colours is a wonderful time for play and expression — the very things that help little ones grow. Wishing your family a joyful, vibrant Holi!"
+
+  - key: gudi_padwa
+    name: "Gudi Padwa"
+    date: "2026-03-19"
+    theme:
+      primary: "#FF6F00"
+      secondary: "#FDD835"
+      accent: "#E65100"
+      banner_bg: "#FF6F00"
+    decoration: gudi
+    emoji: "🪔"
+    email_subject: "Happy Gudi Padwa! 🪔 New beginnings await"
+    email_headline: "Shubh Gudi Padwa!"
+    email_body: "A new year, new milestones, new words. Celebrate new beginnings with the gift of communication. Wishing you and your family a prosperous year ahead!"
+
+  - key: ram_navami
+    name: "Ram Navami"
+    date: "2026-03-29"
+    theme:
+      primary: "#FF7043"
+      secondary: "#FFA726"
+      accent: "#BF360C"
+      banner_bg: "#FF7043"
+    decoration: floral
+    emoji: "🌸"
+    email_subject: "Happy Ram Navami from TalkieToys 🌸"
+    email_headline: "Happy Ram Navami!"
+    email_body: "May this auspicious day bring peace, joy, and growth to your family. We're honoured to walk alongside you on your child's journey."
+
+  - key: baisakhi
+    name: "Baisakhi"
+    date: "2026-04-14"
+    theme:
+      primary: "#FDD835"
+      secondary: "#FF8F00"
+      accent: "#F57F17"
+      banner_bg: "#FDD835"
+    decoration: harvest
+    emoji: "🌾"
+    email_subject: "Happy Baisakhi! 🌾 Season of growth"
+    email_headline: "Happy Baisakhi!"
+    email_body: "Just like the harvest season celebrates growth, every new word your child speaks is a harvest of hard work and love. Wishing your family a joyful Baisakhi!"
+
+  - key: eid_ul_fitr
+    name: "Eid ul-Fitr"
+    date: "2026-03-31"
+    theme:
+      primary: "#1B5E20"
+      secondary: "#C8E6C9"
+      accent: "#FFD700"
+      banner_bg: "#1B5E20"
+    decoration: crescent
+    emoji: "🌙"
+    email_subject: "Eid Mubarak from TalkieToys! 🌙"
+    email_headline: "Eid Mubarak!"
+    email_body: "Eid is a time of joy, togetherness, and gratitude. We're grateful for every family that trusts us with their child's growth. Eid Mubarak to you and yours!"
+
+  - key: independence_day
+    name: "Independence Day"
+    date: "2026-08-15"
+    theme:
+      primary: "#FF9933"
+      secondary: "#138808"
+      accent: "#FFFFFF"
+      banner_bg: "#138808"
+    decoration: tricolor
+    emoji: "🇮🇳"
+    email_subject: "Happy Independence Day! 🇮🇳 Jai Hind"
+    email_headline: "Jai Hind! Happy Independence Day!"
+    email_body: "79 years of freedom, countless voices heard. We believe every Indian child deserves to be heard — that's why we do what we do. Happy Independence Day from Team TalkieToys."
+
+  - key: janmashtami
+    name: "Janmashtami"
+    date: "2026-08-22"
+    theme:
+      primary: "#1565C0"
+      secondary: "#FDD835"
+      accent: "#0D47A1"
+      banner_bg: "#1565C0"
+    decoration: floral
+    emoji: "🦚"
+    email_subject: "Happy Janmashtami! 🦚 Nand Ghar Mein Aayo Nanda"
+    email_headline: "Happy Janmashtami!"
+    email_body: "May the divine playfulness of Krishna fill your home with laughter, music, and the sweet sounds of children growing. Happy Janmashtami from TalkieToys!"
+
+  - key: ganesh_chaturthi
+    name: "Ganesh Chaturthi"
+    date: "2026-08-25"
+    theme:
+      primary: "#FF6F00"
+      secondary: "#FDD835"
+      accent: "#E65100"
+      banner_bg: "#FF6F00"
+    decoration: ganesh
+    emoji: "🐘"
+    email_subject: "Ganpati Bappa Morya! 🐘 Happy Ganesh Chaturthi"
+    email_headline: "Ganpati Bappa Morya!"
+    email_body: "Lord Ganesha, the remover of obstacles, is the patron of beginnings. May He clear every obstacle in your child's path — linguistic, developmental, or otherwise. Happy Ganesh Chaturthi!"
+
+  - key: navratri
+    name: "Navratri"
+    date: "2026-09-28"
+    theme:
+      primary: "#E91E63"
+      secondary: "#FF9800"
+      accent: "#9C27B0"
+      banner_bg: "#E91E63"
+    decoration: dandiya
+    emoji: "🪷"
+    email_subject: "Happy Navratri! 🪷 Nine nights of joy"
+    email_headline: "Happy Navratri!"
+    email_body: "Nine nights of dance, devotion, and colour — Navratri is the perfect reminder that expression comes in many forms. Wishing your family a vibrant Navratri!"
+
+  - key: dussehra
+    name: "Dussehra"
+    date: "2026-10-07"
+    theme:
+      primary: "#FF5722"
+      secondary: "#FFC107"
+      accent: "#BF360C"
+      banner_bg: "#FF5722"
+    decoration: bow
+    emoji: "🏹"
+    email_subject: "Happy Dussehra! 🏹 Good always wins"
+    email_headline: "Happy Dussehra — Vijayadashami!"
+    email_body: "The victory of good over evil is also the victory of perseverance over giving up. Every session, every milestone, every word — it's a win. Happy Dussehra from TalkieToys!"
+
+  - key: diwali
+    name: "Diwali"
+    date: "2026-10-20"
+    theme:
+      primary: "#FF6F00"
+      secondary: "#FFD700"
+      accent: "#E65100"
+      banner_bg: "#1A0A00"
+    decoration: diya
+    emoji: "🪔"
+    email_subject: "Happy Diwali! 🪔 Light up every milestone"
+    email_headline: "Shubh Deepawali!"
+    email_body: "Diwali is about lighting up darkness — and every word your child learns does exactly that. May your home be filled with light, laughter, and the joy of little voices. Happy Diwali from Team TalkieToys!"
+
+  - key: bhai_dooj
+    name: "Bhai Dooj"
+    date: "2026-10-22"
+    theme:
+      primary: "#7B1FA2"
+      secondary: "#E1BEE7"
+      accent: "#4A148C"
+      banner_bg: "#7B1FA2"
+    decoration: floral
+    emoji: "💜"
+    email_subject: "Happy Bhai Dooj! 💜 Celebrate your bond"
+    email_headline: "Happy Bhai Dooj!"
+    email_body: "The bond between siblings is one of the first social connections a child forms — and one of the most powerful. Happy Bhai Dooj from TalkieToys!"
+
+  - key: christmas
+    name: "Christmas"
+    date: "2026-12-25"
+    theme:
+      primary: "#C62828"
+      secondary: "#2E7D32"
+      accent: "#FFD700"
+      banner_bg: "#C62828"
+    decoration: snow
+    emoji: "🎄"
+    email_subject: "Merry Christmas from TalkieToys! 🎄"
+    email_headline: "Merry Christmas!"
+    email_body: "May your home be full of warmth, laughter, and the most beautiful sounds — the voices of your children. Merry Christmas and Happy Holidays from Team TalkieToys!"
+
+  - key: new_year
+    name: "New Year"
+    date: "2026-01-01"
+    theme:
+      primary: "#212121"
+      secondary: "#FFD700"
+      accent: "#757575"
+      banner_bg: "#212121"
+    decoration: fireworks
+    emoji: "🎆"
+    email_subject: "Happy New Year 2026! 🎆 Here's to new milestones"
+    email_headline: "Happy New Year 2026!"
+    email_body: "A new year means new milestones to celebrate. Thank you for trusting TalkieToys in your child's journey. Here's to a year full of first words, new sentences, and joyful breakthroughs!"

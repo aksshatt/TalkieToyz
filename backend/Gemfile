@@ -59,6 +59,7 @@ gem 'dotenv-rails'
 
 # Background Jobs
 gem 'sidekiq'
+gem 'sidekiq-cron'
 gem 'redis'
 
 # Pagination
