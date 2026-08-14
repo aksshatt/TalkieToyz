@@ -160,7 +160,6 @@ Rails.application.routes.draw do
       resources :orders, only: [:index, :show, :create, :update] do
         member do
           post :cancel
-          post :refund
           post :track
           post :retry_payment
           post :create_razorpay_order
