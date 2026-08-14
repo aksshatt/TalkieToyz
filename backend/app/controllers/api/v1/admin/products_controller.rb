@@ -92,10 +92,14 @@ module Api
 
         # POST /api/v1/admin/products/bulk_update
         def bulk_update
-          product_ids = params[:product_ids] || []
-          action = params[:action] # 'activate', 'deactivate', 'delete'
+          product_ids = Array(params[:product_ids]).map(&:to_i).select(&:positive?)
+          bulk_action = params[:bulk_action].to_s
 
-          case action
+          if product_ids.empty?
+            return render_error('No products selected', nil, status: :bad_request)
+          end
+
+          case bulk_action
           when 'activate'
             Product.where(id: product_ids).update_all(active: true)
             message = 'Products activated successfully'
@@ -109,7 +113,7 @@ module Api
             return render_error('Invalid action', nil, status: :bad_request)
           end
 
-          log_activity('bulk_update', 'Product', nil, { action: action, count: product_ids.size })
+          log_activity('bulk_update', 'Product', nil, { action: bulk_action, count: product_ids.size })
           render_success(nil, message)
         end
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Plus, Edit, Trash2, Eye, Image as ImageIcon, Upload, X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, EyeOff, Image as ImageIcon, Upload, X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import DataTable from '../../components/admin/DataTable';
 import type { Column } from '../../components/admin/DataTable';
 import Modal from '../../components/admin/Modal';
@@ -176,24 +176,20 @@ const Products: React.FC = () => {
     }
   };
 
-  const handleBulkDelete = async () => {
+  const handleBulkAction = async (action: 'activate' | 'deactivate' | 'delete') => {
     if (selectedProducts.length === 0) {
-      toast.error('Please select products to delete');
+      toast.error('Please select products first');
       return;
     }
-    if (
-      window.confirm(
-        `Are you sure you want to delete ${selectedProducts.length} products?`
-      )
-    ) {
-      try {
-        await Promise.all(selectedProducts.map(id => adminService.deleteProduct(id)));
-        toast.success(`${selectedProducts.length} products deleted`);
-        setSelectedProducts([]);
-        loadProducts(); // Reload products after deletion
-      } catch (error: any) {
-        toast.error(error.response?.data?.message || 'Failed to delete products');
-      }
+    const labels = { activate: 'activate', deactivate: 'deactivate', delete: 'delete' };
+    if (!window.confirm(`${labels[action].charAt(0).toUpperCase() + labels[action].slice(1)} ${selectedProducts.length} product(s)?`)) return;
+    try {
+      await adminService.bulkUpdateProducts(selectedProducts, action);
+      toast.success(`${selectedProducts.length} product(s) ${action}d`);
+      setSelectedProducts([]);
+      loadProducts();
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || `Failed to ${action} products`);
     }
   };
 
@@ -220,17 +216,33 @@ const Products: React.FC = () => {
 
       {/* Bulk Actions */}
       {selectedProducts.length > 0 && (
-        <div className="bg-warmgray-100 border-2 border-warmgray-200 rounded-xl p-4 flex items-center justify-between">
+        <div className="bg-warmgray-100 border-2 border-warmgray-200 rounded-xl p-4 flex items-center justify-between flex-wrap gap-3">
           <span className="font-semibold text-warmgray-700">
             {selectedProducts.length} product(s) selected
           </span>
-          <button
-            onClick={handleBulkDelete}
-            className="flex items-center space-x-2 px-4 py-2 bg-coral text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
-          >
-            <Trash2 className="h-4 w-4" />
-            <span>Delete Selected</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => handleBulkAction('activate')}
+              className="flex items-center space-x-2 px-4 py-2 bg-teal text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            >
+              <Eye className="h-4 w-4" />
+              <span>Activate</span>
+            </button>
+            <button
+              onClick={() => handleBulkAction('deactivate')}
+              className="flex items-center space-x-2 px-4 py-2 bg-warmgray-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            >
+              <EyeOff className="h-4 w-4" />
+              <span>Deactivate</span>
+            </button>
+            <button
+              onClick={() => handleBulkAction('delete')}
+              className="flex items-center space-x-2 px-4 py-2 bg-coral text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            >
+              <Trash2 className="h-4 w-4" />
+              <span>Delete</span>
+            </button>
+          </div>
         </div>
       )}
 

@@ -292,6 +292,17 @@ export const adminService = {
     return response.data;
   },
 
+  bulkUpdateProducts: async (
+    productIds: number[],
+    action: 'activate' | 'deactivate' | 'delete'
+  ): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.post('/admin/products/bulk_update', {
+      product_ids: productIds,
+      bulk_action: action,
+    });
+    return response.data;
+  },
+
   // Orders
   getOrders: async (filters?: {
     page?: number;
