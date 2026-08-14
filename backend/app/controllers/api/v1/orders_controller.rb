@@ -15,7 +15,6 @@ module Api
                               .page(params[:page])
                               .per(per_page)
 
-        # Filter by status if provided
         @orders = @orders.by_status(params[:status]) if params[:status].present?
 
         render_success(
@@ -38,92 +37,21 @@ module Api
 
       # GET /api/v1/orders/:id
       def show
-        render_success(
-          OrderSerializer.new(@order).as_json,
-          'Order retrieved successfully'
-        )
+        render_success(OrderSerializer.new(@order).as_json, 'Order retrieved successfully')
       end
 
       # POST /api/v1/orders
       def create
-        cart = current_user.cart
+        result = OrderCreationService.call(user: current_user, params: params)
 
-        if cart.empty?
-          return render_error('Cart is empty', nil, status: :unprocessable_entity)
-        end
-
-        # Validate coupon if provided
-        coupon = nil
-        if params[:coupon_code].present?
-          coupon = Coupon.find_by(code: params[:coupon_code]&.upcase)
-
-          unless coupon&.valid_for_order?(cart.subtotal)
-            return render_error('Invalid or expired coupon code', nil, status: :unprocessable_entity)
+        if result.success?
+          if params[:save_address] == true || params[:save_address] == 'true'
+            save_shipping_address(permitted_address(params[:shipping_address]))
           end
-
-          # One-use-per-user: reject if this user already has a non-cancelled order redeeming
-          # this coupon. Prevents unlimited reuse by the same account.
-          already_used = current_user.orders.where(coupon_id: coupon.id).where.not(status: :cancelled).exists?
-          if already_used
-            return render_error('Coupon already used', nil, status: :unprocessable_entity)
-          end
+          render_success(OrderSerializer.new(result.order).as_json, 'Order created successfully', status: :created)
+        else
+          render_error(result.error, nil, status: :unprocessable_entity)
         end
-
-        # Validate required parameters
-        unless params[:payment_method].present? && params[:shipping_address].present?
-          return render_error(
-            'Payment method and shipping address are required',
-            nil,
-            status: :unprocessable_entity
-          )
-        end
-
-        # Create order from cart
-        # Only clear cart for COD orders - for payment gateway orders, cart will be cleared after payment verification
-        shipping_cost = params[:shipping_cost].present? ? params[:shipping_cost].to_f : 0
-        if shipping_cost < 0
-          return render_error('shipping_cost cannot be negative', nil, status: :unprocessable_entity)
-        end
-
-        @order = Order.create_from_cart(
-          cart,
-          payment_method: params[:payment_method],
-          shipping_address: permitted_address(params[:shipping_address]),
-          billing_address: permitted_address(params[:billing_address]),
-          coupon: coupon,
-          clear_cart: params[:payment_method] == 'cod',
-          gift_wrap: params[:gift_wrap] == true || params[:gift_wrap] == 'true',
-          gift_message: params[:gift_message],
-          shipping_cost: shipping_cost,
-          selected_courier_id: params[:selected_courier_id]
-        )
-
-        if params[:customer_notes].present?
-          @order.update(customer_notes: params[:customer_notes])
-        end
-
-        # Save shipping address for future use if requested
-        if params[:save_address] == true || params[:save_address] == 'true'
-          save_shipping_address(permitted_address(params[:shipping_address]))
-        end
-
-        # For COD orders, mark as confirmed immediately
-        if @order.payment_method == 'cod'
-          Order.transaction do
-            @order.mark_as_confirmed
-            points = @order.total.to_i
-            LoyaltyPoint.award(user: current_user, source: 'purchase', points: points,
-                               reference: @order, description: "Earned #{points} points for order ##{@order.order_number}")
-          end
-        end
-
-        render_success(
-          OrderSerializer.new(@order).as_json,
-          'Order created successfully',
-          status: :created
-        )
-      rescue StandardError => e
-        render_error('Failed to create order', e.message, status: :unprocessable_entity)
       end
 
       # PATCH /api/v1/orders/:id (Admin only)
@@ -134,7 +62,6 @@ module Api
         updates[:notes] = params[:notes] if params[:notes].present?
 
         if @order.update(updates)
-          # Update shipped_at / delivered_at timestamps (emails handled by model callback)
           case @order.status.to_sym
           when :shipped
             @order.update(shipped_at: Time.current) unless @order.shipped_at.present?
@@ -142,10 +69,7 @@ module Api
             @order.update(delivered_at: Time.current) unless @order.delivered_at.present?
           end
 
-          render_success(
-            OrderSerializer.new(@order.reload).as_json,
-            'Order updated successfully'
-          )
+          render_success(OrderSerializer.new(@order.reload).as_json, 'Order updated successfully')
         else
           render_error('Failed to update order', @order.errors.full_messages)
         end
@@ -158,11 +82,7 @@ module Api
         end
 
         @order.shipment.refresh_tracking
-
-        render_success(
-          OrderSerializer.new(@order.reload).as_json,
-          'Tracking refreshed successfully'
-        )
+        render_success(OrderSerializer.new(@order.reload).as_json, 'Tracking refreshed successfully')
       rescue StandardError => e
         Rails.logger.error("Tracking refresh error: #{e.message}")
         render_error('Failed to refresh tracking', e.message, status: :unprocessable_entity)
@@ -170,17 +90,12 @@ module Api
 
       # POST /api/v1/orders/:id/cancel
       def cancel
-        # Only allow users to cancel their own orders
         unless @order.user_id == current_user.id
           return render_error('You can only cancel your own orders', nil, status: :forbidden)
         end
 
         unless @order.can_be_cancelled?
-          return render_error(
-            'Order cannot be cancelled at this stage',
-            { status: @order.status },
-            status: :unprocessable_entity
-          )
+          return render_error('Order cannot be cancelled at this stage', { status: @order.status }, status: :unprocessable_entity)
         end
 
         if @order.mark_as_cancelled
@@ -189,10 +104,7 @@ module Api
           rescue => e
             Rails.logger.error "Order cancelled email failed: #{e.message}"
           end
-          render_success(
-            OrderSerializer.new(@order).as_json,
-            'Order cancelled successfully'
-          )
+          render_success(OrderSerializer.new(@order).as_json, 'Order cancelled successfully')
         else
           render_error('Failed to cancel order', @order.errors.full_messages)
         end
@@ -200,48 +112,19 @@ module Api
 
       # POST /api/v1/orders/:id/retry_payment
       def retry_payment
-        # Only allow users to retry payment for their own orders
         unless @order.user_id == current_user.id
           return render_error('You can only retry payment for your own orders', nil, status: :forbidden)
         end
 
-        # Only allow retry for Razorpay orders
-        unless @order.payment_method == 'razorpay'
-          return render_error(
-            'Payment retry is only available for Razorpay orders',
-            nil,
-            status: :unprocessable_entity
-          )
-        end
+        result = PaymentService.retry_payment(@order)
 
-        # Check if order is in a state where payment can be retried
-        unless @order.can_retry_payment?
-          return render_error(
-            'Payment cannot be retried for this order',
-            {
-              status: @order.status,
-              payment_status: @order.payment_status,
-              reason: 'Order must be in awaiting_payment or failed payment status'
-            },
-            status: :unprocessable_entity
-          )
-        end
-
-        # Create new Razorpay order
-        razorpay_order = RazorpayService.create_order(@order)
-
-        if razorpay_order
+        if result.success?
           render_success(
-            {
-              order: OrderSerializer.new(@order.reload).as_json,
-              razorpay_order_id: razorpay_order.id,
-              razorpay_key_id: ENV['RAZORPAY_KEY_ID'],
-              amount: razorpay_order.amount
-            },
+            { order: OrderSerializer.new(@order.reload).as_json }.merge(result.data),
             'Payment retry initiated successfully'
           )
         else
-          render_error('Failed to initiate payment retry', nil, status: :unprocessable_entity)
+          render_error(result.error, nil, status: :unprocessable_entity)
         end
       rescue => e
         Rails.logger.error("Payment retry error: #{e.message}")
@@ -251,85 +134,37 @@ module Api
       # POST /api/v1/orders/:id/create_razorpay_order
       def create_razorpay_order
         order = current_user.orders.find_by(id: params[:id])
-        unless order
-          return render_error('Order not found', nil, status: :not_found)
-        end
+        return render_error('Order not found', nil, status: :not_found) unless order
 
-        # Check if order is already paid or not using Razorpay
-        unless order.payment_method == 'razorpay'
-          return render_error('This order does not use Razorpay payment', nil, status: :unprocessable_entity)
-        end
+        result = PaymentService.create_razorpay_order(order)
 
-        razorpay_order = RazorpayService.create_order(order)
-
-        if razorpay_order
+        if result.success?
           render_success(
-            {
-              order: OrderSerializer.new(order.reload).as_json,
-              razorpay_order_id: razorpay_order.id,
-              razorpay_key_id: ENV['RAZORPAY_KEY_ID'],
-              amount: razorpay_order.amount
-            },
+            { order: OrderSerializer.new(order.reload).as_json }.merge(result.data),
             'Razorpay order created successfully'
           )
         else
-          Rails.logger.error("Razorpay order creation failed. KEY_ID present: #{ENV['RAZORPAY_KEY_ID'].present?}, Order: #{order.id}")
-          render_error('Failed to create Razorpay order', nil, status: :unprocessable_entity)
+          render_error(result.error, nil, status: :unprocessable_entity)
         end
       end
 
       # POST /api/v1/orders/:id/payment/verify
       def verify_payment
         order = current_user.orders.find_by(id: params[:id])
-        unless order
-          return render_error('Order not found', nil, status: :not_found)
-        end
+        return render_error('Order not found', nil, status: :not_found) unless order
 
-        # Ensure the razorpay_order_id from client matches the one we created for this order.
-        # Prevents attacker from submitting a valid signature from a different (e.g. cheaper) razorpay order.
-        if order.payment_intent_id.blank? || order.payment_intent_id != params[:razorpay_order_id]
-          Rails.logger.warn("Razorpay order_id mismatch: order=#{order.id}")
-          order.payment_failed!
-          return render_error('Payment verification failed', nil, status: :unprocessable_entity)
-        end
-
-        # Verify Razorpay signature
-        if RazorpayService.verify_payment_signature(
+        result = PaymentService.verify_payment(
+          order,
           razorpay_order_id: params[:razorpay_order_id],
           razorpay_payment_id: params[:razorpay_payment_id],
           razorpay_signature: params[:razorpay_signature]
         )
-          # Verify captured amount matches order total (defense-in-depth vs tampered order records).
-          payment = RazorpayService.fetch_payment(params[:razorpay_payment_id])
-          expected_amount_paise = (order.total.to_f * 100).round.to_i
-          actual_amount_paise = payment&.amount.to_i
-          if payment.nil? || actual_amount_paise != expected_amount_paise
-            Rails.logger.warn("Razorpay amount mismatch: order=#{order.id} expected=#{expected_amount_paise} got=#{actual_amount_paise}")
-            order.payment_failed!
-            return render_error('Payment amount mismatch', nil, status: :unprocessable_entity)
-          end
 
-          # Store payment details
-          order.update(
-            payment_details: {
-              razorpay_order_id: params[:razorpay_order_id],
-              razorpay_payment_id: params[:razorpay_payment_id],
-              razorpay_signature: params[:razorpay_signature]
-            }
-          )
-
-          order.payment_successful!
-
-          # Clear cart after successful payment
+        if result.success?
           current_user.cart.clear
-
-          render_success(
-            OrderSerializer.new(order).as_json,
-            'Payment verified successfully'
-          )
+          render_success(OrderSerializer.new(result.data).as_json, 'Payment verified successfully')
         else
-          order.payment_failed!
-          render_error('Payment verification failed', nil, status: :unprocessable_entity)
+          render_error(result.error, nil, status: :unprocessable_entity)
         end
       rescue ActiveRecord::RecordNotFound
         render_error('Order not found', nil, status: :not_found)
@@ -340,7 +175,6 @@ module Api
       def set_order
         @order = Order.includes(order_items: [:product, :product_variant], coupon: [], shipment: []).find(params[:id])
 
-        # Non-admin users can only view their own orders
         unless current_user.admin? || @order.user_id == current_user.id
           render_error('Access denied', nil, status: :forbidden)
         end
@@ -363,18 +197,17 @@ module Api
       end
 
       def save_shipping_address(address_data)
-        # Check if an identical address already exists
-        existing_address = current_user.user_addresses.find_by(
+        return unless address_data
+
+        existing = current_user.user_addresses.find_by(
           address_line_1: address_data['address_line_1'],
           address_line_2: address_data['address_line_2'],
           city: address_data['city'],
           state: address_data['state'],
           postal_code: address_data['postal_code']
         )
+        return if existing.present?
 
-        return if existing_address.present?
-
-        # Create new address
         current_user.user_addresses.create!(
           name: address_data['name'],
           phone: address_data['phone'],
