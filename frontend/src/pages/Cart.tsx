@@ -146,14 +146,14 @@ const Cart = () => {
                           {/* Qty controls */}
                           <div className="flex items-center gap-2 bg-warmgray-50 rounded-xl p-1">
                             <motion.button onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                              disabled={isUpdating || item.quantity <= 1} whileTap={{ scale: 0.85 }}
+                              disabled={item.quantity <= 1} whileTap={{ scale: 0.85 }}
                               className="w-7 h-7 flex items-center justify-center rounded-lg bg-white shadow-soft text-teal hover:bg-teal hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
                               <Minus className="h-3.5 w-3.5" />
                             </motion.button>
                             <span className="font-bold w-8 text-center text-warmgray-900 text-sm">{item.quantity}</span>
                             <motion.button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                              disabled={isUpdating} whileTap={{ scale: 0.85 }}
-                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-white shadow-soft text-teal hover:bg-teal hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                              whileTap={{ scale: 0.85 }}
+                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-white shadow-soft text-teal hover:bg-teal hover:text-white transition-colors">
                               <Plus className="h-3.5 w-3.5" />
                             </motion.button>
                           </div>
