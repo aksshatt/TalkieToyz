@@ -375,7 +375,7 @@ module Api
         return if existing_address.present?
 
         # Create new address
-        current_user.user_addresses.create(
+        current_user.user_addresses.create!(
           name: address_data['name'],
           phone: address_data['phone'],
           address_line_1: address_data['address_line_1'],
@@ -387,8 +387,7 @@ module Api
           is_default: current_user.user_addresses.empty?
         )
       rescue => e
-        # Log error but don't fail the order creation
-        Rails.logger.error("Failed to save shipping address: #{e.message}")
+        Rails.logger.error("Failed to save shipping address for user #{current_user.id}: #{e.message}\n#{e.backtrace.first(5).join("\n")}")
       end
     end
   end
