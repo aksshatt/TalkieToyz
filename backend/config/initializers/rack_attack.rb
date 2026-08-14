@@ -29,7 +29,7 @@ class Rack::Attack
   end
 
   # Throttle general API requests per IP
-  throttle('api/ip', limit: 300, period: 1.minute) do |req|
+  throttle('api/ip', limit: 60, period: 1.minute) do |req|
     req.ip if req.path.start_with?('/api/')
   end
 
