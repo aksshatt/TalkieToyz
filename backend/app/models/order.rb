@@ -37,7 +37,9 @@ class Order < ApplicationRecord
   # Both run after_commit so a rolled-back transaction never increments usage or sends email.
   after_commit :increment_coupon_usage, on: :create
   after_commit :send_order_confirmation_email, on: :create
+  after_commit :send_whatsapp_confirmation, on: :create
   after_update :send_status_update_email, if: :saved_change_to_status?
+  after_update :send_whatsapp_status_update, if: :saved_change_to_status?
   after_update :auto_create_shipment, if: :should_auto_create_shipment?
 
   # Scopes
@@ -336,6 +338,12 @@ class Order < ApplicationRecord
     end
   end
 
+  def send_whatsapp_confirmation
+    if payment_method == 'cod' || (payment_method == 'razorpay' && payment_status == 'paid')
+      SendWhatsappNotificationJob.perform_later(id, 'confirmed')
+    end
+  end
+
   def send_status_update_email
     case status.to_sym
     when :shipped
@@ -344,6 +352,14 @@ class Order < ApplicationRecord
       OrderMailer.order_delivered(id).deliver_later(queue: 'mailers')
     when :cancelled
       OrderMailer.order_cancelled(id).deliver_later(queue: 'mailers')
+    end
+  end
+
+  def send_whatsapp_status_update
+    case status.to_sym
+    when :shipped    then SendWhatsappNotificationJob.perform_later(id, 'shipped')
+    when :delivered  then SendWhatsappNotificationJob.perform_later(id, 'delivered')
+    when :cancelled  then SendWhatsappNotificationJob.perform_later(id, 'cancelled')
     end
   end
 
