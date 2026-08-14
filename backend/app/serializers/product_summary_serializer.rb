@@ -33,7 +33,9 @@ class ProductSummarySerializer < ApplicationSerializer
 
     host = ENV.fetch('BACKEND_URL', 'https://talkietoys-backend.onrender.com')
     helpers = Rails.application.routes.url_helpers
-    object.images.limit(1).filter_map do |image|
+    # Use preloaded images_attachments to avoid N+1 from images.limit(1)
+    object.images_attachments.first(1).filter_map do |attachment|
+      image = attachment.blob
       result = { url: helpers.rails_blob_url(image, host: host) }
       if image.representable?
         result[:thumbnail_url] = helpers.rails_representation_url(
