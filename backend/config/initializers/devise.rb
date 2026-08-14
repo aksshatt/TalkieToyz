@@ -4,7 +4,7 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  config.secret_key = ENV['DEVISE_JWT_SECRET_KEY'] || 'temp_key_for_development'
+  config.secret_key = ENV['DEVISE_JWT_SECRET_KEY'] || (Rails.env.production? ? raise('DEVISE_JWT_SECRET_KEY env var not set') : 'temp_key_for_development')
 
   # ==> Mailer Configuration
   config.mailer_sender = ENV.fetch('MAILER_SENDER', 'noreply@talkietoyz.shop')

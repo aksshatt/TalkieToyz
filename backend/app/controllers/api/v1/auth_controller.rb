@@ -293,7 +293,7 @@ module Api
       end
 
       def jwt_secret
-        ENV['DEVISE_JWT_SECRET_KEY'] || Rails.application.credentials.secret_key_base
+        ENV.fetch('DEVISE_JWT_SECRET_KEY') { raise 'DEVISE_JWT_SECRET_KEY env var not set' }
       end
     end
   end
