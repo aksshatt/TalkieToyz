@@ -198,6 +198,48 @@ module Api
         end
       end
 
+      # POST /api/v1/orders/:id/refund
+      def refund
+        unless @order.user_id == current_user.id
+          return render_error('Forbidden', nil, status: :forbidden)
+        end
+
+        unless @order.can_refund?
+          return render_error(
+            'Order is not eligible for refund',
+            { status: @order.status, payment_status: @order.payment_status },
+            status: :unprocessable_entity
+          )
+        end
+
+        # Restrict customer refunds to delivered orders within 7 days
+        if @order.delivered?
+          delivered_at = @order.delivered_at || @order.updated_at
+          if delivered_at < 7.days.ago
+            return render_error(
+              'Refund window has expired',
+              { eligible_until: (delivered_at + 7.days).iso8601 },
+              status: :unprocessable_entity
+            )
+          end
+        end
+
+        reason = params[:reason].presence || 'Customer request'
+        result = @order.initiate_refund(@order.total.to_f, reason)
+
+        if result[:success]
+          render_success(
+            OrderSerializer.new(@order.reload).as_json,
+            'Refund initiated successfully. Amount will be credited within 5-7 business days.'
+          )
+        else
+          render_error('Refund failed', [result[:error]], status: :unprocessable_entity)
+        end
+      rescue => e
+        Rails.logger.error("Customer refund error for order #{@order.id}: #{e.message}")
+        render_error('Refund processing failed', nil, status: :internal_server_error)
+      end
+
       # POST /api/v1/orders/:id/retry_payment
       def retry_payment
         # Only allow users to retry payment for their own orders
