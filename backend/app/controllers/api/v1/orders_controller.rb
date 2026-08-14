@@ -273,7 +273,7 @@ module Api
             'Razorpay order created successfully'
           )
         else
-          Rails.logger.error("Razorpay order creation failed. KEY_ID present: #{ENV['RAZORPAY_KEY_ID'].present?}, Order: #{order.id}, Amount: #{order.total}")
+          Rails.logger.error("Razorpay order creation failed. KEY_ID present: #{ENV['RAZORPAY_KEY_ID'].present?}, Order: #{order.id}")
           render_error('Failed to create Razorpay order', nil, status: :unprocessable_entity)
         end
       end
@@ -288,7 +288,7 @@ module Api
         # Ensure the razorpay_order_id from client matches the one we created for this order.
         # Prevents attacker from submitting a valid signature from a different (e.g. cheaper) razorpay order.
         if order.payment_intent_id.blank? || order.payment_intent_id != params[:razorpay_order_id]
-          Rails.logger.warn("Razorpay order_id mismatch: order=#{order.id} expected=#{order.payment_intent_id.inspect} got=#{params[:razorpay_order_id].inspect}")
+          Rails.logger.warn("Razorpay order_id mismatch: order=#{order.id}")
           order.payment_failed!
           return render_error('Payment verification failed', nil, status: :unprocessable_entity)
         end
