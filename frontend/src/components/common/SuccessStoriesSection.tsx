@@ -49,7 +49,7 @@ const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({ productId
     <div className="mt-10">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Parent Success Stories</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-warmgray-100">Parent Success Stories</h2>
           <p className="text-gray-500 text-sm mt-1">Real journeys from families like yours</p>
         </div>
         {user && (
@@ -138,13 +138,13 @@ const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({ productId
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {stories.map(story => (
-              <div key={story.id} className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition">
+              <div key={story.id} className="bg-white dark:bg-surface-dark-raised rounded-xl border border-gray-200 dark:border-surface-dark-border p-5 hover:shadow-md transition">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-sm flex-shrink-0">
                     {story.child_name[0]}
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">{story.child_name}</p>
+                    <p className="font-semibold text-gray-900 dark:text-warmgray-100">{story.child_name}</p>
                     <p className="text-xs text-gray-500">
                       {story.age_months ? `${Math.floor(story.age_months / 12)}y ${story.age_months % 12}m` : ''}
                       {story.speech_goal && ` · ${story.speech_goal}`}

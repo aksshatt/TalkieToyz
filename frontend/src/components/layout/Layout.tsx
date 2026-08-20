@@ -2,8 +2,10 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   ShoppingCart, User, LogOut, Menu, X, Heart, ClipboardList,
   Home, ShoppingBag, Brain, BookOpen, ChevronUp, MessageSquare, Stethoscope,
+  Sun, Moon,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useAppSelector } from '../../store/hooks';
 import { useUnreadMessages } from '../../hooks/useUnreadMessages';
 import { useState, useEffect, useRef } from 'react';
@@ -28,6 +30,7 @@ const navLinks = [
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isAuthenticated, logout, user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const cart = useAppSelector((state) => state.cart.cart);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
@@ -84,7 +87,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <FestivalBanner />
 
       {/* ── Scroll Progress Bar ── */}
-      <div className="fixed top-0 left-0 right-0 h-1 z-[70] bg-warmgray-100">
+      <div className="fixed top-0 left-0 right-0 h-1 z-[70] bg-warmgray-100 dark:bg-surface-dark-border">
         <motion.div
           className="h-full bg-gradient-to-r from-teal via-coral to-sunshine origin-left"
           style={{ scaleX: scrollProgress / 100 }}
@@ -122,7 +125,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* ── Header ── */}
       <header
-        className={`bg-white/95 backdrop-blur-md sticky z-50 transition-all duration-300 ${
+        className={`bg-white/95 dark:bg-surface-dark-raised/95 backdrop-blur-md sticky z-50 transition-all duration-300 ${
           isScrolled ? 'top-1 shadow-soft-lg' : 'top-1 shadow-soft'
         }`}
       >
@@ -157,7 +160,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     key={to}
                     to={to}
                     className={`relative px-3 py-2 rounded-lg font-semibold text-sm transition-colors whitespace-nowrap ${
-                      isActive ? 'text-teal' : 'text-warmgray-700 hover:text-teal hover:bg-teal-light/20'
+                      isActive ? 'text-teal' : 'text-warmgray-700 dark:text-warmgray-200 hover:text-teal hover:bg-teal-light/20'
                     }`}
                   >
                     {label}
@@ -185,13 +188,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   )}
                 </Link>
               )}
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2.5 hover:bg-teal-light/30 dark:hover:bg-white/10 rounded-full transition-all"
+                title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {theme === 'dark' ? (
+                  <Sun className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
+                ) : (
+                  <Moon className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
+                )}
+              </button>
+
               {/* Cart */}
               <Link
                 to="/cart"
                 className="relative p-2.5 hover:bg-teal-light/30 rounded-full transition-all"
                 title="Shopping Cart"
               >
-                <ShoppingCart className="h-6 w-6 text-warmgray-700" />
+                <ShoppingCart className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                 <AnimatePresence>
                   {cartItemsCount > 0 && (
                     <motion.span
@@ -212,7 +228,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <>
                   {!(user?.role === 'therapist' && user?.approval_status === 'approved') && (
                     <Link to="/messages" className="relative p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Messages">
-                      <MessageSquare className="h-6 w-6 text-warmgray-700" />
+                      <MessageSquare className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                       {unreadMessages > 0 && (
                         <span className="absolute -top-1 -right-1 bg-coral text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-soft">
                           {unreadMessages > 9 ? '9+' : unreadMessages}
@@ -221,16 +237,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     </Link>
                   )}
                   <Link to="/wishlist" className="p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Wishlist">
-                    <Heart className="h-6 w-6 text-warmgray-700" />
+                    <Heart className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                   </Link>
                   <Link to="/my-assessments" className="hidden sm:block p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="My Assessments">
-                    <ClipboardList className="h-6 w-6 text-warmgray-700" />
+                    <ClipboardList className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                   </Link>
                   <Link to="/profile" className="p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Profile">
-                    <User className="h-6 w-6 text-warmgray-700" />
+                    <User className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                   </Link>
                   <button onClick={logout} className="hidden sm:block p-2.5 hover:bg-coral-light/30 rounded-full transition-all" title="Logout">
-                    <LogOut className="h-6 w-6 text-warmgray-700" />
+                    <LogOut className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                   </button>
                 </>
               ) : (
@@ -247,18 +263,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               {/* Mobile Menu Toggle */}
               <motion.button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-2.5 hover:bg-warmgray-100 rounded-full transition-all"
+                className="lg:hidden p-2.5 hover:bg-warmgray-100 dark:hover:bg-white/10 rounded-full transition-all"
                 aria-label="Toggle menu"
                 whileTap={{ scale: 0.9 }}
               >
                 <AnimatePresence mode="wait" initial={false}>
                   {isMobileMenuOpen ? (
                     <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                      <X className="h-6 w-6 text-warmgray-700" />
+                      <X className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                     </motion.div>
                   ) : (
                     <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                      <Menu className="h-6 w-6 text-warmgray-700" />
+                      <Menu className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -274,7 +290,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="lg:hidden overflow-hidden border-t border-warmgray-100 mt-3"
+                className="lg:hidden overflow-hidden border-t border-warmgray-100 dark:border-surface-dark-border mt-3"
               >
                 <nav className="flex flex-col space-y-1 px-2 py-3">
                   {navLinks.map(({ to, label }, i) => (
@@ -289,7 +305,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         className={`block px-4 py-3 rounded-xl font-semibold transition-colors ${
                           location.pathname === to
                             ? 'bg-teal-light/30 text-teal'
-                            : 'text-warmgray-700 hover:text-teal hover:bg-teal-light/20'
+                            : 'text-warmgray-700 dark:text-warmgray-200 hover:text-teal hover:bg-teal-light/20'
                         }`}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
@@ -329,7 +345,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       )}
                       {!(user?.role === 'therapist' && user?.approval_status === 'approved') && (
                         <Link to="/messages" onClick={() => setIsMobileMenuOpen(false)}
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-warmgray-700 hover:text-teal hover:bg-teal-light/20 transition-colors">
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-warmgray-700 dark:text-warmgray-200 hover:text-teal hover:bg-teal-light/20 transition-colors">
                           <MessageSquare className="w-5 h-5" /> Messages
                         </Link>
                       )}
@@ -484,7 +500,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </AnimatePresence>
 
       {/* ── Bottom Mobile Nav ── */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-warmgray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-surface-dark-raised/95 backdrop-blur-md border-t border-warmgray-200 dark:border-surface-dark-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
         <div className="flex items-center justify-around px-2 py-2 safe-area-pb">
           {mobileNavItems.map(({ to, Icon, label, badge }) => {
             const isActive = location.pathname === to || (to !== '/' && location.pathname.startsWith(to));

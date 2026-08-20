@@ -66,10 +66,10 @@ const DevelopmentalDomains = () => {
 
   if (loading) {
     return (
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-surface-dark">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-4">
+            <h2 className="text-4xl sm:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 mb-4">
               Developmental Domains
             </h2>
           </div>
@@ -84,7 +84,7 @@ const DevelopmentalDomains = () => {
   }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white dark:bg-surface-dark">
       <div className="max-w-7xl mx-auto px-4">
         {/* Section Header */}
         <motion.div
@@ -94,10 +94,10 @@ const DevelopmentalDomains = () => {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <h2 className="text-4xl sm:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-4">
+          <h2 className="text-4xl sm:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 mb-4">
             Developmental Domains
           </h2>
-          <p className="text-lg text-warmgray-600 max-w-3xl mx-auto">
+          <p className="text-lg text-warmgray-600 dark:text-warmgray-400 max-w-3xl mx-auto">
             Our toys are carefully categorized by developmental areas to help you choose the perfect match for your child's growth journey
           </p>
         </motion.div>
@@ -148,7 +148,7 @@ const DevelopmentalDomains = () => {
                             to={`/products?category=${category.slug}`}
                             className="flex-1"
                           >
-                            <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 text-xl mb-2 hover:text-teal transition-colors">
+                            <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 text-xl mb-2 hover:text-teal transition-colors">
                               {category.name}
                             </h3>
                           </Link>
@@ -172,7 +172,7 @@ const DevelopmentalDomains = () => {
                             </motion.button>
                           )}
                         </div>
-                        <p className="text-sm text-warmgray-600 leading-relaxed">
+                        <p className="text-sm text-warmgray-600 dark:text-warmgray-400 leading-relaxed">
                           {category.description}
                         </p>
                       </div>
@@ -200,7 +200,7 @@ const DevelopmentalDomains = () => {
                                 className={`block p-3 rounded-lg hover:${colors.bgColor} transition-all group`}
                               >
                                 <div className="flex items-center justify-between">
-                                  <span className="text-warmgray-700 font-medium group-hover:text-warmgray-900">
+                                  <span className="text-warmgray-700 dark:text-warmgray-300 font-medium group-hover:text-warmgray-900 dark:group-hover:text-warmgray-100">
                                     {subcat.name}
                                   </span>
                                   <svg

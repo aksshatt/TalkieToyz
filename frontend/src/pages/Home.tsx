@@ -52,14 +52,14 @@ const Home: React.FC = () => {
         </section>
 
         {/* Speech Kits CTA */}
-        <section className="py-12 bg-amber-50 border-y border-amber-100">
+        <section className="py-12 bg-amber-50 dark:bg-surface-dark-raised border-y border-amber-100 dark:border-surface-dark-border">
           <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center gap-6">
-            <div className="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <Package className="w-7 h-7 text-amber-600" />
+            <div className="w-14 h-14 bg-amber-100 dark:bg-amber-900/40 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <Package className="w-7 h-7 text-amber-600 dark:text-amber-400" />
             </div>
             <div className="flex-1 text-center md:text-left">
-              <h2 className="text-xl font-bold text-gray-900">Therapist-Curated Speech Kits</h2>
-              <p className="text-gray-500 mt-1">Get everything your child needs in one bundle — and save up to 20% vs buying individually.</p>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-warmgray-100">Therapist-Curated Speech Kits</h2>
+              <p className="text-gray-500 dark:text-warmgray-400 mt-1">Get everything your child needs in one bundle — and save up to 20% vs buying individually.</p>
             </div>
             <Link
               to="/speech-kits"
@@ -71,7 +71,7 @@ const Home: React.FC = () => {
         </section>
 
         {/* Parent Success Stories */}
-        <section className="py-14 bg-white">
+        <section className="py-14 bg-white dark:bg-surface-dark">
           <div className="max-w-5xl mx-auto px-4">
             <SuccessStoriesSection featured={true} />
           </div>

@@ -1,7 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
+  /* Dark mode surfaces */
+  --color-surface-dark: #1B1B22;
+  --color-surface-dark-raised: #24242E;
+  --color-surface-dark-border: #34343F;
   /* Talkie Toyz Brand Colors */
   /* Primary - Soft Teal/Aqua (Train Engine) */
   --color-teal-light: #B2EBF2;
@@ -79,6 +85,11 @@
     animation: gentle-gradient 20s ease infinite;
     overflow-x: hidden;
     width: 100%;
+  }
+
+  .dark body {
+    background: linear-gradient(135deg, #1B1B22 0%, #202028 25%, #16232A 50%, #241A22 75%, #221F16 100%);
+    background-size: 400% 400%;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -326,6 +337,16 @@
 
   .card-talkie-hover:hover {
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.13);
+  }
+
+  .dark .card-talkie,
+  .dark .card-talkie-hover {
+    background-color: #24242E;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .dark .card-talkie-hover:hover {
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
   }
 
   /* Button Styles - Pill-Shaped & Friendly */

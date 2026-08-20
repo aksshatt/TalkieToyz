@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { Toaster } from 'react-hot-toast'
 import { HelmetProvider } from 'react-helmet-async'
 import { store } from './store'
+import { ThemeProvider } from './contexts/ThemeContext'
 import { startKeepAlive } from './services/keepAliveService'
 import './index.css'
 import App from './App.tsx'
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')!).render(
   <HelmetProvider>
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
       <BrowserRouter>
         <App />
         <Toaster
@@ -55,6 +57,7 @@ createRoot(document.getElementById('root')!).render(
           }}
         />
       </BrowserRouter>
+      </ThemeProvider>
     </QueryClientProvider>
   </Provider>
   </HelmetProvider>,

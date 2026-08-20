@@ -36,7 +36,7 @@ const FeaturedCollections = () => {
       <section className="py-16 bg-gradient-to-br from-cream-light via-white to-teal-light/20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-4">
+            <h2 className="text-4xl sm:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 mb-4">
               Featured Collections
             </h2>
           </div>
@@ -80,10 +80,10 @@ const FeaturedCollections = () => {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <h2 className="text-4xl sm:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-4">
+          <h2 className="text-4xl sm:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 mb-4">
             Featured Collections
           </h2>
-          <p className="text-lg text-warmgray-600 max-w-3xl mx-auto">
+          <p className="text-lg text-warmgray-600 dark:text-warmgray-400 max-w-3xl mx-auto">
             Handpicked educational toys that parents and children love
           </p>
         </motion.div>

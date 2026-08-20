@@ -63,14 +63,14 @@ const Cart = () => {
   if (loading) {
     return (
       <Layout>
-        <div className="min-h-screen bg-cream-light py-8">
+        <div className="min-h-screen bg-cream-light dark:bg-surface-dark py-8">
           <div className="max-w-7xl mx-auto px-4 animate-pulse">
-            <div className="h-10 bg-white rounded-xl mb-6 w-1/4" />
+            <div className="h-10 bg-white dark:bg-surface-dark-raised rounded-xl mb-6 w-1/4" />
             <div className="grid lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-4">
-                {[1, 2, 3].map(i => <div key={i} className="h-32 bg-white rounded-2xl shadow-soft" />)}
+                {[1, 2, 3].map(i => <div key={i} className="h-32 bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft" />)}
               </div>
-              <div className="h-96 bg-white rounded-2xl shadow-soft" />
+              <div className="h-96 bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft" />
             </div>
           </div>
         </div>
@@ -81,14 +81,14 @@ const Cart = () => {
   if (!cart || cart.cart_items.length === 0) {
     return (
       <Layout>
-        <div className="min-h-screen bg-cream-light py-20 px-4 flex items-center justify-center">
+        <div className="min-h-screen bg-cream-light dark:bg-surface-dark py-20 px-4 flex items-center justify-center">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-3xl shadow-soft p-14 text-center max-w-md w-full">
+            className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft p-14 text-center max-w-md w-full">
             <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
               className="inline-flex items-center justify-center w-20 h-20 bg-teal-light/30 rounded-full mb-6">
               <ShoppingCart className="h-10 w-10 text-teal" />
             </motion.div>
-            <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-3">Your cart is empty</h2>
+            <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-100 mb-3">Your cart is empty</h2>
             <p className="text-warmgray-500 mb-8">Add some amazing toys to get started!</p>
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
               <Link to="/products" className="inline-flex items-center gap-2 bg-gradient-to-r from-teal to-teal-dark text-white font-bold px-8 py-3.5 rounded-2xl shadow-soft-lg">
@@ -117,7 +117,7 @@ const Cart = () => {
         </div>
       </div>
 
-      <div className="bg-cream-light min-h-screen py-8">
+      <div className="bg-cream-light dark:bg-surface-dark min-h-screen py-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-3 gap-6">
             {/* Cart Items */}
@@ -127,7 +127,7 @@ const Cart = () => {
                   <motion.div key={item.id} layout
                     initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -40, height: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="bg-white rounded-2xl shadow-soft p-4 sm:p-5 border border-warmgray-100">
+                    className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-4 sm:p-5 border border-warmgray-100 dark:border-surface-dark-border">
                     <div className="flex gap-4">
                       <Link to={`/products/${item.product.slug}`} className="flex-shrink-0">
                         <motion.img src={item.product.image_urls[0]?.url || '/placeholder-product.png'} alt={item.product.name}
@@ -137,7 +137,7 @@ const Cart = () => {
                       </Link>
                       <div className="flex-1 min-w-0">
                         <Link to={`/products/${item.product.slug}`}
-                          className="font-[var(--font-family-fun)] font-bold text-warmgray-900 hover:text-teal transition-colors block mb-1 line-clamp-2">
+                          className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 hover:text-teal transition-colors block mb-1 line-clamp-2">
                           {item.product.name}
                         </Link>
                         {item.product_variant && <p className="text-xs text-warmgray-500 mb-2">Variant: {item.product_variant.name}</p>}
@@ -147,13 +147,13 @@ const Cart = () => {
                           <div className="flex items-center gap-2 bg-warmgray-50 rounded-xl p-1">
                             <motion.button onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
                               disabled={item.quantity <= 1} whileTap={{ scale: 0.85 }}
-                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-white shadow-soft text-teal hover:bg-teal hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-surface-dark shadow-soft text-teal hover:bg-teal hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
                               <Minus className="h-3.5 w-3.5" />
                             </motion.button>
-                            <span className="font-bold w-8 text-center text-warmgray-900 text-sm">{item.quantity}</span>
+                            <span className="font-bold w-8 text-center text-warmgray-900 dark:text-warmgray-100 text-sm">{item.quantity}</span>
                             <motion.button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
                               whileTap={{ scale: 0.85 }}
-                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-white shadow-soft text-teal hover:bg-teal hover:text-white transition-colors">
+                              className="w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-surface-dark shadow-soft text-teal hover:bg-teal hover:text-white transition-colors">
                               <Plus className="h-3.5 w-3.5" />
                             </motion.button>
                           </div>
@@ -178,8 +178,8 @@ const Cart = () => {
             {/* Order Summary */}
             <div className="lg:col-span-1">
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-                className="bg-white rounded-2xl shadow-soft p-5 lg:sticky lg:top-24 border border-warmgray-100">
-                <h2 className="font-[var(--font-family-fun)] text-xl font-bold text-warmgray-900 mb-5">Order Summary</h2>
+                className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-5 lg:sticky lg:top-24 border border-warmgray-100 dark:border-surface-dark-border">
+                <h2 className="font-[var(--font-family-fun)] text-xl font-bold text-warmgray-900 dark:text-warmgray-100 mb-5">Order Summary</h2>
 
                 {/* Coupon */}
                 <div className="mb-5">
@@ -198,11 +198,11 @@ const Cart = () => {
                     </div>
                   ) : (
                     <form onSubmit={couponForm.handleSubmit}>
-                      <label className="block text-sm font-semibold text-warmgray-700 mb-1.5">Have a coupon?</label>
+                      <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Have a coupon?</label>
                       <div className="flex gap-2">
                         <input type="text" name="code" value={couponForm.values.code} onChange={couponForm.handleChange}
                           placeholder="Enter code"
-                          className="flex-1 px-3 py-2.5 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal focus:ring-4 focus:ring-teal/10 bg-warmgray-50 focus:bg-white transition-all text-sm" />
+                          className="flex-1 px-3 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal focus:ring-4 focus:ring-teal/10 bg-warmgray-50 dark:bg-surface-dark text-warmgray-900 dark:text-warmgray-100 focus:bg-white dark:focus:bg-surface-dark transition-all text-sm" />
                         <motion.button type="submit" disabled={validatingCoupon} whileTap={{ scale: 0.95 }}
                           className="px-4 py-2.5 bg-teal-gradient text-white font-bold rounded-xl text-sm disabled:opacity-50">
                           {validatingCoupon ? '...' : 'Apply'}
@@ -216,8 +216,8 @@ const Cart = () => {
                 </div>
 
                 {/* Price breakdown */}
-                <div className="space-y-2.5 mb-5 pb-5 border-b-2 border-warmgray-100 text-sm">
-                  <div className="flex justify-between text-warmgray-600">
+                <div className="space-y-2.5 mb-5 pb-5 border-b-2 border-warmgray-100 dark:border-surface-dark-border text-sm">
+                  <div className="flex justify-between text-warmgray-600 dark:text-warmgray-400">
                     <span>Subtotal</span><span className="font-semibold">₹{parseFloat(cart.subtotal).toFixed(2)}</span>
                   </div>
                   {appliedCoupon && (
@@ -228,7 +228,7 @@ const Cart = () => {
                 </div>
 
                 <div className="flex justify-between items-center mb-5">
-                  <span className="font-bold text-warmgray-900">Total</span>
+                  <span className="font-bold text-warmgray-900 dark:text-warmgray-100">Total</span>
                   <span className="font-[var(--font-family-fun)] text-2xl font-bold text-teal">₹{calculateFinalTotal().toFixed(2)}</span>
                 </div>
 

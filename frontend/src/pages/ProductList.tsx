@@ -83,12 +83,12 @@ const ProductList = () => {
   if (error) {
     return (
       <Layout>
-        <div className="min-h-screen bg-cream-light flex items-center justify-center px-4">
+        <div className="min-h-screen bg-cream-light dark:bg-surface-dark flex items-center justify-center px-4">
           <div className="card-talkie text-center max-w-md">
             <h2 className="heading-talkie text-2xl mb-2">
               Error loading products
             </h2>
-            <p className="text-warmgray-600">
+            <p className="text-warmgray-600 dark:text-warmgray-400">
               {error instanceof Error ? error.message : 'Something went wrong'}
             </p>
           </div>
@@ -104,7 +104,7 @@ const ProductList = () => {
         description="Browse our collection of therapist-designed speech therapy toys for children. Filter by age, category, and price to find the perfect learning toy."
         url="/products"
       />
-      <div className="min-h-screen bg-cream-light">
+      <div className="min-h-screen bg-cream-light dark:bg-surface-dark">
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-sky py-16 px-4">
         <motion.div className="absolute w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"
@@ -144,7 +144,7 @@ const ProductList = () => {
       </div>
 
       {/* Header */}
-      <div className="bg-gradient-to-br from-teal-light/40 via-cream-light to-coral-light/30 border-b border-warmgray-200 sticky top-0 z-10">
+      <div className="bg-gradient-to-br from-teal-light/40 via-cream-light to-coral-light/30 border-b border-warmgray-200 dark:border-surface-dark-border sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <h1 className="heading-talkie mb-4 text-3xl md:text-4xl">
             Products
@@ -163,20 +163,20 @@ const ProductList = () => {
             {/* Mobile Filter Button */}
             <button
               onClick={() => setShowMobileFilters(!showMobileFilters)}
-              className="lg:hidden flex items-center gap-2 px-5 py-2.5 bg-white rounded-xl shadow-soft hover:shadow-soft-md transition-all font-semibold text-warmgray-700"
+              className="lg:hidden flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-surface-dark-raised rounded-xl shadow-soft hover:shadow-soft-md transition-all font-semibold text-warmgray-700 dark:text-warmgray-200"
             >
               <SlidersHorizontal className="h-5 w-5" />
               <span>Filters</span>
             </button>
 
             {/* View Mode Toggle */}
-            <div className="hidden sm:flex items-center gap-1 bg-white rounded-xl p-1 shadow-soft border border-warmgray-200">
+            <div className="hidden sm:flex items-center gap-1 bg-white dark:bg-surface-dark-raised rounded-xl p-1 shadow-soft border border-warmgray-200 dark:border-surface-dark-border">
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg transition-all ${
                   viewMode === 'grid'
                     ? 'bg-teal-gradient text-white shadow-soft'
-                    : 'text-warmgray-600 hover:text-warmgray-900 hover:bg-warmgray-50'
+                    : 'text-warmgray-600 dark:text-warmgray-400 hover:text-warmgray-900 dark:hover:text-warmgray-100 hover:bg-warmgray-50 dark:hover:bg-white/10'
                 }`}
               >
                 <Grid className="h-5 w-5" />
@@ -186,7 +186,7 @@ const ProductList = () => {
                 className={`p-2 rounded-lg transition-all ${
                   viewMode === 'list'
                     ? 'bg-teal-gradient text-white shadow-soft'
-                    : 'text-warmgray-600 hover:text-warmgray-900 hover:bg-warmgray-50'
+                    : 'text-warmgray-600 dark:text-warmgray-400 hover:text-warmgray-900 dark:hover:text-warmgray-100 hover:bg-warmgray-50 dark:hover:bg-white/10'
                 }`}
               >
                 <List className="h-5 w-5" />
@@ -197,7 +197,7 @@ const ProductList = () => {
             <select
               value={filters.sort}
               onChange={(e) => handleSortChange(e.target.value as ProductFilters['sort'])}
-              className="px-4 py-2.5 border-2 border-warmgray-300 rounded-xl focus:ring-2 focus:ring-teal focus:border-teal outline-none font-semibold text-warmgray-700 bg-white shadow-soft hover:shadow-soft-md transition-all"
+              className="px-4 py-2.5 border-2 border-warmgray-300 dark:border-surface-dark-border rounded-xl focus:ring-2 focus:ring-teal focus:border-teal outline-none font-semibold text-warmgray-700 dark:text-warmgray-200 bg-white dark:bg-surface-dark-raised shadow-soft hover:shadow-soft-md transition-all"
             >
               <option value="newest">Newest First</option>
               <option value="popular">Most Popular</option>
@@ -208,7 +208,7 @@ const ProductList = () => {
 
             {/* Results Count */}
             {meta && (
-              <span className="hidden md:block text-sm font-semibold text-warmgray-700 bg-white px-4 py-2 rounded-xl shadow-soft border border-warmgray-200">
+              <span className="hidden md:block text-sm font-semibold text-warmgray-700 dark:text-warmgray-200 bg-white dark:bg-surface-dark-raised px-4 py-2 rounded-xl shadow-soft border border-warmgray-200 dark:border-surface-dark-border">
                 {meta.total_count} {meta.total_count === 1 ? 'product' : 'products'} found
               </span>
             )}
@@ -270,7 +270,7 @@ const ProductList = () => {
           {/* Mobile Filters Sidebar */}
           {showMobileFilters && (
             <div className="fixed inset-0 bg-warmgray-900 bg-opacity-50 z-50 lg:hidden">
-              <div className="bg-cream-light w-80 max-w-full h-full overflow-y-auto shadow-soft-xl">
+              <div className="bg-cream-light dark:bg-surface-dark w-80 max-w-full h-full overflow-y-auto shadow-soft-xl">
                 <FilterSidebar
                   filters={filters}
                   onFiltersChange={(newFilters) => {
@@ -305,10 +305,10 @@ const ProductList = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
-                <h3 className="font-[var(--font-family-fun)] text-xl font-bold text-warmgray-900 mb-2">
+                <h3 className="font-[var(--font-family-fun)] text-xl font-bold text-warmgray-900 dark:text-warmgray-100 mb-2">
                   No Products Found
                 </h3>
-                <p className="text-sm text-warmgray-600 mb-6 max-w-md mx-auto">
+                <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mb-6 max-w-md mx-auto">
                   We couldn't find any products matching your criteria. Please try adjusting your filters or search terms.
                 </p>
                 <button
@@ -338,9 +338,9 @@ const ProductList = () => {
                     <button
                       onClick={() => handlePageChange(meta.current_page - 1)}
                       disabled={meta.current_page === 1}
-                      className="p-2 rounded-xl bg-white border-2 border-warmgray-300 shadow-soft hover:bg-warmgray-50 hover:shadow-soft-md disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      className="p-2 rounded-xl bg-white dark:bg-surface-dark-raised border-2 border-warmgray-300 dark:border-surface-dark-border shadow-soft hover:bg-warmgray-50 dark:hover:bg-white/10 hover:shadow-soft-md disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
-                      <ChevronLeft className="h-5 w-5 text-warmgray-600" />
+                      <ChevronLeft className="h-5 w-5 text-warmgray-600 dark:text-warmgray-400" />
                     </button>
 
                     <div className="flex items-center gap-1">
@@ -366,7 +366,7 @@ const ProductList = () => {
                             className={`min-w-[2.5rem] px-3 py-2 rounded-xl font-semibold transition-all ${
                               isCurrentPage
                                 ? 'bg-teal-gradient text-white shadow-soft'
-                                : 'bg-white border-2 border-warmgray-300 text-warmgray-700 hover:bg-warmgray-50 hover:shadow-soft'
+                                : 'bg-white dark:bg-surface-dark-raised border-2 border-warmgray-300 dark:border-surface-dark-border text-warmgray-700 dark:text-warmgray-200 hover:bg-warmgray-50 dark:hover:bg-white/10 hover:shadow-soft'
                             }`}
                           >
                             {page}
@@ -378,9 +378,9 @@ const ProductList = () => {
                     <button
                       onClick={() => handlePageChange(meta.current_page + 1)}
                       disabled={meta.current_page === meta.total_pages}
-                      className="p-2 rounded-xl bg-white border-2 border-warmgray-300 shadow-soft hover:bg-warmgray-50 hover:shadow-soft-md disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      className="p-2 rounded-xl bg-white dark:bg-surface-dark-raised border-2 border-warmgray-300 dark:border-surface-dark-border shadow-soft hover:bg-warmgray-50 dark:hover:bg-white/10 hover:shadow-soft-md disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
-                      <ChevronRight className="h-5 w-5 text-warmgray-600" />
+                      <ChevronRight className="h-5 w-5 text-warmgray-600 dark:text-warmgray-400" />
                     </button>
                   </div>
                 )}

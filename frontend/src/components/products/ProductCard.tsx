@@ -58,7 +58,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <motion.div
-      className="card-talkie-hover overflow-hidden group relative bg-white"
+      className="card-talkie-hover overflow-hidden group relative bg-white dark:bg-surface-dark-raised"
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       whileHover={{ y: -6, boxShadow: '0 16px 36px rgba(0,0,0,0.14)' }}
@@ -164,7 +164,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       {/* Content */}
       <div className="p-5">
         <Link to={`/products/${product.slug}`}>
-          <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 text-lg mb-1.5 line-clamp-2 hover:text-teal transition-colors">
+          <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 text-lg mb-1.5 line-clamp-2 hover:text-teal transition-colors">
             {product.name}
           </h3>
         </Link>

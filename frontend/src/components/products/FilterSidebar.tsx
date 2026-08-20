@@ -101,12 +101,12 @@ const FilterSidebar = ({
   return (
     <div className="card-talkie p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-warmgray-200">
-        <h2 className="font-[var(--font-family-fun)] text-lg font-bold text-warmgray-900">Filters</h2>
+      <div className="flex items-center justify-between mb-6 pb-4 border-b border-warmgray-200 dark:border-surface-dark-border">
+        <h2 className="font-[var(--font-family-fun)] text-lg font-bold text-warmgray-900 dark:text-warmgray-100">Filters</h2>
         {isMobile && (
           <button
             onClick={onClose}
-            className="text-warmgray-500 hover:text-warmgray-700 p-1.5 rounded-lg hover:bg-warmgray-100 transition-all"
+            className="text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300 p-1.5 rounded-lg hover:bg-warmgray-100 transition-all"
           >
             <X className="h-5 w-5" />
           </button>
@@ -122,15 +122,15 @@ const FilterSidebar = ({
       </button>
 
       {/* Quick Toggles */}
-      <div className="space-y-2 mb-6 pb-6 border-b border-warmgray-200">
+      <div className="space-y-2 mb-6 pb-6 border-b border-warmgray-200 dark:border-surface-dark-border">
         <label className="flex items-center gap-2 cursor-pointer group">
           <input
             type="checkbox"
             checked={!!filters.in_stock}
             onChange={handleInStockToggle}
-            className="w-4 h-4 text-teal border-warmgray-300 rounded focus:ring-teal"
+            className="w-4 h-4 text-teal border-warmgray-300 dark:border-surface-dark-border rounded focus:ring-teal"
           />
-          <span className="text-sm text-warmgray-700 group-hover:text-teal transition-colors font-medium">
+          <span className="text-sm text-warmgray-700 dark:text-warmgray-300 group-hover:text-teal transition-colors font-medium">
             In Stock Only
           </span>
         </label>
@@ -140,17 +140,17 @@ const FilterSidebar = ({
             type="checkbox"
             checked={!!filters.featured}
             onChange={handleFeaturedToggle}
-            className="w-4 h-4 text-teal border-warmgray-300 rounded focus:ring-teal"
+            className="w-4 h-4 text-teal border-warmgray-300 dark:border-surface-dark-border rounded focus:ring-teal"
           />
-          <span className="text-sm text-warmgray-700 group-hover:text-teal transition-colors font-medium">
+          <span className="text-sm text-warmgray-700 dark:text-warmgray-300 group-hover:text-teal transition-colors font-medium">
             Featured Products
           </span>
         </label>
       </div>
 
       {/* Categories */}
-      <div className="mb-6 pb-6 border-b border-warmgray-200">
-        <h3 className="text-sm font-semibold text-warmgray-900 mb-3">Category</h3>
+      <div className="mb-6 pb-6 border-b border-warmgray-200 dark:border-surface-dark-border">
+        <h3 className="text-sm font-semibold text-warmgray-900 dark:text-warmgray-100 mb-3">Category</h3>
         <div className="space-y-2">
           <label className="flex items-center gap-2 cursor-pointer group">
             <input
@@ -158,9 +158,9 @@ const FilterSidebar = ({
               name="category"
               checked={!filters.category_id}
               onChange={() => handleCategoryChange(undefined)}
-              className="w-4 h-4 text-teal border-warmgray-300 focus:ring-teal"
+              className="w-4 h-4 text-teal border-warmgray-300 dark:border-surface-dark-border focus:ring-teal"
             />
-            <span className="text-sm text-warmgray-700 group-hover:text-teal transition-colors font-medium">
+            <span className="text-sm text-warmgray-700 dark:text-warmgray-300 group-hover:text-teal transition-colors font-medium">
               All Categories
             </span>
           </label>
@@ -179,9 +179,9 @@ const FilterSidebar = ({
                       name="category"
                       checked={filters.category_id === category.id}
                       onChange={() => handleCategoryChange(category.id)}
-                      className="w-4 h-4 text-teal border-warmgray-300 focus:ring-teal"
+                      className="w-4 h-4 text-teal border-warmgray-300 dark:border-surface-dark-border focus:ring-teal"
                     />
-                    <span className="text-sm text-warmgray-700 group-hover:text-teal transition-colors font-medium">
+                    <span className="text-sm text-warmgray-700 dark:text-warmgray-300 group-hover:text-teal transition-colors font-medium">
                       {category.name}
                     </span>
                   </label>
@@ -203,7 +203,7 @@ const FilterSidebar = ({
 
                 {/* Subcategories */}
                 {hasSubcategories && isExpanded && (
-                  <div className="ml-6 mt-2 space-y-2 border-l-2 border-warmgray-200 pl-3">
+                  <div className="ml-6 mt-2 space-y-2 border-l-2 border-warmgray-200 dark:border-surface-dark-border pl-3">
                     {category.subcategories?.map((subcat) => (
                       <label
                         key={subcat.id}
@@ -214,9 +214,9 @@ const FilterSidebar = ({
                           name="category"
                           checked={filters.category_id === subcat.id}
                           onChange={() => handleCategoryChange(subcat.id)}
-                          className="w-4 h-4 text-teal border-warmgray-300 focus:ring-teal"
+                          className="w-4 h-4 text-teal border-warmgray-300 dark:border-surface-dark-border focus:ring-teal"
                         />
-                        <span className="text-sm text-warmgray-600 group-hover:text-teal transition-colors">
+                        <span className="text-sm text-warmgray-600 dark:text-warmgray-400 group-hover:text-teal transition-colors">
                           {subcat.name}
                         </span>
                       </label>
@@ -230,7 +230,7 @@ const FilterSidebar = ({
       </div>
 
       {/* Age Range */}
-      <div className="mb-6 pb-6 border-b border-warmgray-200">
+      <div className="mb-6 pb-6 border-b border-warmgray-200 dark:border-surface-dark-border">
         <AgeRangeSelector
           selectedAge={filters.age}
           onAgeChange={handleAgeChange}
@@ -238,7 +238,7 @@ const FilterSidebar = ({
       </div>
 
       {/* Price Range */}
-      <div className="mb-6 pb-6 border-b border-warmgray-200">
+      <div className="mb-6 pb-6 border-b border-warmgray-200 dark:border-surface-dark-border">
         <PriceFilter
           minPrice={filters.min_price}
           maxPrice={filters.max_price}
@@ -248,7 +248,7 @@ const FilterSidebar = ({
 
       {/* Goals */}
       <div>
-        <h3 className="text-sm font-semibold text-warmgray-900 mb-3">Goals</h3>
+        <h3 className="text-sm font-semibold text-warmgray-900 dark:text-warmgray-100 mb-3">Goals</h3>
         <div className="space-y-2">
           {speechGoals.map((goal) => (
             <label
@@ -259,9 +259,9 @@ const FilterSidebar = ({
                 type="checkbox"
                 checked={selectedSpeechGoals.includes(goal.id)}
                 onChange={() => handleSpeechGoalToggle(goal.id)}
-                className="w-4 h-4 text-teal border-warmgray-300 rounded focus:ring-teal"
+                className="w-4 h-4 text-teal border-warmgray-300 dark:border-surface-dark-border rounded focus:ring-teal"
               />
-              <span className="text-sm text-warmgray-700 group-hover:text-teal transition-colors font-medium">
+              <span className="text-sm text-warmgray-700 dark:text-warmgray-300 group-hover:text-teal transition-colors font-medium">
                 {goal.name}
               </span>
             </label>

@@ -369,10 +369,10 @@ const Checkout = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-6 sm:py-12">
+      <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 dark:from-surface-dark dark:via-surface-dark dark:to-surface-dark py-6 sm:py-12">
         <div className="max-w-4xl mx-auto px-4">
           {/* Progress Steps */}
-          <div className="bg-white rounded-2xl p-3 sm:p-6 shadow-playful mb-8">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-2xl p-3 sm:p-6 shadow-playful mb-8">
             <div className="flex items-center justify-between">
               {steps.map((step, index) => (
                 <div key={step.id} className="flex items-center flex-1 min-w-0">
@@ -381,7 +381,7 @@ const Checkout = () => {
                       className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
                         currentStep >= step.id
                           ? 'bg-purple-500 text-white'
-                          : 'bg-gray-200 text-gray-500'
+                          : 'bg-gray-200 dark:bg-surface-dark-border text-gray-500 dark:text-warmgray-400'
                       } transition-colors`}
                     >
                       <step.icon className="h-4 w-4 sm:h-6 sm:w-6" />
@@ -389,8 +389,8 @@ const Checkout = () => {
                     <span
                       className={`text-[10px] sm:text-sm font-semibold mt-1 sm:mt-2 text-center ${
                         currentStep >= step.id
-                          ? 'text-purple-600'
-                          : 'text-gray-500'
+                          ? 'text-purple-600 dark:text-purple-400'
+                          : 'text-gray-500 dark:text-warmgray-400'
                       }`}
                     >
                       {step.name}
@@ -401,7 +401,7 @@ const Checkout = () => {
                       className={`flex-1 h-1 mx-1 sm:mx-4 ${
                         currentStep > step.id
                           ? 'bg-purple-500'
-                          : 'bg-gray-200'
+                          : 'bg-gray-200 dark:bg-surface-dark-border'
                       } transition-colors`}
                     ></div>
                   )}
@@ -412,7 +412,7 @@ const Checkout = () => {
 
           {/* Form Content */}
           <form onSubmit={formik.handleSubmit}>
-            <div className="bg-white rounded-2xl p-4 sm:p-8 shadow-playful mb-6">
+            <div className="bg-white dark:bg-surface-dark-raised rounded-2xl p-4 sm:p-8 shadow-playful mb-6">
               {/* Step 1: Shipping Address */}
               {currentStep === 1 && (
                 <div>
@@ -430,7 +430,7 @@ const Checkout = () => {
                         className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all ${
                           addressMode === 'select'
                             ? 'bg-purple-600 text-white shadow-md'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            : 'bg-gray-100 text-gray-700 dark:text-warmgray-300 hover:bg-gray-200'
                         }`}
                       >
                         Select Saved Address
@@ -441,7 +441,7 @@ const Checkout = () => {
                         className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
                           addressMode === 'new'
                             ? 'bg-purple-600 text-white shadow-md'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            : 'bg-gray-100 text-gray-700 dark:text-warmgray-300 hover:bg-gray-200'
                         }`}
                       >
                         <Plus className="h-5 w-5" />
@@ -458,8 +458,8 @@ const Checkout = () => {
                           key={address.id}
                           className={`block p-4 border-2 rounded-lg cursor-pointer transition-all ${
                             selectedAddressId === address.id
-                              ? 'border-purple-500 bg-purple-50'
-                              : 'border-gray-200 hover:border-purple-300'
+                              ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30'
+                              : 'border-gray-200 dark:border-surface-dark-border hover:border-purple-300'
                           }`}
                         >
                           <div className="flex items-start gap-3">
@@ -481,15 +481,15 @@ const Checkout = () => {
                                   </span>
                                 )}
                               </div>
-                              <p className="text-sm text-gray-600">
+                              <p className="text-sm text-gray-600 dark:text-warmgray-400">
                                 {address.phone}
                               </p>
-                              <p className="text-sm text-gray-700 mt-1">
+                              <p className="text-sm text-gray-700 dark:text-warmgray-300 mt-1">
                                 {address.address_line_1}
                                 {address.address_line_2 &&
                                   `, ${address.address_line_2}`}
                               </p>
-                              <p className="text-sm text-gray-700">
+                              <p className="text-sm text-gray-700 dark:text-warmgray-300">
                                 {address.city}, {address.state} -{' '}
                                 {address.postal_code}
                               </p>
@@ -504,7 +504,7 @@ const Checkout = () => {
                   {addressMode === 'new' && (
                     <div className="grid md:grid-cols-2 gap-6">
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-warmgray-300 mb-2">
                         Full Name *
                       </label>
                       <input
@@ -513,7 +513,7 @@ const Checkout = () => {
                         value={formik.values.name}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-surface-dark-border rounded-lg bg-white dark:bg-surface-dark text-gray-900 dark:text-warmgray-100 focus:outline-none focus:border-purple-500 transition-colors"
                       />
                       {formik.touched.name && formik.errors.name && (
                         <p className="text-red-600 text-sm mt-1">
@@ -523,7 +523,7 @@ const Checkout = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-warmgray-300 mb-2">
                         Phone Number *
                       </label>
                       <input
@@ -533,7 +533,7 @@ const Checkout = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         placeholder="10-digit number"
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-surface-dark-border rounded-lg bg-white dark:bg-surface-dark text-gray-900 dark:text-warmgray-100 focus:outline-none focus:border-purple-500 transition-colors"
                       />
                       {formik.touched.phone && formik.errors.phone && (
                         <p className="text-red-600 text-sm mt-1">
@@ -543,7 +543,7 @@ const Checkout = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-warmgray-300 mb-2">
                         PIN Code *
                       </label>
                       <div className="relative">
@@ -557,7 +557,7 @@ const Checkout = () => {
                             handlePincodeLookup(e.target.value);
                           }}
                           placeholder="6-digit PIN"
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors"
+                          className="w-full px-4 py-3 border-2 border-gray-200 dark:border-surface-dark-border rounded-lg bg-white dark:bg-surface-dark text-gray-900 dark:text-warmgray-100 focus:outline-none focus:border-purple-500 transition-colors"
                         />
                         {isLoadingPincode && (
                           <Loader2 className="absolute right-3 top-3 h-6 w-6 animate-spin text-purple-600" />
@@ -572,7 +572,7 @@ const Checkout = () => {
                     </div>
 
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-warmgray-300 mb-2">
                         Address Line 1 *
                       </label>
                       <input
@@ -582,7 +582,7 @@ const Checkout = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         placeholder="House No., Building Name"
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-surface-dark-border rounded-lg bg-white dark:bg-surface-dark text-gray-900 dark:text-warmgray-100 focus:outline-none focus:border-purple-500 transition-colors"
                       />
                       {formik.touched.address_line_1 &&
                         formik.errors.address_line_1 && (
@@ -593,7 +593,7 @@ const Checkout = () => {
                     </div>
 
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-warmgray-300 mb-2">
                         Address Line 2 (Optional)
                       </label>
                       <input
@@ -603,7 +603,7 @@ const Checkout = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         placeholder="Road Name, Area, Colony"
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-surface-dark-border rounded-lg bg-white dark:bg-surface-dark text-gray-900 dark:text-warmgray-100 focus:outline-none focus:border-purple-500 transition-colors"
                       />
                     </div>
 
@@ -619,7 +619,7 @@ const Checkout = () => {
                     />
 
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-warmgray-300 mb-2">
                         Country *
                       </label>
                       <input
@@ -628,7 +628,7 @@ const Checkout = () => {
                         value={formik.values.country}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-surface-dark-border rounded-lg bg-white dark:bg-surface-dark text-gray-900 dark:text-warmgray-100 focus:outline-none focus:border-purple-500 transition-colors"
                       />
                       {formik.touched.country && formik.errors.country && (
                         <p className="text-red-600 text-sm mt-1">
@@ -645,7 +645,7 @@ const Checkout = () => {
                           onChange={(e) => setSaveAddress(e.target.checked)}
                           className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
                         />
-                        <span className="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-gray-700 dark:text-warmgray-300">
                           Save this address for future orders
                         </span>
                       </label>
@@ -677,12 +677,12 @@ const Checkout = () => {
                       </div>
                     ) : (
                       <>
-                        <div className="flex items-center justify-between p-6 border-2 border-purple-500 bg-purple-50 rounded-xl">
+                        <div className="flex items-center justify-between p-6 border-2 border-purple-500 bg-purple-50 dark:bg-purple-950/30 rounded-xl">
                           <div className="flex items-center gap-4">
                             <Truck className="h-6 w-6 text-purple-600" />
                             <div>
                               <p className="font-bold text-gray-800">Standard Delivery</p>
-                              <p className="text-sm text-gray-600">Delivered within 5-7 business days</p>
+                              <p className="text-sm text-gray-600 dark:text-warmgray-400">Delivered within 5-7 business days</p>
                             </div>
                           </div>
                           <span className="font-bold text-purple-600 text-lg">₹99</span>
@@ -695,7 +695,7 @@ const Checkout = () => {
                   </div>
 
                   {/* Gift Wrapping */}
-                  <div className="border-t-2 border-gray-100 pt-5 mt-2">
+                  <div className="border-t-2 border-gray-100 dark:border-surface-dark-border pt-5 mt-2">
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <input
                         type="checkbox"
@@ -717,7 +717,7 @@ const Checkout = () => {
                           onChange={(e) => setGiftMessage(e.target.value)}
                           placeholder="Write a message card (optional)…"
                           maxLength={200}
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 transition-colors text-sm resize-none"
+                          className="w-full px-4 py-3 border-2 border-gray-200 dark:border-surface-dark-border rounded-lg bg-white dark:bg-surface-dark text-gray-900 dark:text-warmgray-100 focus:outline-none focus:border-purple-500 transition-colors text-sm resize-none"
                         />
                         <p className="text-xs text-gray-400 mt-1">{giftMessage.length}/200</p>
                       </div>
@@ -738,8 +738,8 @@ const Checkout = () => {
                     <label
                       className={`flex items-center justify-between p-6 border-2 rounded-xl cursor-pointer transition-all ${
                         paymentMethod === 'razorpay'
-                          ? 'border-purple-500 bg-purple-50'
-                          : 'border-gray-200 hover:border-purple-200'
+                          ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30'
+                          : 'border-gray-200 dark:border-surface-dark-border hover:border-purple-200'
                       }`}
                     >
                       <div className="flex items-center gap-4">
@@ -759,7 +759,7 @@ const Checkout = () => {
                           <p className="font-bold text-gray-800">
                             Online Payment
                           </p>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-gray-600 dark:text-warmgray-400">
                             Credit Card, Debit Card, UPI, Netbanking
                           </p>
                         </div>
@@ -787,7 +787,7 @@ const Checkout = () => {
                       <h3 className="font-bold text-gray-800 mb-2">
                         Shipping Address
                       </h3>
-                      <div className="bg-gray-50 rounded-lg p-4 text-sm">
+                      <div className="bg-gray-50 dark:bg-surface-dark rounded-lg p-4 text-sm">
                         <p className="font-semibold">{reviewAddress.name}</p>
                         <p>{reviewAddress.phone}</p>
                         <p>{reviewAddress.address_line_1}</p>
@@ -806,9 +806,9 @@ const Checkout = () => {
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
                         <h3 className="font-bold text-gray-800 mb-2">Delivery</h3>
-                        <div className="bg-gray-50 rounded-lg p-4 text-sm">
+                        <div className="bg-gray-50 dark:bg-surface-dark rounded-lg p-4 text-sm">
                           <p className="font-semibold">Standard Delivery</p>
-                          <p className="text-gray-600">5-7 business days</p>
+                          <p className="text-gray-600 dark:text-warmgray-400">5-7 business days</p>
                           <p className={`font-semibold mt-1 ${shippingCost === 0 ? 'text-green-600' : 'text-purple-600'}`}>
                             {shippingCost === 0 ? 'FREE' : '₹99'}
                           </p>
@@ -817,7 +817,7 @@ const Checkout = () => {
 
                       <div>
                         <h3 className="font-bold text-gray-800 mb-2">Payment</h3>
-                        <div className="bg-gray-50 rounded-lg p-4 text-sm">
+                        <div className="bg-gray-50 dark:bg-surface-dark rounded-lg p-4 text-sm">
                           <p className="font-semibold">Online Payment</p>
                         </div>
                       </div>
@@ -830,7 +830,7 @@ const Checkout = () => {
                         </h3>
                         <div className="bg-pink-50 rounded-lg p-4 text-sm border border-pink-100">
                           <p className="font-semibold text-pink-800">Your order will be gift wrapped</p>
-                          {giftMessage && <p className="text-gray-700 mt-1 italic">"{giftMessage}"</p>}
+                          {giftMessage && <p className="text-gray-700 dark:text-warmgray-300 mt-1 italic">"{giftMessage}"</p>}
                         </div>
                       </div>
                     )}
@@ -844,7 +844,7 @@ const Checkout = () => {
                         {cart.cart_items.map((item) => (
                           <div
                             key={item.id}
-                            className="flex items-center gap-4 bg-gray-50 rounded-lg p-4"
+                            className="flex items-center gap-4 bg-gray-50 dark:bg-surface-dark rounded-lg p-4"
                           >
                             <img
                               src={
@@ -858,7 +858,7 @@ const Checkout = () => {
                               <p className="font-semibold text-gray-800">
                                 {item.product.name}
                               </p>
-                              <p className="text-sm text-gray-600">
+                              <p className="text-sm text-gray-600 dark:text-warmgray-400">
                                 Qty: {item.quantity}
                               </p>
                             </div>
@@ -871,7 +871,7 @@ const Checkout = () => {
                     </div>
 
                     {/* Price Summary */}
-                    <div className="bg-purple-50 rounded-lg p-6">
+                    <div className="bg-purple-50 dark:bg-purple-950/30 rounded-lg p-6">
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span>Subtotal</span>
@@ -911,7 +911,7 @@ const Checkout = () => {
                   type="button"
                   onClick={handleBack}
                   disabled={isProcessing}
-                  className="flex items-center gap-2 px-6 py-3 bg-white text-gray-700 font-bold rounded-xl shadow-playful hover:shadow-playful-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-6 py-3 bg-white dark:bg-surface-dark-raised text-gray-700 dark:text-warmgray-300 dark:text-warmgray-300 font-bold rounded-xl shadow-playful hover:shadow-playful-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft className="h-5 w-5" />
                   Back
