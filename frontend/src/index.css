@@ -188,6 +188,11 @@
     animation: shimmer 1.6s ease-in-out infinite;
   }
 
+  .dark .animate-shimmer {
+    background: linear-gradient(90deg, #24242E 25%, #34343F 50%, #24242E 75%);
+    background-size: 200% 100%;
+  }
+
   /* Sparkle pop for badges / highlights */
   @keyframes sparkle-pop {
     0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
@@ -293,6 +298,26 @@
 
   .shadow-soft-xl {
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+  }
+
+  .dark .shadow-soft-sm {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  }
+
+  .dark .shadow-soft {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .dark .shadow-soft-md {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  }
+
+  .dark .shadow-soft-lg {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+
+  .dark .shadow-soft-xl {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
   }
 
   /* Hover Effects - Gentle Lift */
@@ -418,6 +443,27 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   }
 
+  .dark .btn-outline {
+    background-color: #24242E;
+    color: #4DD0E1;
+    border-color: #4DD0E1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .dark .btn-outline:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  }
+
+  .dark .btn-accent {
+    color: #1C1917;
+  }
+
+  .dark .btn-primary:hover,
+  .dark .btn-secondary:hover,
+  .dark .btn-accent:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  }
+
   /* Input Styles - Soft & Rounded */
   .input-talkie {
     width: 100%;
@@ -426,12 +472,32 @@
     border: 2px solid #E7E5E4;
     outline: none;
     background-color: rgba(255, 255, 255, 0.8);
+    color: #1C1917;
     transition: all 0.2s ease;
+  }
+
+  .input-talkie::placeholder {
+    color: #A8A29E;
   }
 
   .input-talkie:focus {
     border-color: #26C6DA;
     box-shadow: 0 0 0 3px rgba(38, 198, 218, 0.2);
+  }
+
+  .dark .input-talkie {
+    border-color: #34343F;
+    background-color: rgba(36, 36, 46, 0.8);
+    color: #F5F5F4;
+  }
+
+  .dark .input-talkie::placeholder {
+    color: #78716C;
+  }
+
+  .dark .input-talkie:focus {
+    border-color: #4DD0E1;
+    box-shadow: 0 0 0 3px rgba(77, 208, 225, 0.25);
   }
 
   /* Hide scrollbar but allow scrolling */
@@ -454,6 +520,30 @@
 ::-moz-selection {
   background-color: #FFD54F;
   color: #292524;
+}
+
+.dark ::selection {
+  background-color: #EC4899;
+  color: #FAFAF9;
+}
+
+.dark ::-moz-selection {
+  background-color: #EC4899;
+  color: #FAFAF9;
+}
+
+/* Scrollbar - Talkie Toyz Brand */
+.dark ::-webkit-scrollbar-track {
+  background: #1B1B22;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #34343F;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #44403C;
 }
 
 /* Respect prefers-reduced-motion */
