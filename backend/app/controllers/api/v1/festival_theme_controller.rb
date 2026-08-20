@@ -1,8 +1,6 @@
 module Api
   module V1
-    class FestivalThemeController < ApplicationController
-      skip_before_action :authenticate_user!
-
+    class FestivalThemeController < BaseController
       def current
         festival = FestivalThemeService.today
         if festival
