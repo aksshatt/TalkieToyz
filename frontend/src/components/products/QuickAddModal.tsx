@@ -25,7 +25,7 @@ const QuickAddModal = ({ product, onClose }: Props) => {
   const handleAdd = async () => {
     setAdding(true);
     try {
-      await dispatch(addToCart({ product_id: product.id, quantity: qty })).unwrap();
+      await dispatch(addToCart({ product_id: product.id, quantity: qty, silent: true })).unwrap();
       toast.success(`${product.name} added to cart`);
       onClose();
     } catch {
