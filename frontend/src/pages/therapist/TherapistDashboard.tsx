@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Users, MessageSquare, Award, Briefcase, Plus, X, Save } from 'lucide-react';
@@ -18,8 +18,11 @@ const TherapistDashboard: React.FC = () => {
   const { data: credsData } = useQuery({
     queryKey: ['therapist_credentials'],
     queryFn: therapistService.getCredentials,
-    onSuccess: (d: any) => { if (!editingCreds) setCredForm(d.data || {}); },
   });
+
+  useEffect(() => {
+    if (credsData && !editingCreds) setCredForm((credsData as any).data || {});
+  }, [credsData, editingCreds]);
 
   const { data: convsData } = useQuery({
     queryKey: ['therapist_conversations'],
