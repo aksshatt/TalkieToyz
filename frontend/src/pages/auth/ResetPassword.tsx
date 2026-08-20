@@ -66,14 +66,14 @@ const ResetPassword: React.FC = () => {
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 bg-warmgray-50">
+      <div className="min-h-screen flex items-center justify-center px-4 bg-warmgray-50 dark:bg-surface-dark">
         <div className="max-w-md w-full text-center">
-          <div className="bg-white rounded-2xl shadow-soft border border-warmgray-200 p-10">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft border border-warmgray-200 dark:border-surface-dark-border p-10">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-teal-light rounded-full mb-6">
               <CheckCircle className="h-8 w-8 text-teal" />
             </div>
-            <h2 className="text-2xl font-bold text-warmgray-900 mb-3">Password reset!</h2>
-            <p className="text-warmgray-600 mb-8">
+            <h2 className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100 mb-3">Password reset!</h2>
+            <p className="text-warmgray-600 dark:text-warmgray-400 mb-8">
               Your password has been successfully updated. Redirecting to login...
             </p>
             <Link to="/login" className="btn-primary-talkie inline-block">
@@ -106,15 +106,15 @@ const ResetPassword: React.FC = () => {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-white">
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-white dark:bg-surface-dark">
         <div className="w-full max-w-md">
           <div className="lg:hidden mb-8 text-center">
             <h1 className="text-3xl font-bold text-teal">TalkieToys</h1>
           </div>
 
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-warmgray-900 mb-2">New password</h2>
-            <p className="text-warmgray-600">Choose a strong password for your account</p>
+            <h2 className="text-3xl font-bold text-warmgray-900 dark:text-warmgray-100 mb-2">New password</h2>
+            <p className="text-warmgray-600 dark:text-warmgray-400">Choose a strong password for your account</p>
           </div>
 
           {!token && (
@@ -136,7 +136,7 @@ const ResetPassword: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-warmgray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-warmgray-700 dark:text-warmgray-300 mb-2">
                 New password
               </label>
               <div className="relative">
@@ -160,7 +160,7 @@ const ResetPassword: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-warmgray-400 hover:text-warmgray-600"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-warmgray-400 dark:text-warmgray-500 hover:text-warmgray-600 dark:text-warmgray-400"
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
@@ -169,7 +169,7 @@ const ResetPassword: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="password_confirmation" className="block text-sm font-medium text-warmgray-700 mb-2">
+              <label htmlFor="password_confirmation" className="block text-sm font-medium text-warmgray-700 dark:text-warmgray-300 mb-2">
                 Confirm new password
               </label>
               <div className="relative">
@@ -193,7 +193,7 @@ const ResetPassword: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-warmgray-400 hover:text-warmgray-600"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-warmgray-400 dark:text-warmgray-500 hover:text-warmgray-600 dark:text-warmgray-400"
                 >
                   {showConfirm ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>

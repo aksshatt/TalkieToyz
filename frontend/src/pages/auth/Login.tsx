@@ -194,7 +194,7 @@ const Login: React.FC = () => {
       </div>
 
       {/* ── Right Panel ── */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-gradient-to-br from-cream-light via-white to-teal-light/15 relative overflow-hidden">
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-gradient-to-br from-cream-light via-white to-teal-light/15 dark:from-surface-dark dark:via-surface-dark dark:to-surface-dark relative overflow-hidden">
 
         {/* Subtle bg dots */}
         {[...Array(5)].map((_, i) => (
@@ -227,10 +227,10 @@ const Login: React.FC = () => {
           {/* Form Card */}
           <motion.div
             variants={fieldVariant}
-            className="bg-white/80 backdrop-blur-md rounded-3xl shadow-soft-xl border border-white/60 p-8"
+            className="bg-white/80 dark:bg-surface-dark-raised/90 backdrop-blur-md rounded-3xl shadow-soft-xl border border-white/60 dark:border-surface-dark-border p-8"
           >
             <div className="mb-7">
-              <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-1">Sign in</h2>
+              <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 mb-1">Sign in</h2>
               <p className="text-warmgray-500 text-sm">Enter your credentials to access your account</p>
             </div>
 
@@ -247,7 +247,7 @@ const Login: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email */}
               <motion.div variants={fieldVariant}>
-                <label htmlFor="email" className="block text-sm font-semibold text-warmgray-700 mb-1.5">
+                <label htmlFor="email" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                   Email address
                 </label>
                 <div className="relative group">
@@ -260,10 +260,10 @@ const Login: React.FC = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 focus:bg-white ${
+                    className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 dark:bg-surface-dark text-warmgray-900 dark:text-warmgray-100 focus:bg-white dark:focus:bg-surface-dark ${
                       errors.email
                         ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-100'
-                        : 'border-warmgray-200 focus:border-teal focus:ring-4 focus:ring-teal/10'
+                        : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-4 focus:ring-teal/10'
                     }`}
                     placeholder="you@example.com"
                     disabled={isLoading}
@@ -274,7 +274,7 @@ const Login: React.FC = () => {
 
               {/* Password */}
               <motion.div variants={fieldVariant}>
-                <label htmlFor="password" className="block text-sm font-semibold text-warmgray-700 mb-1.5">
+                <label htmlFor="password" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                   Password
                 </label>
                 <div className="relative group">
@@ -287,10 +287,10 @@ const Login: React.FC = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 focus:bg-white ${
+                    className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 dark:bg-surface-dark text-warmgray-900 dark:text-warmgray-100 focus:bg-white dark:focus:bg-surface-dark ${
                       errors.password
                         ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-100'
-                        : 'border-warmgray-200 focus:border-teal focus:ring-4 focus:ring-teal/10'
+                        : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-4 focus:ring-teal/10'
                     }`}
                     placeholder="Enter your password"
                     disabled={isLoading}
@@ -318,7 +318,7 @@ const Login: React.FC = () => {
                     type="checkbox"
                     className="h-4 w-4 text-teal focus:ring-teal border-warmgray-300 rounded"
                   />
-                  <label htmlFor="remember" className="ml-2 block text-sm text-warmgray-600">
+                  <label htmlFor="remember" className="ml-2 block text-sm text-warmgray-600 dark:text-warmgray-400">
                     Remember me
                   </label>
                 </div>

@@ -195,7 +195,7 @@ const Signup: React.FC = () => {
       </div>
 
       {/* ── Right Panel ── */}
-      <div className="flex-1 flex items-center justify-center px-6 py-10 bg-gradient-to-br from-cream-light via-white to-coral-light/20 relative overflow-hidden">
+      <div className="flex-1 flex items-center justify-center px-6 py-10 bg-gradient-to-br from-cream-light via-white to-coral-light/20 relative overflow-hidden dark:from-surface-dark dark:via-surface-dark dark:to-surface-dark">
 
         {/* Subtle bg dots */}
         {[...Array(5)].map((_, i) => (
@@ -228,10 +228,10 @@ const Signup: React.FC = () => {
           {/* Form Card */}
           <motion.div
             variants={fieldVariant}
-            className="bg-white/80 backdrop-blur-md rounded-3xl shadow-soft-xl border border-white/60 p-8"
+            className="bg-white/80 dark:bg-surface-dark-raised/90 backdrop-blur-md rounded-3xl shadow-soft-xl border border-white/60 dark:border-surface-dark-border p-8"
           >
             <div className="mb-6">
-              <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-1">Create account</h2>
+              <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 mb-1">Create account</h2>
               <p className="text-warmgray-500 text-sm">Get started with your free account today</p>
             </div>
 
@@ -248,7 +248,7 @@ const Signup: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Account Type */}
               <motion.div variants={fieldVariant}>
-                <label className="block text-sm font-semibold text-warmgray-700 mb-2">Account type</label>
+                <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Account type</label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     { role: 'customer' as const, Icon: UserCheck, label: 'Parent', emoji: '👨‍👩‍👧' },
@@ -270,7 +270,7 @@ const Signup: React.FC = () => {
                       <div className="flex flex-col items-center gap-1">
                         <span className="text-2xl">{emoji}</span>
                         <Icon className={`h-5 w-5 ${formData.role === role ? 'text-coral' : 'text-warmgray-400'}`} />
-                        <span className={`text-sm font-semibold ${formData.role === role ? 'text-coral' : 'text-warmgray-600'}`}>
+                        <span className={`text-sm font-semibold ${formData.role === role ? 'text-coral' : 'text-warmgray-600 dark:text-warmgray-400'}`}>
                           {label}
                         </span>
                       </div>
@@ -292,7 +292,7 @@ const Signup: React.FC = () => {
 
               {/* Name */}
               <motion.div variants={fieldVariant}>
-                <label htmlFor="name" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Full name</label>
+                <label htmlFor="name" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Full name</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <User className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
@@ -300,9 +300,9 @@ const Signup: React.FC = () => {
                   <input
                     type="text" id="name" name="name"
                     value={formData.name} onChange={handleChange}
-                    className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 focus:bg-white ${
+                    className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 dark:bg-surface-dark text-warmgray-900 dark:text-warmgray-100 focus:bg-white dark:focus:bg-surface-dark ${
                       errors.name ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-100'
-                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10'
+                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10 dark:border-surface-dark-border'
                     }`}
                     placeholder="John Doe" disabled={isLoading}
                   />
@@ -312,7 +312,7 @@ const Signup: React.FC = () => {
 
               {/* Email */}
               <motion.div variants={fieldVariant}>
-                <label htmlFor="email" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Email address</label>
+                <label htmlFor="email" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Email address</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <Mail className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
@@ -320,9 +320,9 @@ const Signup: React.FC = () => {
                   <input
                     type="email" id="email" name="email"
                     value={formData.email} onChange={handleChange}
-                    className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 focus:bg-white ${
+                    className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 dark:bg-surface-dark text-warmgray-900 dark:text-warmgray-100 focus:bg-white dark:focus:bg-surface-dark ${
                       errors.email ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-100'
-                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10'
+                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10 dark:border-surface-dark-border'
                     }`}
                     placeholder="you@example.com" disabled={isLoading}
                   />
@@ -332,7 +332,7 @@ const Signup: React.FC = () => {
 
               {/* Password */}
               <motion.div variants={fieldVariant}>
-                <label htmlFor="password" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Password</label>
+                <label htmlFor="password" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Password</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <Lock className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
@@ -341,9 +341,9 @@ const Signup: React.FC = () => {
                     type={showPassword ? 'text' : 'password'}
                     id="password" name="password"
                     value={formData.password} onChange={handleChange}
-                    className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 focus:bg-white ${
+                    className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 dark:bg-surface-dark text-warmgray-900 dark:text-warmgray-100 focus:bg-white dark:focus:bg-surface-dark ${
                       errors.password ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-100'
-                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10'
+                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10 dark:border-surface-dark-border'
                     }`}
                     placeholder="At least 6 characters" disabled={isLoading}
                   />
@@ -357,7 +357,7 @@ const Signup: React.FC = () => {
 
               {/* Confirm Password */}
               <motion.div variants={fieldVariant}>
-                <label htmlFor="password_confirmation" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Confirm password</label>
+                <label htmlFor="password_confirmation" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Confirm password</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <Lock className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
@@ -366,9 +366,9 @@ const Signup: React.FC = () => {
                     type={showConfirmPassword ? 'text' : 'password'}
                     id="password_confirmation" name="password_confirmation"
                     value={formData.password_confirmation} onChange={handleChange}
-                    className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 focus:bg-white ${
+                    className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 dark:bg-surface-dark text-warmgray-900 dark:text-warmgray-100 focus:bg-white dark:focus:bg-surface-dark ${
                       errors.password_confirmation ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-100'
-                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10'
+                        : 'border-warmgray-200 focus:border-coral focus:ring-4 focus:ring-coral/10 dark:border-surface-dark-border'
                     }`}
                     placeholder="Re-enter your password" disabled={isLoading}
                   />
@@ -426,7 +426,7 @@ const Signup: React.FC = () => {
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
               <Link
                 to="/login"
-                className="flex items-center justify-center w-full py-3 px-4 border-2 border-warmgray-200 text-warmgray-600 font-semibold rounded-xl hover:bg-warmgray-50 hover:border-warmgray-300 transition-all duration-200"
+                className="flex items-center justify-center w-full py-3 px-4 border-2 border-warmgray-200 text-warmgray-600 dark:text-warmgray-400 font-semibold rounded-xl hover:bg-warmgray-50 hover:border-warmgray-300 transition-all duration-200"
               >
                 Sign in instead
               </Link>

@@ -68,7 +68,7 @@ const TherapistTemplates: React.FC = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-900">Message Templates</h1>
+          <h1 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100">Message Templates</h1>
           <p className="text-warmgray-500 text-sm mt-1">Reusable messages for common scenarios</p>
         </div>
         <motion.button onClick={openCreate} whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
@@ -80,12 +80,12 @@ const TherapistTemplates: React.FC = () => {
       {/* Category filter */}
       <div className="flex gap-2 flex-wrap mb-6">
         <button onClick={() => setFilterCat('')}
-          className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${!filterCat ? 'bg-teal-gradient text-white shadow-soft' : 'bg-white border-2 border-warmgray-200 text-warmgray-500 hover:border-teal'}`}>
+          className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${!filterCat ? 'bg-teal-gradient text-white shadow-soft' : 'bg-white dark:bg-surface-dark-raised border-2 border-warmgray-200 dark:border-surface-dark-border text-warmgray-500 hover:border-teal'}`}>
           All
         </button>
         {CATEGORIES.map(c => (
           <button key={c} onClick={() => setFilterCat(c === filterCat ? '' : c)}
-            className={`px-4 py-1.5 rounded-full text-sm font-semibold capitalize transition-all ${filterCat === c ? 'bg-teal-gradient text-white shadow-soft' : 'bg-white border-2 border-warmgray-200 text-warmgray-500 hover:border-teal'}`}>
+            className={`px-4 py-1.5 rounded-full text-sm font-semibold capitalize transition-all ${filterCat === c ? 'bg-teal-gradient text-white shadow-soft' : 'bg-white dark:bg-surface-dark-raised border-2 border-warmgray-200 dark:border-surface-dark-border text-warmgray-500 hover:border-teal'}`}>
             {c}
           </button>
         ))}
@@ -95,37 +95,37 @@ const TherapistTemplates: React.FC = () => {
       <AnimatePresence>
         {showForm && (
           <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
-            className="bg-white rounded-3xl shadow-soft-xl p-6 mb-6 border border-warmgray-100">
+            className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft-xl p-6 mb-6 border border-warmgray-100 dark:border-surface-dark-border">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900">{editing ? 'Edit Template' : 'New Template'}</h3>
+              <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100">{editing ? 'Edit Template' : 'New Template'}</h3>
               <button onClick={closeForm} className="p-2 rounded-xl hover:bg-warmgray-100 transition-colors"><X className="w-4 h-4" /></button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-warmgray-600 mb-1 block">Title *</label>
+                  <label className="text-xs font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1 block">Title *</label>
                   <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
                     placeholder="e.g. Welcome message"
-                    className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl text-sm focus:border-teal focus:outline-none" />
+                    className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-teal focus:outline-none" />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-warmgray-600 mb-1 block">Category</label>
+                  <label className="text-xs font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1 block">Category</label>
                   <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-                    className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl text-sm focus:border-teal focus:outline-none capitalize">
+                    className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-teal focus:outline-none capitalize">
                     {CATEGORIES.map(c => <option key={c} value={c} className="capitalize">{c}</option>)}
                   </select>
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold text-warmgray-600 mb-1 block">Content *</label>
+                <label className="text-xs font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1 block">Content *</label>
                 <textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))}
                   rows={4} placeholder="Template message content…"
-                  className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl text-sm focus:border-teal focus:outline-none resize-none" />
+                  className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-teal focus:outline-none resize-none" />
               </div>
               <div className="flex items-center gap-2">
                 <input type="checkbox" id="shared" checked={form.shared} onChange={e => setForm(f => ({ ...f, shared: e.target.checked }))}
                   className="w-4 h-4 accent-teal" />
-                <label htmlFor="shared" className="text-sm text-warmgray-700">Share with all therapists</label>
+                <label htmlFor="shared" className="text-sm text-warmgray-700 dark:text-warmgray-300">Share with all therapists</label>
               </div>
               <div className="flex gap-3">
                 <motion.button type="submit" disabled={createMutation.isPending || updateMutation.isPending}
@@ -134,7 +134,7 @@ const TherapistTemplates: React.FC = () => {
                   <Save className="w-4 h-4" /> {editing ? 'Update' : 'Create'}
                 </motion.button>
                 <button type="button" onClick={closeForm}
-                  className="px-5 py-2.5 border-2 border-warmgray-200 rounded-xl text-sm font-semibold text-warmgray-600 hover:bg-warmgray-50">
+                  className="px-5 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm font-semibold text-warmgray-600 dark:text-warmgray-400 hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark">
                   Cancel
                 </button>
               </div>
@@ -148,16 +148,16 @@ const TherapistTemplates: React.FC = () => {
           {[...Array(4)].map((_, i) => <div key={i} className="animate-pulse bg-warmgray-200 rounded-2xl h-32" />)}
         </div>
       ) : templates.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-3xl border-2 border-dashed border-warmgray-200">
+        <div className="text-center py-16 bg-white dark:bg-surface-dark-raised rounded-3xl border-2 border-dashed border-warmgray-200 dark:border-surface-dark-border">
           <BookOpen className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />
-          <p className="font-semibold text-warmgray-600">{filterCat ? `No ${filterCat} templates` : 'No templates yet'}</p>
+          <p className="font-semibold text-warmgray-600 dark:text-warmgray-400">{filterCat ? `No ${filterCat} templates` : 'No templates yet'}</p>
           <button onClick={openCreate} className="text-teal font-bold text-sm mt-2 hover:underline">Create your first template</button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {templates.map(t => (
             <motion.div key={t.id} layout
-              className="bg-white rounded-2xl shadow-soft p-5 border border-warmgray-100 hover:border-teal/20 transition-all">
+              className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-5 border border-warmgray-100 dark:border-surface-dark-border hover:border-teal/20 transition-all">
               <div className="flex items-start justify-between gap-3 mb-3">
                 <div className="flex items-center gap-2 min-w-0">
                   <span className={`text-xs font-bold px-2.5 py-1 rounded-full capitalize flex-shrink-0 ${CAT_COLORS[t.category || 'other']}`}>
@@ -176,7 +176,7 @@ const TherapistTemplates: React.FC = () => {
                   </button>
                 </div>
               </div>
-              <p className="font-bold text-warmgray-900 mb-2">{t.title}</p>
+              <p className="font-bold text-warmgray-900 dark:text-warmgray-100 mb-2">{t.title}</p>
               <p className="text-sm text-warmgray-500 line-clamp-3 leading-relaxed">{t.content}</p>
             </motion.div>
           ))}

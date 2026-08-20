@@ -124,7 +124,7 @@ const ForgotPassword: React.FC = () => {
       </div>
 
       {/* ── Right Panel ── */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-gradient-to-br from-cream-light via-white to-sky-light/20 relative overflow-hidden">
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-gradient-to-br from-cream-light via-white to-sky-light/20 relative overflow-hidden dark:from-surface-dark dark:via-surface-dark dark:to-surface-dark">
 
         {/* Subtle bg dots */}
         {[...Array(5)].map((_, i) => (
@@ -158,7 +158,7 @@ const ForgotPassword: React.FC = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.85 }}
                 transition={{ duration: 0.45, type: 'spring', stiffness: 200, damping: 20 }}
-                className="bg-white/80 backdrop-blur-md rounded-3xl shadow-soft-xl border border-white/60 p-10 text-center"
+                className="bg-white/80 dark:bg-surface-dark-raised/90 backdrop-blur-md rounded-3xl shadow-soft-xl border border-white/60 dark:border-surface-dark-border p-10 text-center"
               >
                 {/* Animated checkmark */}
                 <motion.div
@@ -198,7 +198,7 @@ const ForgotPassword: React.FC = () => {
                 ))}
 
                 <motion.h2
-                  className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-3"
+                  className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 mb-3"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
@@ -253,10 +253,10 @@ const ForgotPassword: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -40 }}
                 transition={{ duration: 0.45 }}
-                className="bg-white/80 backdrop-blur-md rounded-3xl shadow-soft-xl border border-white/60 p-8"
+                className="bg-white/80 dark:bg-surface-dark-raised/90 backdrop-blur-md rounded-3xl shadow-soft-xl border border-white/60 dark:border-surface-dark-border p-8"
               >
                 <div className="mb-7">
-                  <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-1">Reset password</h2>
+                  <h2 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 mb-1">Reset password</h2>
                   <p className="text-warmgray-500 text-sm">Enter your email and we'll send you a reset link</p>
                 </div>
 
@@ -276,7 +276,7 @@ const ForgotPassword: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
                   >
-                    <label htmlFor="email" className="block text-sm font-semibold text-warmgray-700 mb-1.5">
+                    <label htmlFor="email" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                       Email address
                     </label>
                     <div className="relative group">
@@ -288,10 +288,10 @@ const ForgotPassword: React.FC = () => {
                         id="email"
                         value={email}
                         onChange={(e) => { setEmail(e.target.value); setError(''); }}
-                        className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 focus:bg-white ${
+                        className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-warmgray-50 dark:bg-surface-dark text-warmgray-900 dark:text-warmgray-100 focus:bg-white dark:focus:bg-surface-dark ${
                           error
                             ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-100'
-                            : 'border-warmgray-200 focus:border-sky focus:ring-4 focus:ring-sky/10'
+                            : 'border-warmgray-200 focus:border-sky focus:ring-4 focus:ring-sky/10 dark:border-surface-dark-border'
                         }`}
                         placeholder="you@example.com"
                         disabled={isLoading}

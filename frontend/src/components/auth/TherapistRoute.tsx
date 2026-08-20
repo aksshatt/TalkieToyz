@@ -10,7 +10,7 @@ const TherapistRoute: React.FC<TherapistRouteProps> = ({ children }) => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-warmgray-50">
+      <div className="min-h-screen flex items-center justify-center bg-warmgray-50 dark:bg-surface-dark">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-teal mx-auto mb-4"></div>
           <p className="text-warmgray-600 font-semibold">Loading...</p>
@@ -25,7 +25,7 @@ const TherapistRoute: React.FC<TherapistRouteProps> = ({ children }) => {
   if (user.approval_status === 'pending') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-light/20 to-sky-light/20 p-6">
-        <div className="bg-white rounded-3xl shadow-soft-xl p-10 max-w-md w-full text-center">
+        <div className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft-xl p-10 max-w-md w-full text-center">
           <div className="w-20 h-20 bg-sunshine/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-10 h-10 text-sunshine" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -55,8 +55,8 @@ const TherapistRoute: React.FC<TherapistRouteProps> = ({ children }) => {
 
   if (user.approval_status === 'rejected') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-warmgray-50 p-6">
-        <div className="bg-white rounded-3xl shadow-soft-xl p-10 max-w-md w-full text-center">
+      <div className="min-h-screen flex items-center justify-center bg-warmgray-50 dark:bg-surface-dark p-6">
+        <div className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft-xl p-10 max-w-md w-full text-center">
           <div className="w-20 h-20 bg-coral-light/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-10 h-10 text-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />

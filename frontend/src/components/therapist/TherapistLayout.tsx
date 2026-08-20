@@ -20,10 +20,10 @@ const TherapistLayout: React.FC = () => {
   const handleLogout = async () => { await logout(); navigate('/login'); };
 
   return (
-    <div className="flex h-screen bg-warmgray-50 font-sans">
+    <div className="flex h-screen bg-warmgray-50 dark:bg-surface-dark font-sans">
       {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-soft-xl flex flex-col
+        fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-surface-dark-raised shadow-soft-xl flex flex-col
         transition-transform duration-300
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:relative lg:translate-x-0
@@ -34,7 +34,7 @@ const TherapistLayout: React.FC = () => {
             <Stethoscope className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="font-[var(--font-family-fun)] font-bold text-warmgray-900 text-sm">TalkieToys</p>
+            <p className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 text-sm">TalkieToys</p>
             <p className="text-xs text-teal font-semibold">Therapist Panel</p>
           </div>
         </div>
@@ -46,7 +46,7 @@ const TherapistLayout: React.FC = () => {
               {user?.name?.charAt(0)?.toUpperCase()}
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-warmgray-800 truncate">{user?.name}</p>
+              <p className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200 truncate">{user?.name}</p>
               <p className="text-xs text-warmgray-400 truncate">{user?.email}</p>
             </div>
           </div>
@@ -62,7 +62,7 @@ const TherapistLayout: React.FC = () => {
                 `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
                   isActive
                     ? 'bg-teal-light/30 text-teal border border-teal/20'
-                    : 'text-warmgray-600 hover:bg-warmgray-50 hover:text-warmgray-900'
+                    : 'text-warmgray-600 dark:text-warmgray-400 hover:bg-warmgray-50 dark:hover:bg-white/10 hover:text-warmgray-900 dark:text-warmgray-100'
                 }`
               }
             >
@@ -98,11 +98,11 @@ const TherapistLayout: React.FC = () => {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top bar (mobile) */}
-        <div className="lg:hidden flex items-center gap-3 px-4 py-3 bg-white border-b border-warmgray-100 shadow-soft">
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 rounded-xl hover:bg-warmgray-50 transition-colors">
+        <div className="lg:hidden flex items-center gap-3 px-4 py-3 bg-white dark:bg-surface-dark-raised border-b border-warmgray-100 dark:border-surface-dark-border shadow-soft">
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 rounded-xl hover:bg-warmgray-50 dark:hover:bg-white/10 transition-colors">
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
-          <span className="font-[var(--font-family-fun)] font-bold text-warmgray-900">Therapist Panel</span>
+          <span className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100">Therapist Panel</span>
         </div>
 
         <main className="flex-1 overflow-y-auto p-6">

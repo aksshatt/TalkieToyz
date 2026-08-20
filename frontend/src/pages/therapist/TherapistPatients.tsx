@@ -20,7 +20,7 @@ const TherapistPatients: React.FC = () => {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-900">My Patients</h1>
+        <h1 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100">My Patients</h1>
         <p className="text-warmgray-500 text-sm mt-1">Patients assigned to you by the admin</p>
       </div>
 
@@ -30,7 +30,7 @@ const TherapistPatients: React.FC = () => {
         <input
           value={search} onChange={e => setSearch(e.target.value)}
           placeholder="Search patients…"
-          className="w-full pl-9 pr-4 py-2.5 border-2 border-warmgray-200 rounded-xl text-sm focus:border-teal focus:outline-none"
+          className="w-full pl-9 pr-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-teal focus:outline-none"
         />
       </div>
 
@@ -39,9 +39,9 @@ const TherapistPatients: React.FC = () => {
           {[...Array(4)].map((_, i) => <div key={i} className="animate-pulse bg-warmgray-200 rounded-2xl h-20" />)}
         </div>
       ) : patients.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-warmgray-200">
+        <div className="text-center py-20 bg-white dark:bg-surface-dark-raised rounded-3xl border-2 border-dashed border-warmgray-200 dark:border-surface-dark-border">
           <Users className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />
-          <p className="font-semibold text-warmgray-600">{search ? 'No patients match your search' : 'No patients assigned yet'}</p>
+          <p className="font-semibold text-warmgray-600 dark:text-warmgray-400">{search ? 'No patients match your search' : 'No patients assigned yet'}</p>
           <p className="text-warmgray-400 text-sm mt-1">Ask the admin to assign patients to you.</p>
         </div>
       ) : (
@@ -50,13 +50,13 @@ const TherapistPatients: React.FC = () => {
             <motion.div key={patient.id}
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
               <Link to={`/therapist/patients/${patient.id}`}
-                className="flex items-center gap-4 bg-white rounded-2xl p-4 shadow-soft hover:shadow-soft-md transition-all border border-warmgray-100 hover:border-teal/30 group">
+                className="flex items-center gap-4 bg-white dark:bg-surface-dark-raised rounded-2xl p-4 shadow-soft hover:shadow-soft-md transition-all border border-warmgray-100 dark:border-surface-dark-border hover:border-teal/30 group">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal to-sky flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                   {patient.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="font-bold text-warmgray-900 group-hover:text-teal transition-colors">{patient.name}</p>
+                    <p className="font-bold text-warmgray-900 dark:text-warmgray-100 group-hover:text-teal transition-colors">{patient.name}</p>
                     {patient.unread_messages > 0 && (
                       <span className="bg-coral text-white text-xs font-bold px-2 py-0.5 rounded-full">
                         {patient.unread_messages}

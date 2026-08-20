@@ -34,7 +34,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, requiredRole }) =
   if (requiredRole && user?.role !== requiredRole && user?.role !== 'admin') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-100 via-orange-100 to-yellow-100 flex items-center justify-center px-4">
-        <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border-4 border-red-200 text-center">
+        <div className="max-w-md w-full bg-white dark:bg-surface-dark-raised rounded-3xl shadow-xl p-8 border-4 border-red-200 text-center">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-red-400 to-orange-500 rounded-full shadow-lg mb-6">
             <span className="text-4xl">🚫</span>
           </div>

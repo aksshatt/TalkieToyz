@@ -10,7 +10,7 @@ const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-warmgray-50">
+      <div className="min-h-screen flex items-center justify-center bg-warmgray-50 dark:bg-surface-dark">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-teal mx-auto mb-4"></div>
           <p className="text-warmgray-600 font-semibold">Loading...</p>

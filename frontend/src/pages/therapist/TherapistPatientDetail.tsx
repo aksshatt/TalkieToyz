@@ -26,7 +26,7 @@ const MessageBubble: React.FC<{ msg: Message; isMine: boolean }> = ({ msg, isMin
 
         {isProduct && msg.metadata ? (
           <Link to={`/products/${msg.metadata.product_slug}`}
-            className={`rounded-2xl overflow-hidden border shadow-soft hover:shadow-soft-md transition-all block ${isMine ? 'bg-teal-light/30 border-teal/20' : 'bg-white border-warmgray-200'}`}>
+            className={`rounded-2xl overflow-hidden border shadow-soft hover:shadow-soft-md transition-all block ${isMine ? 'bg-teal-light/30 border-teal/20' : 'bg-white dark:bg-surface-dark-raised border-warmgray-200 dark:border-surface-dark-border'}`}>
             {msg.metadata.image_url && (
               <img src={msg.metadata.image_url} alt={msg.metadata.product_name} className="w-full h-32 object-cover" />
             )}
@@ -34,7 +34,7 @@ const MessageBubble: React.FC<{ msg: Message; isMine: boolean }> = ({ msg, isMin
               <div className="flex items-center gap-1.5 text-xs text-teal font-semibold mb-1">
                 <Package className="w-3.5 h-3.5" /> Shared Product
               </div>
-              <p className="font-semibold text-warmgray-900 text-sm line-clamp-2">{msg.metadata.product_name}</p>
+              <p className="font-semibold text-warmgray-900 dark:text-warmgray-100 text-sm line-clamp-2">{msg.metadata.product_name}</p>
               <div className="flex items-center gap-1 text-xs text-teal mt-2 font-medium">
                 <ExternalLink className="w-3 h-3" /> Tap to view
               </div>
@@ -42,11 +42,11 @@ const MessageBubble: React.FC<{ msg: Message; isMine: boolean }> = ({ msg, isMin
           </Link>
         ) : isAssessment && msg.metadata ? (
           <Link to={`/assessments/${msg.metadata.assessment_slug}`}
-            className={`rounded-2xl overflow-hidden border shadow-soft hover:shadow-soft-md transition-all block p-4 ${isMine ? 'bg-teal-light/30 border-teal/20' : 'bg-white border-warmgray-200'}`}>
+            className={`rounded-2xl overflow-hidden border shadow-soft hover:shadow-soft-md transition-all block p-4 ${isMine ? 'bg-teal-light/30 border-teal/20' : 'bg-white dark:bg-surface-dark-raised border-warmgray-200 dark:border-surface-dark-border'}`}>
             <div className="flex items-center gap-1.5 text-xs text-coral font-semibold mb-1">
               <ClipboardList className="w-3.5 h-3.5" /> Shared Assessment
             </div>
-            <p className="font-semibold text-warmgray-900 text-sm">{msg.metadata.assessment_title}</p>
+            <p className="font-semibold text-warmgray-900 dark:text-warmgray-100 text-sm">{msg.metadata.assessment_title}</p>
             <div className="flex items-center gap-1 text-xs text-coral mt-2 font-medium">
               <ExternalLink className="w-3 h-3" /> Tap to take assessment
             </div>
@@ -55,7 +55,7 @@ const MessageBubble: React.FC<{ msg: Message; isMine: boolean }> = ({ msg, isMin
           <div className={`px-4 py-3 rounded-2xl text-sm ${
             isMine
               ? 'bg-teal-gradient text-white rounded-tr-sm'
-              : 'bg-white border border-warmgray-200 text-warmgray-800 rounded-tl-sm'
+              : 'bg-white dark:bg-surface-dark-raised border border-warmgray-200 dark:border-surface-dark-border text-warmgray-800 dark:text-warmgray-200 rounded-tl-sm'
           }`}>
             {msg.content}
           </div>
@@ -219,13 +219,13 @@ const TherapistPatientDetail: React.FC = () => {
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <Link to="/therapist/patients" className="p-2 rounded-xl hover:bg-warmgray-100 transition-colors">
-          <ChevronLeft className="w-5 h-5 text-warmgray-600" />
+          <ChevronLeft className="w-5 h-5 text-warmgray-600 dark:text-warmgray-400" />
         </Link>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal to-sky flex items-center justify-center text-white font-bold flex-shrink-0">
           {patient.name.charAt(0).toUpperCase()}
         </div>
         <div>
-          <h1 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-900">{patient.name}</h1>
+          <h1 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100">{patient.name}</h1>
           <p className="text-sm text-warmgray-500">{patient.email}</p>
         </div>
       </div>
@@ -235,7 +235,7 @@ const TherapistPatientDetail: React.FC = () => {
         {(['chat', 'results', 'share'] as Tab[]).map(t => (
           <button key={t} onClick={() => setTab(t)}
             className={`px-5 py-2 rounded-xl text-sm font-bold transition-all capitalize ${
-              tab === t ? 'bg-white text-teal shadow-soft' : 'text-warmgray-500 hover:text-warmgray-700'
+              tab === t ? 'bg-white dark:bg-surface-dark-raised text-teal shadow-soft' : 'text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300'
             }`}>
             {t === 'chat' ? 'Chat' : t === 'results' ? 'Assessment Results' : 'Share'}
           </button>
@@ -244,7 +244,7 @@ const TherapistPatientDetail: React.FC = () => {
 
       {/* ── Chat Tab ─────────────────────────────────────────────────────── */}
       {tab === 'chat' && (
-        <div className="flex-1 flex flex-col bg-white rounded-3xl shadow-soft overflow-hidden">
+        <div className="flex-1 flex flex-col bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft overflow-hidden">
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-5 min-h-0" style={{ maxHeight: 'calc(100vh - 340px)' }}>
             {messages.length === 0 ? (
@@ -264,23 +264,23 @@ const TherapistPatientDetail: React.FC = () => {
           </div>
 
           {/* Input */}
-          <div className="border-t border-warmgray-100 p-4">
+          <div className="border-t border-warmgray-100 dark:border-surface-dark-border p-4">
             {/* Template picker */}
             <AnimatePresence>
               {showTemplates && (
                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }} className="mb-3 overflow-hidden">
-                  <div className="bg-warmgray-50 rounded-2xl p-3 max-h-52 overflow-y-auto">
+                  <div className="bg-warmgray-50 dark:bg-surface-dark rounded-2xl p-3 max-h-52 overflow-y-auto">
                     <input value={templateSearch} onChange={e => setTemplateSearch(e.target.value)}
                       placeholder="Search templates…"
-                      className="w-full px-3 py-2 border border-warmgray-200 rounded-xl text-sm mb-2 focus:border-teal focus:outline-none" />
+                      className="w-full px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm mb-2 focus:border-teal focus:outline-none" />
                     {templates.length === 0 ? (
                       <p className="text-xs text-warmgray-400 text-center py-3">No templates found</p>
                     ) : (
                       templates.map(t => (
                         <button key={t.id} onClick={() => useTemplate(t)}
-                          className="w-full text-left px-3 py-2 rounded-xl hover:bg-white hover:shadow-soft transition-all mb-1">
-                          <p className="text-xs font-bold text-warmgray-800">{t.title}</p>
+                          className="w-full text-left px-3 py-2 rounded-xl hover:bg-white dark:bg-surface-dark-raised hover:shadow-soft transition-all mb-1">
+                          <p className="text-xs font-bold text-warmgray-800 dark:text-warmgray-200">{t.title}</p>
                           <p className="text-xs text-warmgray-500 line-clamp-1">{t.content}</p>
                         </button>
                       ))
@@ -292,7 +292,7 @@ const TherapistPatientDetail: React.FC = () => {
 
             <div className="flex items-end gap-2">
               <button onClick={() => setShowTemplates(v => !v)}
-                className={`p-2.5 rounded-xl border-2 transition-colors flex-shrink-0 ${showTemplates ? 'border-teal bg-teal-light/20 text-teal' : 'border-warmgray-200 text-warmgray-400 hover:border-teal hover:text-teal'}`}>
+                className={`p-2.5 rounded-xl border-2 transition-colors flex-shrink-0 ${showTemplates ? 'border-teal bg-teal-light/20 text-teal' : 'border-warmgray-200 dark:border-surface-dark-border text-warmgray-400 hover:border-teal hover:text-teal'}`}>
                 <BookOpen className="w-4 h-4" />
               </button>
               <textarea
@@ -301,7 +301,7 @@ const TherapistPatientDetail: React.FC = () => {
                 onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendText(); } }}
                 placeholder={`Message ${patient.name}…`}
                 rows={2}
-                className="flex-1 px-4 py-3 border-2 border-warmgray-200 rounded-2xl text-sm focus:border-teal focus:outline-none resize-none"
+                className="flex-1 px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-2xl text-sm focus:border-teal focus:outline-none resize-none"
               />
               <motion.button
                 onClick={sendText}
@@ -331,17 +331,17 @@ const TherapistPatientDetail: React.FC = () => {
       {tab === 'results' && (
         <div className="space-y-4">
           {patient.assessment_results.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-3xl shadow-soft">
+            <div className="text-center py-16 bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft">
               <ClipboardList className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />
               <p className="text-warmgray-500 font-semibold">No assessment results yet</p>
               <p className="text-warmgray-400 text-sm mt-1">Share an assessment with {patient.name} to get started.</p>
             </div>
           ) : (
             patient.assessment_results.map(r => (
-              <div key={r.id} className="bg-white rounded-2xl shadow-soft p-5">
+              <div key={r.id} className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-5">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <p className="font-bold text-warmgray-900">{r.assessment_title}</p>
+                    <p className="font-bold text-warmgray-900 dark:text-warmgray-100">{r.assessment_title}</p>
                     <p className="text-sm text-warmgray-500 mt-0.5">
                       For: <span className="font-semibold">{r.child_name}</span> ·{' '}
                       {new Date(r.completed_at).toLocaleDateString('en-IN')}
@@ -361,10 +361,10 @@ const TherapistPatientDetail: React.FC = () => {
 
                 {r.recommendations?.message && (
                   <div className="mt-3 bg-sunshine/10 border border-sunshine/20 rounded-xl p-3">
-                    <p className="text-xs font-bold text-warmgray-700 mb-1 flex items-center gap-1">
+                    <p className="text-xs font-bold text-warmgray-700 dark:text-warmgray-300 mb-1 flex items-center gap-1">
                       <TrendingUp className="w-3.5 h-3.5 text-sunshine" /> Recommendations
                     </p>
-                    <p className="text-xs text-warmgray-600 leading-relaxed">{r.recommendations.message}</p>
+                    <p className="text-xs text-warmgray-600 dark:text-warmgray-400 leading-relaxed">{r.recommendations.message}</p>
                   </div>
                 )}
               </div>
@@ -377,18 +377,18 @@ const TherapistPatientDetail: React.FC = () => {
       {tab === 'share' && (
         <div className="space-y-6">
           {/* Share Product */}
-          <div className="bg-white rounded-3xl shadow-soft p-5">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft p-5">
             <div className="flex items-center gap-2 mb-4">
               <Package className="w-5 h-5 text-teal" />
-              <h3 className="font-bold text-warmgray-900">Share a Product</h3>
+              <h3 className="font-bold text-warmgray-900 dark:text-warmgray-100">Share a Product</h3>
             </div>
             <input value={productSearch} onChange={e => setProductSearch(e.target.value)}
               placeholder="Search products to share…"
-              className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl text-sm focus:border-teal focus:outline-none mb-3" />
+              className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-teal focus:outline-none mb-3" />
             {(productSearchData?.data?.length ?? 0) > 0 && (
               <div className="space-y-2 max-h-60 overflow-y-auto">
                 {productSearchData.data.map((p: any) => (
-                  <div key={p.id} className="flex items-center gap-3 p-3 rounded-xl border border-warmgray-100 hover:border-teal/30 hover:bg-teal-light/5 transition-all cursor-pointer"
+                  <div key={p.id} className="flex items-center gap-3 p-3 rounded-xl border border-warmgray-100 dark:border-surface-dark-border hover:border-teal/30 hover:bg-teal-light/5 transition-all cursor-pointer"
                     onClick={() => shareProduct(p)}>
                     {p.image_urls?.[0] ? (
                       <img src={p.image_urls[0].thumbnail_url || p.image_urls[0].url} alt={p.name}
@@ -399,7 +399,7 @@ const TherapistPatientDetail: React.FC = () => {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-warmgray-900 text-sm line-clamp-1">{p.name}</p>
+                      <p className="font-semibold text-warmgray-900 dark:text-warmgray-100 text-sm line-clamp-1">{p.name}</p>
                       <p className="text-teal font-bold text-sm">₹{parseFloat(p.price).toFixed(0)}</p>
                     </div>
                     <div className="flex items-center gap-1 text-xs text-teal font-semibold px-3 py-1.5 bg-teal-light/20 rounded-full">
@@ -418,25 +418,25 @@ const TherapistPatientDetail: React.FC = () => {
           </div>
 
           {/* Share Assessment */}
-          <div className="bg-white rounded-3xl shadow-soft p-5">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft p-5">
             <div className="flex items-center gap-2 mb-4">
               <ClipboardList className="w-5 h-5 text-coral" />
-              <h3 className="font-bold text-warmgray-900">Share an Assessment</h3>
+              <h3 className="font-bold text-warmgray-900 dark:text-warmgray-100">Share an Assessment</h3>
             </div>
             <input value={assessmentSearch} onChange={e => setAssessmentSearch(e.target.value)}
               placeholder="Filter assessments…"
-              className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl text-sm focus:border-coral focus:outline-none mb-3" />
+              className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-coral focus:outline-none mb-3" />
             <div className="space-y-2 max-h-60 overflow-y-auto">
               {(assessmentSearchData?.data || [])
                 .filter((a: any) => !assessmentSearch || a.title.toLowerCase().includes(assessmentSearch.toLowerCase()))
                 .map((a: any) => (
-                  <div key={a.id} className="flex items-center gap-3 p-3 rounded-xl border border-warmgray-100 hover:border-coral/30 hover:bg-coral-light/5 transition-all cursor-pointer"
+                  <div key={a.id} className="flex items-center gap-3 p-3 rounded-xl border border-warmgray-100 dark:border-surface-dark-border hover:border-coral/30 hover:bg-coral-light/5 transition-all cursor-pointer"
                     onClick={() => shareAssessment(a)}>
                     <div className="w-10 h-10 rounded-xl bg-coral-light/30 flex items-center justify-center flex-shrink-0">
                       <ClipboardList className="w-5 h-5 text-coral" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-warmgray-900 text-sm line-clamp-1">{a.title}</p>
+                      <p className="font-semibold text-warmgray-900 dark:text-warmgray-100 text-sm line-clamp-1">{a.title}</p>
                       {a.age_range && <p className="text-xs text-warmgray-400">{a.age_range}</p>}
                     </div>
                     <div className="flex items-center gap-1 text-xs text-coral font-semibold px-3 py-1.5 bg-coral-light/20 rounded-full">
