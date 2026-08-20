@@ -51,15 +51,15 @@ const Appointments = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'bg-sunshine text-warmgray-900';
+        return 'bg-sunshine text-warmgray-900 dark:text-warmgray-100';
       case 'confirmed':
         return 'bg-teal text-white';
       case 'completed':
-        return 'bg-warmgray-500 text-white';
+        return 'bg-warmgray-50 dark:bg-surface-dark0 text-white';
       case 'cancelled':
         return 'bg-coral text-white';
       default:
-        return 'bg-warmgray-300 text-warmgray-700';
+        return 'bg-warmgray-300 text-warmgray-700 dark:text-warmgray-300';
     }
   };
 
@@ -78,19 +78,19 @@ const Appointments = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-warmgray-800">Appointments</h1>
-          <p className="text-warmgray-600 mt-1">Manage appointment requests for online therapy</p>
+          <h1 className="text-3xl font-bold text-warmgray-800 dark:text-warmgray-200">Appointments</h1>
+          <p className="text-warmgray-600 dark:text-warmgray-400 mt-1">Manage appointment requests for online therapy</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow-soft-lg p-4">
+      <div className="bg-white dark:bg-surface-dark-raised rounded-xl shadow-soft-lg p-4">
         <div className="flex items-center gap-4">
           <Filter className="h-5 w-5 text-warmgray-500" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border border-warmgray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal"
+            className="px-4 py-2 border border-warmgray-300 dark:border-surface-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-teal"
           >
             <option value="">All Statuses</option>
             <option value="pending">Pending</option>
@@ -102,7 +102,7 @@ const Appointments = () => {
           <select
             value={languageFilter}
             onChange={(e) => setLanguageFilter(e.target.value)}
-            className="px-4 py-2 border border-warmgray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal"
+            className="px-4 py-2 border border-warmgray-300 dark:border-surface-dark-border rounded-xl focus:outline-none focus:ring-2 focus:ring-teal"
           >
             <option value="">All Languages</option>
             <option value="English">English</option>
@@ -119,63 +119,63 @@ const Appointments = () => {
       {isLoading ? (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-          <p className="mt-4 text-warmgray-600">Loading appointments...</p>
+          <p className="mt-4 text-warmgray-600 dark:text-warmgray-400">Loading appointments...</p>
         </div>
       ) : appointments.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-soft-lg p-12 text-center">
+        <div className="bg-white dark:bg-surface-dark-raised rounded-xl shadow-soft-lg p-12 text-center">
           <Calendar className="h-16 w-16 text-warmgray-300 mx-auto mb-4" />
-          <p className="text-warmgray-600">No appointments found</p>
+          <p className="text-warmgray-600 dark:text-warmgray-400">No appointments found</p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-soft-lg overflow-hidden">
+        <div className="bg-white dark:bg-surface-dark-raised rounded-xl shadow-soft-lg overflow-hidden">
           <div className="max-h-[65vh] overflow-y-auto">
           <table className="w-full">
-            <thead className="bg-warmgray-50 border-b border-warmgray-200 sticky top-0 z-10">
+            <thead className="bg-warmgray-50 dark:bg-surface-dark border-b border-warmgray-200 dark:border-surface-dark-border sticky top-0 z-10">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 uppercase tracking-wider">
                   Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 uppercase tracking-wider">
                   Contact
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 uppercase tracking-wider">
                   Service
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 uppercase tracking-wider">
                   Preferred Slot
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 uppercase tracking-wider">
                   Language
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 uppercase tracking-wider">
                   Date
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-warmgray-700 dark:text-warmgray-300 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-warmgray-200">
               {appointments.map((appointment) => (
-                <tr key={appointment.id} className="hover:bg-warmgray-50">
+                <tr key={appointment.id} className="hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-warmgray-900">{appointment.name}</div>
+                    <div className="text-sm font-medium text-warmgray-900 dark:text-warmgray-100">{appointment.name}</div>
                     {appointment.user_name && (
                       <div className="text-xs text-warmgray-500">User: {appointment.user_name}</div>
                     )}
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex flex-col gap-1 text-sm">
-                      <div className="flex items-center gap-2 text-warmgray-600">
+                      <div className="flex items-center gap-2 text-warmgray-600 dark:text-warmgray-400">
                         <Mail className="h-4 w-4" />
                         <a href={`mailto:${appointment.email}`} className="hover:text-teal">
                           {appointment.email}
                         </a>
                       </div>
-                      <div className="flex items-center gap-2 text-warmgray-600">
+                      <div className="flex items-center gap-2 text-warmgray-600 dark:text-warmgray-400">
                         <Phone className="h-4 w-4" />
                         <a href={`tel:${appointment.phone}`} className="hover:text-teal">
                           {appointment.phone}
@@ -186,7 +186,7 @@ const Appointments = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     {appointment.service_name ? (
                       <div>
-                        <div className="text-sm font-semibold text-warmgray-900">{appointment.service_name}</div>
+                        <div className="text-sm font-semibold text-warmgray-900 dark:text-warmgray-100">{appointment.service_name}</div>
                         {appointment.service_price != null && (
                           <div className="text-xs text-teal font-bold">₹{appointment.service_price}</div>
                         )}
@@ -198,11 +198,11 @@ const Appointments = () => {
                       <span className="text-xs text-warmgray-400">—</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-warmgray-700">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-warmgray-700 dark:text-warmgray-300">
                     {appointment.preferred_date ? formatDate(appointment.preferred_date) : <span className="text-warmgray-400">—</span>}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-warmgray-900">{appointment.preferred_language}</span>
+                    <span className="text-sm text-warmgray-900 dark:text-warmgray-100">{appointment.preferred_language}</span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <select
@@ -216,7 +216,7 @@ const Appointments = () => {
                       <option value="cancelled">Cancelled</option>
                     </select>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-warmgray-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-warmgray-600 dark:text-warmgray-400">
                     {formatDate(appointment.created_at)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
@@ -241,15 +241,15 @@ const Appointments = () => {
       {/* Detail Modal */}
       {showDetailModal && selectedAppointment && (
         <div className="fixed inset-0 bg-warmgray-900 bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl shadow-soft-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-warmgray-200">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-warmgray-200 dark:border-surface-dark-border">
               <div className="flex items-center justify-between">
-                <h3 className="font-[var(--font-family-fun)] font-bold text-2xl text-warmgray-900">
+                <h3 className="font-[var(--font-family-fun)] font-bold text-2xl text-warmgray-900 dark:text-warmgray-100">
                   Appointment Details
                 </h3>
                 <button
                   onClick={() => setShowDetailModal(false)}
-                  className="text-warmgray-500 hover:text-warmgray-700 transition-colors"
+                  className="text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300 transition-colors"
                 >
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -260,19 +260,19 @@ const Appointments = () => {
 
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-warmgray-700 mb-1">Name</label>
-                <p className="text-warmgray-900">{selectedAppointment.name}</p>
+                <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Name</label>
+                <p className="text-warmgray-900 dark:text-warmgray-100">{selectedAppointment.name}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-warmgray-700 mb-1">Email</label>
+                <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Email</label>
                 <a href={`mailto:${selectedAppointment.email}`} className="text-teal hover:underline">
                   {selectedAppointment.email}
                 </a>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-warmgray-700 mb-1">Phone</label>
+                <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Phone</label>
                 <a href={`tel:${selectedAppointment.phone}`} className="text-teal hover:underline">
                   {selectedAppointment.phone}
                 </a>
@@ -281,7 +281,7 @@ const Appointments = () => {
               {selectedAppointment.service_name && (
                 <div className="bg-teal/5 border border-teal/20 rounded-xl p-4">
                   <label className="block text-xs font-bold text-teal uppercase tracking-wide mb-2">Booked Service</label>
-                  <p className="text-warmgray-900 font-semibold">{selectedAppointment.service_name}</p>
+                  <p className="text-warmgray-900 dark:text-warmgray-100 font-semibold">{selectedAppointment.service_name}</p>
                   {selectedAppointment.service_price != null && (
                     <p className="text-teal font-bold mt-1">₹{selectedAppointment.service_price}</p>
                   )}
@@ -290,8 +290,8 @@ const Appointments = () => {
 
               {(selectedAppointment.child_name || selectedAppointment.child_age) && (
                 <div>
-                  <label className="block text-sm font-semibold text-warmgray-700 mb-1">Child</label>
-                  <p className="text-warmgray-900">
+                  <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Child</label>
+                  <p className="text-warmgray-900 dark:text-warmgray-100">
                     {selectedAppointment.child_name}
                     {selectedAppointment.child_age ? ` (${selectedAppointment.child_age})` : ''}
                   </p>
@@ -300,27 +300,27 @@ const Appointments = () => {
 
               {selectedAppointment.preferred_date && (
                 <div>
-                  <label className="block text-sm font-semibold text-warmgray-700 mb-1">Preferred Date &amp; Time</label>
-                  <p className="text-warmgray-900">{formatDate(selectedAppointment.preferred_date)}</p>
+                  <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Preferred Date &amp; Time</label>
+                  <p className="text-warmgray-900 dark:text-warmgray-100">{formatDate(selectedAppointment.preferred_date)}</p>
                 </div>
               )}
 
               <div>
-                <label className="block text-sm font-semibold text-warmgray-700 mb-1">Preferred Language</label>
-                <p className="text-warmgray-900">{selectedAppointment.preferred_language}</p>
+                <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Preferred Language</label>
+                <p className="text-warmgray-900 dark:text-warmgray-100">{selectedAppointment.preferred_language}</p>
               </div>
 
               {selectedAppointment.message && (
                 <div>
-                  <label className="block text-sm font-semibold text-warmgray-700 mb-1">Message</label>
-                  <div className="bg-warmgray-50 rounded-xl p-4">
-                    <p className="text-warmgray-900 whitespace-pre-wrap">{selectedAppointment.message}</p>
+                  <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Message</label>
+                  <div className="bg-warmgray-50 dark:bg-surface-dark rounded-xl p-4">
+                    <p className="text-warmgray-900 dark:text-warmgray-100 whitespace-pre-wrap">{selectedAppointment.message}</p>
                   </div>
                 </div>
               )}
 
               <div>
-                <label className="block text-sm font-semibold text-warmgray-700 mb-1">Status</label>
+                <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Status</label>
                 <select
                   value={selectedAppointment.status}
                   onChange={(e) => handleStatusUpdate(selectedAppointment.id, e.target.value)}
@@ -334,19 +334,19 @@ const Appointments = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-warmgray-700 mb-1">Submitted On</label>
-                <p className="text-warmgray-900">{formatDate(selectedAppointment.created_at)}</p>
+                <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Submitted On</label>
+                <p className="text-warmgray-900 dark:text-warmgray-100">{formatDate(selectedAppointment.created_at)}</p>
               </div>
 
               {selectedAppointment.user_name && (
                 <div>
-                  <label className="block text-sm font-semibold text-warmgray-700 mb-1">User Account</label>
-                  <p className="text-warmgray-900">{selectedAppointment.user_name}</p>
+                  <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">User Account</label>
+                  <p className="text-warmgray-900 dark:text-warmgray-100">{selectedAppointment.user_name}</p>
                 </div>
               )}
             </div>
 
-            <div className="p-6 border-t border-warmgray-200">
+            <div className="p-6 border-t border-warmgray-200 dark:border-surface-dark-border">
               <button
                 onClick={() => setShowDetailModal(false)}
                 className="w-full btn-primary px-6 py-3"

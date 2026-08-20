@@ -93,8 +93,8 @@ const FAQManagement = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-warmgray-800">FAQ Management</h1>
-          <p className="text-warmgray-600 mt-1">Manage frequently asked questions</p>
+          <h1 className="text-3xl font-bold text-warmgray-800 dark:text-warmgray-200">FAQ Management</h1>
+          <p className="text-warmgray-600 dark:text-warmgray-400 mt-1">Manage frequently asked questions</p>
         </div>
         <button onClick={handleCreate} className="btn-primary flex items-center gap-2">
           <Plus className="h-5 w-5" />
@@ -108,12 +108,12 @@ const FAQManagement = () => {
           <table className="w-full">
             <thead className="bg-warmgray-100 sticky top-0 z-10">
               <tr>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700">Question</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700">Category</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700">Order</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700">Status</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700">Views</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700">Actions</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Question</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Category</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Order</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Status</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Views</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-warmgray-200">
@@ -131,7 +131,7 @@ const FAQManagement = () => {
                 </tr>
               ) : (
                 faqs.map((faq) => (
-                  <tr key={faq.id} className="hover:bg-warmgray-50">
+                  <tr key={faq.id} className="hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark">
                     <td className="px-4 py-3 max-w-md truncate" title={faq.question}>
                       {faq.question}
                     </td>
@@ -178,15 +178,15 @@ const FAQManagement = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
-              <h2 className="text-2xl font-bold text-warmgray-800 mb-6">
+              <h2 className="text-2xl font-bold text-warmgray-800 dark:text-warmgray-200 mb-6">
                 {editingFaq ? 'Edit FAQ' : 'Create FAQ'}
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-semibold text-warmgray-700 mb-2">
+                  <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">
                     Question *
                   </label>
                   <input
@@ -201,7 +201,7 @@ const FAQManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-warmgray-700 mb-2">
+                  <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">
                     Answer *
                   </label>
                   <textarea
@@ -217,7 +217,7 @@ const FAQManagement = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-semibold text-warmgray-700 mb-2">
+                    <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">
                       Category *
                     </label>
                     <select
@@ -237,7 +237,7 @@ const FAQManagement = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-warmgray-700 mb-2">
+                    <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">
                       Display Order
                     </label>
                     <input
@@ -260,7 +260,7 @@ const FAQManagement = () => {
                     onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                     className="w-4 h-4 text-teal"
                   />
-                  <label htmlFor="active" className="text-sm font-semibold text-warmgray-700">
+                  <label htmlFor="active" className="text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">
                     Active
                   </label>
                 </div>

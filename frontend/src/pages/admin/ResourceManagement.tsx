@@ -65,7 +65,7 @@ const ResourceManagement = () => {
               </thead>
               <tbody>
                 {resources.map((resource) => (
-                  <tr key={resource.id} className="border-t border-warmgray-200">
+                  <tr key={resource.id} className="border-t border-warmgray-200 dark:border-surface-dark-border">
                     <td className="p-4">{resource.title}</td>
                     <td className="p-4">{resource.resource_type_display_name}</td>
                     <td className="p-4">{resource.resource_category.name}</td>

@@ -55,8 +55,8 @@ const ServicesAdmin: React.FC = () => {
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-warmgray-900">Services &amp; Pricing</h1>
-          <p className="text-warmgray-600 text-sm">Manage the services shown on the booking page.</p>
+          <h1 className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">Services &amp; Pricing</h1>
+          <p className="text-warmgray-600 dark:text-warmgray-400 text-sm">Manage the services shown on the booking page.</p>
         </div>
         <button
           onClick={() => setCreating(true)}
@@ -73,7 +73,7 @@ const ServicesAdmin: React.FC = () => {
           ))}
         </div>
       ) : loadError ? (
-        <div className="bg-coral/10 border-2 border-coral/30 text-warmgray-800 rounded-2xl p-6 text-center">
+        <div className="bg-coral/10 border-2 border-coral/30 text-warmgray-800 dark:text-warmgray-200 rounded-2xl p-6 text-center">
           <p className="font-bold text-coral mb-2">Could not load services</p>
           <p className="text-sm mb-4">{loadError}</p>
           <button onClick={load} className="bg-teal-gradient text-white font-semibold px-5 py-2 rounded-full">
@@ -81,7 +81,7 @@ const ServicesAdmin: React.FC = () => {
           </button>
         </div>
       ) : services.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-soft p-10 text-center text-warmgray-600">
+        <div className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-10 text-center text-warmgray-600 dark:text-warmgray-400">
           <p className="mb-4">No services yet.</p>
           <button onClick={() => setCreating(true)} className="bg-teal-gradient text-white font-semibold px-5 py-2 rounded-full">
             Add your first service
@@ -93,23 +93,23 @@ const ServicesAdmin: React.FC = () => {
             <motion.div
               key={s.id}
               layout
-              className={`bg-white rounded-2xl shadow-soft p-5 border-2 ${s.active ? 'border-teal/20' : 'border-warmgray-200 opacity-70'}`}
+              className={`bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-5 border-2 ${s.active ? 'border-teal/20' : 'border-warmgray-200 dark:border-surface-dark-border opacity-70'}`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-warmgray-900 truncate">{s.name}</h3>
+                  <h3 className="font-bold text-warmgray-900 dark:text-warmgray-100 truncate">{s.name}</h3>
                   <p className="text-xs text-warmgray-500 mt-0.5">#{s.display_order} · {s.slug}</p>
                 </div>
                 <button onClick={() => toggleActive(s)} title="Toggle active" className="text-teal">
                   {s.active ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6 text-warmgray-400" />}
                 </button>
               </div>
-              <p className="text-sm text-warmgray-600 mt-2 line-clamp-2">{s.description}</p>
+              <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mt-2 line-clamp-2">{s.description}</p>
               <div className="flex items-center gap-4 mt-3 text-sm">
                 <span className="inline-flex items-center gap-1 font-bold text-teal">
                   <IndianRupee className="w-4 h-4" />{s.price}
                 </span>
-                <span className="inline-flex items-center gap-1 text-warmgray-600">
+                <span className="inline-flex items-center gap-1 text-warmgray-600 dark:text-warmgray-400">
                   <Clock className="w-4 h-4" />{s.duration_minutes} min
                 </span>
               </div>
@@ -188,10 +188,10 @@ const ServiceForm: React.FC<{
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         onSubmit={save}
-        className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-soft-lg"
+        className="bg-white dark:bg-surface-dark-raised rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-soft-lg"
       >
-        <div className="flex items-center justify-between p-6 border-b border-warmgray-100 sticky top-0 bg-white rounded-t-3xl">
-          <h2 className="text-xl font-bold text-warmgray-900">{service ? 'Edit Service' : 'New Service'}</h2>
+        <div className="flex items-center justify-between p-6 border-b border-warmgray-100 sticky top-0 bg-white dark:bg-surface-dark-raised rounded-t-3xl">
+          <h2 className="text-xl font-bold text-warmgray-900 dark:text-warmgray-100">{service ? 'Edit Service' : 'New Service'}</h2>
           <button type="button" onClick={onClose} className="p-2 hover:bg-warmgray-100 rounded-lg">
             <X className="w-5 h-5" />
           </button>
@@ -199,35 +199,35 @@ const ServiceForm: React.FC<{
 
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-bold text-warmgray-800 mb-1">Name *</label>
+            <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-1">Name *</label>
             <input
               required
               value={form.name as string}
               onChange={(e) => set('name', e.target.value)}
-              className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal"
+              className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal"
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-warmgray-800 mb-1">Slug</label>
+            <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-1">Slug</label>
             <input
               value={form.slug as string}
               onChange={(e) => set('slug', e.target.value)}
               placeholder="auto-generated from name"
-              className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal"
+              className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal"
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-warmgray-800 mb-1">Description</label>
+            <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-1">Description</label>
             <textarea
               rows={3}
               value={form.description as string}
               onChange={(e) => set('description', e.target.value)}
-              className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal resize-none"
+              className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal resize-none"
             />
           </div>
           <div className="grid md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-bold text-warmgray-800 mb-1">Price (₹) *</label>
+              <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-1">Price (₹) *</label>
               <input
                 required
                 type="number"
@@ -235,46 +235,46 @@ const ServiceForm: React.FC<{
                 min="0"
                 value={form.price as number}
                 onChange={(e) => set('price', parseFloat(e.target.value) || 0)}
-                className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal"
+                className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal"
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-warmgray-800 mb-1">Duration (min)</label>
+              <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-1">Duration (min)</label>
               <input
                 type="number"
                 min="1"
                 value={form.duration_minutes as number}
                 onChange={(e) => set('duration_minutes', parseInt(e.target.value, 10) || 0)}
-                className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal"
+                className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal"
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-warmgray-800 mb-1">Order</label>
+              <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-1">Order</label>
               <input
                 type="number"
                 value={form.display_order as number}
                 onChange={(e) => set('display_order', parseInt(e.target.value, 10) || 0)}
-                className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal"
+                className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal"
               />
             </div>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-bold text-warmgray-800 mb-1">Image URL</label>
+              <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-1">Image URL</label>
               <input
                 value={form.image_url as string}
                 onChange={(e) => set('image_url', e.target.value)}
                 placeholder="/services/speech-therapy.png"
-                className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal"
+                className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal"
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-warmgray-800 mb-1">Icon</label>
+              <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-1">Icon</label>
               <input
                 value={form.icon as string}
                 onChange={(e) => set('icon', e.target.value)}
                 placeholder="lucide icon name"
-                className="w-full px-4 py-2.5 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal"
+                className="w-full px-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal"
               />
             </div>
           </div>
@@ -285,12 +285,12 @@ const ServiceForm: React.FC<{
               onChange={(e) => set('active', e.target.checked)}
               className="w-4 h-4"
             />
-            <span className="text-sm font-semibold text-warmgray-800">Active (shown to users)</span>
+            <span className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200">Active (shown to users)</span>
           </label>
         </div>
 
-        <div className="p-6 border-t border-warmgray-100 flex gap-3 justify-end bg-warmgray-50 rounded-b-3xl sticky bottom-0">
-          <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-full font-semibold text-warmgray-700 hover:bg-warmgray-100">
+        <div className="p-6 border-t border-warmgray-100 flex gap-3 justify-end bg-warmgray-50 dark:bg-surface-dark rounded-b-3xl sticky bottom-0">
+          <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-full font-semibold text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100">
             Cancel
           </button>
           <button

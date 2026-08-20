@@ -49,7 +49,7 @@ const AuditLog = () => {
       case 'create': return 'bg-green-100 text-green-700';
       case 'update': return 'bg-blue-100 text-blue-700';
       case 'delete': return 'bg-red-100 text-red-700';
-      default: return 'bg-warmgray-100 text-warmgray-700';
+      default: return 'bg-warmgray-100 text-warmgray-700 dark:text-warmgray-300';
     }
   };
 
@@ -58,8 +58,8 @@ const AuditLog = () => {
       <div className="flex items-center gap-3">
         <Shield className="h-7 w-7 text-teal" />
         <div>
-          <h1 className="text-3xl font-bold text-warmgray-800">Audit Log</h1>
-          <p className="text-warmgray-600 text-sm">Track all admin actions in the system</p>
+          <h1 className="text-3xl font-bold text-warmgray-800 dark:text-warmgray-200">Audit Log</h1>
+          <p className="text-warmgray-600 dark:text-warmgray-400 text-sm">Track all admin actions in the system</p>
         </div>
       </div>
 
@@ -72,7 +72,7 @@ const AuditLog = () => {
             placeholder="Search resource type..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            className="w-full pl-9 pr-4 py-2 border-2 border-warmgray-200 rounded-lg text-sm focus:border-teal focus:outline-none"
+            className="w-full pl-9 pr-4 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:border-teal focus:outline-none"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -80,7 +80,7 @@ const AuditLog = () => {
           <select
             value={actionFilter}
             onChange={(e) => { setActionFilter(e.target.value); setPage(1); }}
-            className="px-3 py-2 border-2 border-warmgray-200 rounded-lg text-sm focus:border-teal focus:outline-none"
+            className="px-3 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:border-teal focus:outline-none"
           >
             <option value="">All Actions</option>
             <option value="create">Create</option>
@@ -100,24 +100,24 @@ const AuditLog = () => {
         <div className="card-talkie overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-warmgray-50 border-b-2 border-warmgray-200">
-                <th className="text-left px-4 py-3 font-semibold text-warmgray-700">Action</th>
-                <th className="text-left px-4 py-3 font-semibold text-warmgray-700">Resource</th>
-                <th className="text-left px-4 py-3 font-semibold text-warmgray-700">Details</th>
-                <th className="text-left px-4 py-3 font-semibold text-warmgray-700">Admin</th>
-                <th className="text-left px-4 py-3 font-semibold text-warmgray-700">When</th>
+              <tr className="bg-warmgray-50 dark:bg-surface-dark border-b-2 border-warmgray-200 dark:border-surface-dark-border">
+                <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">Action</th>
+                <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">Resource</th>
+                <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">Details</th>
+                <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">Admin</th>
+                <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">When</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-warmgray-100">
               {logs.map((log) => (
-                <tr key={log.id} className="hover:bg-warmgray-50">
+                <tr key={log.id} className="hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark">
                   <td className="px-4 py-3">
                     <span className={`px-2 py-1 rounded-full text-xs font-semibold ${actionColor(log.action)}`}>
                       {log.action}
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="font-medium text-warmgray-800">{log.resource_type}</div>
+                    <div className="font-medium text-warmgray-800 dark:text-warmgray-200">{log.resource_type}</div>
                     <div className="text-xs text-warmgray-400">ID: {log.resource_id}</div>
                   </td>
                   <td className="px-4 py-3 max-w-[220px]">
@@ -126,7 +126,7 @@ const AuditLog = () => {
                         {Object.entries(log.details).map(([k, v]) => (
                           <div key={k} className="flex gap-1 text-xs">
                             <span className="text-warmgray-400 shrink-0">{k}:</span>
-                            <span className="text-warmgray-700 truncate">{String(v)}</span>
+                            <span className="text-warmgray-700 dark:text-warmgray-300 truncate">{String(v)}</span>
                           </div>
                         ))}
                       </div>
@@ -134,7 +134,7 @@ const AuditLog = () => {
                       <span className="text-warmgray-300 text-xs">—</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-warmgray-600">{log.user_name || `User #${log.user_id}`}</td>
+                  <td className="px-4 py-3 text-warmgray-600 dark:text-warmgray-400">{log.user_name || `User #${log.user_id}`}</td>
                   <td className="px-4 py-3 text-warmgray-500 text-xs whitespace-nowrap">
                     {new Date(log.created_at).toLocaleString('en-IN')}
                   </td>
@@ -148,11 +148,11 @@ const AuditLog = () => {
               <p className="text-sm text-warmgray-500">Page {page} of {meta.total_pages}</p>
               <div className="flex gap-2">
                 <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-                  className="px-3 py-1 text-sm border border-warmgray-200 rounded-lg disabled:opacity-40 hover:bg-warmgray-50">
+                  className="px-3 py-1 text-sm border border-warmgray-200 dark:border-surface-dark-border rounded-lg disabled:opacity-40 hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark">
                   Previous
                 </button>
                 <button onClick={() => setPage(p => Math.min(meta.total_pages, p + 1))} disabled={page === meta.total_pages}
-                  className="px-3 py-1 text-sm border border-warmgray-200 rounded-lg disabled:opacity-40 hover:bg-warmgray-50">
+                  className="px-3 py-1 text-sm border border-warmgray-200 dark:border-surface-dark-border rounded-lg disabled:opacity-40 hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark">
                   Next
                 </button>
               </div>

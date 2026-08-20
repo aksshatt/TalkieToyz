@@ -127,8 +127,8 @@ const AssessmentResultsAdmin = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-warmgray-800">Assessment Results</h1>
-          <p className="text-warmgray-600 mt-1">All child assessment submissions and scores</p>
+          <h1 className="text-3xl font-bold text-warmgray-800 dark:text-warmgray-200">Assessment Results</h1>
+          <p className="text-warmgray-600 dark:text-warmgray-400 mt-1">All child assessment submissions and scores</p>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -153,30 +153,30 @@ const AssessmentResultsAdmin = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="card-talkie p-4 text-center">
             <p className="text-3xl font-bold text-teal">{stats.total}</p>
-            <p className="text-sm text-warmgray-600 mt-1">Total Assessments</p>
+            <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mt-1">Total Assessments</p>
           </div>
           <div className="card-talkie p-4 text-center">
             <p className="text-3xl font-bold text-teal">{stats.average_score}</p>
-            <p className="text-sm text-warmgray-600 mt-1">Avg Score</p>
+            <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mt-1">Avg Score</p>
           </div>
           <div className="card-talkie p-4 text-center">
             <p className="text-3xl font-bold text-teal">{stats.total_pdf_downloads}</p>
-            <p className="text-sm text-warmgray-600 mt-1">PDF Downloads</p>
+            <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mt-1">PDF Downloads</p>
           </div>
           <div className="card-talkie p-4 text-center">
             <p className="text-3xl font-bold text-teal">
               {Object.keys(stats.by_assessment || {}).length}
             </p>
-            <p className="text-sm text-warmgray-600 mt-1">Assessment Types</p>
+            <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mt-1">Assessment Types</p>
           </div>
 
           {/* By Assessment breakdown */}
           {Object.keys(stats.by_assessment || {}).length > 0 && (
             <div className="card-talkie p-4 col-span-2">
-              <p className="text-sm font-bold text-warmgray-700 mb-2">By Assessment</p>
+              <p className="text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">By Assessment</p>
               {Object.entries(stats.by_assessment).map(([title, count]: any) => (
                 <div key={title} className="flex justify-between text-sm py-1 border-b border-warmgray-100 last:border-0">
-                  <span className="text-warmgray-700 truncate mr-2">{title}</span>
+                  <span className="text-warmgray-700 dark:text-warmgray-300 truncate mr-2">{title}</span>
                   <span className="font-semibold text-teal">{count}</span>
                 </div>
               ))}
@@ -186,10 +186,10 @@ const AssessmentResultsAdmin = () => {
           {/* By Mother Tongue */}
           {Object.keys(stats.by_mother_tongue || {}).length > 0 && (
             <div className="card-talkie p-4 col-span-2">
-              <p className="text-sm font-bold text-warmgray-700 mb-2">By Mother Tongue</p>
+              <p className="text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">By Mother Tongue</p>
               {Object.entries(stats.by_mother_tongue).map(([lang, count]: any) => (
                 <div key={lang} className="flex justify-between text-sm py-1 border-b border-warmgray-100 last:border-0">
-                  <span className="text-warmgray-700">{lang}</span>
+                  <span className="text-warmgray-700 dark:text-warmgray-300">{lang}</span>
                   <span className="font-semibold text-teal">{count}</span>
                 </div>
               ))}
@@ -207,7 +207,7 @@ const AssessmentResultsAdmin = () => {
             placeholder="Search by child name..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
-            className="w-full pl-9 pr-4 py-2 border-2 border-warmgray-200 rounded-lg text-sm focus:border-teal focus:outline-none"
+            className="w-full pl-9 pr-4 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:border-teal focus:outline-none"
           />
         </div>
 
@@ -216,7 +216,7 @@ const AssessmentResultsAdmin = () => {
           <select
             value={motherTongueFilter}
             onChange={(e) => { setMotherTongueFilter(e.target.value); setCurrentPage(1); }}
-            className="px-3 py-2 border-2 border-warmgray-200 rounded-lg text-sm focus:border-teal focus:outline-none"
+            className="px-3 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:border-teal focus:outline-none"
           >
             <option value="">All Mother Tongues</option>
             <option value="English">English</option>
@@ -239,7 +239,7 @@ const AssessmentResultsAdmin = () => {
       {isLoading ? (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-          <p className="mt-4 text-warmgray-600">Loading...</p>
+          <p className="mt-4 text-warmgray-600 dark:text-warmgray-400">Loading...</p>
         </div>
       ) : results.length === 0 ? (
         <div className="card-talkie p-12 text-center text-warmgray-500">No assessment results found.</div>
@@ -248,16 +248,16 @@ const AssessmentResultsAdmin = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-warmgray-50 border-b-2 border-warmgray-200">
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700">Child</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700">Age</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700">Mother Tongue</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700">Assessment</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700">Score</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700">Level</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700">PDF DLs</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700">User</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700">Date</th>
+                <tr className="bg-warmgray-50 dark:bg-surface-dark border-b-2 border-warmgray-200 dark:border-surface-dark-border">
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">Child</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">Age</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">Mother Tongue</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">Assessment</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">Score</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">Level</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">PDF DLs</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">User</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-700 dark:text-warmgray-300">Date</th>
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
@@ -265,11 +265,11 @@ const AssessmentResultsAdmin = () => {
                 {results.map((result) => {
                   const level = SCORE_LEVEL(result.percentage_score);
                   return (
-                    <tr key={result.id} className="hover:bg-warmgray-50 transition-colors">
-                      <td className="px-4 py-3 font-semibold text-warmgray-800">{result.child_name}</td>
-                      <td className="px-4 py-3 text-warmgray-600">{ageDisplay(result.child_age_months)}</td>
-                      <td className="px-4 py-3 text-warmgray-600">{result.mother_tongue || '—'}</td>
-                      <td className="px-4 py-3 text-warmgray-600 max-w-[150px] truncate">
+                    <tr key={result.id} className="hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark transition-colors">
+                      <td className="px-4 py-3 font-semibold text-warmgray-800 dark:text-warmgray-200">{result.child_name}</td>
+                      <td className="px-4 py-3 text-warmgray-600 dark:text-warmgray-400">{ageDisplay(result.child_age_months)}</td>
+                      <td className="px-4 py-3 text-warmgray-600 dark:text-warmgray-400">{result.mother_tongue || '—'}</td>
+                      <td className="px-4 py-3 text-warmgray-600 dark:text-warmgray-400 max-w-[150px] truncate">
                         {result.assessment?.title || '—'}
                       </td>
                       <td className="px-4 py-3 font-bold text-teal">
@@ -280,7 +280,7 @@ const AssessmentResultsAdmin = () => {
                           {level.label}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-center text-warmgray-600">
+                      <td className="px-4 py-3 text-center text-warmgray-600 dark:text-warmgray-400">
                         {result.pdf_download_count ?? 0}
                       </td>
                       <td className="px-4 py-3 text-warmgray-500 text-xs">
@@ -329,14 +329,14 @@ const AssessmentResultsAdmin = () => {
                 <button
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="px-3 py-1 text-sm border border-warmgray-200 rounded-lg disabled:opacity-40 hover:bg-warmgray-50"
+                  className="px-3 py-1 text-sm border border-warmgray-200 dark:border-surface-dark-border rounded-lg disabled:opacity-40 hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark"
                 >
                   Previous
                 </button>
                 <button
                   onClick={() => setCurrentPage(p => Math.min(meta.total_pages, p + 1))}
                   disabled={currentPage === meta.total_pages}
-                  className="px-3 py-1 text-sm border border-warmgray-200 rounded-lg disabled:opacity-40 hover:bg-warmgray-50"
+                  className="px-3 py-1 text-sm border border-warmgray-200 dark:border-surface-dark-border rounded-lg disabled:opacity-40 hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark"
                 >
                   Next
                 </button>
@@ -349,11 +349,11 @@ const AssessmentResultsAdmin = () => {
       {/* Detail Modal */}
       {selectedResult && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-soft-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-warmgray-200">
+            <div className="flex items-center justify-between p-6 border-b border-warmgray-200 dark:border-surface-dark-border">
               <div>
-                <h2 className="font-bold text-xl text-warmgray-900">{selectedResult.child_name}'s Result</h2>
+                <h2 className="font-bold text-xl text-warmgray-900 dark:text-warmgray-100">{selectedResult.child_name}'s Result</h2>
                 <p className="text-sm text-warmgray-500 mt-0.5">{selectedResult.assessment?.title}</p>
               </div>
               <button
@@ -379,9 +379,9 @@ const AssessmentResultsAdmin = () => {
                   ['PDF Downloads', String(selectedResult.pdf_download_count ?? 0)],
                   ['Overall Score', `${Math.round(selectedResult.percentage_score)}% — ${SCORE_LEVEL(selectedResult.percentage_score).label}`],
                 ].map(([label, value]) => (
-                  <div key={label} className="bg-warmgray-50 p-3 rounded-lg">
+                  <div key={label} className="bg-warmgray-50 dark:bg-surface-dark p-3 rounded-lg">
                     <p className="text-xs text-warmgray-500 font-medium">{label}</p>
-                    <p className="text-sm font-semibold text-warmgray-800 mt-0.5">{value}</p>
+                    <p className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200 mt-0.5">{value}</p>
                   </div>
                 ))}
               </div>
@@ -389,7 +389,7 @@ const AssessmentResultsAdmin = () => {
               {/* Skill Breakdown */}
               {selectedResult.scores && Object.keys(selectedResult.scores).length > 0 && (
                 <div>
-                  <h3 className="font-bold text-warmgray-800 mb-3">Skill Area Breakdown</h3>
+                  <h3 className="font-bold text-warmgray-800 dark:text-warmgray-200 mb-3">Skill Area Breakdown</h3>
                   <div className="space-y-2">
                     {Object.entries(selectedResult.scores).map(([category, score]) => {
                       const max = selectedResult.category_max_scores?.[category] || 10;
@@ -397,7 +397,7 @@ const AssessmentResultsAdmin = () => {
                       return (
                         <div key={category}>
                           <div className="flex justify-between text-sm mb-1">
-                            <span className="text-warmgray-700 capitalize">{category.replace(/_/g, ' ')}</span>
+                            <span className="text-warmgray-700 dark:text-warmgray-300 capitalize">{category.replace(/_/g, ' ')}</span>
                             <span className="font-semibold text-teal">{score}/{max}</span>
                           </div>
                           <div className="h-2 bg-warmgray-200 rounded-full overflow-hidden">
@@ -416,14 +416,14 @@ const AssessmentResultsAdmin = () => {
               {/* Recommendations */}
               {selectedResult.recommendations && (
                 <div>
-                  <h3 className="font-bold text-warmgray-800 mb-2">Recommendations</h3>
+                  <h3 className="font-bold text-warmgray-800 dark:text-warmgray-200 mb-2">Recommendations</h3>
                   {(selectedResult.recommendations as any).message && (
-                    <p className="text-sm text-warmgray-700 mb-3">{(selectedResult.recommendations as any).message}</p>
+                    <p className="text-sm text-warmgray-700 dark:text-warmgray-300 mb-3">{(selectedResult.recommendations as any).message}</p>
                   )}
                   {(selectedResult.recommendations as any).tips?.length > 0 && (
                     <ul className="space-y-1">
                       {(selectedResult.recommendations as any).tips.map((tip: string, i: number) => (
-                        <li key={i} className="text-sm text-warmgray-700 flex gap-2">
+                        <li key={i} className="text-sm text-warmgray-700 dark:text-warmgray-300 flex gap-2">
                           <span className="text-teal font-bold">{i + 1}.</span> {tip}
                         </li>
                       ))}

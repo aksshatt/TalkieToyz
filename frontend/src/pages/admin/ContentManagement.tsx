@@ -149,8 +149,8 @@ const ContentManagement = () => {
 
     if (!isEditing) {
       return (
-        <tr key={content.id} className="border-b border-warmgray-200 hover:bg-warmgray-50">
-          <td className="px-4 py-3 text-sm font-mono text-warmgray-800">{content.key}</td>
+        <tr key={content.id} className="border-b border-warmgray-200 dark:border-surface-dark-border hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark">
+          <td className="px-4 py-3 text-sm font-mono text-warmgray-800 dark:text-warmgray-200">{content.key}</td>
           <td className="px-4 py-3 text-sm">
             <span className="px-2 py-1 bg-teal-light/30 text-teal rounded text-xs font-medium">
               {content.page}
@@ -161,8 +161,8 @@ const ContentManagement = () => {
               {content.content_type}
             </span>
           </td>
-          <td className="px-4 py-3 text-sm text-warmgray-700">{content.label}</td>
-          <td className="px-4 py-3 text-sm text-warmgray-600 max-w-xs truncate">{content.value}</td>
+          <td className="px-4 py-3 text-sm text-warmgray-700 dark:text-warmgray-300">{content.label}</td>
+          <td className="px-4 py-3 text-sm text-warmgray-600 dark:text-warmgray-400 max-w-xs truncate">{content.value}</td>
           <td className="px-4 py-3 text-sm text-center">{content.display_order}</td>
           <td className="px-4 py-3 text-center">
             <span
@@ -194,8 +194,8 @@ const ContentManagement = () => {
     }
 
     return (
-      <tr key={content.id} className="border-b border-warmgray-200 bg-teal-light/10">
-        <td className="px-4 py-3 text-sm font-mono text-warmgray-800">{content.key}</td>
+      <tr key={content.id} className="border-b border-warmgray-200 dark:border-surface-dark-border bg-teal-light/10">
+        <td className="px-4 py-3 text-sm font-mono text-warmgray-800 dark:text-warmgray-200">{content.key}</td>
         <td className="px-4 py-3 text-sm">
           <span className="px-2 py-1 bg-teal-light/30 text-teal rounded text-xs font-medium">
             {content.page}
@@ -282,8 +282,8 @@ const ContentManagement = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-warmgray-800">Content Management</h1>
-            <p className="text-warmgray-600 mt-1">Manage all website content from one place</p>
+            <h1 className="text-3xl font-bold text-warmgray-800 dark:text-warmgray-200">Content Management</h1>
+            <p className="text-warmgray-600 dark:text-warmgray-400 mt-1">Manage all website content from one place</p>
           </div>
           <button onClick={() => setIsCreating(true)} className="btn-primary flex items-center gap-2">
             <Plus size={20} />
@@ -294,10 +294,10 @@ const ContentManagement = () => {
         {/* Create Form Modal */}
         {isCreating && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl shadow-soft-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold text-warmgray-800">Create New Content</h2>
-                <button onClick={() => setIsCreating(false)} className="text-warmgray-500 hover:text-warmgray-700">
+                <h2 className="text-2xl font-bold text-warmgray-800 dark:text-warmgray-200">Create New Content</h2>
+                <button onClick={() => setIsCreating(false)} className="text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300">
                   <X size={24} />
                 </button>
               </div>
@@ -305,7 +305,7 @@ const ContentManagement = () => {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-warmgray-700 mb-1">
+                    <label className="block text-sm font-medium text-warmgray-700 dark:text-warmgray-300 mb-1">
                       Key <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -317,7 +317,7 @@ const ContentManagement = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-warmgray-700 mb-1">
+                    <label className="block text-sm font-medium text-warmgray-700 dark:text-warmgray-300 mb-1">
                       Page <span className="text-red-500">*</span>
                     </label>
                     <select
@@ -336,7 +336,7 @@ const ContentManagement = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-warmgray-700 mb-1">Content Type</label>
+                    <label className="block text-sm font-medium text-warmgray-700 dark:text-warmgray-300 mb-1">Content Type</label>
                     <select
                       value={createForm.content_type || 'text'}
                       onChange={(e) => setCreateForm({ ...createForm, content_type: e.target.value as ContentType })}
@@ -350,7 +350,7 @@ const ContentManagement = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-warmgray-700 mb-1">Display Order</label>
+                    <label className="block text-sm font-medium text-warmgray-700 dark:text-warmgray-300 mb-1">Display Order</label>
                     <input
                       type="number"
                       value={createForm.display_order || 0}
@@ -361,7 +361,7 @@ const ContentManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-warmgray-700 mb-1">Label</label>
+                  <label className="block text-sm font-medium text-warmgray-700 dark:text-warmgray-300 mb-1">Label</label>
                   <input
                     type="text"
                     value={createForm.label || ''}
@@ -372,7 +372,7 @@ const ContentManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-warmgray-700 mb-1">Description</label>
+                  <label className="block text-sm font-medium text-warmgray-700 dark:text-warmgray-300 mb-1">Description</label>
                   <textarea
                     value={createForm.description || ''}
                     onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
@@ -383,7 +383,7 @@ const ContentManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-warmgray-700 mb-1">
+                  <label className="block text-sm font-medium text-warmgray-700 dark:text-warmgray-300 mb-1">
                     Value <span className="text-red-500">*</span>
                   </label>
                   {createForm.content_type === 'textarea' || createForm.content_type === 'html' ? (
@@ -413,7 +413,7 @@ const ContentManagement = () => {
                     onChange={(e) => setCreateForm({ ...createForm, active: e.target.checked })}
                     className="w-4 h-4 mr-2"
                   />
-                  <label htmlFor="active" className="text-sm font-medium text-warmgray-700">
+                  <label htmlFor="active" className="text-sm font-medium text-warmgray-700 dark:text-warmgray-300">
                     Active
                   </label>
                 </div>
@@ -463,15 +463,15 @@ const ContentManagement = () => {
         <div className="card-talkie overflow-x-auto max-h-[65vh] overflow-y-auto">
           <table className="w-full">
             <thead className="sticky top-0 z-10">
-              <tr className="border-b-2 border-warmgray-200 bg-warmgray-50">
-                <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700">Key</th>
-                <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700">Page</th>
-                <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700">Type</th>
-                <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700">Label</th>
-                <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700">Value</th>
-                <th className="px-4 py-3 text-center text-sm font-bold text-warmgray-700">Order</th>
-                <th className="px-4 py-3 text-center text-sm font-bold text-warmgray-700">Status</th>
-                <th className="px-4 py-3 text-right text-sm font-bold text-warmgray-700">Actions</th>
+              <tr className="border-b-2 border-warmgray-200 dark:border-surface-dark-border bg-warmgray-50 dark:bg-surface-dark">
+                <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700 dark:text-warmgray-300">Key</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700 dark:text-warmgray-300">Page</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700 dark:text-warmgray-300">Type</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700 dark:text-warmgray-300">Label</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-warmgray-700 dark:text-warmgray-300">Value</th>
+                <th className="px-4 py-3 text-center text-sm font-bold text-warmgray-700 dark:text-warmgray-300">Order</th>
+                <th className="px-4 py-3 text-center text-sm font-bold text-warmgray-700 dark:text-warmgray-300">Status</th>
+                <th className="px-4 py-3 text-right text-sm font-bold text-warmgray-700 dark:text-warmgray-300">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -489,7 +489,7 @@ const ContentManagement = () => {
         </div>
 
         {/* Stats */}
-        <div className="mt-6 text-sm text-warmgray-600">
+        <div className="mt-6 text-sm text-warmgray-600 dark:text-warmgray-400">
           Showing {filteredContents.length} of {contents.length} content items
         </div>
       </div>

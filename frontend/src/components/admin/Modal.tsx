@@ -46,7 +46,7 @@ const Modal: React.FC<ModalProps> = ({
 
       {/* Modal */}
       <div
-        className={`relative bg-white rounded-2xl shadow-soft-xl w-full ${sizeClasses[size]} max-h-[90vh] flex flex-col animate-slide-in`}
+        className={`relative bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft-xl w-full ${sizeClasses[size]} max-h-[90vh] flex flex-col animate-slide-in`}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b-2 border-warmgray-100">
@@ -57,7 +57,7 @@ const Modal: React.FC<ModalProps> = ({
             onClick={onClose}
             className="p-2 rounded-lg hover:bg-warmgray-100 transition-colors"
           >
-            <X className="h-6 w-6 text-warmgray-600" />
+            <X className="h-6 w-6 text-warmgray-600 dark:text-warmgray-400" />
           </button>
         </div>
 

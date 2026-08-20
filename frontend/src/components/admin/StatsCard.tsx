@@ -19,10 +19,10 @@ const StatsCard: React.FC<StatsCardProps> = ({
   iconColor = 'text-teal',
 }) => {
   return (
-    <div className="card-talkie bg-white">
+    <div className="card-talkie bg-white dark:bg-surface-dark-raised">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-semibold text-warmgray-600 mb-1">
+          <p className="text-sm font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">
             {title}
           </p>
           <p className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800">

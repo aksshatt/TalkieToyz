@@ -37,12 +37,12 @@ const ConversationMonitor: React.FC = () => {
       <div className="mb-6 flex items-center gap-3">
         {selectedConvId && (
           <button onClick={() => setSelectedConvId(null)} className="p-2 rounded-xl hover:bg-warmgray-100 transition-colors">
-            <ArrowLeft className="w-5 h-5 text-warmgray-600" />
+            <ArrowLeft className="w-5 h-5 text-warmgray-600 dark:text-warmgray-400" />
           </button>
         )}
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-warmgray-900">Conversation Monitor</h1>
+            <h1 className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">Conversation Monitor</h1>
             <span className="flex items-center gap-1 text-xs bg-warmgray-100 text-warmgray-500 px-2.5 py-1 rounded-full font-semibold">
               <Eye className="w-3 h-3" /> Silent Mode
             </span>
@@ -60,16 +60,16 @@ const ConversationMonitor: React.FC = () => {
             {[...Array(5)].map((_, i) => <div key={i} className="animate-pulse bg-warmgray-200 rounded-2xl h-20" />)}
           </div>
         ) : conversations.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-warmgray-200">
+          <div className="text-center py-20 bg-white dark:bg-surface-dark-raised rounded-3xl border-2 border-dashed border-warmgray-200 dark:border-surface-dark-border">
             <MessageSquare className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />
-            <p className="font-semibold text-warmgray-600">No conversations yet</p>
+            <p className="font-semibold text-warmgray-600 dark:text-warmgray-400">No conversations yet</p>
           </div>
         ) : (
           <div className="space-y-2">
             {conversations.map(conv => (
               <motion.button key={conv.id} whileHover={{ scale: 1.005 }} whileTap={{ scale: 0.995 }}
                 onClick={() => setSelectedConvId(conv.id)}
-                className="w-full flex items-center gap-4 bg-white rounded-2xl p-4 shadow-soft hover:shadow-soft-md transition-all border border-warmgray-100 hover:border-teal/30 text-left">
+                className="w-full flex items-center gap-4 bg-white dark:bg-surface-dark-raised rounded-2xl p-4 shadow-soft hover:shadow-soft-md transition-all border border-warmgray-100 hover:border-teal/30 text-left">
                 {/* Avatars */}
                 <div className="relative w-12 h-12 flex-shrink-0">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal to-sky flex items-center justify-center text-white font-bold text-sm absolute top-0 left-0 z-10 border-2 border-white">
@@ -104,7 +104,7 @@ const ConversationMonitor: React.FC = () => {
         )
       ) : (
         /* Message Thread */
-        <div className="bg-white rounded-3xl shadow-soft border border-warmgray-100 flex flex-col" style={{ height: 'calc(100vh - 240px)' }}>
+        <div className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft border border-warmgray-100 flex flex-col" style={{ height: 'calc(100vh - 240px)' }}>
           {/* Header */}
           <div className="px-6 py-4 border-b border-warmgray-100 flex items-center gap-3">
             <div className="relative w-10 h-10 flex-shrink-0">
@@ -116,7 +116,7 @@ const ConversationMonitor: React.FC = () => {
               </div>
             </div>
             <div>
-              <p className="font-bold text-warmgray-900 text-sm">
+              <p className="font-bold text-warmgray-900 dark:text-warmgray-100 text-sm">
                 <span className="text-teal">{selectedConv?.therapist_name}</span>
                 <span className="text-warmgray-400 mx-1.5">↔</span>
                 <span className="text-coral">{selectedConv?.patient_name}</span>
@@ -140,18 +140,18 @@ const ConversationMonitor: React.FC = () => {
                       </div>
                       <div>
                         {msg.message_type === 'text' ? (
-                          <div className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${isTherapist ? 'bg-teal-light/20 text-warmgray-800 rounded-tl-sm' : 'bg-coral-light/20 text-warmgray-800 rounded-tr-sm'}`}>
+                          <div className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${isTherapist ? 'bg-teal-light/20 text-warmgray-800 dark:text-warmgray-200 rounded-tl-sm' : 'bg-coral-light/20 text-warmgray-800 dark:text-warmgray-200 rounded-tr-sm'}`}>
                             {msg.content}
                           </div>
                         ) : msg.message_type === 'product' ? (
-                          <div className="bg-warmgray-50 border border-warmgray-200 rounded-2xl p-3 min-w-[200px]">
+                          <div className="bg-warmgray-50 dark:bg-surface-dark border border-warmgray-200 dark:border-surface-dark-border rounded-2xl p-3 min-w-[200px]">
                             <p className="text-xs text-teal font-semibold mb-1">Shared Product</p>
-                            <p className="text-sm font-bold text-warmgray-800">{msg.metadata?.product_name}</p>
+                            <p className="text-sm font-bold text-warmgray-800 dark:text-warmgray-200">{msg.metadata?.product_name}</p>
                           </div>
                         ) : msg.message_type === 'assessment' ? (
-                          <div className="bg-warmgray-50 border border-warmgray-200 rounded-2xl p-3 min-w-[200px]">
+                          <div className="bg-warmgray-50 dark:bg-surface-dark border border-warmgray-200 dark:border-surface-dark-border rounded-2xl p-3 min-w-[200px]">
                             <p className="text-xs text-sky font-semibold mb-1">Shared Assessment</p>
-                            <p className="text-sm font-bold text-warmgray-800">{msg.metadata?.assessment_title}</p>
+                            <p className="text-sm font-bold text-warmgray-800 dark:text-warmgray-200">{msg.metadata?.assessment_title}</p>
                           </div>
                         ) : null}
                         <p className={`text-xs text-warmgray-400 mt-1 ${isTherapist ? 'text-left' : 'text-right'}`}>{formatTime(msg.created_at)}</p>
@@ -168,7 +168,7 @@ const ConversationMonitor: React.FC = () => {
           </div>
 
           {/* Read-only notice */}
-          <div className="px-6 py-3 border-t border-warmgray-100 bg-warmgray-50 rounded-b-3xl">
+          <div className="px-6 py-3 border-t border-warmgray-100 bg-warmgray-50 dark:bg-surface-dark rounded-b-3xl">
             <p className="text-xs text-warmgray-400 text-center flex items-center justify-center gap-1.5">
               <Eye className="w-3.5 h-3.5" /> Read-only monitoring — you cannot send messages from this view
             </p>

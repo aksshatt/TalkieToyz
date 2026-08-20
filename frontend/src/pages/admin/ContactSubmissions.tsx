@@ -20,7 +20,7 @@ const STATUS_COLORS: Record<string, string> = {
   new: 'bg-blue-100 text-blue-700',
   in_progress: 'bg-yellow-100 text-yellow-700',
   resolved: 'bg-green-100 text-green-700',
-  closed: 'bg-gray-100 text-gray-600',
+  closed: 'bg-gray-100 dark:bg-surface-dark-border text-gray-600 dark:text-warmgray-400',
 };
 
 const ContactSubmissions = () => {
@@ -75,7 +75,7 @@ const ContactSubmissions = () => {
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-4 py-2 border-2 border-warmgray-300 rounded-lg focus:border-teal text-sm"
+          className="px-4 py-2 border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal text-sm"
         >
           <option value="">All Statuses</option>
           <option value="new">New</option>
@@ -109,12 +109,12 @@ const ContactSubmissions = () => {
                 </tr>
               ) : (
                 submissions.map((s) => (
-                  <tr key={s.id} className="border-t border-warmgray-200 hover:bg-warmgray-50">
+                  <tr key={s.id} className="border-t border-warmgray-200 dark:border-surface-dark-border hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark">
                     <td className="p-4 font-medium">{s.name}</td>
-                    <td className="p-4 text-sm text-warmgray-600">{s.email}</td>
+                    <td className="p-4 text-sm text-warmgray-600 dark:text-warmgray-400">{s.email}</td>
                     <td className="p-4 text-sm">{s.subject}</td>
                     <td className="p-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${STATUS_COLORS[s.status] || 'bg-gray-100 text-gray-600'}`}>
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${STATUS_COLORS[s.status] || 'bg-gray-100 dark:bg-surface-dark-border text-gray-600 dark:text-warmgray-400'}`}>
                         {s.status?.replace('_', ' ')}
                       </span>
                     </td>
@@ -137,9 +137,9 @@ const ContactSubmissions = () => {
       {/* Detail Modal */}
       {selected && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl w-full max-w-lg p-6 space-y-4">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-2xl w-full max-w-lg p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-warmgray-900">Submission Details</h2>
+              <h2 className="text-lg font-bold text-warmgray-900 dark:text-warmgray-100">Submission Details</h2>
               <button onClick={() => setSelected(null)} className="p-1 hover:bg-warmgray-100 rounded">
                 <X className="h-5 w-5" />
               </button>
@@ -152,16 +152,16 @@ const ContactSubmissions = () => {
               <div><span className="font-semibold">Subject:</span> {selected.subject}</div>
               <div>
                 <span className="font-semibold">Message:</span>
-                <p className="mt-1 text-warmgray-700 bg-warmgray-50 p-3 rounded-lg">{selected.message}</p>
+                <p className="mt-1 text-warmgray-700 dark:text-warmgray-300 bg-warmgray-50 dark:bg-surface-dark p-3 rounded-lg">{selected.message}</p>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-warmgray-700 mb-1">Status</label>
+              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Status</label>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
-                className="w-full px-3 py-2 border-2 border-warmgray-300 rounded-lg focus:border-teal text-sm"
+                className="w-full px-3 py-2 border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal text-sm"
               >
                 <option value="new">New</option>
                 <option value="in_progress">In Progress</option>
@@ -171,12 +171,12 @@ const ContactSubmissions = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-warmgray-700 mb-1">Admin Notes</label>
+              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Admin Notes</label>
               <textarea
                 rows={3}
                 value={adminNotes}
                 onChange={(e) => setAdminNotes(e.target.value)}
-                className="w-full px-3 py-2 border-2 border-warmgray-300 rounded-lg focus:border-teal text-sm"
+                className="w-full px-3 py-2 border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal text-sm"
                 placeholder="Add internal notes..."
               />
             </div>

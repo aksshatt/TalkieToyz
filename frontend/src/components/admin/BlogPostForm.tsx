@@ -57,7 +57,7 @@ const BlogPostForm = ({ initialData, onSubmit, onCancel, saving }: BlogPostFormP
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label className="block text-sm font-semibold text-warmgray-700 mb-2">Title *</label>
+        <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Title *</label>
         <input
           type="text"
           required
@@ -69,7 +69,7 @@ const BlogPostForm = ({ initialData, onSubmit, onCancel, saving }: BlogPostFormP
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-semibold text-warmgray-700 mb-2">Category *</label>
+          <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Category *</label>
           <select
             required
             value={formData.category}
@@ -83,7 +83,7 @@ const BlogPostForm = ({ initialData, onSubmit, onCancel, saving }: BlogPostFormP
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-warmgray-700 mb-2">Status *</label>
+          <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Status *</label>
           <select
             required
             value={formData.status}
@@ -98,7 +98,7 @@ const BlogPostForm = ({ initialData, onSubmit, onCancel, saving }: BlogPostFormP
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-warmgray-700 mb-2">Excerpt</label>
+        <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Excerpt</label>
         <textarea
           rows={3}
           value={formData.excerpt}
@@ -108,7 +108,7 @@ const BlogPostForm = ({ initialData, onSubmit, onCancel, saving }: BlogPostFormP
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-warmgray-700 mb-2">Content *</label>
+        <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Content *</label>
         <TiptapEditor
           content={formData.content}
           onChange={(content) => setFormData({ ...formData, content })}
@@ -116,7 +116,7 @@ const BlogPostForm = ({ initialData, onSubmit, onCancel, saving }: BlogPostFormP
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-warmgray-700 mb-2">Featured Image URL</label>
+        <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Featured Image URL</label>
         <input
           type="url"
           value={formData.featured_image_url}
@@ -126,7 +126,7 @@ const BlogPostForm = ({ initialData, onSubmit, onCancel, saving }: BlogPostFormP
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-warmgray-700 mb-2">Tags</label>
+        <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Tags</label>
         <div className="flex gap-2 mb-2">
           <input
             type="text"
@@ -166,7 +166,7 @@ const BlogPostForm = ({ initialData, onSubmit, onCancel, saving }: BlogPostFormP
             onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
             className="w-4 h-4 text-teal"
           />
-          <span className="text-sm font-semibold text-warmgray-700">Featured Post</span>
+          <span className="text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Featured Post</span>
         </label>
 
         <label className="flex items-center gap-2 cursor-pointer">
@@ -176,7 +176,7 @@ const BlogPostForm = ({ initialData, onSubmit, onCancel, saving }: BlogPostFormP
             onChange={(e) => setFormData({ ...formData, allow_comments: e.target.checked })}
             className="w-4 h-4 text-teal"
           />
-          <span className="text-sm font-semibold text-warmgray-700">Allow Comments</span>
+          <span className="text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Allow Comments</span>
         </label>
       </div>
 

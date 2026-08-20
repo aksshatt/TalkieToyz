@@ -66,7 +66,7 @@ const BlogManagement = () => {
               </thead>
               <tbody>
                 {posts.map((post) => (
-                  <tr key={post.id} className="border-t border-warmgray-200">
+                  <tr key={post.id} className="border-t border-warmgray-200 dark:border-surface-dark-border">
                     <td className="p-4">{post.title}</td>
                     <td className="p-4">{post.category_display_name}</td>
                     <td className="p-4">

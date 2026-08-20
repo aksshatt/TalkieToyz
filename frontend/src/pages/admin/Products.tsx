@@ -198,10 +198,10 @@ const Products: React.FC = () => {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-2">
+          <h1 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200 mb-2">
             Products
           </h1>
-          <p className="text-warmgray-600">
+          <p className="text-warmgray-600 dark:text-warmgray-400">
             Manage your product inventory and categories
           </p>
         </div>
@@ -216,8 +216,8 @@ const Products: React.FC = () => {
 
       {/* Bulk Actions */}
       {selectedProducts.length > 0 && (
-        <div className="bg-warmgray-100 border-2 border-warmgray-200 rounded-xl p-4 flex items-center justify-between flex-wrap gap-3">
-          <span className="font-semibold text-warmgray-700">
+        <div className="bg-warmgray-100 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl p-4 flex items-center justify-between flex-wrap gap-3">
+          <span className="font-semibold text-warmgray-700 dark:text-warmgray-300">
             {selectedProducts.length} product(s) selected
           </span>
           <div className="flex items-center gap-2">
@@ -230,7 +230,7 @@ const Products: React.FC = () => {
             </button>
             <button
               onClick={() => handleBulkAction('deactivate')}
-              className="flex items-center space-x-2 px-4 py-2 bg-warmgray-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+              className="flex items-center space-x-2 px-4 py-2 bg-warmgray-50 dark:bg-surface-dark0 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
             >
               <EyeOff className="h-4 w-4" />
               <span>Deactivate</span>
@@ -254,7 +254,7 @@ const Products: React.FC = () => {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           placeholder="Search products..."
-          className="w-full pl-12 pr-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
+          className="w-full pl-12 pr-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal transition-colors"
         />
       </div>
 
@@ -262,7 +262,7 @@ const Products: React.FC = () => {
       {isLoading ? (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-          <p className="mt-4 text-warmgray-600">Loading products...</p>
+          <p className="mt-4 text-warmgray-600 dark:text-warmgray-400">Loading products...</p>
         </div>
       ) : (
         <>
@@ -274,8 +274,8 @@ const Products: React.FC = () => {
 
           {/* Pagination */}
           {totalCount > 0 && (
-            <div className="flex items-center justify-between bg-white rounded-xl border-2 border-warmgray-200 px-4 py-3">
-              <span className="text-sm text-warmgray-600">
+            <div className="flex items-center justify-between bg-white dark:bg-surface-dark-raised rounded-xl border-2 border-warmgray-200 dark:border-surface-dark-border px-4 py-3">
+              <span className="text-sm text-warmgray-600 dark:text-warmgray-400">
                 Showing {(page - 1) * PER_PAGE + 1}–
                 {Math.min(page * PER_PAGE, totalCount)} of {totalCount}
               </span>
@@ -283,17 +283,17 @@ const Products: React.FC = () => {
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page <= 1}
-                  className="p-2 border-2 border-warmgray-200 rounded-lg hover:bg-warmgray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="p-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
-                <span className="text-sm font-semibold text-warmgray-700 px-3">
+                <span className="text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 px-3">
                   Page {page} of {totalPages}
                 </span>
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={page >= totalPages}
-                  className="p-2 border-2 border-warmgray-200 rounded-lg hover:bg-warmgray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="p-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>
@@ -551,21 +551,21 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Product Name */}
         <div className="md:col-span-2">
-          <label className="block text-sm font-bold text-warmgray-700 mb-2">
+          <label className="block text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">
             Product Name *
           </label>
           <input
             type="text"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
+            className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal transition-colors"
             required
           />
         </div>
 
         {/* Image Upload */}
         <div className="md:col-span-2">
-          <label className="block text-sm font-bold text-warmgray-700 mb-2">
+          <label className="block text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">
             Product Images
           </label>
 
@@ -577,7 +577,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
                   <img
                     src={img.url}
                     alt="Product"
-                    className="w-20 h-20 rounded-lg object-cover border-2 border-warmgray-200"
+                    className="w-20 h-20 rounded-lg object-cover border-2 border-warmgray-200 dark:border-surface-dark-border"
                   />
                   <button
                     type="button"
@@ -622,11 +622,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
             className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
               isDragging
                 ? 'border-teal bg-teal/5'
-                : 'border-warmgray-300 hover:border-teal hover:bg-warmgray-50'
+                : 'border-warmgray-300 dark:border-surface-dark-border hover:border-teal hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark'
             }`}
           >
             <Upload className="h-8 w-8 text-warmgray-400 mx-auto mb-2" />
-            <p className="text-sm text-warmgray-600">
+            <p className="text-sm text-warmgray-600 dark:text-warmgray-400">
               Drag & drop images here, or <span className="text-teal font-semibold">browse</span>
             </p>
             <p className="text-xs text-warmgray-400 mt-1">PNG, JPG up to 5MB each</p>
@@ -643,7 +643,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
 
         {/* Price */}
         <div>
-          <label className="block text-sm font-bold text-warmgray-700 mb-2">
+          <label className="block text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">
             Price (₹) *
           </label>
           <input
@@ -651,14 +651,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
             step="0.01"
             value={formData.price}
             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-            className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
+            className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal transition-colors"
             required
           />
         </div>
 
         {/* Compare at Price */}
         <div>
-          <label className="block text-sm font-bold text-warmgray-700 mb-2">
+          <label className="block text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">
             Compare at Price (₹)
           </label>
           <input
@@ -666,14 +666,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
             step="0.01"
             value={formData.compare_at_price}
             onChange={(e) => setFormData({ ...formData, compare_at_price: e.target.value })}
-            className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
+            className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal transition-colors"
             placeholder="Original price for sale display"
           />
         </div>
 
         {/* Stock */}
         <div>
-          <label className="block text-sm font-bold text-warmgray-700 mb-2">
+          <label className="block text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">
             Stock Quantity *
           </label>
           <input
@@ -682,20 +682,20 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
             onChange={(e) =>
               setFormData({ ...formData, stock_quantity: parseInt(e.target.value, 10) || 0 })
             }
-            className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
+            className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal transition-colors"
             required
           />
         </div>
 
         {/* Category */}
         <div>
-          <label className="block text-sm font-bold text-warmgray-700 mb-2">
+          <label className="block text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">
             Category
           </label>
           <select
             value={formData.category_id}
             onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-            className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
+            className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal transition-colors"
           >
             <option value="">Select Category</option>
             {categories.map((cat) => (
@@ -708,13 +708,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
 
         {/* Age Range */}
         <div>
-          <label className="block text-sm font-bold text-warmgray-700 mb-2">
+          <label className="block text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">
             Age Range
           </label>
           <select
             value={formData.age_range}
             onChange={(e) => setFormData({ ...formData, age_range: e.target.value })}
-            className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
+            className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal transition-colors"
           >
             <option value="">Select Age Range</option>
             <option value="0-2">0-2 years</option>
@@ -726,38 +726,38 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
         </div>
 
         {/* Shipping: weight + dimensions */}
-        <div className="md:col-span-2 border-t border-warmgray-200 pt-4 mt-2">
-          <h3 className="text-sm font-bold text-warmgray-700 mb-3">Shipping (used by Shiprocket)</h3>
+        <div className="md:col-span-2 border-t border-warmgray-200 dark:border-surface-dark-border pt-4 mt-2">
+          <h3 className="text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-3">Shipping (used by Shiprocket)</h3>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-warmgray-600 mb-1">Weight (kg)</label>
+              <label className="block text-xs font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">Weight (kg)</label>
               <input type="number" step="0.01" value={formData.weight_kg}
                 onChange={(e) => setFormData({ ...formData, weight_kg: e.target.value })}
-                className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-lg focus:outline-none focus:border-teal" placeholder="0.6" />
+                className="w-full px-3 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg focus:outline-none focus:border-teal" placeholder="0.6" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-warmgray-600 mb-1">Length (cm)</label>
+              <label className="block text-xs font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">Length (cm)</label>
               <input type="number" step="0.1" value={formData.length_cm}
                 onChange={(e) => setFormData({ ...formData, length_cm: e.target.value })}
-                className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-lg focus:outline-none focus:border-teal" placeholder="30" />
+                className="w-full px-3 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg focus:outline-none focus:border-teal" placeholder="30" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-warmgray-600 mb-1">Breadth (cm)</label>
+              <label className="block text-xs font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">Breadth (cm)</label>
               <input type="number" step="0.1" value={formData.breadth_cm}
                 onChange={(e) => setFormData({ ...formData, breadth_cm: e.target.value })}
-                className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-lg focus:outline-none focus:border-teal" placeholder="22" />
+                className="w-full px-3 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg focus:outline-none focus:border-teal" placeholder="22" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-warmgray-600 mb-1">Height (cm)</label>
+              <label className="block text-xs font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">Height (cm)</label>
               <input type="number" step="0.1" value={formData.height_cm}
                 onChange={(e) => setFormData({ ...formData, height_cm: e.target.value })}
-                className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-lg focus:outline-none focus:border-teal" placeholder="4" />
+                className="w-full px-3 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg focus:outline-none focus:border-teal" placeholder="4" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-warmgray-600 mb-1">HSN Code</label>
+              <label className="block text-xs font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">HSN Code</label>
               <input type="text" value={formData.hsn_code}
                 onChange={(e) => setFormData({ ...formData, hsn_code: e.target.value })}
-                className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-lg focus:outline-none focus:border-teal" placeholder="9503" />
+                className="w-full px-3 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg focus:outline-none focus:border-teal" placeholder="9503" />
             </div>
           </div>
           <p className="text-xs text-warmgray-500 mt-2">Leave blank to use defaults (0.5kg, 10×10×5cm).</p>
@@ -770,16 +770,16 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
             id="featured"
             checked={formData.featured}
             onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-            className="w-5 h-5 rounded border-warmgray-300 text-teal focus:ring-teal"
+            className="w-5 h-5 rounded border-warmgray-300 dark:border-surface-dark-border text-teal focus:ring-teal"
           />
-          <label htmlFor="featured" className="text-sm font-bold text-warmgray-700">
+          <label htmlFor="featured" className="text-sm font-bold text-warmgray-700 dark:text-warmgray-300">
             Featured Product
           </label>
         </div>
 
         {/* Description */}
         <div className="md:col-span-2">
-          <label className="block text-sm font-bold text-warmgray-700 mb-2">
+          <label className="block text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">
             Short Description
           </label>
           <textarea
@@ -788,14 +788,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
               setFormData({ ...formData, description: e.target.value })
             }
             rows={3}
-            className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors resize-none"
+            className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal transition-colors resize-none"
             placeholder="Brief product description"
           />
         </div>
 
         {/* Long Description */}
         <div className="md:col-span-2">
-          <label className="block text-sm font-bold text-warmgray-700 mb-2">
+          <label className="block text-sm font-bold text-warmgray-700 dark:text-warmgray-300 mb-2">
             Detailed Description
           </label>
           <textarea
@@ -804,7 +804,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
               setFormData({ ...formData, long_description: e.target.value })
             }
             rows={5}
-            className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors resize-none"
+            className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal transition-colors resize-none"
             placeholder="Full product description with details"
           />
         </div>
@@ -815,7 +815,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
         <button
           type="button"
           onClick={onClose}
-          className="px-6 py-3 border-2 border-warmgray-300 text-warmgray-700 font-bold rounded-xl hover:bg-warmgray-100 transition-colors"
+          className="px-6 py-3 border-2 border-warmgray-300 dark:border-surface-dark-border text-warmgray-700 dark:text-warmgray-300 font-bold rounded-xl hover:bg-warmgray-100 transition-colors"
         >
           Cancel
         </button>

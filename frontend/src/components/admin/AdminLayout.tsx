@@ -115,12 +115,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-warmgray-50">
+    <div className="min-h-screen bg-warmgray-50 dark:bg-surface-dark">
       <SEO title="Admin" noindex />
 
       <header
         ref={wrapperRef}
-        className="bg-white border-b-2 border-warmgray-200 sticky top-0 z-40 shadow-soft"
+        className="bg-white dark:bg-surface-dark-raised border-b-2 border-warmgray-200 dark:border-surface-dark-border sticky top-0 z-40 shadow-soft"
       >
         <div className="max-w-[1400px] mx-auto px-4 lg:px-6">
           {/* Top row */}
@@ -128,7 +128,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             <Link to="/admin" className="flex items-center gap-3 flex-shrink-0">
               <img src="/logo.png" alt="TalkieToyz" className="h-10 w-auto" />
               <div className="hidden sm:flex flex-col leading-tight">
-                <span className="font-extrabold text-warmgray-900 text-sm">Admin</span>
+                <span className="font-extrabold text-warmgray-900 dark:text-warmgray-100 text-sm">Admin</span>
                 <span className="text-[10px] text-warmgray-500 uppercase tracking-wider">Talkie Toyz</span>
               </div>
             </Link>
@@ -143,7 +143,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                     key={item.name}
                     to={item.href}
                     className={`inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-semibold transition-colors ${
-                      active ? 'bg-teal-gradient text-white shadow-soft' : 'text-warmgray-700 hover:bg-warmgray-100'
+                      active ? 'bg-teal-gradient text-white shadow-soft' : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-white/10'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -160,7 +160,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                     <button
                       onClick={() => setOpenGroup(isOpen ? null : g.label)}
                       className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-semibold transition-colors ${
-                        active || isOpen ? 'bg-teal/10 text-teal' : 'text-warmgray-700 hover:bg-warmgray-100'
+                        active || isOpen ? 'bg-teal/10 text-teal' : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-white/10'
                       }`}
                     >
                       {g.label}
@@ -176,9 +176,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               <Link to="/" className="hidden md:inline-flex text-xs font-semibold text-teal hover:text-teal-dark">
                 View Store
               </Link>
-              <div className="hidden md:flex items-center gap-2 pl-3 border-l border-warmgray-200">
+              <div className="hidden md:flex items-center gap-2 pl-3 border-l border-warmgray-200 dark:border-surface-dark-border">
                 <div className="text-right leading-tight">
-                  <p className="text-xs font-bold text-warmgray-800 truncate max-w-[120px]">{user?.name}</p>
+                  <p className="text-xs font-bold text-warmgray-800 dark:text-warmgray-200 truncate max-w-[120px]">{user?.name}</p>
                   <p className="text-[10px] text-warmgray-500 capitalize">{user?.role}</p>
                 </div>
                 <button
@@ -191,7 +191,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </div>
               <button
                 onClick={() => setMobileOpen((v) => !v)}
-                className="lg:hidden p-2 rounded-lg hover:bg-warmgray-100"
+                className="lg:hidden p-2 rounded-lg hover:bg-warmgray-100 dark:hover:bg-white/10"
                 aria-label="Toggle menu"
               >
                 {mobileOpen ? <X className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
@@ -222,7 +222,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                           className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
                             active
                               ? 'bg-teal-gradient text-white shadow-soft'
-                              : 'text-warmgray-700 hover:bg-warmgray-100'
+                              : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-white/10'
                           }`}
                         >
                           <Icon className="w-4 h-4 flex-shrink-0" />
@@ -255,7 +255,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                           key={item.name}
                           to={item.href}
                           className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold ${
-                            active ? 'bg-teal-gradient text-white' : 'text-warmgray-700 hover:bg-warmgray-100'
+                            active ? 'bg-teal-gradient text-white' : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-white/10'
                           }`}
                         >
                           <Icon className="w-4 h-4" />
@@ -277,7 +277,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                               key={item.name}
                               to={item.href}
                               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold ${
-                                active ? 'bg-teal-gradient text-white' : 'text-warmgray-700 hover:bg-warmgray-100'
+                                active ? 'bg-teal-gradient text-white' : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-white/10'
                               }`}
                             >
                               <Icon className="w-4 h-4" />

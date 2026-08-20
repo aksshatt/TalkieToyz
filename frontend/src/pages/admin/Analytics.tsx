@@ -167,7 +167,7 @@ const Analytics = () => {
         <select
           value={period}
           onChange={(e) => setPeriod(e.target.value)}
-          className="px-4 py-2 border-2 border-warmgray-300 rounded-lg focus:border-teal text-sm"
+          className="px-4 py-2 border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal text-sm"
         >
           <option value="7days">Last 7 Days</option>
           <option value="30days">Last 30 Days</option>
@@ -188,35 +188,35 @@ const Analytics = () => {
               <div className="p-3 bg-teal-light rounded-xl"><DollarSign className="h-6 w-6 text-teal" /></div>
               <div>
                 <p className="text-sm text-warmgray-500">Revenue</p>
-                <p className="text-2xl font-bold text-warmgray-900">₹{totalRevenue.toLocaleString('en-IN')}</p>
+                <p className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">₹{totalRevenue.toLocaleString('en-IN')}</p>
               </div>
             </div>
             <div className="card-talkie p-6 flex items-center gap-4">
               <div className="p-3 bg-sunshine-light rounded-xl"><ShoppingBag className="h-6 w-6 text-sunshine" /></div>
               <div>
                 <p className="text-sm text-warmgray-500">Orders</p>
-                <p className="text-2xl font-bold text-warmgray-900">{totalOrders}</p>
+                <p className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">{totalOrders}</p>
               </div>
             </div>
             <div className="card-talkie p-6 flex items-center gap-4">
               <div className="p-3 bg-coral-light rounded-xl"><Users className="h-6 w-6 text-coral" /></div>
               <div>
                 <p className="text-sm text-warmgray-500">Customers</p>
-                <p className="text-2xl font-bold text-warmgray-900">{totalCustomers}</p>
+                <p className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">{totalCustomers}</p>
               </div>
             </div>
             <div className="card-talkie p-6 flex items-center gap-4">
               <div className="p-3 bg-sky-light rounded-xl"><TrendingUp className="h-6 w-6 text-sky" /></div>
               <div>
                 <p className="text-sm text-warmgray-500">New (30d)</p>
-                <p className="text-2xl font-bold text-warmgray-900">{newCustomers}</p>
+                <p className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">{newCustomers}</p>
               </div>
             </div>
           </div>
 
           {/* Revenue + Orders Trend */}
           <div className="card-talkie p-6">
-            <h2 className="font-bold text-warmgray-900 mb-4">Revenue & Orders Over Time</h2>
+            <h2 className="font-bold text-warmgray-900 dark:text-warmgray-100 mb-4">Revenue & Orders Over Time</h2>
             {(data?.revenue_trends?.length ?? 0) === 0 ? (
               <p className="text-warmgray-500 text-sm">No revenue data yet</p>
             ) : (
@@ -229,7 +229,7 @@ const Analytics = () => {
             <div className="card-talkie p-6">
               <div className="flex items-center gap-2 mb-4">
                 <TrendingUp className="h-5 w-5 text-teal" />
-                <h2 className="font-bold text-warmgray-900">Top Products (Units Sold)</h2>
+                <h2 className="font-bold text-warmgray-900 dark:text-warmgray-100">Top Products (Units Sold)</h2>
               </div>
               {(data?.popular_products?.length ?? 0) === 0 ? (
                 <p className="text-warmgray-500 text-sm">No sales data yet</p>
@@ -242,7 +242,7 @@ const Analytics = () => {
             <div className="card-talkie p-6">
               <div className="flex items-center gap-2 mb-4">
                 <ShoppingBag className="h-5 w-5 text-sunshine" />
-                <h2 className="font-bold text-warmgray-900">Revenue by Category</h2>
+                <h2 className="font-bold text-warmgray-900 dark:text-warmgray-100">Revenue by Category</h2>
               </div>
               {(data?.sales_by_category?.length ?? 0) === 0 ? (
                 <p className="text-warmgray-500 text-sm">No sales data yet</p>
@@ -255,7 +255,7 @@ const Analytics = () => {
           {/* Conversion Metrics */}
           {data?.conversion_metrics && (
             <div className="card-talkie p-6">
-              <h2 className="font-bold text-warmgray-900 mb-4">Conversion Metrics</h2>
+              <h2 className="font-bold text-warmgray-900 dark:text-warmgray-100 mb-4">Conversion Metrics</h2>
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center p-4 bg-teal/5 rounded-xl">
                   <p className="text-2xl font-bold text-teal">{data.conversion_metrics.total_orders}</p>

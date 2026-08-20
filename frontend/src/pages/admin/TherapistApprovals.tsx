@@ -54,14 +54,14 @@ const TherapistApprovals: React.FC = () => {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-warmgray-900">Therapist Approvals</h1>
+        <h1 className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">Therapist Approvals</h1>
         <p className="text-warmgray-500 text-sm mt-1">Review and manage therapist registration requests</p>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {[
-          { key: 'all', label: 'Total', color: 'bg-warmgray-100 text-warmgray-700' },
+          { key: 'all', label: 'Total', color: 'bg-warmgray-100 text-warmgray-700 dark:text-warmgray-300' },
           { key: 'pending', label: 'Pending', color: 'bg-sunshine/20 text-sunshine-dark' },
           { key: 'approved', label: 'Approved', color: 'bg-teal-light/30 text-teal' },
           { key: 'rejected', label: 'Rejected', color: 'bg-coral-light/20 text-coral' },
@@ -78,15 +78,15 @@ const TherapistApprovals: React.FC = () => {
         <div className="flex gap-2 flex-wrap">
           {STATUS_TABS.map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`px-4 py-1.5 rounded-full text-sm font-semibold capitalize transition-all ${activeTab === tab ? 'bg-teal-gradient text-white shadow-soft' : 'bg-white border-2 border-warmgray-200 text-warmgray-500 hover:border-teal'}`}>
-              {tab} {tab !== 'all' && counts[tab] > 0 && <span className="ml-1 bg-white/30 rounded-full px-1.5 text-xs">{counts[tab]}</span>}
+              className={`px-4 py-1.5 rounded-full text-sm font-semibold capitalize transition-all ${activeTab === tab ? 'bg-teal-gradient text-white shadow-soft' : 'bg-white dark:bg-surface-dark-raised border-2 border-warmgray-200 dark:border-surface-dark-border text-warmgray-500 hover:border-teal'}`}>
+              {tab} {tab !== 'all' && counts[tab] > 0 && <span className="ml-1 bg-white dark:bg-surface-dark-raised/30 rounded-full px-1.5 text-xs">{counts[tab]}</span>}
             </button>
           ))}
         </div>
         <div className="relative ml-auto">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-400" />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search therapists…"
-            className="pl-9 pr-4 py-2 border-2 border-warmgray-200 rounded-xl text-sm focus:border-teal focus:outline-none" />
+            className="pl-9 pr-4 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-teal focus:outline-none" />
         </div>
       </div>
 
@@ -96,9 +96,9 @@ const TherapistApprovals: React.FC = () => {
           {[...Array(4)].map((_, i) => <div key={i} className="animate-pulse bg-warmgray-200 rounded-2xl h-20" />)}
         </div>
       ) : therapists.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-3xl border-2 border-dashed border-warmgray-200">
+        <div className="text-center py-16 bg-white dark:bg-surface-dark-raised rounded-3xl border-2 border-dashed border-warmgray-200 dark:border-surface-dark-border">
           <Stethoscope className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />
-          <p className="font-semibold text-warmgray-600">No therapists found</p>
+          <p className="font-semibold text-warmgray-600 dark:text-warmgray-400">No therapists found</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -107,13 +107,13 @@ const TherapistApprovals: React.FC = () => {
             const StatusIcon = cfg.icon;
             return (
               <motion.div key={t.id} layout
-                className="bg-white rounded-2xl shadow-soft p-5 border border-warmgray-100 flex items-center gap-4">
+                className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-5 border border-warmgray-100 flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal to-sky flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                   {t.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <p className="font-bold text-warmgray-900">{t.name}</p>
+                    <p className="font-bold text-warmgray-900 dark:text-warmgray-100">{t.name}</p>
                     <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1 ${cfg.color}`}>
                       <StatusIcon className="w-3 h-3" /> {cfg.label}
                     </span>
@@ -152,12 +152,12 @@ const TherapistApprovals: React.FC = () => {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-3xl shadow-soft-xl p-6 max-w-md w-full">
-              <h3 className="font-bold text-warmgray-900 mb-1">Reject {rejectModal.name}?</h3>
+              className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft-xl p-6 max-w-md w-full">
+              <h3 className="font-bold text-warmgray-900 dark:text-warmgray-100 mb-1">Reject {rejectModal.name}?</h3>
               <p className="text-sm text-warmgray-500 mb-4">Optionally provide a reason (sent via email to the therapist).</p>
               <textarea value={rejectReason} onChange={e => setRejectReason(e.target.value)}
                 rows={3} placeholder="Reason for rejection (optional)…"
-                className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl text-sm focus:border-coral focus:outline-none resize-none mb-4" />
+                className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-coral focus:outline-none resize-none mb-4" />
               <div className="flex gap-3">
                 <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
                   onClick={() => rejectMutation.mutate({ id: rejectModal.id, reason: rejectReason })}
@@ -166,7 +166,7 @@ const TherapistApprovals: React.FC = () => {
                   Confirm Reject
                 </motion.button>
                 <button onClick={() => { setRejectModal(null); setRejectReason(''); }}
-                  className="flex-1 border-2 border-warmgray-200 text-warmgray-600 py-2.5 rounded-xl font-semibold text-sm hover:bg-warmgray-50">
+                  className="flex-1 border-2 border-warmgray-200 dark:border-surface-dark-border text-warmgray-600 dark:text-warmgray-400 py-2.5 rounded-xl font-semibold text-sm hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark">
                   Cancel
                 </button>
               </div>

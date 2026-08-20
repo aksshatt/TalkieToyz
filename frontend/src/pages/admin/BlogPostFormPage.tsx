@@ -57,14 +57,14 @@ const BlogPostFormPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream-light py-12 flex items-center justify-center">
+      <div className="min-h-screen bg-cream-light dark:bg-surface-dark py-12 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-cream-light py-12">
+    <div className="min-h-screen bg-cream-light dark:bg-surface-dark py-12">
       <div className="container-talkie max-w-4xl">
         <button onClick={() => navigate('/admin/blog')} className="btn-secondary-talkie mb-6 flex items-center gap-2">
           <ArrowLeft className="h-5 w-5" />

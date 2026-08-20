@@ -73,16 +73,16 @@ function DataTable<T extends { id: number | string }>({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={searchPlaceholder}
-            className="w-full pl-12 pr-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal transition-colors"
+            className="w-full pl-12 pr-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal transition-colors"
           />
         </div>
       )}
 
       {/* Table */}
-      <div className="bg-white rounded-xl border-2 border-warmgray-200 overflow-hidden">
+      <div className="bg-white dark:bg-surface-dark-raised rounded-xl border-2 border-warmgray-200 dark:border-surface-dark-border overflow-hidden">
         <div className="overflow-x-auto max-h-[65vh] overflow-y-auto">
           <table className="w-full">
-            <thead className="bg-warmgray-50 border-b-2 border-warmgray-200 sticky top-0 z-10">
+            <thead className="bg-warmgray-50 dark:bg-surface-dark border-b-2 border-warmgray-200 dark:border-surface-dark-border sticky top-0 z-10">
               <tr>
                 {columns.map((column) => (
                   <th
@@ -127,7 +127,7 @@ function DataTable<T extends { id: number | string }>({
                     onClick={() => onRowClick?.(item)}
                     className={
                       onRowClick
-                        ? 'cursor-pointer hover:bg-warmgray-50 transition-colors'
+                        ? 'cursor-pointer hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark transition-colors'
                         : ''
                     }
                   >

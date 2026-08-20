@@ -144,7 +144,7 @@ const Dashboard: React.FC = () => {
               ? 'bg-blue-100 text-blue-700'
               : order.status === 'processing'
               ? 'bg-yellow-100 text-yellow-700'
-              : 'bg-warmgray-100 text-warmgray-700'
+              : 'bg-warmgray-100 text-warmgray-700 dark:text-warmgray-300'
           }`}
         >
           {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
@@ -159,7 +159,7 @@ const Dashboard: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-teal mx-auto"></div>
-          <p className="mt-4 text-warmgray-600 text-lg">Loading dashboard...</p>
+          <p className="mt-4 text-warmgray-600 dark:text-warmgray-400 text-lg">Loading dashboard...</p>
         </div>
       </div>
     );
@@ -169,10 +169,10 @@ const Dashboard: React.FC = () => {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-2">
+        <h1 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200 mb-2">
           Dashboard
         </h1>
-        <p className="text-warmgray-600">
+        <p className="text-warmgray-600 dark:text-warmgray-400">
           Welcome back! Here's what's happening with your store today.
         </p>
       </div>
@@ -207,8 +207,8 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Sales Chart */}
-      <div className="card-talkie bg-white">
-        <h2 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-6">
+      <div className="card-talkie bg-white dark:bg-surface-dark-raised">
+        <h2 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200 mb-6">
           Revenue (Last 7 Days)
         </h2>
         {salesData.length > 0 ? (
@@ -250,9 +250,9 @@ const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Orders */}
         <div className="lg:col-span-2">
-          <div className="card-talkie bg-white">
+          <div className="card-talkie bg-white dark:bg-surface-dark-raised">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-800">
+              <h2 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200">
                 Recent Orders
               </h2>
               <Link to="/admin/orders" className="text-sm font-semibold text-teal hover:text-teal-dark transition-colors">
@@ -265,10 +265,10 @@ const Dashboard: React.FC = () => {
 
         {/* Low Stock Alerts */}
         <div className="lg:col-span-1">
-          <div className="card-talkie bg-white">
+          <div className="card-talkie bg-white dark:bg-surface-dark-raised">
             <div className="flex items-center space-x-2 mb-4">
               <AlertCircle className="h-6 w-6 text-coral" />
-              <h2 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-800">
+              <h2 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200">
                 Low Stock Alerts
               </h2>
             </div>
@@ -279,17 +279,17 @@ const Dashboard: React.FC = () => {
                     key={product.id}
                     className="p-4 bg-coral-light/20 border-2 border-coral-light rounded-xl"
                   >
-                    <p className="font-bold text-warmgray-800 mb-1">
+                    <p className="font-bold text-warmgray-800 dark:text-warmgray-200 mb-1">
                       {product.name}
                     </p>
-                    <p className="text-sm text-warmgray-600">
+                    <p className="text-sm text-warmgray-600 dark:text-warmgray-400">
                       Only <span className="font-bold text-coral">{product.stock}</span> units
                       left (threshold: {product.threshold})
                     </p>
                   </div>
                 ))
               ) : (
-                <div className="p-4 text-center text-warmgray-600">
+                <div className="p-4 text-center text-warmgray-600 dark:text-warmgray-400">
                   <p className="text-sm">No low stock items</p>
                 </div>
               )}

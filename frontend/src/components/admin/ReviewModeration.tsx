@@ -79,7 +79,7 @@ const ReviewModeration = () => {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-warmgray-900 mb-4">
+        <h1 className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100 mb-4">
           Review Moderation
         </h1>
 
@@ -118,23 +118,23 @@ const ReviewModeration = () => {
       </div>
 
       {loading ? (
-        <div className="text-center py-8 text-warmgray-600">Loading...</div>
+        <div className="text-center py-8 text-warmgray-600 dark:text-warmgray-400">Loading...</div>
       ) : (
         <div className="space-y-4">
           {reviews.map((review: Review) => (
             <div
               key={review.id}
-              className="bg-white border border-warmgray-300 rounded-lg p-6"
+              className="bg-white dark:bg-surface-dark-raised border border-warmgray-300 dark:border-surface-dark-border rounded-lg p-6"
             >
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <StarRating rating={review.rating} readonly />
-                  <p className="text-sm text-warmgray-600 mt-1">
+                  <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mt-1">
                     by {review.user.name} on{' '}
                     {new Date(review.created_at).toLocaleDateString()}
                   </p>
                   {review.product && (
-                    <p className="text-sm text-warmgray-600">
+                    <p className="text-sm text-warmgray-600 dark:text-warmgray-400">
                       Product: {review.product.name}
                     </p>
                   )}
@@ -168,7 +168,7 @@ const ReviewModeration = () => {
               </div>
 
               {review.title && (
-                <h3 className="font-semibold mb-2 text-warmgray-900">
+                <h3 className="font-semibold mb-2 text-warmgray-900 dark:text-warmgray-100">
                   {review.title}
                 </h3>
               )}
@@ -189,7 +189,7 @@ const ReviewModeration = () => {
 
               {review.admin_response ? (
                 <div className="bg-sky/10 border-l-4 border-sky p-3 rounded">
-                  <p className="text-sm font-semibold text-warmgray-900 mb-1">
+                  <p className="text-sm font-semibold text-warmgray-900 dark:text-warmgray-100 mb-1">
                     Store Response
                   </p>
                   <p className="text-sm text-warmgray-700">
@@ -199,7 +199,7 @@ const ReviewModeration = () => {
               ) : (
                 <div>
                   {showResponseForm === review.id ? (
-                    <div className="border-t border-warmgray-200 pt-4">
+                    <div className="border-t border-warmgray-200 dark:border-surface-dark-border pt-4">
                       <textarea
                         value={responseText[review.id] || ''}
                         onChange={(e) =>
@@ -210,7 +210,7 @@ const ReviewModeration = () => {
                         }
                         placeholder="Write your response..."
                         rows={3}
-                        className="w-full border-2 border-warmgray-300 rounded-lg p-2 mb-2 focus:border-teal focus:ring-2 focus:ring-teal/20"
+                        className="w-full border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg p-2 mb-2 focus:border-teal focus:ring-2 focus:ring-teal/20"
                       />
                       <div className="flex gap-2">
                         <button

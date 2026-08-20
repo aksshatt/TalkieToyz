@@ -89,7 +89,7 @@ const Customers: React.FC = () => {
       label: 'Total Orders',
       sortable: true,
       render: (customer) => (
-        <span className="font-semibold text-warmgray-800">
+        <span className="font-semibold text-warmgray-800 dark:text-warmgray-200">
           {customer.total_orders}
         </span>
       ),
@@ -149,7 +149,7 @@ const Customers: React.FC = () => {
       case 'cancelled':
         return 'bg-red-100 text-red-700';
       default:
-        return 'bg-warmgray-100 text-warmgray-700';
+        return 'bg-warmgray-100 text-warmgray-700 dark:text-warmgray-300';
     }
   };
 
@@ -157,23 +157,23 @@ const Customers: React.FC = () => {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-2">
+        <h1 className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200 mb-2">
           Customers
         </h1>
-        <p className="text-warmgray-600">
+        <p className="text-warmgray-600 dark:text-warmgray-400">
           View and manage customer information and order history
         </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="card-talkie bg-white">
+        <div className="card-talkie bg-white dark:bg-surface-dark-raised">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-warmgray-600 mb-1">
+              <p className="text-sm font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">
                 Total Customers
               </p>
-              <p className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800">
+              <p className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200">
                 {customers.length}
               </p>
             </div>
@@ -183,13 +183,13 @@ const Customers: React.FC = () => {
           </div>
         </div>
 
-        <div className="card-talkie bg-white">
+        <div className="card-talkie bg-white dark:bg-surface-dark-raised">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-warmgray-600 mb-1">
+              <p className="text-sm font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">
                 Active Customers
               </p>
-              <p className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800">
+              <p className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200">
                 {customers.filter((c) => c.total_orders > 0).length}
               </p>
             </div>
@@ -199,13 +199,13 @@ const Customers: React.FC = () => {
           </div>
         </div>
 
-        <div className="card-talkie bg-white">
+        <div className="card-talkie bg-white dark:bg-surface-dark-raised">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-warmgray-600 mb-1">
+              <p className="text-sm font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">
                 Average Orders
               </p>
-              <p className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800">
+              <p className="text-3xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200">
                 {customers.length
                   ? (customers.reduce((sum, c) => sum + c.total_orders, 0) / customers.length).toFixed(1)
                   : '0.0'}
@@ -222,7 +222,7 @@ const Customers: React.FC = () => {
       {isLoading ? (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-          <p className="mt-4 text-warmgray-600">Loading customers...</p>
+          <p className="mt-4 text-warmgray-600 dark:text-warmgray-400">Loading customers...</p>
         </div>
       ) : (
         <DataTable
@@ -249,37 +249,37 @@ const Customers: React.FC = () => {
             {/* Customer Info */}
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <p className="text-sm font-semibold text-warmgray-600 mb-1">
+                <p className="text-sm font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">
                   Full Name
                 </p>
-                <p className="font-bold text-warmgray-800 text-lg">
+                <p className="font-bold text-warmgray-800 dark:text-warmgray-200 text-lg">
                   {selectedCustomer.name}
                 </p>
               </div>
               <div>
-                <p className="text-sm font-semibold text-warmgray-600 mb-1">
+                <p className="text-sm font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">
                   Member Since
                 </p>
-                <p className="font-bold text-warmgray-800">
+                <p className="font-bold text-warmgray-800 dark:text-warmgray-200">
                   {selectedCustomer.created_at}
                 </p>
               </div>
               <div>
-                <p className="text-sm font-semibold text-warmgray-600 mb-1">
+                <p className="text-sm font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">
                   Email Address
                 </p>
                 <div className="flex items-center space-x-2">
                   <Mail className="h-4 w-4 text-warmgray-400" />
-                  <p className="text-warmgray-800">{selectedCustomer.email}</p>
+                  <p className="text-warmgray-800 dark:text-warmgray-200">{selectedCustomer.email}</p>
                 </div>
               </div>
               <div>
-                <p className="text-sm font-semibold text-warmgray-600 mb-1">
+                <p className="text-sm font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">
                   Phone Number
                 </p>
                 <div className="flex items-center space-x-2">
                   <Phone className="h-4 w-4 text-warmgray-400" />
-                  <p className="text-warmgray-800">
+                  <p className="text-warmgray-800 dark:text-warmgray-200">
                     {selectedCustomer.phone || 'Not provided'}
                   </p>
                 </div>
@@ -289,7 +289,7 @@ const Customers: React.FC = () => {
             {/* Purchase Stats */}
             <div className="grid grid-cols-2 gap-4 border-t-2 border-warmgray-100 pt-6">
               <div className="p-4 bg-teal-light/20 rounded-xl">
-                <p className="text-sm font-semibold text-warmgray-600 mb-1">
+                <p className="text-sm font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">
                   Total Orders
                 </p>
                 <p className="text-3xl font-bold text-teal">
@@ -297,7 +297,7 @@ const Customers: React.FC = () => {
                 </p>
               </div>
               <div className="p-4 bg-coral-light/20 rounded-xl">
-                <p className="text-sm font-semibold text-warmgray-600 mb-1">
+                <p className="text-sm font-semibold text-warmgray-600 dark:text-warmgray-400 mb-1">
                   Total Spent
                 </p>
                 <p className="text-3xl font-bold text-coral">
@@ -308,18 +308,18 @@ const Customers: React.FC = () => {
 
             {/* Order History */}
             <div className="border-t-2 border-warmgray-100 pt-6">
-              <h3 className="text-lg font-bold text-warmgray-800 mb-4">
+              <h3 className="text-lg font-bold text-warmgray-800 dark:text-warmgray-200 mb-4">
                 Order History
               </h3>
               <div className="space-y-3 max-h-96 overflow-y-auto">
                 {selectedCustomer.orders.map((order) => (
                   <div
                     key={order.id}
-                    className="flex items-center justify-between p-4 bg-warmgray-50 rounded-xl hover:bg-warmgray-100 transition-colors"
+                    className="flex items-center justify-between p-4 bg-warmgray-50 dark:bg-surface-dark rounded-xl hover:bg-warmgray-100 transition-colors"
                   >
                     <div className="flex-1">
                       <div className="flex items-center space-x-3">
-                        <p className="font-bold text-warmgray-800">
+                        <p className="font-bold text-warmgray-800 dark:text-warmgray-200">
                           {order.order_number}
                         </p>
                         <span
@@ -331,7 +331,7 @@ const Customers: React.FC = () => {
                             order.status.slice(1)}
                         </span>
                       </div>
-                      <p className="text-sm text-warmgray-600 mt-1">
+                      <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mt-1">
                         {order.created_at}
                       </p>
                     </div>

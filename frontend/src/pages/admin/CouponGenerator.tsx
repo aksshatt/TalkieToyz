@@ -120,8 +120,8 @@ export default function CouponGenerator() {
         <div className="flex items-center gap-3">
           <Ticket className="h-7 w-7 text-teal" />
           <div>
-            <h1 className="text-3xl font-bold text-warmgray-800">Coupon Generator</h1>
-            <p className="text-warmgray-600 text-sm">Create and manage discount coupons</p>
+            <h1 className="text-3xl font-bold text-warmgray-800 dark:text-warmgray-200">Coupon Generator</h1>
+            <p className="text-warmgray-600 dark:text-warmgray-400 text-sm">Create and manage discount coupons</p>
           </div>
         </div>
         <button
@@ -135,63 +135,63 @@ export default function CouponGenerator() {
 
       {/* Generator Form */}
       {showForm && (
-        <div className="bg-white rounded-xl border border-warmgray-200 p-6">
-          <h2 className="text-lg font-bold text-warmgray-800 mb-4">Bulk Coupon Generator</h2>
+        <div className="bg-white dark:bg-surface-dark-raised rounded-xl border border-warmgray-200 dark:border-surface-dark-border p-6">
+          <h2 className="text-lg font-bold text-warmgray-800 dark:text-warmgray-200 mb-4">Bulk Coupon Generator</h2>
           <form onSubmit={handleGenerate} className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-warmgray-700 mb-1">Number of Coupons</label>
+              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Number of Coupons</label>
               <input type="number" min={1} max={100} value={count} onChange={e => setCount(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                className="w-full px-3 py-2 border border-warmgray-300 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-warmgray-700 mb-1">Code Prefix (optional)</label>
+              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Code Prefix (optional)</label>
               <input type="text" value={prefix} onChange={e => setPrefix(e.target.value.toUpperCase())}
                 placeholder="e.g. SUMMER" maxLength={8}
-                className="w-full px-3 py-2 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                className="w-full px-3 py-2 border border-warmgray-300 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-warmgray-700 mb-1">Discount Type</label>
+              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Discount Type</label>
               <select value={discountType} onChange={e => setDiscountType(e.target.value as 'percentage' | 'fixed')}
-                className="w-full px-3 py-2 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                className="w-full px-3 py-2 border border-warmgray-300 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
                 <option value="percentage">Percentage (%)</option>
                 <option value="fixed">Fixed Amount (₹)</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-warmgray-700 mb-1">
+              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">
                 Discount Value {discountType === 'percentage' ? '(%)' : '(₹)'}
               </label>
               <input type="number" min={0.01} step={0.01} value={discountValue} onChange={e => setDiscountValue(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                className="w-full px-3 py-2 border border-warmgray-300 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-warmgray-700 mb-1">Min Order Amount (₹, optional)</label>
+              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Min Order Amount (₹, optional)</label>
               <input type="number" min={0} step={0.01} value={minOrderAmount} onChange={e => setMinOrderAmount(e.target.value)}
                 placeholder="No minimum"
-                className="w-full px-3 py-2 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                className="w-full px-3 py-2 border border-warmgray-300 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
             </div>
             {discountType === 'percentage' && (
               <div>
-                <label className="block text-sm font-semibold text-warmgray-700 mb-1">Max Discount Cap (₹, optional)</label>
+                <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Max Discount Cap (₹, optional)</label>
                 <input type="number" min={0} step={0.01} value={maxDiscountAmount} onChange={e => setMaxDiscountAmount(e.target.value)}
                   placeholder="No cap"
-                  className="w-full px-3 py-2 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                  className="w-full px-3 py-2 border border-warmgray-300 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
               </div>
             )}
             <div>
-              <label className="block text-sm font-semibold text-warmgray-700 mb-1">Usage Limit per Coupon</label>
+              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Usage Limit per Coupon</label>
               <input type="number" min={1} value={usageLimit} onChange={e => setUsageLimit(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                className="w-full px-3 py-2 border border-warmgray-300 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-warmgray-700 mb-1">Valid From (optional)</label>
+              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Valid From (optional)</label>
               <input type="date" value={validFrom} onChange={e => setValidFrom(e.target.value)}
-                className="w-full px-3 py-2 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                className="w-full px-3 py-2 border border-warmgray-300 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-warmgray-700 mb-1">Valid Until (optional)</label>
+              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1">Valid Until (optional)</label>
               <input type="date" value={validUntil} onChange={e => setValidUntil(e.target.value)}
-                className="w-full px-3 py-2 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                className="w-full px-3 py-2 border border-warmgray-300 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
             </div>
             <div className="md:col-span-2 flex justify-end">
               <button type="submit" disabled={submitting}
@@ -218,7 +218,7 @@ export default function CouponGenerator() {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
             {generated.map(c => (
               <button key={c.id} onClick={() => handleCopy(c.code)}
-                className="flex items-center justify-between px-3 py-2 bg-white border border-green-200 rounded-lg text-sm font-mono font-semibold text-green-800 hover:bg-green-100 transition-colors">
+                className="flex items-center justify-between px-3 py-2 bg-white dark:bg-surface-dark-raised border border-green-200 rounded-lg text-sm font-mono font-semibold text-green-800 hover:bg-green-100 transition-colors">
                 {c.code}
                 <Copy className="h-3 w-3 ml-1 opacity-50" />
               </button>
@@ -228,15 +228,15 @@ export default function CouponGenerator() {
       )}
 
       {/* Existing Coupons */}
-      <div className="bg-white rounded-xl border border-warmgray-200">
+      <div className="bg-white dark:bg-surface-dark-raised rounded-xl border border-warmgray-200 dark:border-surface-dark-border">
         <div className="p-4 border-b border-warmgray-100 flex items-center gap-3">
-          <h2 className="text-base font-bold text-warmgray-800 flex-1">All Coupons ({coupons.length})</h2>
+          <h2 className="text-base font-bold text-warmgray-800 dark:text-warmgray-200 flex-1">All Coupons ({coupons.length})</h2>
           <form onSubmit={handleSearch} className="flex gap-2">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-warmgray-400" />
               <input type="text" value={search} onChange={e => setSearch(e.target.value)}
                 placeholder="Search codes…"
-                className="pl-9 pr-3 py-1.5 border border-warmgray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                className="pl-9 pr-3 py-1.5 border border-warmgray-300 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
             </div>
             <button type="submit" className="px-3 py-1.5 bg-teal-500 text-white rounded-lg text-sm hover:bg-teal-600 transition-colors">Search</button>
           </form>
@@ -250,31 +250,31 @@ export default function CouponGenerator() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-warmgray-50 border-b border-warmgray-100">
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600">Code</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600">Discount</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600">Usage</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600">Valid Until</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600">Status</th>
-                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600">Actions</th>
+                <tr className="bg-warmgray-50 dark:bg-surface-dark border-b border-warmgray-100">
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600 dark:text-warmgray-400">Code</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600 dark:text-warmgray-400">Discount</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600 dark:text-warmgray-400">Usage</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600 dark:text-warmgray-400">Valid Until</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600 dark:text-warmgray-400">Status</th>
+                  <th className="text-left px-4 py-3 font-semibold text-warmgray-600 dark:text-warmgray-400">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-warmgray-50">
                 {coupons.map(c => (
-                  <tr key={c.id} className="hover:bg-warmgray-50">
+                  <tr key={c.id} className="hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono font-semibold text-warmgray-800">{c.code}</span>
+                        <span className="font-mono font-semibold text-warmgray-800 dark:text-warmgray-200">{c.code}</span>
                         <button onClick={() => handleCopy(c.code)} className="text-warmgray-400 hover:text-teal-500 transition-colors">
                           <Copy className="h-3.5 w-3.5" />
                         </button>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-warmgray-700">
+                    <td className="px-4 py-3 text-warmgray-700 dark:text-warmgray-300">
                       {c.discount_type === 'percentage' ? `${c.discount_value}%` : `₹${c.discount_value}`}
                       {c.min_order_amount && <span className="text-xs text-warmgray-400 ml-1">(min ₹{c.min_order_amount})</span>}
                     </td>
-                    <td className="px-4 py-3 text-warmgray-600">
+                    <td className="px-4 py-3 text-warmgray-600 dark:text-warmgray-400">
                       {c.usage_count} / {c.usage_limit === 0 ? '∞' : c.usage_limit}
                     </td>
                     <td className="px-4 py-3 text-warmgray-500 text-xs">

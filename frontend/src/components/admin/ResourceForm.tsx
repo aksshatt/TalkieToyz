@@ -54,7 +54,7 @@ const ResourceForm = ({ initialData, categories, onSubmit, onCancel, saving }: R
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label className="block text-sm font-semibold text-warmgray-700 mb-2">Title *</label>
+        <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Title *</label>
         <input
           type="text"
           required
@@ -66,7 +66,7 @@ const ResourceForm = ({ initialData, categories, onSubmit, onCancel, saving }: R
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-semibold text-warmgray-700 mb-2">Resource Type *</label>
+          <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Resource Type *</label>
           <select
             required
             value={formData.resource_type}
@@ -80,7 +80,7 @@ const ResourceForm = ({ initialData, categories, onSubmit, onCancel, saving }: R
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-warmgray-700 mb-2">Category *</label>
+          <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Category *</label>
           <select
             required
             value={formData.resource_category_id}
@@ -95,7 +95,7 @@ const ResourceForm = ({ initialData, categories, onSubmit, onCancel, saving }: R
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-warmgray-700 mb-2">Description</label>
+        <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Description</label>
         <textarea
           rows={4}
           value={formData.description}
@@ -105,20 +105,20 @@ const ResourceForm = ({ initialData, categories, onSubmit, onCancel, saving }: R
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-warmgray-700 mb-2">File</label>
+        <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">File</label>
         <div className="border-2 border-dashed border-warmgray-300 rounded-lg p-8 text-center">
           <Upload className="h-12 w-12 text-warmgray-400 mx-auto mb-4" />
           <input
             type="file"
             onChange={(e) => setFile(e.target.files?.[0] || null)}
-            className="block w-full text-sm text-warmgray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-gradient file:text-white hover:file:opacity-90"
+            className="block w-full text-sm text-warmgray-600 dark:text-warmgray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-gradient file:text-white hover:file:opacity-90"
           />
           {file && <p className="mt-2 text-sm text-teal">{file.name}</p>}
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-warmgray-700 mb-2">Tags</label>
+        <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">Tags</label>
         <div className="flex gap-2 mb-2">
           <input
             type="text"
@@ -155,7 +155,7 @@ const ResourceForm = ({ initialData, categories, onSubmit, onCancel, saving }: R
             onChange={(e) => setFormData({ ...formData, premium: e.target.checked })}
             className="w-4 h-4 text-teal"
           />
-          <span className="text-sm font-semibold text-warmgray-700">Premium Resource</span>
+          <span className="text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Premium Resource</span>
         </label>
 
         <label className="flex items-center gap-2 cursor-pointer">
@@ -165,7 +165,7 @@ const ResourceForm = ({ initialData, categories, onSubmit, onCancel, saving }: R
             onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
             className="w-4 h-4 text-teal"
           />
-          <span className="text-sm font-semibold text-warmgray-700">Active</span>
+          <span className="text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Active</span>
         </label>
       </div>
 
