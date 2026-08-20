@@ -105,7 +105,7 @@ const ContactSubmissions = () => {
             <tbody>
               {submissions.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center p-8 text-warmgray-500">No submissions found</td>
+                  <td colSpan={6} className="text-center p-8 text-warmgray-500 dark:text-warmgray-500">No submissions found</td>
                 </tr>
               ) : (
                 submissions.map((s) => (
@@ -118,7 +118,7 @@ const ContactSubmissions = () => {
                         {s.status?.replace('_', ' ')}
                       </span>
                     </td>
-                    <td className="p-4 text-sm text-warmgray-500">
+                    <td className="p-4 text-sm text-warmgray-500 dark:text-warmgray-500">
                       {new Date(s.created_at).toLocaleDateString()}
                     </td>
                     <td className="p-4 text-right">

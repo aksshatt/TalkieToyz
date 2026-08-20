@@ -385,7 +385,7 @@ const Signup: React.FC = () => {
                 <input id="terms" name="terms" type="checkbox" required
                   className="h-4 w-4 text-coral focus:ring-coral border-warmgray-300 rounded mt-0.5"
                 />
-                <label htmlFor="terms" className="ml-2 text-sm text-warmgray-500">
+                <label htmlFor="terms" className="ml-2 text-sm text-warmgray-500 dark:text-warmgray-500">
                   I agree to the{' '}
                   <Link to="/terms" className="text-coral hover:text-coral-dark font-semibold">Terms</Link>{' '}
                   and{' '}

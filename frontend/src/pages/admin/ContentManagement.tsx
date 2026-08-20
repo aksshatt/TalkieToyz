@@ -477,7 +477,7 @@ const ContentManagement = () => {
             <tbody>
               {filteredContents.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-8 text-center text-warmgray-500">
+                  <td colSpan={8} className="px-4 py-8 text-center text-warmgray-500 dark:text-warmgray-500">
                     No content found. Try adjusting your filters or create new content.
                   </td>
                 </tr>

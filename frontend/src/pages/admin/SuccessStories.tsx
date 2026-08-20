@@ -130,7 +130,7 @@ export default function SuccessStories() {
         <div className="text-center py-16 text-gray-400">Loading...</div>
       ) : stories.length === 0 ? (
         <div className="text-center py-16 bg-white dark:bg-surface-dark-raised rounded-xl border border-warmgray-200 dark:border-surface-dark-border">
-          <p className="text-warmgray-500">No stories found</p>
+          <p className="text-warmgray-500 dark:text-warmgray-500">No stories found</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -140,7 +140,7 @@ export default function SuccessStories() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="font-bold text-warmgray-800 dark:text-warmgray-200">{story.child_name}</span>
-                    <span className="text-sm text-warmgray-500">
+                    <span className="text-sm text-warmgray-500 dark:text-warmgray-500">
                       · {Math.floor(story.age_months / 12)}y {story.age_months % 12}m
                     </span>
                     {story.speech_goal && (

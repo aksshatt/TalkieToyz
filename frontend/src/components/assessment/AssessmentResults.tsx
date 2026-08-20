@@ -116,7 +116,7 @@ const AssessmentResults = ({ result }: AssessmentResultsProps) => {
         <p className="text-sm sm:text-base text-warmgray-600 dark:text-warmgray-400 mb-1">
           Results for <span className="font-semibold text-warmgray-900 dark:text-warmgray-100">{result.child_name}</span>
         </p>
-        <p className="text-xs sm:text-sm text-warmgray-500">
+        <p className="text-xs sm:text-sm text-warmgray-500 dark:text-warmgray-500">
           Age: {ageDisplay} • Completed on {new Date(result.completed_at).toLocaleDateString()}
         </p>
       </div>
@@ -209,7 +209,7 @@ const AssessmentResults = ({ result }: AssessmentResultsProps) => {
                 <div key={category} className="animate-slide-in" style={{ animationDelay: `${index * 100}ms` }}>
                   <div className="flex justify-between items-center mb-2">
                     <div className="flex items-center gap-2">
-                      <Target className="h-4 w-4 text-warmgray-500" />
+                      <Target className="h-4 w-4 text-warmgray-500 dark:text-warmgray-500" />
                       <span className="font-semibold text-sm sm:text-base text-warmgray-700 dark:text-warmgray-300 capitalize">
                         {category.replace(/_/g, ' ')}
                       </span>

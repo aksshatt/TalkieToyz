@@ -159,7 +159,7 @@ const ReviewSubmissionForm: React.FC<ReviewSubmissionFormProps> = ({
 
           {photos.length < 3 && (
             <label className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-warmgray-300 dark:border-surface-dark-border rounded-lg cursor-pointer hover:border-teal hover:bg-teal/5 transition-colors">
-              <Upload className="h-5 w-5 text-warmgray-500" />
+              <Upload className="h-5 w-5 text-warmgray-500 dark:text-warmgray-500" />
               <span className="text-sm text-warmgray-700 dark:text-warmgray-300">Upload Photos</span>
               <input
                 type="file"

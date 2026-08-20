@@ -29,7 +29,7 @@ const ResourceCard = ({ resource, onDownload }: ResourceCardProps) => {
             <h3 className="font-[var(--font-family-fun)] font-bold text-lg text-warmgray-900 dark:text-warmgray-100 line-clamp-2">
               {resource.title}
             </h3>
-            <span className="text-xs text-warmgray-500">{resource.file_size_display}</span>
+            <span className="text-xs text-warmgray-500 dark:text-warmgray-500">{resource.file_size_display}</span>
           </div>
         </div>
 
@@ -55,7 +55,7 @@ const ResourceCard = ({ resource, onDownload }: ResourceCardProps) => {
       </div>
 
       <div className="flex items-center justify-between pt-4 border-t border-warmgray-200 dark:border-surface-dark-border">
-        <div className="flex items-center gap-1 text-xs text-warmgray-500">
+        <div className="flex items-center gap-1 text-xs text-warmgray-500 dark:text-warmgray-500">
           <Download className="h-3 w-3" />
           {resource.download_count} downloads
         </div>

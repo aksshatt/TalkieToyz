@@ -17,7 +17,7 @@ const AskTherapistCTA: React.FC<AskTherapistCTAProps> = ({ productName }) => {
         </div>
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-gray-900 dark:text-warmgray-100 text-sm">Not sure this is right for your child?</p>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-gray-500 dark:text-warmgray-500 mt-0.5">
             Book a free 15-min consultation with one of our certified speech therapists.
           </p>
         </div>

@@ -50,7 +50,7 @@ const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({ productId
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-warmgray-100">Parent Success Stories</h2>
-          <p className="text-gray-500 text-sm mt-1">Real journeys from families like yours</p>
+          <p className="text-gray-500 dark:text-warmgray-500 text-sm mt-1">Real journeys from families like yours</p>
         </div>
         {user && (
           <button
@@ -132,7 +132,7 @@ const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({ productId
       ) : stories.length === 0 ? (
         <div className="text-center py-10 bg-gray-50 rounded-xl">
           <Star className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-          <p className="text-gray-500">No stories yet. Be the first to share!</p>
+          <p className="text-gray-500 dark:text-warmgray-500">No stories yet. Be the first to share!</p>
         </div>
       ) : (
         <>
@@ -145,7 +145,7 @@ const SuccessStoriesSection: React.FC<SuccessStoriesSectionProps> = ({ productId
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900 dark:text-warmgray-100">{story.child_name}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-warmgray-500">
                       {story.age_months ? `${Math.floor(story.age_months / 12)}y ${story.age_months % 12}m` : ''}
                       {story.speech_goal && ` · ${story.speech_goal}`}
                     </p>

@@ -687,7 +687,7 @@ const Checkout = () => {
                           </div>
                           <span className="font-bold text-purple-600 text-lg">₹99</span>
                         </div>
-                        <p className="text-sm text-gray-500 text-center">
+                        <p className="text-sm text-gray-500 dark:text-warmgray-500 text-center">
                           Add items worth <span className="font-semibold text-purple-600">₹{(FREE_SHIPPING_THRESHOLD - parseFloat(cart?.subtotal || '0')).toFixed(0)}</span> more to get <span className="font-semibold text-green-600">FREE delivery</span>
                         </p>
                       </>
@@ -911,7 +911,7 @@ const Checkout = () => {
                   type="button"
                   onClick={handleBack}
                   disabled={isProcessing}
-                  className="flex items-center gap-2 px-6 py-3 bg-white dark:bg-surface-dark-raised text-gray-700 dark:text-warmgray-300 dark:text-warmgray-300 font-bold rounded-xl shadow-playful hover:shadow-playful-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-6 py-3 bg-white dark:bg-surface-dark-raised text-gray-700 dark:text-warmgray-300 font-bold rounded-xl shadow-playful hover:shadow-playful-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft className="h-5 w-5" />
                   Back

@@ -76,7 +76,7 @@ const AuditLog = () => {
           />
         </div>
         <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-warmgray-500" />
+          <Filter className="h-4 w-4 text-warmgray-500 dark:text-warmgray-500" />
           <select
             value={actionFilter}
             onChange={(e) => { setActionFilter(e.target.value); setPage(1); }}
@@ -95,7 +95,7 @@ const AuditLog = () => {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
         </div>
       ) : logs.length === 0 ? (
-        <div className="card-talkie p-12 text-center text-warmgray-500">No activity logs found.</div>
+        <div className="card-talkie p-12 text-center text-warmgray-500 dark:text-warmgray-500">No activity logs found.</div>
       ) : (
         <div className="card-talkie overflow-hidden">
           <table className="w-full text-sm">
@@ -145,7 +145,7 @@ const AuditLog = () => {
 
           {meta && meta.total_pages > 1 && (
             <div className="px-4 py-3 border-t border-warmgray-100 flex items-center justify-between">
-              <p className="text-sm text-warmgray-500">Page {page} of {meta.total_pages}</p>
+              <p className="text-sm text-warmgray-500 dark:text-warmgray-500">Page {page} of {meta.total_pages}</p>
               <div className="flex gap-2">
                 <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
                   className="px-3 py-1 text-sm border border-warmgray-200 dark:border-surface-dark-border rounded-lg disabled:opacity-40 hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark">

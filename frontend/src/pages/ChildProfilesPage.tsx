@@ -150,7 +150,7 @@ const ChildProfilesPage: React.FC = () => {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-warmgray-100">My Children</h1>
-              <p className="text-gray-500 text-sm mt-1">Track each child's progress and get personalised product recommendations.</p>
+              <p className="text-gray-500 dark:text-warmgray-500 text-sm mt-1">Track each child's progress and get personalised product recommendations.</p>
             </div>
             {!showForm && (
               <button
@@ -208,7 +208,7 @@ const ChildProfilesPage: React.FC = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-bold text-gray-900 dark:text-warmgray-100">{profile.name}</h3>
-                        <p className="text-sm text-gray-500">{profile.age_display}</p>
+                        <p className="text-sm text-gray-500 dark:text-warmgray-500">{profile.age_display}</p>
                         {profile.speech_goals.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-2">
                             {profile.speech_goals.map(g => (

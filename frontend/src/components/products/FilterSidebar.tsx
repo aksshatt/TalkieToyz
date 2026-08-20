@@ -193,9 +193,9 @@ const FilterSidebar = ({
                       aria-label={isExpanded ? 'Collapse subcategories' : 'Expand subcategories'}
                     >
                       {isExpanded ? (
-                        <ChevronUp className="w-4 h-4 text-warmgray-500" />
+                        <ChevronUp className="w-4 h-4 text-warmgray-500 dark:text-warmgray-500" />
                       ) : (
-                        <ChevronDown className="w-4 h-4 text-warmgray-500" />
+                        <ChevronDown className="w-4 h-4 text-warmgray-500 dark:text-warmgray-500" />
                       )}
                     </button>
                   )}

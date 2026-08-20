@@ -63,7 +63,7 @@ const TherapistPatients: React.FC = () => {
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-warmgray-500">{patient.email}</p>
+                  <p className="text-sm text-warmgray-500 dark:text-warmgray-500">{patient.email}</p>
                   {patient.last_message_at && (
                     <p className="text-xs text-warmgray-400 mt-0.5">
                       Last message: {new Date(patient.last_message_at).toLocaleDateString('en-IN')}

@@ -140,7 +140,7 @@ export default function ProductQuestions() {
         <div className="text-center py-16 text-gray-400">Loading...</div>
       ) : questions.length === 0 ? (
         <div className="text-center py-16 bg-white dark:bg-surface-dark-raised rounded-xl border border-warmgray-200 dark:border-surface-dark-border">
-          <p className="text-warmgray-500">No questions found</p>
+          <p className="text-warmgray-500 dark:text-warmgray-500">No questions found</p>
         </div>
       ) : (
         <div className="space-y-4">

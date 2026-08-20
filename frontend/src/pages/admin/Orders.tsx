@@ -660,7 +660,7 @@ const Orders: React.FC = () => {
                   <p className="text-sm text-warmgray-600 dark:text-warmgray-400">
                     No shipment yet.
                     {!canCreateShipment(selectedOrder) && (
-                      <span className="block mt-1 text-xs text-warmgray-500">
+                      <span className="block mt-1 text-xs text-warmgray-500 dark:text-warmgray-500">
                         Order is {selectedOrder.status} — cannot create shipment.
                       </span>
                     )}

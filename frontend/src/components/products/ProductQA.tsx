@@ -74,7 +74,7 @@ const ProductQA: React.FC<ProductQAProps> = ({ productSlug }) => {
       ) : questions.length === 0 ? (
         <div className="text-center py-8 bg-gray-50 dark:bg-surface-dark rounded-xl">
           <MessageCircle className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-          <p className="text-sm text-gray-500">No questions yet. Be the first to ask!</p>
+          <p className="text-sm text-gray-500 dark:text-warmgray-500">No questions yet. Be the first to ask!</p>
         </div>
       ) : (
         <div className="space-y-3">

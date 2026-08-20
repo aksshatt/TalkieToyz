@@ -29,7 +29,7 @@ const FrequentlyBoughtTogether: React.FC<FrequentlyBoughtTogetherProps> = ({ pro
   return (
     <div className="mt-10 bg-amber-50 rounded-2xl p-6 border border-amber-100">
       <h2 className="text-lg font-bold text-gray-900 dark:text-warmgray-100 mb-1">Frequently Bought Together</h2>
-      <p className="text-sm text-gray-500 mb-5">Parents who bought <span className="font-medium">{currentProductName}</span> also got:</p>
+      <p className="text-sm text-gray-500 dark:text-warmgray-500 mb-5">Parents who bought <span className="font-medium">{currentProductName}</span> also got:</p>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {products.map((product: any) => (

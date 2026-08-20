@@ -226,7 +226,7 @@ const TherapistPatientDetail: React.FC = () => {
         </div>
         <div>
           <h1 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100">{patient.name}</h1>
-          <p className="text-sm text-warmgray-500">{patient.email}</p>
+          <p className="text-sm text-warmgray-500 dark:text-warmgray-500">{patient.email}</p>
         </div>
       </div>
 

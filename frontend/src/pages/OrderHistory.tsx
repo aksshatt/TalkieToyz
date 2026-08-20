@@ -121,7 +121,7 @@ const OrderHistory = () => {
                 className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all border-2 ${
                   statusFilter === status
                     ? 'bg-teal-gradient text-white border-transparent shadow-soft'
-                    : 'bg-white dark:bg-surface-dark-raised text-warmgray-600 dark:text-warmgray-400 dark:text-warmgray-400 border-warmgray-200 dark:border-surface-dark-border hover:border-teal'
+                    : 'bg-white dark:bg-surface-dark-raised text-warmgray-600 dark:text-warmgray-400 border-warmgray-200 dark:border-surface-dark-border hover:border-teal'
                 }`}>
                 {status === 'all' ? 'All Orders' : status.charAt(0).toUpperCase() + status.slice(1)}
               </button>
@@ -164,7 +164,7 @@ const OrderHistory = () => {
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4 text-sm">
-                          <span className="text-warmgray-500">{order.order_items.length} item{order.order_items.length !== 1 ? 's' : ''}</span>
+                          <span className="text-warmgray-500 dark:text-warmgray-500">{order.order_items.length} item{order.order_items.length !== 1 ? 's' : ''}</span>
                           <span className="font-[var(--font-family-fun)] font-bold text-teal text-lg">₹{parseFloat(order.total).toFixed(2)}</span>
                           <span className="text-xs bg-warmgray-100 text-warmgray-600 dark:text-warmgray-400 px-2 py-0.5 rounded-full font-medium">
                             {order.payment_method === 'razorpay' ? 'Online' : 'COD'}
@@ -210,7 +210,7 @@ const OrderHistory = () => {
                             {/* Shipping Address */}
                             <div>
                               <h4 className="font-bold text-warmgray-800 dark:text-warmgray-200 text-sm mb-2">Delivery Address</h4>
-                              <div className="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-soft text-sm text-warmgray-600 dark:text-warmgray-400 dark:text-warmgray-400 leading-relaxed">
+                              <div className="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-soft text-sm text-warmgray-600 dark:text-warmgray-400 leading-relaxed">
                                 <p className="font-semibold text-warmgray-800 dark:text-warmgray-200">{order.shipping_address.name}</p>
                                 <p>{order.shipping_address.phone}</p>
                                 <p>{order.shipping_address.address_line_1}{order.shipping_address.address_line_2 ? `, ${order.shipping_address.address_line_2}` : ''}</p>

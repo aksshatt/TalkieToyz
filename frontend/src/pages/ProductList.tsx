@@ -354,7 +354,7 @@ const ProductList = () => {
 
                         if (!showPage) {
                           if (page === meta.current_page - 2 || page === meta.current_page + 2) {
-                            return <span key={page} className="px-2 text-warmgray-500">...</span>;
+                            return <span key={page} className="px-2 text-warmgray-500 dark:text-warmgray-500">...</span>;
                           }
                           return null;
                         }

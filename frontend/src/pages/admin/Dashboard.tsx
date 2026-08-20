@@ -240,7 +240,7 @@ const Dashboard: React.FC = () => {
             </LineChart>
           </ResponsiveContainer>
         ) : (
-          <div className="h-[300px] flex items-center justify-center text-warmgray-500">
+          <div className="h-[300px] flex items-center justify-center text-warmgray-500 dark:text-warmgray-500">
             <p>No sales data available</p>
           </div>
         )}

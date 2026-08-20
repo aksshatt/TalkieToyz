@@ -480,7 +480,7 @@ const BookSession: React.FC = () => {
                     ))}
                   </div>
                   <p className="text-warmgray-700 dark:text-warmgray-300 italic text-sm mb-2">“{t.quote}”</p>
-                  <p className="text-xs font-semibold text-warmgray-500">— {t.author}</p>
+                  <p className="text-xs font-semibold text-warmgray-500 dark:text-warmgray-500">— {t.author}</p>
                 </motion.div>
               ))}
             </div>

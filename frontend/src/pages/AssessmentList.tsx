@@ -351,7 +351,7 @@ const AssessmentList = () => {
                       whileHover={{ scale: 1.06, y: -2 }}
                       className="bg-gradient-to-r from-teal-light/40 to-sky-light/40 text-warmgray-800 dark:text-warmgray-200 text-sm font-semibold px-4 py-2 rounded-full border border-teal/20 shadow-soft-sm cursor-default"
                     >
-                      {lang.name} <span className="text-warmgray-500">({lang.native})</span>
+                      {lang.name} <span className="text-warmgray-500 dark:text-warmgray-500">({lang.native})</span>
                     </motion.span>
                   ))}
                 </div>

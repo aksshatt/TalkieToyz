@@ -160,11 +160,11 @@ const TherapistDashboard: React.FC = () => {
 
         {!editingCreds ? (
           <div className="space-y-3 text-sm">
-            <div><span className="text-warmgray-500">Experience:</span> <span className="font-medium">{creds.experience_years ? `${creds.experience_years} years` : 'Not set'}</span></div>
-            <div><span className="text-warmgray-500">Specializations:</span> <span className="font-medium">{(creds.specializations || []).join(', ') || 'Not set'}</span></div>
-            <div><span className="text-warmgray-500">Languages:</span> <span className="font-medium">{(creds.languages_spoken || []).join(', ') || 'Not set'}</span></div>
+            <div><span className="text-warmgray-500 dark:text-warmgray-500">Experience:</span> <span className="font-medium">{creds.experience_years ? `${creds.experience_years} years` : 'Not set'}</span></div>
+            <div><span className="text-warmgray-500 dark:text-warmgray-500">Specializations:</span> <span className="font-medium">{(creds.specializations || []).join(', ') || 'Not set'}</span></div>
+            <div><span className="text-warmgray-500 dark:text-warmgray-500">Languages:</span> <span className="font-medium">{(creds.languages_spoken || []).join(', ') || 'Not set'}</span></div>
             <div>
-              <span className="text-warmgray-500">Certifications:</span>
+              <span className="text-warmgray-500 dark:text-warmgray-500">Certifications:</span>
               {(creds.certifications || []).length === 0 ? <span className="font-medium ml-1">None</span> : (
                 <ul className="mt-1 space-y-1 ml-2">
                   {(creds.certifications || []).map((c: any, i: number) => (

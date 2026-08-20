@@ -183,7 +183,7 @@ const ProductDetail = () => {
         </nav>
 
         {/* Product Info Section */}
-        <div className="bg-white dark:bg-surface-dark-raised rounded-lg shadow-sm border border-gray-200 dark:border-surface-dark-border dark:border-surface-dark-border overflow-hidden mb-8">
+        <div className="bg-white dark:bg-surface-dark-raised rounded-lg shadow-sm border border-gray-200 dark:border-surface-dark-border overflow-hidden mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
             {/* Image Gallery */}
             <div className="bg-gray-50 dark:bg-surface-dark p-8">
@@ -265,13 +265,13 @@ const ProductDetail = () => {
               <div className="grid grid-cols-2 gap-4 mb-6 p-4 bg-gray-50 dark:bg-surface-dark rounded-lg border border-gray-100 dark:border-surface-dark-border">
                 {product.category && (
                   <div>
-                    <span className="text-xs text-gray-500 uppercase tracking-wide">Category</span>
+                    <span className="text-xs text-gray-500 dark:text-warmgray-500 uppercase tracking-wide">Category</span>
                     <p className="font-semibold text-gray-900 dark:text-warmgray-100 mt-1">{product.category.name}</p>
                   </div>
                 )}
                 {product.min_age != null && product.max_age != null && (
                   <div>
-                    <span className="text-xs text-gray-500 uppercase tracking-wide">Age Range</span>
+                    <span className="text-xs text-gray-500 dark:text-warmgray-500 uppercase tracking-wide">Age Range</span>
                     <p className="font-semibold text-gray-900 dark:text-warmgray-100 mt-1">
                       {product.min_age}–{product.max_age} years
                     </p>
@@ -375,7 +375,7 @@ const ProductDetail = () => {
 
               {/* Share Buttons */}
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500 font-medium">Share:</span>
+                <span className="text-sm text-gray-500 dark:text-warmgray-500 font-medium">Share:</span>
                 <button
                   onClick={() => handleShare('whatsapp')}
                   className="p-2 border border-gray-200 dark:border-surface-dark-border rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors"
@@ -394,7 +394,7 @@ const ProductDetail = () => {
         </div>
 
         {/* Tabs Section */}
-        <div className="bg-white dark:bg-surface-dark-raised rounded-lg shadow-sm border border-gray-200 dark:border-surface-dark-border dark:border-surface-dark-border overflow-hidden mb-8">
+        <div className="bg-white dark:bg-surface-dark-raised rounded-lg shadow-sm border border-gray-200 dark:border-surface-dark-border overflow-hidden mb-8">
           {/* Tab Headers */}
           <div className="border-b border-gray-200 dark:border-surface-dark-border">
             <div className="flex gap-0 overflow-x-auto">
@@ -429,7 +429,7 @@ const ProductDetail = () => {
                     <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {Object.entries(product.specifications).map(([key, value]) => (
                         <div key={key} className="flex justify-between py-3 border-b border-gray-200 dark:border-surface-dark-border">
-                          <dt className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                          <dt className="text-sm font-medium text-gray-500 dark:text-warmgray-500 uppercase tracking-wide">
                             {key.replace(/_/g, ' ')}
                           </dt>
                           <dd className="text-sm text-gray-900 dark:text-warmgray-100 font-semibold">{String(value)}</dd>
@@ -459,7 +459,7 @@ const ProductDetail = () => {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500">No specific speech goals listed for this product.</p>
+                  <p className="text-gray-500 dark:text-warmgray-500">No specific speech goals listed for this product.</p>
                 )}
               </div>
             )}
@@ -528,7 +528,7 @@ const ProductDetail = () => {
         )}
 
         {/* Success Stories for this product */}
-        <div className="bg-white dark:bg-surface-dark-raised rounded-lg shadow-sm border border-gray-200 dark:border-surface-dark-border dark:border-surface-dark-border p-8 mb-8">
+        <div className="bg-white dark:bg-surface-dark-raised rounded-lg shadow-sm border border-gray-200 dark:border-surface-dark-border p-8 mb-8">
           <SuccessStoriesSection productId={product.id} />
         </div>
 
@@ -540,7 +540,7 @@ const ProductDetail = () => {
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white dark:bg-surface-dark-raised border-t border-warmgray-200 dark:border-surface-dark-border shadow-soft-lg p-3 pb-safe">
         <div className="flex items-center gap-3">
           <div className="flex-shrink-0">
-            <div className="text-xs text-warmgray-500">Price</div>
+            <div className="text-xs text-warmgray-500 dark:text-warmgray-500">Price</div>
             <div className="text-lg font-extrabold text-teal">₹{product.price}</div>
           </div>
           <button

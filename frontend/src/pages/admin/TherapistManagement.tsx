@@ -98,7 +98,7 @@ const TherapistManagement: React.FC = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-warmgray-900 dark:text-warmgray-100">{therapist.name}</p>
-                    <p className="text-sm text-warmgray-500">{therapist.email}</p>
+                    <p className="text-sm text-warmgray-500 dark:text-warmgray-500">{therapist.email}</p>
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0">
                     <span className="flex items-center gap-1.5 text-sm text-warmgray-500 bg-warmgray-100 px-3 py-1 rounded-full">

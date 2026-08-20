@@ -69,7 +69,7 @@ export default function NotificationPreferences() {
         {items.map(({ key, label, desc, Icon }) => (
           <div key={key} className="flex items-center gap-4 p-4">
             <div className="w-9 h-9 rounded-xl bg-warmgray-50 dark:bg-surface-dark flex items-center justify-center flex-shrink-0">
-              <Icon className="h-4.5 w-4.5 text-warmgray-500" />
+              <Icon className="h-4.5 w-4.5 text-warmgray-500 dark:text-warmgray-500" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-medium text-warmgray-900 dark:text-warmgray-100 text-sm">{label}</p>

@@ -86,7 +86,7 @@ const Appointments = () => {
       {/* Filters */}
       <div className="bg-white dark:bg-surface-dark-raised rounded-xl shadow-soft-lg p-4">
         <div className="flex items-center gap-4">
-          <Filter className="h-5 w-5 text-warmgray-500" />
+          <Filter className="h-5 w-5 text-warmgray-500 dark:text-warmgray-500" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -164,7 +164,7 @@ const Appointments = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-warmgray-900 dark:text-warmgray-100">{appointment.name}</div>
                     {appointment.user_name && (
-                      <div className="text-xs text-warmgray-500">User: {appointment.user_name}</div>
+                      <div className="text-xs text-warmgray-500 dark:text-warmgray-500">User: {appointment.user_name}</div>
                     )}
                   </td>
                   <td className="px-6 py-4">
@@ -191,7 +191,7 @@ const Appointments = () => {
                           <div className="text-xs text-teal font-bold">₹{appointment.service_price}</div>
                         )}
                         {appointment.child_name && (
-                          <div className="text-xs text-warmgray-500">Child: {appointment.child_name}{appointment.child_age ? `, ${appointment.child_age}` : ''}</div>
+                          <div className="text-xs text-warmgray-500 dark:text-warmgray-500">Child: {appointment.child_name}{appointment.child_age ? `, ${appointment.child_age}` : ''}</div>
                         )}
                       </div>
                     ) : (

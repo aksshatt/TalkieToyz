@@ -101,9 +101,9 @@ const AssessmentHistoryPage = () => {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="font-bold text-warmgray-800 dark:text-warmgray-200">{result.child_name}</h3>
-                        <span className="text-sm text-warmgray-500">• {ageDisplay(result.child_age_months)}</span>
+                        <span className="text-sm text-warmgray-500 dark:text-warmgray-500">• {ageDisplay(result.child_age_months)}</span>
                         {result.mother_tongue && (
-                          <span className="text-sm text-warmgray-500">• {result.mother_tongue}</span>
+                          <span className="text-sm text-warmgray-500 dark:text-warmgray-500">• {result.mother_tongue}</span>
                         )}
                       </div>
                       <p className="text-sm text-warmgray-600 dark:text-warmgray-400">{result.assessment?.title}</p>
@@ -137,7 +137,7 @@ const AssessmentHistoryPage = () => {
                           className="p-2 hover:bg-warmgray-100 rounded-lg transition-colors"
                           title="Download PDF"
                         >
-                          <Download className="h-5 w-5 text-warmgray-500" />
+                          <Download className="h-5 w-5 text-warmgray-500 dark:text-warmgray-500" />
                         </button>
                       </div>
                     </div>

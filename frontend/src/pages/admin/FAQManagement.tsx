@@ -119,13 +119,13 @@ const FAQManagement = () => {
             <tbody className="divide-y divide-warmgray-200">
               {isLoading ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-warmgray-500">
+                  <td colSpan={6} className="px-4 py-8 text-center text-warmgray-500 dark:text-warmgray-500">
                     Loading...
                   </td>
                 </tr>
               ) : faqs.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-warmgray-500">
+                  <td colSpan={6} className="px-4 py-8 text-center text-warmgray-500 dark:text-warmgray-500">
                     No FAQs found
                   </td>
                 </tr>

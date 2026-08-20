@@ -94,7 +94,7 @@ const QuestionRenderer = ({ question, answer, onAnswer }: QuestionRendererProps)
             </button>
           ))}
         </div>
-        <div className="flex justify-between text-xs text-warmgray-500">
+        <div className="flex justify-between text-xs text-warmgray-500 dark:text-warmgray-500">
           <span>Least</span>
           <span>Most</span>
         </div>

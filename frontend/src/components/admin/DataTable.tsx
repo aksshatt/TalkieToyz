@@ -115,7 +115,7 @@ function DataTable<T extends { id: number | string }>({
                 <tr>
                   <td
                     colSpan={columns.length}
-                    className="px-6 py-12 text-center text-warmgray-500"
+                    className="px-6 py-12 text-center text-warmgray-500 dark:text-warmgray-500"
                   >
                     {emptyMessage}
                   </td>

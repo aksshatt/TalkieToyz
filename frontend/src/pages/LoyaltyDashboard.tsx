@@ -61,7 +61,7 @@ const LoyaltyDashboard: React.FC = () => {
       <div className="min-h-screen bg-gray-50 dark:bg-surface-dark py-8 px-4">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-warmgray-100 mb-1">Loyalty Points</h1>
-          <p className="text-gray-500 text-sm mb-8">Earn points on every purchase, review, and milestone.</p>
+          <p className="text-gray-500 dark:text-warmgray-500 text-sm mb-8">Earn points on every purchase, review, and milestone.</p>
 
           {/* Balance Card */}
           <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white mb-6 shadow-lg">

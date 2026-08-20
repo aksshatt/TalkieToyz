@@ -187,28 +187,28 @@ const Analytics = () => {
             <div className="card-talkie p-6 flex items-center gap-4">
               <div className="p-3 bg-teal-light rounded-xl"><DollarSign className="h-6 w-6 text-teal" /></div>
               <div>
-                <p className="text-sm text-warmgray-500">Revenue</p>
+                <p className="text-sm text-warmgray-500 dark:text-warmgray-500">Revenue</p>
                 <p className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">₹{totalRevenue.toLocaleString('en-IN')}</p>
               </div>
             </div>
             <div className="card-talkie p-6 flex items-center gap-4">
               <div className="p-3 bg-sunshine-light rounded-xl"><ShoppingBag className="h-6 w-6 text-sunshine" /></div>
               <div>
-                <p className="text-sm text-warmgray-500">Orders</p>
+                <p className="text-sm text-warmgray-500 dark:text-warmgray-500">Orders</p>
                 <p className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">{totalOrders}</p>
               </div>
             </div>
             <div className="card-talkie p-6 flex items-center gap-4">
               <div className="p-3 bg-coral-light rounded-xl"><Users className="h-6 w-6 text-coral" /></div>
               <div>
-                <p className="text-sm text-warmgray-500">Customers</p>
+                <p className="text-sm text-warmgray-500 dark:text-warmgray-500">Customers</p>
                 <p className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">{totalCustomers}</p>
               </div>
             </div>
             <div className="card-talkie p-6 flex items-center gap-4">
               <div className="p-3 bg-sky-light rounded-xl"><TrendingUp className="h-6 w-6 text-sky" /></div>
               <div>
-                <p className="text-sm text-warmgray-500">New (30d)</p>
+                <p className="text-sm text-warmgray-500 dark:text-warmgray-500">New (30d)</p>
                 <p className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">{newCustomers}</p>
               </div>
             </div>

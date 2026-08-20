@@ -28,8 +28,8 @@ const MilestoneCard: React.FC<{
         </div>
         <div className="flex-1">
           <p className="text-sm font-semibold text-gray-900 dark:text-warmgray-100">{milestone.title}</p>
-          <p className="text-xs text-gray-500 mt-0.5">{milestone.category} · {milestone.age_in_months} months</p>
-          {milestone.description && <p className="text-xs text-gray-500 mt-1 line-clamp-2">{milestone.description}</p>}
+          <p className="text-xs text-gray-500 dark:text-warmgray-500 mt-0.5">{milestone.category} · {milestone.age_in_months} months</p>
+          {milestone.description && <p className="text-xs text-gray-500 dark:text-warmgray-500 mt-1 line-clamp-2">{milestone.description}</p>}
           {isAchieved && achievement && (
             <p className="text-xs text-green-600 font-medium mt-1">
               Achieved {new Date(achievement.achieved_at).toLocaleDateString()}
@@ -72,9 +72,9 @@ const MilestoneCard: React.FC<{
               <Trophy className="w-8 h-8 text-amber-500" />
             </div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-warmgray-100 mb-1">Achievement Unlocked!</h2>
-            <p className="text-gray-500 mb-3 text-sm">This certifies that</p>
+            <p className="text-gray-500 dark:text-warmgray-500 mb-3 text-sm">This certifies that</p>
             <p className="text-2xl font-bold text-indigo-700 mb-3">{milestone.title}</p>
-            <p className="text-sm text-gray-500 mb-6">has been achieved successfully.</p>
+            <p className="text-sm text-gray-500 dark:text-warmgray-500 mb-6">has been achieved successfully.</p>
             <div className="flex gap-3">
               <button
                 onClick={() => {
@@ -195,7 +195,7 @@ const ChildProgressDashboard: React.FC = () => {
     return (
       <Layout>
         <div className="min-h-screen flex items-center justify-center">
-          <p className="text-gray-500">Child profile not found.</p>
+          <p className="text-gray-500 dark:text-warmgray-500">Child profile not found.</p>
         </div>
       </Layout>
     );
@@ -219,7 +219,7 @@ const ChildProgressDashboard: React.FC = () => {
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-900 dark:text-warmgray-100">{profile.name}'s Progress</h1>
-              <p className="text-sm text-gray-500">{profile.age_display}</p>
+              <p className="text-sm text-gray-500 dark:text-warmgray-500">{profile.age_display}</p>
             </div>
           </div>
 
@@ -228,7 +228,7 @@ const ChildProgressDashboard: React.FC = () => {
             <div className="flex items-center justify-between mb-3">
               <div>
                 <h2 className="font-bold text-gray-900 dark:text-warmgray-100">Milestone Progress</h2>
-                <p className="text-sm text-gray-500">{achievements.length} of {relevantMilestones.length} milestones achieved</p>
+                <p className="text-sm text-gray-500 dark:text-warmgray-500">{achievements.length} of {relevantMilestones.length} milestones achieved</p>
               </div>
               <div className="text-right">
                 <span className="text-3xl font-bold text-indigo-600">{progressPercent}%</span>

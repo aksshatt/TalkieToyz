@@ -227,7 +227,7 @@ const BlogPostDetail = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-warmgray-800 dark:text-warmgray-200 text-sm">{post.author.name}</p>
-                  <div className="flex items-center gap-2 text-xs text-warmgray-500">
+                  <div className="flex items-center gap-2 text-xs text-warmgray-500 dark:text-warmgray-500">
                     <span>{new Date(post.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                     <span>·</span>
                     <span>{post.reading_time_minutes} min read</span>
