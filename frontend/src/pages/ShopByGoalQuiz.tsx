@@ -60,12 +60,12 @@ const ShopByGoalQuiz: React.FC = () => {
 
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-coral-dark via-coral to-sunshine py-16 px-4">
-        <motion.div className="absolute w-64 h-64 rounded-full bg-white/10 blur-3xl pointer-events-none"
+        <motion.div className="absolute w-64 h-64 rounded-full bg-white dark:bg-surface-dark-raised/10 blur-3xl pointer-events-none"
           animate={{ x: [0, 24, 0], y: [0, -16, 0] }} transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
           style={{ top: '-20%', left: '-5%' }} />
         <div className="relative z-10 max-w-2xl mx-auto text-center text-white">
           <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-            className="inline-flex items-center gap-2 bg-white/20 text-white text-sm font-semibold px-5 py-2 rounded-full mb-5">
+            className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised/20 text-white text-sm font-semibold px-5 py-2 rounded-full mb-5">
             <Sparkles className="w-4 h-4" /> 3-Question Quiz
           </motion.div>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
@@ -84,7 +84,7 @@ const ShopByGoalQuiz: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-warmgray-50 min-h-screen py-12 px-4">
+      <div className="bg-warmgray-50 dark:bg-surface-dark min-h-screen py-12 px-4">
         <div className="max-w-2xl mx-auto">
           {loadingQuestions ? (
             <div className="flex justify-center py-20">
@@ -94,7 +94,7 @@ const ShopByGoalQuiz: React.FC = () => {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-900">Your Personalised Picks</h2>
+                  <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100">Your Personalised Picks</h2>
                   <p className="text-warmgray-500 text-sm mt-1">Based on your answers, here's what we recommend:</p>
                 </div>
                 <motion.button
@@ -111,7 +111,7 @@ const ShopByGoalQuiz: React.FC = () => {
                   <div className="w-10 h-10 border-4 border-teal border-t-transparent rounded-full animate-spin" />
                 </div>
               ) : products.length === 0 ? (
-                <div className="text-center py-16 bg-white rounded-3xl shadow-soft">
+                <div className="text-center py-16 bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft">
                   <Star className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />
                   <p className="text-warmgray-500 font-semibold">No products found for your selections.</p>
                   <Link to="/products" className="inline-flex items-center gap-1.5 text-teal font-bold mt-4 hover:underline">
@@ -124,7 +124,7 @@ const ShopByGoalQuiz: React.FC = () => {
                     <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.08 }}
                       whileHover={{ y: -5, boxShadow: '0 16px 36px rgba(0,0,0,0.12)' }}
-                      className="bg-white rounded-3xl shadow-soft overflow-hidden">
+                      className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft overflow-hidden">
                       <Link to={`/products/${product.slug}`}>
                         {product.image_urls?.[0] ? (
                           <img src={product.image_urls[0].url} alt={product.name} className="w-full h-44 object-cover" />
@@ -135,7 +135,7 @@ const ShopByGoalQuiz: React.FC = () => {
                         )}
                       </Link>
                       <div className="p-4">
-                        <Link to={`/products/${product.slug}`} className="font-[var(--font-family-fun)] font-bold text-warmgray-900 hover:text-teal transition-colors text-sm line-clamp-2">
+                        <Link to={`/products/${product.slug}`} className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 hover:text-teal transition-colors text-sm line-clamp-2">
                           {product.name}
                         </Link>
                         {product.speech_goals?.length > 0 && (
@@ -162,7 +162,7 @@ const ShopByGoalQuiz: React.FC = () => {
               {currentQuestion && (
                 <motion.div key={step} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -40 }} transition={{ duration: 0.3 }}
-                  className="bg-white rounded-3xl shadow-soft-xl overflow-hidden">
+                  className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft-xl overflow-hidden">
                   {/* Progress */}
                   <div className="flex gap-0 h-1.5">
                     {questions.map((_, i) => (
@@ -180,7 +180,7 @@ const ShopByGoalQuiz: React.FC = () => {
                       </p>
                     </div>
 
-                    <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-900 mb-7 leading-snug">
+                    <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 mb-7 leading-snug">
                       {currentQuestion.question}
                     </h2>
 
@@ -191,9 +191,9 @@ const ShopByGoalQuiz: React.FC = () => {
                           onClick={() => handleAnswer(option.value)}
                           whileHover={{ scale: 1.02, x: 4 }}
                           whileTap={{ scale: 0.98 }}
-                          className="w-full flex items-center justify-between px-6 py-4 border-2 border-warmgray-200 rounded-2xl text-left hover:border-teal hover:bg-teal-light/10 transition-all group"
+                          className="w-full flex items-center justify-between px-6 py-4 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-2xl text-left hover:border-teal hover:bg-teal-light/10 transition-all group"
                         >
-                          <span className="font-semibold text-warmgray-800 group-hover:text-teal transition-colors">{option.label}</span>
+                          <span className="font-semibold text-warmgray-800 dark:text-warmgray-200 group-hover:text-teal transition-colors">{option.label}</span>
                           <ChevronRight className="w-4 h-4 text-warmgray-300 group-hover:text-teal transition-colors" />
                         </motion.button>
                       ))}

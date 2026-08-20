@@ -40,7 +40,7 @@ const BundleCard: React.FC<{ bundle: Bundle; index: number }> = ({ bundle, index
     <motion.div
       whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(0,0,0,0.12)' }}
       transition={{ type: 'spring', stiffness: 280, damping: 22 }}
-      className="bg-white rounded-3xl shadow-soft overflow-hidden"
+      className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft overflow-hidden"
     >
       {/* Bundle Header */}
       <div className={`bg-gradient-to-r ${gradient} p-6 text-white`}>
@@ -52,7 +52,7 @@ const BundleCard: React.FC<{ bundle: Bundle; index: number }> = ({ bundle, index
             </div>
             <h3 className="text-lg font-[var(--font-family-fun)] font-bold">{bundle.name}</h3>
             {bundle.speech_goal && (
-              <span className="inline-block mt-2 text-xs bg-white/25 px-3 py-1 rounded-full font-semibold">
+              <span className="inline-block mt-2 text-xs bg-white dark:bg-surface-dark-raised/25 px-3 py-1 rounded-full font-semibold">
                 {bundle.speech_goal}
               </span>
             )}
@@ -60,7 +60,7 @@ const BundleCard: React.FC<{ bundle: Bundle; index: number }> = ({ bundle, index
           <div className="text-right flex-shrink-0 ml-4">
             <p className="text-xs opacity-75 line-through">₹{bundle.original_price}</p>
             <p className="text-2xl font-bold">₹{bundle.discounted_price}</p>
-            <span className="inline-block text-xs bg-white/30 text-white font-bold px-2.5 py-0.5 rounded-full mt-1">
+            <span className="inline-block text-xs bg-white dark:bg-surface-dark-raised/30 text-white font-bold px-2.5 py-0.5 rounded-full mt-1">
               Save {bundle.discount_percent}%
             </span>
           </div>
@@ -82,12 +82,12 @@ const BundleCard: React.FC<{ bundle: Bundle; index: number }> = ({ bundle, index
               {product.image_url ? (
                 <img src={product.image_url} alt={product.name} className="w-10 h-10 rounded-xl object-cover shadow-soft flex-shrink-0" />
               ) : (
-                <div className="w-10 h-10 rounded-xl bg-cream-light flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-cream-light dark:bg-surface-dark flex items-center justify-center flex-shrink-0">
                   <Star className="w-4 h-4 text-warmgray-300" />
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <Link to={`/products/${product.slug}`} className="text-sm font-semibold text-warmgray-800 hover:text-teal transition-colors line-clamp-1">
+                <Link to={`/products/${product.slug}`} className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200 hover:text-teal transition-colors line-clamp-1">
                   {product.name}
                 </Link>
                 <p className="text-xs text-warmgray-400">₹{product.price}</p>
@@ -101,7 +101,7 @@ const BundleCard: React.FC<{ bundle: Bundle; index: number }> = ({ bundle, index
           ))}
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-warmgray-100">
+        <div className="flex items-center justify-between pt-4 border-t border-warmgray-100 dark:border-surface-dark-border">
           <div>
             <p className="text-xs text-warmgray-400">You save</p>
             <p className="font-bold text-teal">₹{bundle.savings}</p>
@@ -145,7 +145,7 @@ const BundleBuilderPage: React.FC = () => {
 
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-sky py-16 px-4">
-        <motion.div className="absolute w-72 h-72 rounded-full bg-white/10 blur-3xl pointer-events-none"
+        <motion.div className="absolute w-72 h-72 rounded-full bg-white dark:bg-surface-dark-raised/10 blur-3xl pointer-events-none"
           animate={{ x: [0, 28, 0], y: [0, -18, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
           style={{ top: '-20%', left: '-5%' }} />
         <motion.div className="absolute w-56 h-56 rounded-full bg-sunshine/15 blur-3xl pointer-events-none"
@@ -153,7 +153,7 @@ const BundleBuilderPage: React.FC = () => {
           style={{ bottom: '-20%', right: '5%' }} />
         <div className="relative z-10 max-w-3xl mx-auto text-center text-white">
           <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-            className="inline-flex items-center gap-2 bg-white/20 text-white text-sm font-semibold px-5 py-2 rounded-full mb-5">
+            className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised/20 text-white text-sm font-semibold px-5 py-2 rounded-full mb-5">
             <Tag className="w-4 h-4" /> Curated Speech Kits
           </motion.div>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
@@ -172,7 +172,7 @@ const BundleBuilderPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-warmgray-50 min-h-screen py-10 px-4">
+      <div className="bg-warmgray-50 dark:bg-surface-dark min-h-screen py-10 px-4">
         <div className="max-w-5xl mx-auto">
           {/* Filters */}
           <div className="flex gap-2.5 flex-wrap justify-center mb-10">
@@ -185,7 +185,7 @@ const BundleBuilderPage: React.FC = () => {
                 className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-soft ${
                   selectedGoal === goal
                     ? 'bg-teal-gradient text-white shadow-soft-md'
-                    : 'bg-white border-2 border-warmgray-200 text-warmgray-600 hover:border-teal'
+                    : 'bg-white dark:bg-surface-dark-raised border-2 border-warmgray-200 dark:border-surface-dark-border text-warmgray-600 dark:text-warmgray-400 hover:border-teal'
                 }`}
               >
                 {goal}
@@ -199,9 +199,9 @@ const BundleBuilderPage: React.FC = () => {
             </div>
           ) : bundles.length === 0 ? (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-warmgray-200 shadow-soft">
+              className="text-center py-20 bg-white dark:bg-surface-dark-raised rounded-3xl border-2 border-dashed border-warmgray-200 dark:border-surface-dark-border shadow-soft">
               <Package className="w-14 h-14 text-warmgray-300 mx-auto mb-4" />
-              <h3 className="font-[var(--font-family-fun)] font-bold text-xl text-warmgray-700 mb-2">No Speech Kits Yet</h3>
+              <h3 className="font-[var(--font-family-fun)] font-bold text-xl text-warmgray-700 dark:text-warmgray-300 mb-2">No Speech Kits Yet</h3>
               <p className="text-warmgray-400 mb-6">Our therapist team is curating bundles for you. Check back soon!</p>
               <Link to="/products" className="inline-flex items-center gap-2 text-teal font-bold hover:underline">
                 Browse all products <ChevronRight className="w-4 h-4" />

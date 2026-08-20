@@ -120,7 +120,7 @@ const Profile: React.FC = () => {
     <Layout>
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-sky py-16 px-4">
-        <motion.div className="absolute w-72 h-72 rounded-full bg-white/10 blur-3xl pointer-events-none"
+        <motion.div className="absolute w-72 h-72 rounded-full bg-white dark:bg-surface-dark-raised/10 blur-3xl pointer-events-none"
           animate={{ x: [0, 28, 0], y: [0, -18, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
           style={{ top: '-15%', left: '-5%' }} />
         <motion.div className="absolute w-56 h-56 rounded-full bg-sunshine/15 blur-3xl pointer-events-none"
@@ -137,7 +137,7 @@ const Profile: React.FC = () => {
             <h1 className="text-3xl md:text-4xl font-[var(--font-family-fun)] font-bold text-white">{user.name}</h1>
             <p className="text-white/75 mt-1">{user.email}</p>
             {user.role !== 'customer' && (
-              <span className="inline-block mt-2 bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full capitalize">{user.role}</span>
+              <span className="inline-block mt-2 bg-white dark:bg-surface-dark-raised/20 text-white text-xs font-bold px-3 py-1 rounded-full capitalize">{user.role}</span>
             )}
           </motion.div>
         </div>
@@ -149,7 +149,7 @@ const Profile: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-cream-light min-h-screen py-10 px-4">
+      <div className="bg-cream-light dark:bg-surface-dark min-h-screen py-10 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -157,30 +157,30 @@ const Profile: React.FC = () => {
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
               className="lg:col-span-1 space-y-4">
               {/* Quick Links */}
-              <div className="bg-white rounded-2xl shadow-soft p-5">
+              <div className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-5">
                 <p className="text-xs font-bold text-warmgray-400 uppercase tracking-wider mb-3">Quick Links</p>
                 <div className="space-y-1">
                   {quickLinks.map(({ to, icon: Icon, label, color, bg }) => (
                     <Link key={to} to={to}
                       className={`flex items-center gap-3 px-3 py-3 rounded-xl ${bg} transition-colors`}>
                       <Icon className={`h-5 w-5 ${color}`} />
-                      <span className="font-semibold text-warmgray-700 text-sm">{label}</span>
+                      <span className="font-semibold text-warmgray-700 dark:text-warmgray-300 text-sm">{label}</span>
                     </Link>
                   ))}
                 </div>
               </div>
 
               {/* Member Since */}
-              <div className="bg-white rounded-2xl shadow-soft p-5 text-center">
+              <div className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-5 text-center">
                 <p className="text-xs text-warmgray-400 mb-1">Member since</p>
-                <p className="font-bold text-warmgray-700">
+                <p className="font-bold text-warmgray-700 dark:text-warmgray-300">
                   {user.created_at ? new Date(user.created_at).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) : 'N/A'}
                 </p>
               </div>
 
               {/* Logout */}
               <motion.button onClick={handleLogout} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white rounded-2xl shadow-soft text-coral hover:bg-coral-light/20 transition-colors font-semibold border-2 border-coral/20">
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft text-coral hover:bg-coral-light/20 transition-colors font-semibold border-2 border-coral/20">
                 <LogOut className="h-5 w-5" />
                 Logout
               </motion.button>
@@ -189,14 +189,14 @@ const Profile: React.FC = () => {
             {/* Profile Form */}
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}
               className="lg:col-span-2">
-              <div className="bg-white rounded-2xl shadow-soft overflow-hidden">
-                <div className="bg-gradient-to-r from-teal-light/30 to-sky-light/20 px-6 py-4 border-b border-warmgray-100 flex items-center justify-between">
-                  <h3 className="font-[var(--font-family-fun)] font-bold text-lg text-warmgray-900">Profile Information</h3>
+              <div className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft overflow-hidden">
+                <div className="bg-gradient-to-r from-teal-light/30 to-sky-light/20 px-6 py-4 border-b border-warmgray-100 dark:border-surface-dark-border flex items-center justify-between">
+                  <h3 className="font-[var(--font-family-fun)] font-bold text-lg text-warmgray-900 dark:text-warmgray-100">Profile Information</h3>
                   <AnimatePresence>
                     {!isEditing && (
                       <motion.button initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }}
                         onClick={() => setIsEditing(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-white rounded-xl text-teal hover:bg-teal hover:text-white transition-colors font-semibold shadow-soft text-sm">
+                        className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-surface-dark-raised rounded-xl text-teal hover:bg-teal hover:text-white transition-colors font-semibold shadow-soft text-sm">
                         <Edit2 className="h-4 w-4" />
                         Edit
                       </motion.button>
@@ -223,68 +223,68 @@ const Profile: React.FC = () => {
                   <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Email (read-only) */}
                     <div>
-                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                         <Mail className="h-4 w-4 text-teal" /> Email Address
                       </label>
-                      <div className="px-4 py-3 bg-warmgray-50 rounded-xl border border-warmgray-200 text-warmgray-500 text-sm">{user.email}</div>
+                      <div className="px-4 py-3 bg-warmgray-50 dark:bg-surface-dark rounded-xl border border-warmgray-200 dark:border-surface-dark-border text-warmgray-500 text-sm">{user.email}</div>
                       <p className="mt-1 text-xs text-warmgray-400">Email cannot be changed</p>
                     </div>
 
                     {/* Name */}
                     <div>
-                      <label htmlFor="name" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                      <label htmlFor="name" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                         <User className="h-4 w-4 text-teal" /> Full Name
                       </label>
                       <input type="text" id="name" name="name" value={formData.name} onChange={handleChange}
                         disabled={!isEditing || isLoading}
                         className={`w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-4 text-sm ${
-                          errors.name ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'
-                        } ${!isEditing ? 'bg-warmgray-50 text-warmgray-600' : 'bg-white focus:bg-white'} disabled:cursor-not-allowed`}
+                          errors.name ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'
+                        } ${!isEditing ? 'bg-warmgray-50 dark:bg-surface-dark text-warmgray-600 dark:text-warmgray-400' : 'bg-white dark:bg-surface-dark-raised focus:bg-white dark:focus:bg-surface-dark-raised'} disabled:cursor-not-allowed`}
                       />
                       {errors.name && <p className="mt-1 text-xs text-coral-dark font-medium">{errors.name}</p>}
                     </div>
 
                     {/* Phone */}
                     <div>
-                      <label htmlFor="phone" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                      <label htmlFor="phone" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                         <Phone className="h-4 w-4 text-teal" /> Phone Number
                       </label>
                       <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange}
                         disabled={!isEditing || isLoading} placeholder="Optional"
                         className={`w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-4 text-sm ${
-                          errors.phone ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'
-                        } ${!isEditing ? 'bg-warmgray-50 text-warmgray-600' : 'bg-white focus:bg-white'} disabled:cursor-not-allowed`}
+                          errors.phone ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'
+                        } ${!isEditing ? 'bg-warmgray-50 dark:bg-surface-dark text-warmgray-600 dark:text-warmgray-400' : 'bg-white dark:bg-surface-dark-raised focus:bg-white dark:focus:bg-surface-dark-raised'} disabled:cursor-not-allowed`}
                       />
                       {errors.phone && <p className="mt-1 text-xs text-coral-dark font-medium">{errors.phone}</p>}
                     </div>
 
                     {/* Bio */}
                     <div>
-                      <label htmlFor="bio" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                      <label htmlFor="bio" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                         <FileText className="h-4 w-4 text-teal" /> Bio
                       </label>
                       <textarea id="bio" name="bio" rows={4} value={formData.bio} onChange={handleChange}
                         disabled={!isEditing || isLoading} placeholder="Tell us about yourself (optional)"
-                        className={`w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-4 resize-none text-sm border-warmgray-200 focus:border-teal focus:ring-teal/10 ${
-                          !isEditing ? 'bg-warmgray-50 text-warmgray-600' : 'bg-white focus:bg-white'
+                        className={`w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-4 resize-none text-sm border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10 ${
+                          !isEditing ? 'bg-warmgray-50 dark:bg-surface-dark text-warmgray-600 dark:text-warmgray-400' : 'bg-white dark:bg-surface-dark-raised focus:bg-white dark:focus:bg-surface-dark-raised'
                         } disabled:cursor-not-allowed`}
                       />
                     </div>
 
                     {/* Avatar URL */}
                     <div>
-                      <label htmlFor="avatar_url" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                      <label htmlFor="avatar_url" className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                         <Camera className="h-4 w-4 text-teal" /> Profile Photo URL
                       </label>
                       <input type="url" id="avatar_url" name="avatar_url" value={formData.avatar_url} onChange={handleChange}
                         disabled={!isEditing || isLoading} placeholder="https://example.com/your-photo.jpg"
-                        className={`w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-4 text-sm border-warmgray-200 focus:border-teal focus:ring-teal/10 ${
-                          !isEditing ? 'bg-warmgray-50 text-warmgray-600' : 'bg-white focus:bg-white'
+                        className={`w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-4 text-sm border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10 ${
+                          !isEditing ? 'bg-warmgray-50 dark:bg-surface-dark text-warmgray-600 dark:text-warmgray-400' : 'bg-white dark:bg-surface-dark-raised focus:bg-white dark:focus:bg-surface-dark-raised'
                         } disabled:cursor-not-allowed`}
                       />
                       {formData.avatar_url && (
                         <div className="mt-2 flex items-center gap-2">
-                          <img src={formData.avatar_url} alt="Preview" className="w-10 h-10 rounded-full object-cover border-2 border-warmgray-200"
+                          <img src={formData.avatar_url} alt="Preview" className="w-10 h-10 rounded-full object-cover border-2 border-warmgray-200 dark:border-surface-dark-border"
                             onError={e => { e.currentTarget.style.display = 'none'; }} />
                           <span className="text-xs text-warmgray-400">Preview</span>
                         </div>
@@ -301,7 +301,7 @@ const Profile: React.FC = () => {
                             {isLoading ? 'Saving...' : 'Save Changes'}
                           </motion.button>
                           <button type="button" onClick={handleCancel} disabled={isLoading}
-                            className="flex-1 px-4 py-3 border-2 border-warmgray-200 text-warmgray-700 rounded-xl hover:bg-warmgray-50 transition-colors font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+                            className="flex-1 px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border text-warmgray-700 dark:text-warmgray-300 rounded-xl hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark transition-colors font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-60">
                             <X className="h-4 w-4" /> Cancel
                           </button>
                         </motion.div>
@@ -315,19 +315,19 @@ const Profile: React.FC = () => {
 
           {/* Change Password */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-            className="mt-6 bg-white rounded-2xl shadow-soft overflow-hidden">
+            className="mt-6 bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft overflow-hidden">
             <button
               onClick={() => setShowPasswordSection(v => !v)}
-              className="w-full bg-gradient-to-r from-warmgray-50 to-warmgray-100/50 px-6 py-4 border-b border-warmgray-100 flex items-center justify-between hover:bg-warmgray-100/60 transition-colors"
+              className="w-full bg-gradient-to-r from-warmgray-50 to-warmgray-100/50 px-6 py-4 border-b border-warmgray-100 dark:border-surface-dark-border flex items-center justify-between hover:bg-warmgray-100/60 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-teal-light/30 rounded-xl flex items-center justify-center">
                   <Lock className="h-4 w-4 text-teal" />
                 </div>
-                <span className="font-[var(--font-family-fun)] font-bold text-warmgray-900">Change Password</span>
+                <span className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100">Change Password</span>
               </div>
               <motion.div animate={{ rotate: showPasswordSection ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                <X className={`h-4 w-4 transition-colors ${showPasswordSection ? 'text-warmgray-600' : 'text-warmgray-400 rotate-45'}`} />
+                <X className={`h-4 w-4 transition-colors ${showPasswordSection ? 'text-warmgray-600 dark:text-warmgray-400' : 'text-warmgray-400 rotate-45'}`} />
               </motion.div>
             </button>
 
@@ -338,7 +338,7 @@ const Profile: React.FC = () => {
                   <form onSubmit={handlePasswordSubmit} className="p-6 space-y-4">
                     {/* Current Password */}
                     <div>
-                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                         <Lock className="h-4 w-4 text-teal" /> Current Password
                       </label>
                       <div className="relative">
@@ -347,9 +347,9 @@ const Profile: React.FC = () => {
                           value={pwData.current_password}
                           onChange={e => { setPwData(p => ({ ...p, current_password: e.target.value })); setPwErrors(p => ({ ...p, current_password: '' })); }}
                           placeholder="Enter current password"
-                          className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.current_password ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'}`}
+                          className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.current_password ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'}`}
                         />
-                        <button type="button" onClick={() => setShowCurrentPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700">
+                        <button type="button" onClick={() => setShowCurrentPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300">
                           {showCurrentPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                       </div>
@@ -358,7 +358,7 @@ const Profile: React.FC = () => {
 
                     {/* New Password */}
                     <div>
-                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                         <Lock className="h-4 w-4 text-teal" /> New Password
                       </label>
                       <div className="relative">
@@ -367,9 +367,9 @@ const Profile: React.FC = () => {
                           value={pwData.password}
                           onChange={e => { setPwData(p => ({ ...p, password: e.target.value })); setPwErrors(p => ({ ...p, password: '' })); }}
                           placeholder="Minimum 8 characters"
-                          className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.password ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'}`}
+                          className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.password ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'}`}
                         />
-                        <button type="button" onClick={() => setShowNewPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700">
+                        <button type="button" onClick={() => setShowNewPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300">
                           {showNewPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                       </div>
@@ -378,7 +378,7 @@ const Profile: React.FC = () => {
 
                     {/* Confirm Password */}
                     <div>
-                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-1.5">
+                      <label className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                         <Lock className="h-4 w-4 text-teal" /> Confirm New Password
                       </label>
                       <div className="relative">
@@ -387,9 +387,9 @@ const Profile: React.FC = () => {
                           value={pwData.password_confirmation}
                           onChange={e => { setPwData(p => ({ ...p, password_confirmation: e.target.value })); setPwErrors(p => ({ ...p, password_confirmation: '' })); }}
                           placeholder="Repeat new password"
-                          className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.password_confirmation ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'}`}
+                          className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.password_confirmation ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'}`}
                         />
-                        <button type="button" onClick={() => setShowConfirmPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700">
+                        <button type="button" onClick={() => setShowConfirmPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300">
                           {showConfirmPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                       </div>
@@ -403,7 +403,7 @@ const Profile: React.FC = () => {
                         {pwLoading ? 'Updating…' : 'Update Password'}
                       </motion.button>
                       <button type="button" onClick={() => { setShowPasswordSection(false); setPwData({ current_password: '', password: '', password_confirmation: '' }); setPwErrors({}); }}
-                        className="px-5 py-3 border-2 border-warmgray-200 text-warmgray-700 rounded-xl hover:bg-warmgray-50 transition-colors font-semibold text-sm flex items-center gap-2">
+                        className="px-5 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border text-warmgray-700 dark:text-warmgray-300 rounded-xl hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark transition-colors font-semibold text-sm flex items-center gap-2">
                         <X className="h-4 w-4" /> Cancel
                       </button>
                     </div>

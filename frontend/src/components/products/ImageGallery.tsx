@@ -42,9 +42,9 @@ const ImageGallery = ({ images, productName }: ImageGalleryProps) => {
         {/* Zoom Button */}
         <button
           onClick={() => setIsZoomed(true)}
-          className="absolute top-4 right-4 bg-white p-2 rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute top-4 right-4 bg-white dark:bg-surface-dark-raised p-2 rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
         >
-          <ZoomIn className="h-5 w-5 text-gray-700" />
+          <ZoomIn className="h-5 w-5 text-gray-700 dark:text-warmgray-300" />
         </button>
 
         {/* Navigation Arrows */}
@@ -52,15 +52,15 @@ const ImageGallery = ({ images, productName }: ImageGalleryProps) => {
           <>
             <button
               onClick={handlePrevious}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-surface-dark-raised p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
             >
-              <ChevronLeft className="h-6 w-6 text-gray-700" />
+              <ChevronLeft className="h-6 w-6 text-gray-700 dark:text-warmgray-300" />
             </button>
             <button
               onClick={handleNext}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-surface-dark-raised p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
             >
-              <ChevronRight className="h-6 w-6 text-gray-700" />
+              <ChevronRight className="h-6 w-6 text-gray-700 dark:text-warmgray-300" />
             </button>
           </>
         )}
@@ -83,7 +83,7 @@ const ImageGallery = ({ images, productName }: ImageGalleryProps) => {
               className={`relative bg-gray-100 rounded-lg overflow-hidden border-2 transition-all ${
                 index === selectedIndex
                   ? 'border-blue-600 ring-2 ring-blue-200'
-                  : 'border-transparent hover:border-gray-300'
+                  : 'border-transparent hover:border-gray-300 dark:border-surface-dark-border'
               }`}
             >
               <img

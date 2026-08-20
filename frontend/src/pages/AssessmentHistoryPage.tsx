@@ -49,7 +49,7 @@ const AssessmentHistoryPage = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-cream-light py-8 px-4">
+      <div className="min-h-screen bg-cream-light dark:bg-surface-dark py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => navigate('/assessments')}
@@ -65,7 +65,7 @@ const AssessmentHistoryPage = () => {
             </div>
             <div>
               <h1 className="heading-talkie">Assessment History</h1>
-              <p className="text-warmgray-600 text-sm">All your past child assessments</p>
+              <p className="text-warmgray-600 dark:text-warmgray-400 text-sm">All your past child assessments</p>
             </div>
           </div>
 
@@ -82,7 +82,7 @@ const AssessmentHistoryPage = () => {
           {!isLoading && !error && results.length === 0 && (
             <div className="card-talkie p-12 text-center">
               <ClipboardList className="h-12 w-12 text-warmgray-300 mx-auto mb-4" />
-              <p className="text-warmgray-600 mb-4">No assessments taken yet.</p>
+              <p className="text-warmgray-600 dark:text-warmgray-400 mb-4">No assessments taken yet.</p>
               <button
                 onClick={() => navigate('/assessments')}
                 className="btn-primary-talkie"
@@ -100,13 +100,13 @@ const AssessmentHistoryPage = () => {
                   <div key={result.id} className="card-talkie p-5 flex flex-col sm:flex-row sm:items-center gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-bold text-warmgray-800">{result.child_name}</h3>
+                        <h3 className="font-bold text-warmgray-800 dark:text-warmgray-200">{result.child_name}</h3>
                         <span className="text-sm text-warmgray-500">• {ageDisplay(result.child_age_months)}</span>
                         {result.mother_tongue && (
                           <span className="text-sm text-warmgray-500">• {result.mother_tongue}</span>
                         )}
                       </div>
-                      <p className="text-sm text-warmgray-600">{result.assessment?.title}</p>
+                      <p className="text-sm text-warmgray-600 dark:text-warmgray-400">{result.assessment?.title}</p>
                       <p className="text-xs text-warmgray-400 mt-1">
                         {result.completed_at
                           ? new Date(result.completed_at).toLocaleDateString('en-IN', {

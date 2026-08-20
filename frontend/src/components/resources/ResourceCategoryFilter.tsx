@@ -14,7 +14,7 @@ const ResourceCategoryFilter = ({ categories, selectedId, onSelect }: ResourceCa
         className={`px-4 py-2 rounded-pill font-semibold transition-all ${
           selectedId === undefined
             ? 'bg-teal-gradient text-white shadow-soft'
-            : 'bg-warmgray-100 text-warmgray-700 hover:bg-warmgray-200'
+            : 'bg-warmgray-100 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-200'
         }`}
       >
         All Categories
@@ -27,7 +27,7 @@ const ResourceCategoryFilter = ({ categories, selectedId, onSelect }: ResourceCa
           className={`px-4 py-2 rounded-pill font-semibold transition-all ${
             selectedId === category.id
               ? 'bg-teal-gradient text-white shadow-soft'
-              : 'bg-warmgray-100 text-warmgray-700 hover:bg-warmgray-200'
+              : 'bg-warmgray-100 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-200'
           }`}
           style={{
             backgroundColor: selectedId === category.id && category.color ? category.color : undefined,

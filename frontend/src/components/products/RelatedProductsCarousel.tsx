@@ -25,16 +25,16 @@ const RelatedProductsCarousel = ({ products }: RelatedProductsCarouselProps) => 
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Products</h2>
+    <div className="bg-white dark:bg-surface-dark-raised rounded-lg shadow-sm p-6">
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-warmgray-100 mb-6">Related Products</h2>
 
       <div className="relative">
         {/* Scroll Left Button */}
         <button
           onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors"
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-white dark:bg-surface-dark-raised shadow-lg rounded-full p-2 hover:bg-gray-50 dark:hover:bg-white/5 dark:bg-surface-dark transition-colors"
         >
-          <ChevronLeft className="h-6 w-6 text-gray-700" />
+          <ChevronLeft className="h-6 w-6 text-gray-700 dark:text-warmgray-300" />
         </button>
 
         {/* Products Container */}
@@ -53,9 +53,9 @@ const RelatedProductsCarousel = ({ products }: RelatedProductsCarouselProps) => 
         {/* Scroll Right Button */}
         <button
           onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors"
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 bg-white dark:bg-surface-dark-raised shadow-lg rounded-full p-2 hover:bg-gray-50 dark:hover:bg-white/5 dark:bg-surface-dark transition-colors"
         >
-          <ChevronRight className="h-6 w-6 text-gray-700" />
+          <ChevronRight className="h-6 w-6 text-gray-700 dark:text-warmgray-300" />
         </button>
       </div>
     </div>

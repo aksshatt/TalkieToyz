@@ -24,7 +24,7 @@ const SocialShareButtons = ({ url, title }: SocialShareButtonsProps) => {
 
   return (
     <div className="flex items-center gap-3">
-      <span className="text-sm font-semibold text-warmgray-700">Share:</span>
+      <span className="text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Share:</span>
 
       <a
         href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}

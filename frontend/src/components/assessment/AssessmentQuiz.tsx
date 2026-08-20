@@ -95,7 +95,7 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
       {/* Overall Progress */}
       <div className="mb-4 sm:mb-6">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-xs sm:text-sm font-semibold text-warmgray-700">
+          <span className="text-xs sm:text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">
             Section {currentSectionIndex + 1} of {sections.length}
           </span>
           <span className="text-xs sm:text-sm font-semibold text-teal">
@@ -125,7 +125,7 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
                   ? 'bg-teal text-white shadow-md scale-110'
                   : sectionAnswered
                   ? 'bg-teal-light text-teal border-2 border-teal'
-                  : 'bg-warmgray-100 text-warmgray-500 border-2 border-warmgray-200'
+                  : 'bg-warmgray-100 text-warmgray-500 border-2 border-warmgray-200 dark:border-surface-dark-border'
               }`}
               title={CATEGORY_CONFIG[section.category]?.label || section.category}
             >
@@ -138,7 +138,7 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
       {/* Section Header */}
       <div className={`bg-gradient-to-r ${config.color} rounded-xl sm:rounded-2xl p-4 sm:p-5 mb-4 sm:mb-6 text-white shadow-md`}>
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-white/20 rounded-full">
+          <div className="p-2 bg-white dark:bg-surface-dark-raised/20 rounded-full">
             {config.icon}
           </div>
           <div>
@@ -164,10 +164,10 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
               }`}
             >
               <div className="flex items-start gap-3 mb-3">
-                <span className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-warmgray-100 text-warmgray-600 flex items-center justify-center text-xs sm:text-sm font-bold">
+                <span className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-warmgray-100 text-warmgray-600 dark:text-warmgray-400 flex items-center justify-center text-xs sm:text-sm font-bold">
                   {qIndex + 1}
                 </span>
-                <h3 className="font-semibold text-sm sm:text-base text-warmgray-900 pt-0.5 sm:pt-1">
+                <h3 className="font-semibold text-sm sm:text-base text-warmgray-900 dark:text-warmgray-100 pt-0.5 sm:pt-1">
                   {question.text}
                 </h3>
               </div>
@@ -180,7 +180,7 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
                     className={`flex-1 py-2 sm:py-2.5 rounded-lg border-2 transition-all font-semibold text-sm sm:text-base ${
                       answers[question.key] === 'yes'
                         ? 'border-teal bg-teal-light text-teal'
-                        : 'border-warmgray-300 hover:border-teal hover:bg-teal-light/30 text-warmgray-600'
+                        : 'border-warmgray-300 dark:border-surface-dark-border hover:border-teal hover:bg-teal-light/30 text-warmgray-600 dark:text-warmgray-400'
                     }`}
                   >
                     Yes
@@ -190,7 +190,7 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
                     className={`flex-1 py-2 sm:py-2.5 rounded-lg border-2 transition-all font-semibold text-sm sm:text-base ${
                       answers[question.key] === 'no'
                         ? 'border-coral bg-coral-light text-coral'
-                        : 'border-warmgray-300 hover:border-coral hover:bg-coral-light/30 text-warmgray-600'
+                        : 'border-warmgray-300 dark:border-surface-dark-border hover:border-coral hover:bg-coral-light/30 text-warmgray-600 dark:text-warmgray-400'
                     }`}
                   >
                     No
@@ -216,7 +216,7 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
                         className={`w-full py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg border-2 transition-all font-semibold text-left text-sm sm:text-base ${
                           isSelected
                             ? 'border-teal bg-teal-light text-teal'
-                            : 'border-warmgray-300 hover:border-teal hover:bg-teal-light/30 text-warmgray-600'
+                            : 'border-warmgray-300 dark:border-surface-dark-border hover:border-teal hover:bg-teal-light/30 text-warmgray-600 dark:text-warmgray-400'
                         }`}
                       >
                         {optionLabel}
@@ -240,7 +240,7 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
                         className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 transition-all font-bold text-sm ${
                           answers[question.key] === value
                             ? 'border-teal bg-teal-gradient text-white shadow-soft-md'
-                            : 'border-warmgray-300 hover:border-teal hover:bg-teal-light/30'
+                            : 'border-warmgray-300 dark:border-surface-dark-border hover:border-teal hover:bg-teal-light/30'
                         }`}
                       >
                         {value}
@@ -260,7 +260,7 @@ const AssessmentQuiz = ({ assessment, onComplete }: AssessmentQuizProps) => {
                   <textarea
                     value={answers[question.key] || ''}
                     onChange={(e) => handleAnswer(question.key, e.target.value)}
-                    className="w-full p-3 border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all text-sm sm:text-base"
+                    className="w-full p-3 border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all text-sm sm:text-base"
                     rows={3}
                     placeholder="Type your answer here..."
                   />

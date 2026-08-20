@@ -98,7 +98,7 @@ const ReviewSubmissionForm: React.FC<ReviewSubmissionFormProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-lg border border-warmgray-300 p-6">
+    <div className="bg-white dark:bg-surface-dark-raised rounded-lg border border-warmgray-300 dark:border-surface-dark-border p-6">
       <h3 className="text-lg font-semibold mb-4">Write a Review</h3>
 
       {hasVerifiedPurchase && (
@@ -112,7 +112,7 @@ const ReviewSubmissionForm: React.FC<ReviewSubmissionFormProps> = ({
       <form onSubmit={handleSubmit}>
         {/* Rating */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-warmgray-900 mb-2">
+          <label className="block text-sm font-medium text-warmgray-900 dark:text-warmgray-100 mb-2">
             Rating <span className="text-coral">*</span>
           </label>
           <StarRating rating={rating} onRatingChange={setRating} size="lg" />
@@ -120,21 +120,21 @@ const ReviewSubmissionForm: React.FC<ReviewSubmissionFormProps> = ({
 
         {/* Title */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-warmgray-900 mb-2">
+          <label className="block text-sm font-medium text-warmgray-900 dark:text-warmgray-100 mb-2">
             Review Title
           </label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
+            className="w-full px-4 py-2 border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
             placeholder="Sum up your experience"
           />
         </div>
 
         {/* Comment */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-warmgray-900 mb-2">
+          <label className="block text-sm font-medium text-warmgray-900 dark:text-warmgray-100 mb-2">
             Your Review <span className="text-coral">*</span>
           </label>
           <textarea
@@ -143,24 +143,24 @@ const ReviewSubmissionForm: React.FC<ReviewSubmissionFormProps> = ({
             required
             rows={5}
             maxLength={1000}
-            className="w-full px-4 py-2 border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
+            className="w-full px-4 py-2 border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
             placeholder="Share your experience with this product..."
           />
-          <p className="text-sm text-warmgray-600 mt-1">
+          <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mt-1">
             {comment.length}/1000 characters
           </p>
         </div>
 
         {/* Photo Upload */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-warmgray-900 mb-2">
+          <label className="block text-sm font-medium text-warmgray-900 dark:text-warmgray-100 mb-2">
             Add Photos (Optional, up to 3)
           </label>
 
           {photos.length < 3 && (
-            <label className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-warmgray-300 rounded-lg cursor-pointer hover:border-teal hover:bg-teal/5 transition-colors">
+            <label className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-warmgray-300 dark:border-surface-dark-border rounded-lg cursor-pointer hover:border-teal hover:bg-teal/5 transition-colors">
               <Upload className="h-5 w-5 text-warmgray-500" />
-              <span className="text-sm text-warmgray-700">Upload Photos</span>
+              <span className="text-sm text-warmgray-700 dark:text-warmgray-300">Upload Photos</span>
               <input
                 type="file"
                 accept="image/*"

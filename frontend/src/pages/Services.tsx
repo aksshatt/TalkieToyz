@@ -121,17 +121,17 @@ const Services: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 bg-white/80 backdrop-blur px-4 py-1.5 rounded-full shadow-soft mb-5"
+            className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised/80 backdrop-blur px-4 py-1.5 rounded-full shadow-soft mb-5"
           >
             <Sparkles className="w-4 h-4 text-teal" />
-            <span className="text-sm font-semibold text-warmgray-700">Therapist-Led Services</span>
+            <span className="text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">Therapist-Led Services</span>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-warmgray-900 mb-4"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-4"
           >
             Our <span className="bg-gradient-to-r from-teal to-coral bg-clip-text text-transparent">Services</span>
           </motion.h1>
@@ -140,7 +140,7 @@ const Services: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg md:text-xl text-warmgray-600 max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-warmgray-600 dark:text-warmgray-400 max-w-2xl mx-auto"
           >
             Supporting children’s growth and development through expert-led therapy, assessments, and counselling — customized to every child.
           </motion.p>
@@ -159,7 +159,7 @@ const Services: React.FC = () => {
             </Link>
             <Link
               to="/assessments"
-              className="inline-flex items-center gap-2 bg-white text-teal font-bold px-6 py-3 rounded-full border-2 border-teal/20 hover:border-teal hover:bg-teal/5 transition-all"
+              className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised text-teal font-bold px-6 py-3 rounded-full border-2 border-teal/20 hover:border-teal hover:bg-teal/5 transition-all"
             >
               Free Assessment <ArrowRight className="w-4 h-4" />
             </Link>
@@ -168,7 +168,7 @@ const Services: React.FC = () => {
       </section>
 
       {/* Services Grid */}
-      <section className="py-16 px-4 bg-warmgray-50">
+      <section className="py-16 px-4 bg-warmgray-50 dark:bg-surface-dark">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -176,8 +176,8 @@ const Services: React.FC = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-warmgray-900 mb-2">How We Help</h2>
-            <p className="text-warmgray-600">Eight specialized services. One caring team.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-warmgray-900 dark:text-warmgray-100 mb-2">How We Help</h2>
+            <p className="text-warmgray-600 dark:text-warmgray-400">Eight specialized services. One caring team.</p>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -189,7 +189,7 @@ const Services: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
                 whileHover={{ y: -6 }}
-                className="group bg-white rounded-3xl overflow-hidden shadow-soft hover:shadow-soft-lg transition-all flex flex-col"
+                className="group bg-white dark:bg-surface-dark-raised rounded-3xl overflow-hidden shadow-soft hover:shadow-soft-lg transition-all flex flex-col"
               >
                 {/* Image band */}
                 <div className={`relative bg-gradient-to-br ${s.tint} aspect-[4/3] overflow-hidden`}>
@@ -206,8 +206,8 @@ const Services: React.FC = () => {
 
                 {/* Body */}
                 <div className="p-5 flex flex-col flex-1">
-                  <h3 className="text-lg font-bold text-warmgray-900 mb-2">{s.title}</h3>
-                  <p className="text-sm text-warmgray-600 mb-4 flex-1 leading-relaxed">{s.description}</p>
+                  <h3 className="text-lg font-bold text-warmgray-900 dark:text-warmgray-100 mb-2">{s.title}</h3>
+                  <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mb-4 flex-1 leading-relaxed">{s.description}</p>
                   <Link
                     to={`/book?service=${s.slug}`}
                     className="mt-auto inline-flex items-center justify-center gap-2 bg-teal-gradient text-white font-semibold px-4 py-2.5 rounded-full hover:shadow-soft-md transition-all text-sm"
@@ -222,7 +222,7 @@ const Services: React.FC = () => {
       </section>
 
       {/* Process strip */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4 bg-white dark:bg-surface-dark-raised">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -230,8 +230,8 @@ const Services: React.FC = () => {
             viewport={{ once: true }}
             className="text-center mb-10"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-warmgray-900 mb-2">How It Works</h2>
-            <p className="text-warmgray-600">Three simple steps to get started.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-warmgray-900 dark:text-warmgray-100 mb-2">How It Works</h2>
+            <p className="text-warmgray-600 dark:text-warmgray-400">Three simple steps to get started.</p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -246,14 +246,14 @@ const Services: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="relative bg-gradient-to-br from-warmgray-50 to-white border border-warmgray-100 rounded-3xl p-6 shadow-soft hover:shadow-soft-lg transition-all"
+                className="relative bg-gradient-to-br from-warmgray-50 to-white border border-warmgray-100 dark:border-surface-dark-border rounded-3xl p-6 shadow-soft hover:shadow-soft-lg transition-all"
               >
                 <span className="absolute -top-3 -right-3 text-6xl font-extrabold text-teal/10 select-none">{p.step}</span>
                 <div className="w-12 h-12 rounded-2xl bg-teal-gradient text-white flex items-center justify-center mb-4 shadow-soft">
                   <p.Icon className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-warmgray-900 mb-2">{p.title}</h3>
-                <p className="text-warmgray-600 text-sm leading-relaxed">{p.desc}</p>
+                <h3 className="text-xl font-bold text-warmgray-900 dark:text-warmgray-100 mb-2">{p.title}</h3>
+                <p className="text-warmgray-600 dark:text-warmgray-400 text-sm leading-relaxed">{p.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -269,8 +269,8 @@ const Services: React.FC = () => {
           className="max-w-5xl mx-auto bg-gradient-to-br from-teal via-sky to-coral rounded-3xl p-10 md:p-14 text-center text-white shadow-soft-lg relative overflow-hidden"
         >
           <div className="absolute inset-0 opacity-20 pointer-events-none">
-            <div className="absolute w-60 h-60 bg-white/30 rounded-full blur-3xl -top-20 -left-20" />
-            <div className="absolute w-72 h-72 bg-white/20 rounded-full blur-3xl -bottom-24 -right-20" />
+            <div className="absolute w-60 h-60 bg-white dark:bg-surface-dark-raised/30 rounded-full blur-3xl -top-20 -left-20" />
+            <div className="absolute w-72 h-72 bg-white dark:bg-surface-dark-raised/20 rounded-full blur-3xl -bottom-24 -right-20" />
           </div>
           <div className="relative">
             <h2 className="text-3xl md:text-4xl font-extrabold mb-3">Ready to start your child’s journey?</h2>
@@ -280,13 +280,13 @@ const Services: React.FC = () => {
             <div className="flex flex-wrap gap-3 justify-center">
               <Link
                 to="/book"
-                className="inline-flex items-center gap-2 bg-white text-teal font-bold px-7 py-3 rounded-full shadow-soft hover:scale-105 transition-transform"
+                className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised text-teal font-bold px-7 py-3 rounded-full shadow-soft hover:scale-105 transition-transform"
               >
                 <Calendar className="w-4 h-4" /> Book Now
               </Link>
               <Link
                 to="/products"
-                className="inline-flex items-center gap-2 bg-white/10 border-2 border-white/40 text-white font-bold px-7 py-3 rounded-full hover:bg-white/20 transition-all"
+                className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised/10 border-2 border-white/40 text-white font-bold px-7 py-3 rounded-full hover:bg-white dark:hover:bg-surface-dark-raised/20 transition-all"
               >
                 Browse Therapy Toys <ArrowRight className="w-4 h-4" />
               </Link>

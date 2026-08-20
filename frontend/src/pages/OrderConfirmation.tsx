@@ -80,7 +80,7 @@ const OrderConfirmation = () => {
       <Layout>
         <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 py-12 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-xl text-gray-700 mb-4">Could not load order details.</p>
+            <p className="text-xl text-gray-700 dark:text-warmgray-300 mb-4">Could not load order details.</p>
             <button
               onClick={() => refetch()}
               className="px-6 py-3 bg-purple-500 text-white rounded-xl font-semibold hover:bg-purple-600 transition-colors"
@@ -119,23 +119,23 @@ const OrderConfirmation = () => {
                 />
               ))}
             </motion.div>
-            <h1 className="text-4xl md:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-2">
+            <h1 className="text-4xl md:text-5xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200 mb-2">
               Order Placed Successfully!
             </h1>
-            <p className="text-xl text-warmgray-600">
+            <p className="text-xl text-warmgray-600 dark:text-warmgray-400">
               Thank you for your purchase!
             </p>
           </motion.div>
 
           {/* Order Details Card */}
-          <div className="bg-white rounded-3xl p-8 shadow-playful mb-6">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-3xl p-8 shadow-playful mb-6">
             {/* Order Number */}
-            <div className="text-center mb-8 pb-6 border-b-2 border-gray-100">
-              <p className="text-sm text-gray-600 mb-2">Order Number</p>
+            <div className="text-center mb-8 pb-6 border-b-2 border-gray-100 dark:border-surface-dark-border">
+              <p className="text-sm text-gray-600 dark:text-warmgray-400 mb-2">Order Number</p>
               <p className="text-3xl font-bold text-purple-600">
                 #{order.order_number}
               </p>
-              <p className="text-sm text-gray-600 mt-2">
+              <p className="text-sm text-gray-600 dark:text-warmgray-400 mt-2">
                 Order Date:{' '}
                 {new Date(order.created_at).toLocaleDateString('en-IN', {
                   day: 'numeric',
@@ -161,7 +161,7 @@ const OrderConfirmation = () => {
 
             {/* Order Items */}
             <div className="mb-8">
-              <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <h3 className="font-bold text-gray-800 dark:text-warmgray-200 mb-4 flex items-center gap-2">
                 <Package className="h-5 w-5" />
                 Your Items
               </h3>
@@ -169,7 +169,7 @@ const OrderConfirmation = () => {
                 {order.order_items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl"
+                    className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-surface-dark rounded-xl"
                   >
                     <img
                       src={
@@ -180,15 +180,15 @@ const OrderConfirmation = () => {
                       className="w-16 h-16 object-cover rounded-lg"
                     />
                     <div className="flex-1">
-                      <p className="font-semibold text-gray-800">
+                      <p className="font-semibold text-gray-800 dark:text-warmgray-200">
                         {item.product.name}
                       </p>
                       {item.product_variant && (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 dark:text-warmgray-400">
                           Variant: {item.product_variant.name}
                         </p>
                       )}
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 dark:text-warmgray-400">
                         Qty: {item.quantity}
                       </p>
                     </div>
@@ -202,28 +202,28 @@ const OrderConfirmation = () => {
 
             {/* Delivery Address */}
             <div className="mb-8">
-              <h3 className="font-bold text-gray-800 mb-3">
+              <h3 className="font-bold text-gray-800 dark:text-warmgray-200 mb-3">
                 Delivery Address
               </h3>
-              <div className="bg-gray-50 rounded-xl p-4">
+              <div className="bg-gray-50 dark:bg-surface-dark rounded-xl p-4">
                 <p className="font-semibold">{order.shipping_address.name}</p>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-gray-700 dark:text-warmgray-300">
                   {order.shipping_address.phone}
                 </p>
-                <p className="text-sm text-gray-700 mt-2">
+                <p className="text-sm text-gray-700 dark:text-warmgray-300 mt-2">
                   {order.shipping_address.address_line_1}
                 </p>
                 {order.shipping_address.address_line_2 && (
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-gray-700 dark:text-warmgray-300">
                     {order.shipping_address.address_line_2}
                   </p>
                 )}
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-gray-700 dark:text-warmgray-300">
                   {order.shipping_address.city},{' '}
                   {order.shipping_address.state} -{' '}
                   {order.shipping_address.postal_code}
                 </p>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-gray-700 dark:text-warmgray-300">
                   {order.shipping_address.country}
                 </p>
               </div>
@@ -231,7 +231,7 @@ const OrderConfirmation = () => {
 
             {/* Price Breakdown */}
             <div className="bg-purple-50 rounded-xl p-6">
-              <h3 className="font-bold text-gray-800 mb-3">
+              <h3 className="font-bold text-gray-800 dark:text-warmgray-200 mb-3">
                 Payment Summary
               </h3>
               <div className="space-y-2 text-sm">
@@ -260,8 +260,8 @@ const OrderConfirmation = () => {
           </div>
 
           {/* What's Next */}
-          <div className="bg-white rounded-3xl p-8 shadow-playful mb-6">
-            <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-gray-800 mb-4">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-3xl p-8 shadow-playful mb-6">
+            <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-gray-800 dark:text-warmgray-200 mb-4">
               What happens next?
             </h2>
             <div className="space-y-4">
@@ -270,10 +270,10 @@ const OrderConfirmation = () => {
                   <span className="text-purple-600 font-bold">1</span>
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-800">
+                  <p className="font-semibold text-gray-800 dark:text-warmgray-200">
                     Order Confirmation Email
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-warmgray-400">
                     We've sent you an email with your order details
                   </p>
                 </div>
@@ -283,10 +283,10 @@ const OrderConfirmation = () => {
                   <span className="text-purple-600 font-bold">2</span>
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-800">
+                  <p className="font-semibold text-gray-800 dark:text-warmgray-200">
                     Order Processing
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-warmgray-400">
                     We'll prepare your items for shipment
                   </p>
                 </div>
@@ -296,8 +296,8 @@ const OrderConfirmation = () => {
                   <span className="text-purple-600 font-bold">3</span>
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-800">Shipping</p>
-                  <p className="text-sm text-gray-600">
+                  <p className="font-semibold text-gray-800 dark:text-warmgray-200">Shipping</p>
+                  <p className="text-sm text-gray-600 dark:text-warmgray-400">
                     You'll receive tracking information once shipped
                   </p>
                 </div>
@@ -307,8 +307,8 @@ const OrderConfirmation = () => {
                   <span className="text-purple-600 font-bold">4</span>
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-800">Delivery</p>
-                  <p className="text-sm text-gray-600">
+                  <p className="font-semibold text-gray-800 dark:text-warmgray-200">Delivery</p>
+                  <p className="text-sm text-gray-600 dark:text-warmgray-400">
                     Enjoy your new TalkieToys!
                   </p>
                 </div>
@@ -327,14 +327,14 @@ const OrderConfirmation = () => {
             </Link>
             <Link
               to="/products"
-              className="flex items-center gap-2 px-8 py-4 bg-white text-purple-600 font-bold rounded-2xl shadow-playful hover:shadow-playful-hover transform hover:scale-105 transition-all border-2 border-purple-200"
+              className="flex items-center gap-2 px-8 py-4 bg-white dark:bg-surface-dark-raised text-purple-600 font-bold rounded-2xl shadow-playful hover:shadow-playful-hover transform hover:scale-105 transition-all border-2 border-purple-200"
             >
               <ShoppingBag className="h-5 w-5" />
               Continue Shopping
             </Link>
             <Link
               to="/"
-              className="flex items-center gap-2 px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl shadow-playful hover:shadow-playful-hover transform hover:scale-105 transition-all"
+              className="flex items-center gap-2 px-8 py-4 bg-white dark:bg-surface-dark-raised text-gray-700 dark:text-warmgray-300 font-bold rounded-2xl shadow-playful hover:shadow-playful-hover transform hover:scale-105 transition-all"
             >
               <Home className="h-5 w-5" />
               Go Home

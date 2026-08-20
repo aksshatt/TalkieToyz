@@ -32,14 +32,14 @@ const SuggestionForm: React.FC = () => {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Your suggestion..."
-        className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-warmgray-400 focus:outline-none focus:ring-2 focus:ring-teal-light transition-all resize-none"
+        className="w-full px-4 py-3 rounded-2xl bg-white dark:bg-surface-dark-raised/10 border border-white/20 text-white placeholder-warmgray-400 focus:outline-none focus:ring-2 focus:ring-teal-light transition-all resize-none"
       />
       <input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email (optional)"
-        className="w-full px-4 py-3 rounded-full bg-white/10 border border-white/20 text-white placeholder-warmgray-400 focus:outline-none focus:ring-2 focus:ring-teal-light transition-all"
+        className="w-full px-4 py-3 rounded-full bg-white dark:bg-surface-dark-raised/10 border border-white/20 text-white placeholder-warmgray-400 focus:outline-none focus:ring-2 focus:ring-teal-light transition-all"
       />
       <motion.button
         type="submit"

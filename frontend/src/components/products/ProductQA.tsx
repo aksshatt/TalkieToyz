@@ -44,14 +44,14 @@ const ProductQA: React.FC<ProductQAProps> = ({ productSlug }) => {
     <div className="mt-10">
       <div className="flex items-center gap-2 mb-6">
         <MessageCircle className="w-5 h-5 text-indigo-600" />
-        <h2 className="text-xl font-bold text-gray-900">Parent Q&A</h2>
-        <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">{questions.length} question{questions.length !== 1 ? 's' : ''}</span>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-warmgray-100">Parent Q&A</h2>
+        <span className="bg-gray-100 text-gray-600 dark:text-warmgray-400 text-xs px-2 py-0.5 rounded-full">{questions.length} question{questions.length !== 1 ? 's' : ''}</span>
       </div>
 
       {user && (
         <div className="flex gap-3 mb-6">
           <input
-            className="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="flex-1 border border-gray-300 dark:border-surface-dark-border rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             placeholder="Ask a question about this product…"
             value={newQuestion}
             onChange={e => setNewQuestion(e.target.value)}
@@ -72,21 +72,21 @@ const ProductQA: React.FC<ProductQAProps> = ({ productSlug }) => {
           {[...Array(3)].map((_, i) => <div key={i} className="animate-pulse bg-gray-100 rounded-xl h-16" />)}
         </div>
       ) : questions.length === 0 ? (
-        <div className="text-center py-8 bg-gray-50 rounded-xl">
+        <div className="text-center py-8 bg-gray-50 dark:bg-surface-dark rounded-xl">
           <MessageCircle className="w-8 h-8 text-gray-300 mx-auto mb-2" />
           <p className="text-sm text-gray-500">No questions yet. Be the first to ask!</p>
         </div>
       ) : (
         <div className="space-y-3">
           {questions.map(q => (
-            <div key={q.id} className="border border-gray-200 rounded-xl overflow-hidden">
+            <div key={q.id} className="border border-gray-200 dark:border-surface-dark-border rounded-xl overflow-hidden">
               <button
-                className="w-full flex items-start gap-3 p-4 text-left hover:bg-gray-50 transition"
+                className="w-full flex items-start gap-3 p-4 text-left hover:bg-gray-50 dark:hover:bg-white/5 dark:bg-surface-dark transition"
                 onClick={() => setExpandedId(expandedId === q.id ? null : q.id)}
               >
                 <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">Q</span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900">{q.question}</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-warmgray-100">{q.question}</p>
                   <p className="text-xs text-gray-400 mt-0.5">{q.user.name} · {new Date(q.created_at).toLocaleDateString()}</p>
                 </div>
                 {q.answered ? (
@@ -98,12 +98,12 @@ const ProductQA: React.FC<ProductQAProps> = ({ productSlug }) => {
               </button>
 
               {expandedId === q.id && (
-                <div className="px-4 pb-4 border-t border-gray-100">
+                <div className="px-4 pb-4 border-t border-gray-100 dark:border-surface-dark-border">
                   {q.answered ? (
                     <div className="flex gap-3 mt-3">
                       <span className="w-6 h-6 rounded-full bg-green-100 text-green-700 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">A</span>
                       <div>
-                        <p className="text-sm text-gray-800">{q.answer}</p>
+                        <p className="text-sm text-gray-800 dark:text-warmgray-200">{q.answer}</p>
                         <p className="text-xs text-gray-400 mt-1">
                           Answered by {q.answered_by?.name} ({q.answered_by?.role === 'therapist' ? 'Speech Therapist' : 'Admin'})
                           · {q.answered_at ? new Date(q.answered_at).toLocaleDateString() : ''}
@@ -113,7 +113,7 @@ const ProductQA: React.FC<ProductQAProps> = ({ productSlug }) => {
                   ) : isTherapistOrAdmin ? (
                     <div className="mt-3">
                       <textarea
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                        className="w-full border border-gray-300 dark:border-surface-dark-border rounded-lg px-3 py-2 text-sm"
                         rows={3}
                         placeholder="Write your answer…"
                         value={answerDraft[q.id] || ''}

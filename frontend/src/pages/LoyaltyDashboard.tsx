@@ -58,9 +58,9 @@ const LoyaltyDashboard: React.FC = () => {
   return (
     <Layout>
       <SEO url="/loyalty" />
-      <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-surface-dark py-8 px-4">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">Loyalty Points</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-warmgray-100 mb-1">Loyalty Points</h1>
           <p className="text-gray-500 text-sm mb-8">Earn points on every purchase, review, and milestone.</p>
 
           {/* Balance Card */}
@@ -73,7 +73,7 @@ const LoyaltyDashboard: React.FC = () => {
             <p className="text-sm opacity-75">≈ ₹{rupeeValue.toFixed(2)} redeemable discount</p>
 
             {balance >= 100 && (
-              <div className="mt-5 bg-white/10 rounded-xl p-4">
+              <div className="mt-5 bg-white dark:bg-surface-dark-raised/10 rounded-xl p-4">
                 <p className="text-sm font-medium mb-3">Redeem Points</p>
                 <div className="flex items-center gap-3">
                   <input
@@ -99,16 +99,16 @@ const LoyaltyDashboard: React.FC = () => {
           </div>
 
           {/* How to Earn */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-5 mb-6">
-            <h2 className="font-bold text-gray-900 mb-4">How to Earn Points</h2>
+          <div className="bg-white dark:bg-surface-dark-raised rounded-2xl border border-gray-200 dark:border-surface-dark-border p-5 mb-6">
+            <h2 className="font-bold text-gray-900 dark:text-warmgray-100 mb-4">How to Earn Points</h2>
             <div className="grid grid-cols-2 gap-3">
               {EARN_GUIDE.map(item => (
-                <div key={item.label} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                  <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center flex-shrink-0">
+                <div key={item.label} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-surface-dark rounded-xl">
+                  <div className="w-8 h-8 rounded-full bg-white dark:bg-surface-dark-raised shadow-sm flex items-center justify-center flex-shrink-0">
                     {item.icon}
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-gray-800">{item.label}</p>
+                    <p className="text-xs font-medium text-gray-800 dark:text-warmgray-200">{item.label}</p>
                     <p className="text-xs text-indigo-600 font-semibold">{item.points}</p>
                   </div>
                 </div>
@@ -117,8 +117,8 @@ const LoyaltyDashboard: React.FC = () => {
           </div>
 
           {/* Transaction History */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-5">
-            <h2 className="font-bold text-gray-900 mb-4">Transaction History</h2>
+          <div className="bg-white dark:bg-surface-dark-raised rounded-2xl border border-gray-200 dark:border-surface-dark-border p-5">
+            <h2 className="font-bold text-gray-900 dark:text-warmgray-100 mb-4">Transaction History</h2>
             {isLoading ? (
               <div className="space-y-3">
                 {[...Array(4)].map((_, i) => <div key={i} className="animate-pulse bg-gray-100 rounded-xl h-12" />)}
@@ -132,10 +132,10 @@ const LoyaltyDashboard: React.FC = () => {
               <div className="space-y-2">
                 {transactions.map(tx => (
                   <div key={tx.id} className="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0">
-                    <span className={`inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full font-medium ${SOURCE_COLORS[tx.source] || 'bg-gray-100 text-gray-600'}`}>
+                    <span className={`inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full font-medium ${SOURCE_COLORS[tx.source] || 'bg-gray-100 text-gray-600 dark:text-warmgray-400'}`}>
                       {SOURCE_ICONS[tx.source]} {tx.source}
                     </span>
-                    <p className="flex-1 text-sm text-gray-700 line-clamp-1">{tx.description}</p>
+                    <p className="flex-1 text-sm text-gray-700 dark:text-warmgray-300 line-clamp-1">{tx.description}</p>
                     <span className={`text-sm font-bold ${tx.points > 0 ? 'text-green-600' : 'text-red-500'}`}>
                       {tx.points > 0 ? '+' : ''}{tx.points}
                     </span>

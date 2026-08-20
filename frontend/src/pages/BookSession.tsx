@@ -144,7 +144,7 @@ const BookSession: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ type: 'spring', damping: 18 }}
-            className="relative max-w-xl w-full bg-white rounded-3xl shadow-soft-xl p-10 text-center border border-teal/10"
+            className="relative max-w-xl w-full bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft-xl p-10 text-center border border-teal/10"
           >
             <motion.div
               initial={{ scale: 0, rotate: -90 }}
@@ -154,12 +154,12 @@ const BookSession: React.FC = () => {
             >
               <PartyPopper className="w-10 h-10 text-white" />
             </motion.div>
-            <h1 className="text-3xl font-extrabold text-warmgray-900 mb-2">You're all set!</h1>
-            <p className="text-warmgray-600 mb-6 text-lg">
+            <h1 className="text-3xl font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-2">You're all set!</h1>
+            <p className="text-warmgray-600 dark:text-warmgray-400 mb-6 text-lg">
               Thanks {form.name || 'friend'} — our team will call you within 24 hours to confirm
               {selected ? ` your ${selected.name} ` : ' your '}session.
             </p>
-            <div className="bg-teal-light/30 rounded-2xl p-4 mb-6 text-sm text-warmgray-700 flex items-center gap-3 justify-center">
+            <div className="bg-teal-light/30 rounded-2xl p-4 mb-6 text-sm text-warmgray-700 dark:text-warmgray-300 flex items-center gap-3 justify-center">
               <CheckCircle2 className="w-5 h-5 text-teal shrink-0" />
               <span>Confirmation email sent to <strong>{form.email}</strong></span>
             </div>
@@ -167,7 +167,7 @@ const BookSession: React.FC = () => {
               <Link to="/" className="bg-teal-gradient text-white font-bold px-6 py-3 rounded-full shadow-soft hover:shadow-soft-lg transition-all">
                 Back to Home
               </Link>
-              <Link to="/services" className="bg-white border-2 border-teal/30 text-teal font-bold px-6 py-3 rounded-full hover:bg-teal/5 transition-all">
+              <Link to="/services" className="bg-white dark:bg-surface-dark-raised border-2 border-teal/30 text-teal font-bold px-6 py-3 rounded-full hover:bg-teal/5 transition-all">
                 Explore More Services
               </Link>
             </div>
@@ -188,7 +188,7 @@ const BookSession: React.FC = () => {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-sky py-20 px-4">
         <motion.div
-          className="absolute w-96 h-96 rounded-full bg-white/10 blur-3xl pointer-events-none"
+          className="absolute w-96 h-96 rounded-full bg-white dark:bg-surface-dark-raised/10 blur-3xl pointer-events-none"
           animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
           transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
           style={{ top: '-15%', left: '-10%' }}
@@ -215,7 +215,7 @@ const BookSession: React.FC = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-            className="inline-flex items-center gap-2 bg-white/15 backdrop-blur px-4 py-2 rounded-full mb-5 border border-white/25"
+            className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised/15 backdrop-blur px-4 py-2 rounded-full mb-5 border border-white/25"
           >
             <Sparkles className="w-4 h-4 text-sunshine" />
             <span className="text-sm font-semibold">Expert Care for Your Little One</span>
@@ -262,7 +262,7 @@ const BookSession: React.FC = () => {
       </section>
 
       {/* Trust badges */}
-      <section className="bg-cream-light py-10 px-4">
+      <section className="bg-cream-light dark:bg-surface-dark py-10 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
           {trustBadges.map((b, i) => (
             <motion.div
@@ -271,20 +271,20 @@ const BookSession: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
-              className="bg-white rounded-2xl p-4 shadow-soft border border-warmgray-100 text-center hover:shadow-soft-md transition-all"
+              className="bg-white dark:bg-surface-dark-raised rounded-2xl p-4 shadow-soft border border-warmgray-100 dark:border-surface-dark-border text-center hover:shadow-soft-md transition-all"
             >
               <div className="w-10 h-10 rounded-full bg-teal-light/40 flex items-center justify-center mx-auto mb-2">
                 <b.icon className="w-5 h-5 text-teal" />
               </div>
-              <div className="font-bold text-warmgray-900 text-sm">{b.label}</div>
-              <div className="text-xs text-warmgray-600 mt-0.5">{b.sub}</div>
+              <div className="font-bold text-warmgray-900 dark:text-warmgray-100 text-sm">{b.label}</div>
+              <div className="text-xs text-warmgray-600 dark:text-warmgray-400 mt-0.5">{b.sub}</div>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* Service picker + form */}
-      <section className="py-12 px-4 bg-cream-light">
+      <section className="py-12 px-4 bg-cream-light dark:bg-surface-dark">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_380px] gap-8">
           <div className="space-y-8">
             {/* Step 1: Service */}
@@ -293,11 +293,11 @@ const BookSession: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-white rounded-3xl shadow-soft p-6 md:p-8 border border-warmgray-100"
+              className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft p-6 md:p-8 border border-warmgray-100 dark:border-surface-dark-border"
             >
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-9 h-9 rounded-full bg-teal-gradient text-white font-extrabold flex items-center justify-center shadow-soft">1</div>
-                <h2 className="text-xl md:text-2xl font-extrabold text-warmgray-900">Pick your service</h2>
+                <h2 className="text-xl md:text-2xl font-extrabold text-warmgray-900 dark:text-warmgray-100">Pick your service</h2>
               </div>
               {loading ? (
                 <div className="grid sm:grid-cols-2 gap-3">
@@ -306,7 +306,7 @@ const BookSession: React.FC = () => {
                   ))}
                 </div>
               ) : services.length === 0 ? (
-                <p className="text-warmgray-600">No services available right now.</p>
+                <p className="text-warmgray-600 dark:text-warmgray-400">No services available right now.</p>
               ) : (
                 <div className="grid sm:grid-cols-2 gap-3">
                   {services.map((s) => {
@@ -319,20 +319,20 @@ const BookSession: React.FC = () => {
                         className={`group text-left rounded-2xl p-4 border-2 transition-all ${
                           active
                             ? 'border-teal bg-teal-light/20 shadow-soft-md'
-                            : 'border-warmgray-200 bg-white hover:border-teal/40 hover:shadow-soft'
+                            : 'border-warmgray-200 dark:border-surface-dark-border bg-white dark:bg-surface-dark-raised hover:border-teal/40 hover:shadow-soft'
                         }`}
                       >
                         <div className="flex items-start justify-between gap-2">
-                          <div className="font-bold text-warmgray-900 leading-tight">{s.name}</div>
+                          <div className="font-bold text-warmgray-900 dark:text-warmgray-100 leading-tight">{s.name}</div>
                           <div
                             className={`shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                              active ? 'border-teal bg-teal' : 'border-warmgray-300'
+                              active ? 'border-teal bg-teal' : 'border-warmgray-300 dark:border-surface-dark-border'
                             }`}
                           >
                             {active && <CheckCircle2 className="w-4 h-4 text-white" />}
                           </div>
                         </div>
-                        <div className="flex items-center gap-3 mt-3 text-sm text-warmgray-600">
+                        <div className="flex items-center gap-3 mt-3 text-sm text-warmgray-600 dark:text-warmgray-400">
                           <span className="inline-flex items-center gap-1">
                             <Clock className="w-3.5 h-3.5" /> {s.duration_minutes} min
                           </span>
@@ -353,11 +353,11 @@ const BookSession: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-white rounded-3xl shadow-soft p-6 md:p-8 space-y-5 border border-warmgray-100"
+              className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft p-6 md:p-8 space-y-5 border border-warmgray-100 dark:border-surface-dark-border"
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-9 h-9 rounded-full bg-coral-gradient text-white font-extrabold flex items-center justify-center shadow-soft">2</div>
-                <h2 className="text-xl md:text-2xl font-extrabold text-warmgray-900">Your details</h2>
+                <h2 className="text-xl md:text-2xl font-extrabold text-warmgray-900 dark:text-warmgray-100">Your details</h2>
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
@@ -412,14 +412,14 @@ const BookSession: React.FC = () => {
                   onChange={(v) => handleChange('preferred_date', v)}
                 />
                 <div>
-                  <label className="block text-sm font-bold text-warmgray-800 mb-2">
+                  <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-2">
                     <Languages className="w-4 h-4 inline mr-1.5 -mt-0.5 text-teal" />
                     Preferred Language
                   </label>
                   <select
                     value={form.preferred_language}
                     onChange={(e) => handleChange('preferred_language', e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal focus:ring-4 focus:ring-teal/10 bg-white transition-all"
+                    className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal focus:ring-4 focus:ring-teal/10 bg-white dark:bg-surface-dark-raised transition-all"
                   >
                     <option>English</option>
                     <option>Hindi</option>
@@ -430,7 +430,7 @@ const BookSession: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-warmgray-800 mb-2">
+                <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-2">
                   <MessageCircle className="w-4 h-4 inline mr-1.5 -mt-0.5 text-teal" />
                   Anything we should know?
                 </label>
@@ -439,7 +439,7 @@ const BookSession: React.FC = () => {
                   value={form.message}
                   onChange={(e) => handleChange('message', e.target.value)}
                   placeholder="Concerns, prior diagnoses, goals, milestones..."
-                  className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal focus:ring-4 focus:ring-teal/10 resize-none transition-all"
+                  className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal focus:ring-4 focus:ring-teal/10 resize-none transition-all"
                 />
               </div>
 
@@ -472,14 +472,14 @@ const BookSession: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="bg-white rounded-2xl p-5 shadow-soft border border-warmgray-100"
+                  className="bg-white dark:bg-surface-dark-raised rounded-2xl p-5 shadow-soft border border-warmgray-100 dark:border-surface-dark-border"
                 >
                   <div className="flex gap-0.5 mb-2">
                     {[...Array(5)].map((_, j) => (
                       <Star key={j} className="w-4 h-4 fill-sunshine text-sunshine" />
                     ))}
                   </div>
-                  <p className="text-warmgray-700 italic text-sm mb-2">“{t.quote}”</p>
+                  <p className="text-warmgray-700 dark:text-warmgray-300 italic text-sm mb-2">“{t.quote}”</p>
                   <p className="text-xs font-semibold text-warmgray-500">— {t.author}</p>
                 </motion.div>
               ))}
@@ -491,14 +491,14 @@ const BookSession: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-3xl p-6 shadow-soft-md border border-teal/15 overflow-hidden relative"
+              className="bg-white dark:bg-surface-dark-raised rounded-3xl p-6 shadow-soft-md border border-teal/15 overflow-hidden relative"
             >
               <div className="absolute -top-16 -right-16 w-40 h-40 bg-teal-light/30 rounded-full blur-3xl pointer-events-none" />
               <div className="absolute -bottom-16 -left-16 w-40 h-40 bg-coral-light/30 rounded-full blur-3xl pointer-events-none" />
               <div className="relative">
                 <div className="flex items-center gap-2 mb-5">
                   <Sparkles className="w-5 h-5 text-teal" />
-                  <h3 className="text-lg font-extrabold text-warmgray-900">Booking Summary</h3>
+                  <h3 className="text-lg font-extrabold text-warmgray-900 dark:text-warmgray-100">Booking Summary</h3>
                 </div>
                 <AnimatePresence mode="wait">
                   {selected ? (
@@ -517,11 +517,11 @@ const BookSession: React.FC = () => {
                         />
                       )}
                       <div>
-                        <div className="font-extrabold text-warmgray-900 text-lg">{selected.name}</div>
-                        <p className="text-sm text-warmgray-600 mt-1 line-clamp-3">{selected.description}</p>
+                        <div className="font-extrabold text-warmgray-900 dark:text-warmgray-100 text-lg">{selected.name}</div>
+                        <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mt-1 line-clamp-3">{selected.description}</p>
                       </div>
                       <div className="bg-gradient-to-br from-teal-light/30 to-coral-light/20 rounded-2xl p-4 flex items-center justify-between">
-                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-warmgray-700">
+                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-warmgray-700 dark:text-warmgray-300">
                           <Clock className="w-4 h-4" /> {selected.duration_minutes} min
                         </span>
                         <span className="inline-flex items-center gap-0.5 text-2xl font-extrabold text-teal">
@@ -536,7 +536,7 @@ const BookSession: React.FC = () => {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="text-warmgray-600 text-sm flex flex-col items-center gap-3 py-6 text-center"
+                      className="text-warmgray-600 dark:text-warmgray-400 text-sm flex flex-col items-center gap-3 py-6 text-center"
                     >
                       <div className="w-14 h-14 rounded-full bg-teal-light/30 flex items-center justify-center">
                         <Calendar className="w-6 h-6 text-teal" />
@@ -546,14 +546,14 @@ const BookSession: React.FC = () => {
                   )}
                 </AnimatePresence>
 
-                <div className="mt-6 pt-6 border-t border-warmgray-200 space-y-2.5">
+                <div className="mt-6 pt-6 border-t border-warmgray-200 dark:border-surface-dark-border space-y-2.5">
                   {[
                     'Pay only after your first consultation',
                     'Free reschedule up to 24h before',
                     'Certified, experienced therapists',
                     '100% child-safe, play-based sessions',
                   ].map((line) => (
-                    <div key={line} className="flex items-start gap-2 text-sm text-warmgray-700">
+                    <div key={line} className="flex items-start gap-2 text-sm text-warmgray-700 dark:text-warmgray-300">
                       <CheckCircle2 className="w-4 h-4 text-teal shrink-0 mt-0.5" />
                       <span>{line}</span>
                     </div>
@@ -591,7 +591,7 @@ interface FieldInputProps {
 
 const FieldInput: React.FC<FieldInputProps> = ({ icon: Icon, label, value, onChange, type = 'text', placeholder, required }) => (
   <div>
-    <label className="block text-sm font-bold text-warmgray-800 mb-2">
+    <label className="block text-sm font-bold text-warmgray-800 dark:text-warmgray-200 mb-2">
       <Icon className="w-4 h-4 inline mr-1.5 -mt-0.5 text-teal" />
       {label}
     </label>
@@ -601,7 +601,7 @@ const FieldInput: React.FC<FieldInputProps> = ({ icon: Icon, label, value, onCha
       value={value}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:border-teal focus:ring-4 focus:ring-teal/10 transition-all"
+      className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:border-teal focus:ring-4 focus:ring-teal/10 transition-all"
     />
   </div>
 );

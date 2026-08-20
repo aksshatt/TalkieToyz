@@ -74,7 +74,7 @@ const Contact = () => {
       gradient: 'from-sunshine/20 to-sunshine-light/30',
       iconBg: 'bg-sunshine-gradient',
       content: (
-        <p className="text-warmgray-600 text-sm leading-relaxed">
+        <p className="text-warmgray-600 dark:text-warmgray-400 text-sm leading-relaxed">
           4th, gate, Near, Madan Mahal Railway Station Rd,<br />
           Wright Town, Jabalpur,<br />
           Madhya Pradesh 482002
@@ -86,7 +86,7 @@ const Contact = () => {
       label: 'Business Hours',
       gradient: 'from-coral/20 to-coral-light/30',
       iconBg: 'bg-coral-gradient',
-      content: <p className="text-warmgray-600 text-sm">Open · Closes 8:30 pm</p>,
+      content: <p className="text-warmgray-600 dark:text-warmgray-400 text-sm">Open · Closes 8:30 pm</p>,
     },
     {
       icon: ExternalLink,
@@ -117,7 +117,7 @@ const Contact = () => {
       <div className="relative overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-sky py-20 px-4">
         {/* Blobs */}
         <motion.div
-          className="absolute w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"
+          className="absolute w-80 h-80 rounded-full bg-white dark:bg-surface-dark-raised/10 blur-3xl pointer-events-none"
           animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
           style={{ top: '-10%', left: '-5%' }}
@@ -153,7 +153,7 @@ const Contact = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-            className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6"
+            className="inline-flex items-center justify-center w-16 h-16 bg-white dark:bg-surface-dark-raised/20 rounded-full mb-6"
           >
             <MessageCircle className="w-8 h-8 text-white" />
           </motion.div>
@@ -189,7 +189,7 @@ const Contact = () => {
       </div>
 
       {/* Content */}
-      <div className="bg-white min-h-screen py-12">
+      <div className="bg-white dark:bg-surface-dark-raised min-h-screen py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Contact Info Cards */}
@@ -209,7 +209,7 @@ const Contact = () => {
                       <card.icon className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                      <p className="font-bold text-warmgray-800 mb-1">{card.label}</p>
+                      <p className="font-bold text-warmgray-800 dark:text-warmgray-200 mb-1">{card.label}</p>
                       {card.content}
                     </div>
                   </div>
@@ -224,11 +224,11 @@ const Contact = () => {
                 transition={{ delay: 0.35 }}
                 className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-5 border border-purple-100 shadow-soft"
               >
-                <p className="font-bold text-warmgray-800 mb-2 flex items-center gap-2">
+                <p className="font-bold text-warmgray-800 dark:text-warmgray-200 mb-2 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-purple-500" />
                   Quick Response
                 </p>
-                <p className="text-warmgray-600 text-sm">
+                <p className="text-warmgray-600 dark:text-warmgray-400 text-sm">
                   We typically respond within 24 hours on business days. For urgent queries, please call directly.
                 </p>
               </motion.div>
@@ -242,8 +242,8 @@ const Contact = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-xl border border-warmgray-100 p-8">
-                <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-6 flex items-center gap-2">
+              <div className="bg-white dark:bg-surface-dark-raised/80 backdrop-blur-sm rounded-3xl shadow-soft-xl border border-warmgray-100 dark:border-surface-dark-border p-8">
+                <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200 mb-6 flex items-center gap-2">
                   <Send className="w-5 h-5 text-teal" />
                   Send us a Message
                 </h2>
@@ -251,19 +251,19 @@ const Contact = () => {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid md:grid-cols-2 gap-5">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Name *</label>
+                      <label htmlFor="name" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Name *</label>
                       <input
                         type="text" id="name" name="name" value={formData.name} onChange={handleChange}
-                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all bg-warmgray-50 focus:bg-white ${errors.name ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'}`}
+                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all bg-warmgray-50 dark:bg-surface-dark focus:bg-white dark:focus:bg-surface-dark-raised ${errors.name ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'}`}
                         placeholder="Your name"
                       />
                       {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                     </div>
                     <div>
-                      <label htmlFor="email" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Email *</label>
+                      <label htmlFor="email" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Email *</label>
                       <input
                         type="email" id="email" name="email" value={formData.email} onChange={handleChange}
-                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all bg-warmgray-50 focus:bg-white ${errors.email ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'}`}
+                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all bg-warmgray-50 dark:bg-surface-dark focus:bg-white dark:focus:bg-surface-dark-raised ${errors.email ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'}`}
                         placeholder="your.email@example.com"
                       />
                       {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -272,19 +272,19 @@ const Contact = () => {
 
                   <div className="grid md:grid-cols-2 gap-5">
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Phone (Optional)</label>
+                      <label htmlFor="phone" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Phone (Optional)</label>
                       <input
                         type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange}
-                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all bg-warmgray-50 focus:bg-white ${errors.phone ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'}`}
+                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all bg-warmgray-50 dark:bg-surface-dark focus:bg-white dark:focus:bg-surface-dark-raised ${errors.phone ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'}`}
                         placeholder="9876543210"
                       />
                       {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
                     </div>
                     <div>
-                      <label htmlFor="subject" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Subject *</label>
+                      <label htmlFor="subject" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Subject *</label>
                       <select
                         id="subject" name="subject" value={formData.subject} onChange={handleChange}
-                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all bg-warmgray-50 focus:bg-white ${errors.subject ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'}`}
+                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all bg-warmgray-50 dark:bg-surface-dark focus:bg-white dark:focus:bg-surface-dark-raised ${errors.subject ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'}`}
                       >
                         <option value="">Select a subject</option>
                         <option value="General Inquiry">General Inquiry</option>
@@ -300,10 +300,10 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="block text-sm font-semibold text-warmgray-700 mb-1.5">Message *</label>
+                    <label htmlFor="message" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Message *</label>
                     <textarea
                       id="message" name="message" value={formData.message} onChange={handleChange} rows={5}
-                      className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all bg-warmgray-50 focus:bg-white resize-none ${errors.message ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-warmgray-200 focus:border-teal focus:ring-teal/10'}`}
+                      className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 transition-all bg-warmgray-50 dark:bg-surface-dark focus:bg-white dark:focus:bg-surface-dark-raised resize-none ${errors.message ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'}`}
                       placeholder="Tell us more about your inquiry..."
                     />
                     {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}

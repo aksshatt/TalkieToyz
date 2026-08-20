@@ -21,13 +21,13 @@ const MilestoneCard: React.FC<{
   const [showCert, setShowCert] = useState(false);
 
   return (
-    <div className={`rounded-xl border p-4 transition ${isAchieved ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-white'}`}>
+    <div className={`rounded-xl border p-4 transition ${isAchieved ? 'border-green-200 bg-green-50' : 'border-gray-200 dark:border-surface-dark-border bg-white dark:bg-surface-dark-raised'}`}>
       <div className="flex items-start gap-3">
         <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${isAchieved ? 'bg-green-500' : 'bg-gray-200'}`}>
           {isAchieved ? <CheckCircle className="w-4 h-4 text-white" /> : <span className="text-xs text-gray-400">{Math.floor(milestone.age_in_months / 12)}y</span>}
         </div>
         <div className="flex-1">
-          <p className="text-sm font-semibold text-gray-900">{milestone.title}</p>
+          <p className="text-sm font-semibold text-gray-900 dark:text-warmgray-100">{milestone.title}</p>
           <p className="text-xs text-gray-500 mt-0.5">{milestone.category} · {milestone.age_in_months} months</p>
           {milestone.description && <p className="text-xs text-gray-500 mt-1 line-clamp-2">{milestone.description}</p>}
           {isAchieved && achievement && (
@@ -67,11 +67,11 @@ const MilestoneCard: React.FC<{
 
       {showCert && (
         <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-2xl p-8 max-w-md w-full text-center shadow-2xl">
             <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Trophy className="w-8 h-8 text-amber-500" />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-1">Achievement Unlocked!</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-warmgray-100 mb-1">Achievement Unlocked!</h2>
             <p className="text-gray-500 mb-3 text-sm">This certifies that</p>
             <p className="text-2xl font-bold text-indigo-700 mb-3">{milestone.title}</p>
             <p className="text-sm text-gray-500 mb-6">has been achieved successfully.</p>
@@ -204,12 +204,12 @@ const ChildProgressDashboard: React.FC = () => {
   return (
     <Layout>
       <SEO url={`/children/${id}`} />
-      <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-surface-dark py-8 px-4">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="flex items-center gap-3 mb-6">
             <Link to="/children" className="p-2 rounded-xl hover:bg-gray-200 transition">
-              <ChevronLeft className="w-5 h-5 text-gray-600" />
+              <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-warmgray-400" />
             </Link>
             <div
               className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl"
@@ -218,16 +218,16 @@ const ChildProgressDashboard: React.FC = () => {
               {profile.name[0]}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">{profile.name}'s Progress</h1>
+              <h1 className="text-xl font-bold text-gray-900 dark:text-warmgray-100">{profile.name}'s Progress</h1>
               <p className="text-sm text-gray-500">{profile.age_display}</p>
             </div>
           </div>
 
           {/* Progress Bar */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-2xl border border-gray-200 dark:border-surface-dark-border p-6 mb-6">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h2 className="font-bold text-gray-900">Milestone Progress</h2>
+                <h2 className="font-bold text-gray-900 dark:text-warmgray-100">Milestone Progress</h2>
                 <p className="text-sm text-gray-500">{achievements.length} of {relevantMilestones.length} milestones achieved</p>
               </div>
               <div className="text-right">
@@ -252,7 +252,7 @@ const ChildProgressDashboard: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Milestones */}
             <div className="lg:col-span-2">
-              <h2 className="font-bold text-gray-900 mb-4">Milestones for {profile.name}</h2>
+              <h2 className="font-bold text-gray-900 dark:text-warmgray-100 mb-4">Milestones for {profile.name}</h2>
               {relevantMilestones.length === 0 ? (
                 <p className="text-sm text-gray-400 text-center py-8">No milestones available for this age range.</p>
               ) : (
@@ -277,13 +277,13 @@ const ChildProgressDashboard: React.FC = () => {
 
             {/* Recommendations */}
             <div>
-              <h2 className="font-bold text-gray-900 mb-4">Recommended for {profile.name}</h2>
+              <h2 className="font-bold text-gray-900 dark:text-warmgray-100 mb-4">Recommended for {profile.name}</h2>
               {recommendations.length === 0 ? (
                 <p className="text-sm text-gray-400 text-center py-8">No recommendations yet.</p>
               ) : (
                 <div className="space-y-3">
                   {recommendations.slice(0, 5).map((product: any) => (
-                    <div key={product.id} className="bg-white rounded-xl border border-gray-200 p-3 flex gap-3 hover:shadow-sm transition">
+                    <div key={product.id} className="bg-white dark:bg-surface-dark-raised rounded-xl border border-gray-200 dark:border-surface-dark-border p-3 flex gap-3 hover:shadow-sm transition">
                       {product.image_urls?.[0] ? (
                         <img src={product.image_urls[0].url} alt={product.name} className="w-14 h-14 rounded-lg object-cover flex-shrink-0" />
                       ) : (
@@ -292,7 +292,7 @@ const ChildProgressDashboard: React.FC = () => {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <Link to={`/products/${product.slug}`} className="text-xs font-semibold text-gray-900 hover:text-indigo-600 line-clamp-2">
+                        <Link to={`/products/${product.slug}`} className="text-xs font-semibold text-gray-900 dark:text-warmgray-100 hover:text-indigo-600 line-clamp-2">
                           {product.name}
                         </Link>
                         <p className="text-indigo-600 font-bold text-sm mt-1">₹{product.price}</p>

@@ -70,7 +70,7 @@ const BlogList = () => {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-teal-dark via-teal to-sky py-20 px-4">
         <motion.div
-          className="absolute w-96 h-96 rounded-full bg-white/10 blur-3xl"
+          className="absolute w-96 h-96 rounded-full bg-white dark:bg-surface-dark-raised/10 blur-3xl"
           animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
           transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
           style={{ top: '-20%', right: '-8%' }}
@@ -98,7 +98,7 @@ const BlogList = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-            className="inline-flex items-center gap-2 bg-white/15 backdrop-blur px-4 py-2 rounded-full text-sm font-semibold mb-5 border border-white/25"
+            className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised/15 backdrop-blur px-4 py-2 rounded-full text-sm font-semibold mb-5 border border-white/25"
           >
             <Rss className="w-4 h-4 text-sunshine" /> Expert Insights & Tips
           </motion.div>
@@ -131,12 +131,12 @@ const BlogList = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search articles, topics, milestones..."
-              className="w-full pl-14 pr-12 py-4 rounded-2xl bg-white text-warmgray-800 placeholder-warmgray-400 shadow-soft-xl focus:outline-none focus:ring-4 focus:ring-white/40"
+              className="w-full pl-14 pr-12 py-4 rounded-2xl bg-white dark:bg-surface-dark-raised text-warmgray-800 dark:text-warmgray-200 placeholder-warmgray-400 shadow-soft-xl focus:outline-none focus:ring-4 focus:ring-white/40"
             />
             {search && (
               <button
                 onClick={() => setSearch('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 p-1 rounded-full hover:bg-warmgray-100"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300 p-1 rounded-full hover:bg-warmgray-100"
                 aria-label="Clear search"
               >
                 <X className="w-4 h-4" />
@@ -169,7 +169,7 @@ const BlogList = () => {
         </div>
       </section>
 
-      <div className="min-h-screen bg-cream-light">
+      <div className="min-h-screen bg-cream-light dark:bg-surface-dark">
         <div className="max-w-7xl mx-auto px-4 py-10">
           {/* Category pills */}
           <motion.div
@@ -178,7 +178,7 @@ const BlogList = () => {
             transition={{ duration: 0.4 }}
             className="mb-8"
           >
-            <div className="flex items-center gap-2 mb-3 text-warmgray-600 text-sm font-semibold">
+            <div className="flex items-center gap-2 mb-3 text-warmgray-600 dark:text-warmgray-400 text-sm font-semibold">
               <Filter className="w-4 h-4" />
               <span>Browse by category</span>
             </div>
@@ -195,14 +195,14 @@ const BlogList = () => {
                     className={`flex-shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition-all whitespace-nowrap border-2 ${
                       active
                         ? 'bg-gradient-to-r from-teal to-teal-dark text-white border-teal shadow-soft-md'
-                        : 'bg-white text-warmgray-700 border-warmgray-200 hover:border-teal/40 hover:text-teal'
+                        : 'bg-white dark:bg-surface-dark-raised text-warmgray-700 dark:text-warmgray-300 border-warmgray-200 dark:border-surface-dark-border hover:border-teal/40 hover:text-teal'
                     }`}
                   >
                     <span>{emoji}</span>
                     <span>{label}</span>
                     <span
                       className={`text-xs px-1.5 py-0.5 rounded-full min-w-[22px] ${
-                        active ? 'bg-white/25 text-white' : 'bg-warmgray-100 text-warmgray-500'
+                        active ? 'bg-white dark:bg-surface-dark-raised/25 text-white' : 'bg-warmgray-100 text-warmgray-500'
                       }`}
                     >
                       {count}
@@ -218,7 +218,7 @@ const BlogList = () => {
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="rounded-2xl overflow-hidden">
                   <div className="h-44 bg-warmgray-200 animate-shimmer" />
-                  <div className="p-5 bg-white space-y-3">
+                  <div className="p-5 bg-white dark:bg-surface-dark-raised space-y-3">
                     <div className="h-4 bg-warmgray-200 rounded animate-shimmer w-3/4" />
                     <div className="h-3 bg-warmgray-200 rounded animate-shimmer" />
                     <div className="h-3 bg-warmgray-200 rounded animate-shimmer w-2/3" />
@@ -230,10 +230,10 @@ const BlogList = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-20 bg-white rounded-3xl shadow-soft border border-warmgray-100"
+              className="text-center py-20 bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft border border-warmgray-100 dark:border-surface-dark-border"
             >
               <BookOpen className="w-16 h-16 text-warmgray-300 mx-auto mb-4" />
-              <p className="text-warmgray-700 text-lg font-bold mb-1">No articles found</p>
+              <p className="text-warmgray-700 dark:text-warmgray-300 text-lg font-bold mb-1">No articles found</p>
               <p className="text-warmgray-500 text-sm mb-4">Try a different search or category.</p>
               <button
                 onClick={() => {
@@ -295,9 +295,9 @@ const BlogList = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.15 }}
-                  className="bg-white rounded-2xl p-5 shadow-soft border border-warmgray-100"
+                  className="bg-white dark:bg-surface-dark-raised rounded-2xl p-5 shadow-soft border border-warmgray-100 dark:border-surface-dark-border"
                 >
-                  <h3 className="font-extrabold text-warmgray-900 mb-4 flex items-center gap-2">
+                  <h3 className="font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-4 flex items-center gap-2">
                     <Clock className="w-4 h-4 text-teal" /> Recent Articles
                   </h3>
                   <div className="space-y-3">
@@ -305,7 +305,7 @@ const BlogList = () => {
                       <Link
                         key={p.id}
                         to={`/blog/${p.slug}`}
-                        className="flex gap-3 group rounded-xl p-2 -m-2 hover:bg-cream-light/60 transition-colors"
+                        className="flex gap-3 group rounded-xl p-2 -m-2 hover:bg-cream-light dark:bg-surface-dark/60 transition-colors"
                       >
                         <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-warmgray-100">
                           {p.featured_image_url ? (
@@ -322,7 +322,7 @@ const BlogList = () => {
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-bold text-warmgray-900 line-clamp-2 group-hover:text-teal transition-colors">
+                          <p className="text-sm font-bold text-warmgray-900 dark:text-warmgray-100 line-clamp-2 group-hover:text-teal transition-colors">
                             {p.title}
                           </p>
                           <p className="text-xs text-warmgray-500 mt-0.5">
@@ -343,9 +343,9 @@ const BlogList = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.25 }}
-                  className="bg-white rounded-2xl p-5 shadow-soft border border-warmgray-100"
+                  className="bg-white dark:bg-surface-dark-raised rounded-2xl p-5 shadow-soft border border-warmgray-100 dark:border-surface-dark-border"
                 >
-                  <h3 className="font-extrabold text-warmgray-900 mb-4 flex items-center gap-2">
+                  <h3 className="font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-4 flex items-center gap-2">
                     <Filter className="w-4 h-4 text-teal" /> Browse by Topic
                   </h3>
                   <div className="space-y-2">
@@ -359,7 +359,7 @@ const BlogList = () => {
                           className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-all text-left ${
                             activeCategory === key
                               ? 'bg-teal-light/40 text-teal'
-                              : 'hover:bg-warmgray-50 text-warmgray-700'
+                              : 'hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark text-warmgray-700 dark:text-warmgray-300'
                           }`}
                         >
                           <span className="inline-flex items-center gap-2">
@@ -385,7 +385,7 @@ const BlogList = () => {
                   transition={{ duration: 0.5, delay: 0.35 }}
                   className="relative bg-gradient-to-br from-teal to-teal-dark text-white rounded-2xl p-6 shadow-soft-md overflow-hidden"
                 >
-                  <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+                  <div className="absolute -top-10 -right-10 w-32 h-32 bg-white dark:bg-surface-dark-raised/10 rounded-full blur-2xl pointer-events-none" />
                   <Sparkles className="w-8 h-8 text-sunshine mb-3" />
                   <h3 className="font-extrabold text-lg mb-1">Need personal guidance?</h3>
                   <p className="text-sm text-white/85 mb-4">
@@ -393,7 +393,7 @@ const BlogList = () => {
                   </p>
                   <Link
                     to="/book"
-                    className="inline-flex items-center gap-1.5 bg-white text-teal font-extrabold px-4 py-2 rounded-full shadow-soft hover:shadow-soft-md transition-all"
+                    className="inline-flex items-center gap-1.5 bg-white dark:bg-surface-dark-raised text-teal font-extrabold px-4 py-2 rounded-full shadow-soft hover:shadow-soft-md transition-all"
                   >
                     Book a Session <ArrowRight className="w-4 h-4" />
                   </Link>

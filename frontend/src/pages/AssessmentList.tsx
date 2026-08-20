@@ -56,7 +56,7 @@ const AssessmentList = () => {
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-sky-dark via-sky to-teal py-20 px-4">
         <motion.div
-          className="absolute w-96 h-96 rounded-full bg-white/10 blur-3xl pointer-events-none"
+          className="absolute w-96 h-96 rounded-full bg-white dark:bg-surface-dark-raised/10 blur-3xl pointer-events-none"
           animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
           style={{ top: '-10%', left: '-5%' }}
@@ -91,7 +91,7 @@ const AssessmentList = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-            className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6"
+            className="inline-flex items-center justify-center w-16 h-16 bg-white dark:bg-surface-dark-raised/20 rounded-full mb-6"
           >
             <ClipboardList className="w-8 h-8 text-white" />
           </motion.div>
@@ -120,13 +120,13 @@ const AssessmentList = () => {
         </div>
       </div>
 
-      <div className="bg-cream-light min-h-screen py-10 px-4">
+      <div className="bg-cream-light dark:bg-surface-dark min-h-screen py-10 px-4">
         <div className="container-talkie">
 
           {loading && (
             <div className="text-center py-16">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto" />
-              <p className="mt-4 text-warmgray-600">Loading assessments...</p>
+              <p className="mt-4 text-warmgray-600 dark:text-warmgray-400">Loading assessments...</p>
             </div>
           )}
 
@@ -153,7 +153,7 @@ const AssessmentList = () => {
           )}
 
           {!loading && !error && assessments.length === 0 && (
-            <div className="text-center py-16 text-warmgray-600">No assessments available at the moment.</div>
+            <div className="text-center py-16 text-warmgray-600 dark:text-warmgray-400">No assessments available at the moment.</div>
           )}
 
           {/* CTA: Book Appointment */}
@@ -180,10 +180,10 @@ const AssessmentList = () => {
                 >
                   <Calendar className="h-8 w-8 text-white" />
                 </motion.div>
-                <h2 className="font-[var(--font-family-fun)] font-bold text-2xl text-warmgray-900 mb-3">
+                <h2 className="font-[var(--font-family-fun)] font-bold text-2xl text-warmgray-900 dark:text-warmgray-100 mb-3">
                   Need Professional Support?
                 </h2>
-                <p className="text-warmgray-600 mb-6 max-w-2xl mx-auto">
+                <p className="text-warmgray-600 dark:text-warmgray-400 mb-6 max-w-2xl mx-auto">
                   Our speech therapy experts provide personalized online therapy sessions tailored to your child's needs.
                 </p>
 
@@ -210,12 +210,12 @@ const AssessmentList = () => {
                       transition={{ duration: 0.4 }}
                       className="mt-8 overflow-hidden"
                     >
-                      <div className="bg-white rounded-2xl shadow-soft-lg p-6 md:p-8 max-w-3xl mx-auto text-left">
+                      <div className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft-lg p-6 md:p-8 max-w-3xl mx-auto text-left">
                         <div className="flex items-center justify-between mb-6">
-                          <h3 className="font-[var(--font-family-fun)] font-bold text-xl text-warmgray-900">Book an Appointment</h3>
+                          <h3 className="font-[var(--font-family-fun)] font-bold text-xl text-warmgray-900 dark:text-warmgray-100">Book an Appointment</h3>
                           <button
                             onClick={() => { setShowBookingModal(false); setSubmitError(null); setSubmitSuccess(false); }}
-                            className="text-warmgray-400 hover:text-warmgray-700 transition-colors p-1 rounded-lg hover:bg-warmgray-100"
+                            className="text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300 transition-colors p-1 rounded-lg hover:bg-warmgray-100"
                           >
                             <X className="w-5 h-5" />
                           </button>
@@ -239,7 +239,7 @@ const AssessmentList = () => {
                               <CheckCircle className="h-5 w-5 text-teal mt-0.5 flex-shrink-0" />
                               <div>
                                 <p className="font-semibold text-teal-dark">Success!</p>
-                                <p className="text-sm text-warmgray-700">Your appointment request has been submitted. We'll contact you soon!</p>
+                                <p className="text-sm text-warmgray-700 dark:text-warmgray-300">Your appointment request has been submitted. We'll contact you soon!</p>
                               </div>
                             </div>
                           )}
@@ -248,17 +248,17 @@ const AssessmentList = () => {
                               <X className="h-5 w-5 text-coral-dark mt-0.5 flex-shrink-0" />
                               <div>
                                 <p className="font-semibold text-coral-dark">Error</p>
-                                <p className="text-sm text-warmgray-700">{submitError}</p>
+                                <p className="text-sm text-warmgray-700 dark:text-warmgray-300">{submitError}</p>
                               </div>
                             </div>
                           )}
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div className="md:col-span-2">
-                              <label className="block text-sm font-semibold text-warmgray-700 mb-1.5">Preferred Language</label>
+                              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Preferred Language</label>
                               <select
                                 value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}
-                                className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal/10 focus:border-teal bg-warmgray-50 focus:bg-white transition-all"
+                                className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:ring-4 focus:ring-teal/10 focus:border-teal bg-warmgray-50 dark:bg-surface-dark focus:bg-white dark:focus:bg-surface-dark-raised transition-all"
                               >
                                 <option value="English">English</option>
                                 <option value="Hindi">Hindi (हिंदी)</option>
@@ -269,30 +269,30 @@ const AssessmentList = () => {
                               </select>
                             </div>
                             <div>
-                              <label className="block text-sm font-semibold text-warmgray-700 mb-1.5">Your Name *</label>
+                              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Your Name *</label>
                               <input type="text" value={bookingData.name} onChange={(e) => setBookingData({ ...bookingData, name: e.target.value })} required
-                                className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal/10 focus:border-teal bg-warmgray-50 focus:bg-white transition-all"
+                                className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:ring-4 focus:ring-teal/10 focus:border-teal bg-warmgray-50 dark:bg-surface-dark focus:bg-white dark:focus:bg-surface-dark-raised transition-all"
                                 placeholder="Enter your full name"
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-semibold text-warmgray-700 mb-1.5">Email Address *</label>
+                              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Email Address *</label>
                               <input type="email" value={bookingData.email} onChange={(e) => setBookingData({ ...bookingData, email: e.target.value })} required
-                                className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal/10 focus:border-teal bg-warmgray-50 focus:bg-white transition-all"
+                                className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:ring-4 focus:ring-teal/10 focus:border-teal bg-warmgray-50 dark:bg-surface-dark focus:bg-white dark:focus:bg-surface-dark-raised transition-all"
                                 placeholder="your.email@example.com"
                               />
                             </div>
                             <div className="md:col-span-2">
-                              <label className="block text-sm font-semibold text-warmgray-700 mb-1.5">Phone Number *</label>
+                              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Phone Number *</label>
                               <input type="tel" value={bookingData.phone} onChange={(e) => setBookingData({ ...bookingData, phone: e.target.value })} required
-                                className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal/10 focus:border-teal bg-warmgray-50 focus:bg-white transition-all"
+                                className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:ring-4 focus:ring-teal/10 focus:border-teal bg-warmgray-50 dark:bg-surface-dark focus:bg-white dark:focus:bg-surface-dark-raised transition-all"
                                 placeholder="+91 1234567890"
                               />
                             </div>
                             <div className="md:col-span-2">
-                              <label className="block text-sm font-semibold text-warmgray-700 mb-1.5">Message (Optional)</label>
+                              <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Message (Optional)</label>
                               <textarea value={bookingData.message} onChange={(e) => setBookingData({ ...bookingData, message: e.target.value })} rows={4}
-                                className="w-full px-4 py-3 border-2 border-warmgray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal/10 focus:border-teal bg-warmgray-50 focus:bg-white transition-all resize-none"
+                                className="w-full px-4 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:outline-none focus:ring-4 focus:ring-teal/10 focus:border-teal bg-warmgray-50 dark:bg-surface-dark focus:bg-white dark:focus:bg-surface-dark-raised transition-all resize-none"
                                 placeholder="Tell us about your child's needs or any specific concerns..."
                               />
                             </div>
@@ -301,7 +301,7 @@ const AssessmentList = () => {
                           <div className="flex flex-col sm:flex-row gap-3 mt-6">
                             <button type="button" disabled={submitting}
                               onClick={() => { setShowBookingModal(false); setSubmitError(null); setSubmitSuccess(false); }}
-                              className="flex-1 px-6 py-3 border-2 border-warmgray-200 text-warmgray-700 rounded-xl hover:bg-warmgray-50 transition-colors font-semibold disabled:opacity-50"
+                              className="flex-1 px-6 py-3 border-2 border-warmgray-200 dark:border-surface-dark-border text-warmgray-700 dark:text-warmgray-300 rounded-xl hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark transition-colors font-semibold disabled:opacity-50"
                             >
                               Cancel
                             </button>
@@ -330,14 +330,14 @@ const AssessmentList = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="bg-white rounded-3xl shadow-soft p-8 text-center">
+              <div className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft p-8 text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-sky-gradient rounded-xl mb-4 shadow-soft">
                   <Globe className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-[var(--font-family-fun)] font-bold text-xl text-warmgray-900 mb-3">
+                <h3 className="font-[var(--font-family-fun)] font-bold text-xl text-warmgray-900 dark:text-warmgray-100 mb-3">
                   Languages Available
                 </h3>
-                <p className="text-warmgray-600 text-sm mb-5 max-w-lg mx-auto">
+                <p className="text-warmgray-600 dark:text-warmgray-400 text-sm mb-5 max-w-lg mx-auto">
                   Our therapy sessions are available in the following languages:
                 </p>
                 <div className="flex flex-wrap justify-center gap-2.5">
@@ -349,7 +349,7 @@ const AssessmentList = () => {
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.07 }}
                       whileHover={{ scale: 1.06, y: -2 }}
-                      className="bg-gradient-to-r from-teal-light/40 to-sky-light/40 text-warmgray-800 text-sm font-semibold px-4 py-2 rounded-full border border-teal/20 shadow-soft-sm cursor-default"
+                      className="bg-gradient-to-r from-teal-light/40 to-sky-light/40 text-warmgray-800 dark:text-warmgray-200 text-sm font-semibold px-4 py-2 rounded-full border border-teal/20 shadow-soft-sm cursor-default"
                     >
                       {lang.name} <span className="text-warmgray-500">({lang.native})</span>
                     </motion.span>

@@ -50,23 +50,23 @@ const QuickAddModal = ({ product, onClose }: Props) => {
           exit={{ y: 80, opacity: 0 }}
           transition={{ type: 'spring', damping: 22, stiffness: 220 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-white w-full md:max-w-lg rounded-t-3xl md:rounded-3xl shadow-soft-xl overflow-hidden"
+          className="bg-white dark:bg-surface-dark-raised w-full md:max-w-lg rounded-t-3xl md:rounded-3xl shadow-soft-xl overflow-hidden"
         >
           <div className="relative">
             <button
               onClick={onClose}
-              className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/90 backdrop-blur shadow-soft hover:bg-white flex items-center justify-center"
+              className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white dark:bg-surface-dark-raised/90 backdrop-blur shadow-soft hover:bg-white dark:hover:bg-surface-dark-raised flex items-center justify-center"
               aria-label="Close"
             >
-              <X className="w-5 h-5 text-warmgray-700" />
+              <X className="w-5 h-5 text-warmgray-700 dark:text-warmgray-300" />
             </button>
-            <div className="aspect-video bg-cream-light overflow-hidden">
+            <div className="aspect-video bg-cream-light dark:bg-surface-dark overflow-hidden">
               <img src={img} alt={product.name} className="w-full h-full object-cover" />
             </div>
           </div>
 
           <div className="p-6">
-            <h3 className="font-extrabold text-xl text-warmgray-900 mb-1 line-clamp-2">{product.name}</h3>
+            <h3 className="font-extrabold text-xl text-warmgray-900 dark:text-warmgray-100 mb-1 line-clamp-2">{product.name}</h3>
             {product.category && (
               <p className="text-xs text-warmgray-500 mb-3">{product.category.name}</p>
             )}
@@ -78,21 +78,21 @@ const QuickAddModal = ({ product, onClose }: Props) => {
             </div>
 
             <div className="flex items-center justify-between mb-5">
-              <span className="text-sm font-bold text-warmgray-700">Quantity</span>
-              <div className="inline-flex items-center border-2 border-warmgray-200 rounded-full overflow-hidden">
+              <span className="text-sm font-bold text-warmgray-700 dark:text-warmgray-300">Quantity</span>
+              <div className="inline-flex items-center border-2 border-warmgray-200 dark:border-surface-dark-border rounded-full overflow-hidden">
                 <button
                   onClick={() => setQty((q) => Math.max(1, q - 1))}
                   disabled={qty <= 1}
-                  className="p-2.5 hover:bg-warmgray-50 disabled:opacity-30"
+                  className="p-2.5 hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark disabled:opacity-30"
                   aria-label="Decrease"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <span className="px-5 font-bold text-warmgray-900 min-w-[2.5rem] text-center">{qty}</span>
+                <span className="px-5 font-bold text-warmgray-900 dark:text-warmgray-100 min-w-[2.5rem] text-center">{qty}</span>
                 <button
                   onClick={() => setQty((q) => Math.min(max, q + 1))}
                   disabled={qty >= max}
-                  className="p-2.5 hover:bg-warmgray-50 disabled:opacity-30"
+                  className="p-2.5 hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark disabled:opacity-30"
                   aria-label="Increase"
                 >
                   <Plus className="w-4 h-4" />
@@ -116,7 +116,7 @@ const QuickAddModal = ({ product, onClose }: Props) => {
               <Link
                 to={`/products/${product.slug}`}
                 onClick={onClose}
-                className="inline-flex items-center justify-center gap-1 px-5 py-3.5 rounded-full font-bold border-2 border-warmgray-300 text-warmgray-700 hover:border-teal hover:text-teal transition-all"
+                className="inline-flex items-center justify-center gap-1 px-5 py-3.5 rounded-full font-bold border-2 border-warmgray-300 dark:border-surface-dark-border text-warmgray-700 dark:text-warmgray-300 hover:border-teal hover:text-teal transition-all"
               >
                 Details <ArrowRight className="w-4 h-4" />
               </Link>

@@ -28,12 +28,12 @@ const FrequentlyBoughtTogether: React.FC<FrequentlyBoughtTogetherProps> = ({ pro
 
   return (
     <div className="mt-10 bg-amber-50 rounded-2xl p-6 border border-amber-100">
-      <h2 className="text-lg font-bold text-gray-900 mb-1">Frequently Bought Together</h2>
+      <h2 className="text-lg font-bold text-gray-900 dark:text-warmgray-100 mb-1">Frequently Bought Together</h2>
       <p className="text-sm text-gray-500 mb-5">Parents who bought <span className="font-medium">{currentProductName}</span> also got:</p>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {products.map((product: any) => (
-          <div key={product.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition">
+          <div key={product.id} className="bg-white dark:bg-surface-dark-raised rounded-xl border border-gray-200 dark:border-surface-dark-border overflow-hidden hover:shadow-md transition">
             <Link to={`/products/${product.slug}`}>
               {product.image_urls?.[0] ? (
                 <img src={product.image_urls[0].url} alt={product.name} className="w-full h-28 object-cover" />
@@ -44,7 +44,7 @@ const FrequentlyBoughtTogether: React.FC<FrequentlyBoughtTogetherProps> = ({ pro
               )}
             </Link>
             <div className="p-3">
-              <Link to={`/products/${product.slug}`} className="text-xs font-medium text-gray-900 line-clamp-2 hover:text-indigo-600">
+              <Link to={`/products/${product.slug}`} className="text-xs font-medium text-gray-900 dark:text-warmgray-100 line-clamp-2 hover:text-indigo-600">
                 {product.name}
               </Link>
               <p className="text-indigo-600 font-bold text-sm mt-1">₹{product.price}</p>

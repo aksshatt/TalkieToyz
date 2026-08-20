@@ -48,7 +48,7 @@ const FAQ = () => {
       />
       {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-sunshine-dark via-sunshine to-coral py-20 px-4">
-        <motion.div className="absolute w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"
+        <motion.div className="absolute w-80 h-80 rounded-full bg-white dark:bg-surface-dark-raised/10 blur-3xl pointer-events-none"
           animate={{ x: [0, 28, 0], y: [0, -18, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
           style={{ top: '-15%', left: '-5%' }} />
         <motion.div className="absolute w-64 h-64 rounded-full bg-teal/20 blur-3xl pointer-events-none"
@@ -67,7 +67,7 @@ const FAQ = () => {
         <div className="relative z-10 max-w-3xl mx-auto text-center text-white">
           <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-            className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6">
+            className="inline-flex items-center justify-center w-16 h-16 bg-white dark:bg-surface-dark-raised/20 rounded-full mb-6">
             <HelpCircle className="w-8 h-8 text-white" />
           </motion.div>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
@@ -86,7 +86,7 @@ const FAQ = () => {
             <input
               type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search FAQs..."
-              className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/95 backdrop-blur-sm text-warmgray-800 placeholder-warmgray-400 focus:outline-none focus:ring-4 focus:ring-white/40 shadow-soft-xl text-base font-medium"
+              className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white dark:bg-surface-dark-raised/95 backdrop-blur-sm text-warmgray-800 dark:text-warmgray-200 placeholder-warmgray-400 focus:outline-none focus:ring-4 focus:ring-white/40 shadow-soft-xl text-base font-medium"
             />
           </motion.div>
         </div>
@@ -98,7 +98,7 @@ const FAQ = () => {
         </div>
       </div>
 
-      <div className="bg-warmgray-50 min-h-screen py-10">
+      <div className="bg-warmgray-50 dark:bg-surface-dark min-h-screen py-10">
         <div className="max-w-4xl mx-auto px-4">
 
           {/* Category Filter Pills */}
@@ -109,7 +109,7 @@ const FAQ = () => {
               className={`px-4 py-2 rounded-full font-semibold text-sm transition-all ${
                 selectedCategory === ''
                   ? 'bg-sunshine-gradient text-white shadow-soft'
-                  : 'bg-white text-warmgray-700 border-2 border-warmgray-200 hover:border-sunshine'
+                  : 'bg-white dark:bg-surface-dark-raised text-warmgray-700 dark:text-warmgray-300 border-2 border-warmgray-200 dark:border-surface-dark-border hover:border-sunshine'
               }`}
             >
               All ({categories.reduce((sum, cat) => sum + cat.count, 0)})
@@ -122,7 +122,7 @@ const FAQ = () => {
                 className={`px-4 py-2 rounded-full font-semibold text-sm transition-all ${
                   selectedCategory === category.value
                     ? 'bg-sunshine-gradient text-white shadow-soft'
-                    : 'bg-white text-warmgray-700 border-2 border-warmgray-200 hover:border-sunshine'
+                    : 'bg-white dark:bg-surface-dark-raised text-warmgray-700 dark:text-warmgray-300 border-2 border-warmgray-200 dark:border-surface-dark-border hover:border-sunshine'
                 }`}
               >
                 {category.label} ({category.count})
@@ -135,9 +135,9 @@ const FAQ = () => {
             <LoadingSkeleton count={5} height={80} />
           ) : faqs.length === 0 ? (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              className="bg-white rounded-3xl shadow-soft p-12 text-center">
+              className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft p-12 text-center">
               <HelpCircle className="h-16 w-16 text-warmgray-300 mx-auto mb-4" />
-              <p className="text-xl text-warmgray-600 font-semibold mb-2">No FAQs found</p>
+              <p className="text-xl text-warmgray-600 dark:text-warmgray-400 font-semibold mb-2">No FAQs found</p>
               <p className="text-warmgray-400">Try a different search term or category.</p>
             </motion.div>
           ) : (
@@ -167,10 +167,10 @@ const FAQ = () => {
               <div className="inline-flex items-center justify-center w-14 h-14 bg-coral-gradient rounded-2xl mb-4 shadow-soft">
                 <MessageCircle className="h-7 w-7 text-white" />
               </div>
-              <h3 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-3">
+              <h3 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200 mb-3">
                 Still have questions?
               </h3>
-              <p className="text-warmgray-600 mb-6 max-w-md mx-auto">
+              <p className="text-warmgray-600 dark:text-warmgray-400 mb-6 max-w-md mx-auto">
                 Can't find the answer you're looking for? Our friendly team is here to help.
               </p>
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>

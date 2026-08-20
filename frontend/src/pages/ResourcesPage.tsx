@@ -90,7 +90,7 @@ const ResourcesPage = () => {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-sky-dark via-sky to-teal py-20 px-4">
         <motion.div
-          className="absolute w-96 h-96 rounded-full bg-white/10 blur-3xl pointer-events-none"
+          className="absolute w-96 h-96 rounded-full bg-white dark:bg-surface-dark-raised/10 blur-3xl pointer-events-none"
           animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
           transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
           style={{ top: '-20%', left: '-8%' }}
@@ -118,7 +118,7 @@ const ResourcesPage = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-            className="inline-flex items-center gap-2 bg-white/15 backdrop-blur px-4 py-2 rounded-full mb-5 border border-white/25"
+            className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised/15 backdrop-blur px-4 py-2 rounded-full mb-5 border border-white/25"
           >
             <Zap className="w-4 h-4 text-sunshine" />
             <span className="text-sm font-semibold">100% Free Downloads</span>
@@ -152,12 +152,12 @@ const ResourcesPage = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search worksheets, guides, activities..."
-              className="w-full pl-14 pr-12 py-4 rounded-2xl bg-white text-warmgray-800 placeholder-warmgray-400 shadow-soft-xl focus:outline-none focus:ring-4 focus:ring-white/40"
+              className="w-full pl-14 pr-12 py-4 rounded-2xl bg-white dark:bg-surface-dark-raised text-warmgray-800 dark:text-warmgray-200 placeholder-warmgray-400 shadow-soft-xl focus:outline-none focus:ring-4 focus:ring-white/40"
             />
             {search && (
               <button
                 onClick={() => setSearch('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 p-1 rounded-full hover:bg-warmgray-100"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300 p-1 rounded-full hover:bg-warmgray-100"
                 aria-label="Clear search"
               >
                 <X className="w-4 h-4" />
@@ -191,7 +191,7 @@ const ResourcesPage = () => {
       </section>
 
       {/* Content */}
-      <div className="bg-cream-light min-h-screen py-12">
+      <div className="bg-cream-light dark:bg-surface-dark min-h-screen py-12">
         <div className="container-talkie">
           {/* Category pills */}
           <motion.div
@@ -200,7 +200,7 @@ const ResourcesPage = () => {
             transition={{ delay: 0.1 }}
             className="mb-8"
           >
-            <div className="flex items-center gap-2 mb-3 text-warmgray-600 text-sm font-semibold">
+            <div className="flex items-center gap-2 mb-3 text-warmgray-600 dark:text-warmgray-400 text-sm font-semibold">
               <Filter className="w-4 h-4" />
               <span>Browse by category</span>
             </div>
@@ -212,11 +212,11 @@ const ResourcesPage = () => {
                 className={`flex-shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border-2 transition-all ${
                   !selectedCategoryId
                     ? 'bg-gradient-to-r from-sky to-sky-dark text-white border-sky shadow-soft-md'
-                    : 'bg-white text-warmgray-700 border-warmgray-200 hover:border-sky/40 hover:text-sky'
+                    : 'bg-white dark:bg-surface-dark-raised text-warmgray-700 dark:text-warmgray-300 border-warmgray-200 dark:border-surface-dark-border hover:border-sky/40 hover:text-sky'
                 }`}
               >
                 📁 All Resources
-                <span className={`text-xs px-1.5 py-0.5 rounded-full ${!selectedCategoryId ? 'bg-white/25 text-white' : 'bg-warmgray-100 text-warmgray-500'}`}>
+                <span className={`text-xs px-1.5 py-0.5 rounded-full ${!selectedCategoryId ? 'bg-white dark:bg-surface-dark-raised/25 text-white' : 'bg-warmgray-100 text-warmgray-500'}`}>
                   {resources.length}
                 </span>
               </motion.button>
@@ -231,7 +231,7 @@ const ResourcesPage = () => {
                     className={`flex-shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap border-2 transition-all ${
                       active
                         ? 'bg-gradient-to-r from-sky to-sky-dark text-white border-sky shadow-soft-md'
-                        : 'bg-white text-warmgray-700 border-warmgray-200 hover:border-sky/40 hover:text-sky'
+                        : 'bg-white dark:bg-surface-dark-raised text-warmgray-700 dark:text-warmgray-300 border-warmgray-200 dark:border-surface-dark-border hover:border-sky/40 hover:text-sky'
                     }`}
                   >
                     <span>{cat.name}</span>
@@ -247,7 +247,7 @@ const ResourcesPage = () => {
               {loading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {[...Array(6)].map((_, i) => (
-                    <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-soft border border-warmgray-100">
+                    <div key={i} className="bg-white dark:bg-surface-dark-raised rounded-2xl overflow-hidden shadow-soft border border-warmgray-100 dark:border-surface-dark-border">
                       <div className="h-40 bg-warmgray-200 animate-shimmer" />
                       <div className="p-5 space-y-3">
                         <div className="h-4 bg-warmgray-200 rounded animate-shimmer w-3/4" />
@@ -261,10 +261,10 @@ const ResourcesPage = () => {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-center py-20 bg-white rounded-3xl shadow-soft border border-warmgray-100"
+                  className="text-center py-20 bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft border border-warmgray-100 dark:border-surface-dark-border"
                 >
                   <FolderOpen className="w-16 h-16 text-warmgray-300 mx-auto mb-4" />
-                  <p className="text-warmgray-700 text-lg font-bold mb-1">No resources found</p>
+                  <p className="text-warmgray-700 dark:text-warmgray-300 text-lg font-bold mb-1">No resources found</p>
                   <p className="text-warmgray-500 text-sm mb-4">
                     {search ? 'Try a different search term.' : 'Try another category.'}
                   </p>
@@ -306,9 +306,9 @@ const ResourcesPage = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.15 }}
-                  className="bg-white rounded-2xl p-5 shadow-soft border border-warmgray-100"
+                  className="bg-white dark:bg-surface-dark-raised rounded-2xl p-5 shadow-soft border border-warmgray-100 dark:border-surface-dark-border"
                 >
-                  <h3 className="font-extrabold text-warmgray-900 mb-4 flex items-center gap-2">
+                  <h3 className="font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-4 flex items-center gap-2">
                     <TrendingUp className="w-4 h-4 text-sky" /> Most Downloaded
                   </h3>
                   <div className="space-y-3">
@@ -316,13 +316,13 @@ const ResourcesPage = () => {
                       <button
                         key={r.id}
                         onClick={() => handleDownload(r.slug)}
-                        className="w-full text-left flex gap-3 group rounded-xl p-2 -m-2 hover:bg-cream-light/60 transition-colors"
+                        className="w-full text-left flex gap-3 group rounded-xl p-2 -m-2 hover:bg-cream-light dark:bg-surface-dark/60 transition-colors"
                       >
                         <div className="w-9 h-9 rounded-lg bg-sky-light/40 flex items-center justify-center flex-shrink-0 font-extrabold text-sky text-sm">
                           {i + 1}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-bold text-warmgray-900 line-clamp-2 group-hover:text-sky transition-colors">
+                          <p className="text-sm font-bold text-warmgray-900 dark:text-warmgray-100 line-clamp-2 group-hover:text-sky transition-colors">
                             {r.title}
                           </p>
                           <p className="text-xs text-warmgray-500 mt-0.5 inline-flex items-center gap-1">
@@ -340,12 +340,12 @@ const ResourcesPage = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.25 }}
-                className="bg-white rounded-2xl p-5 shadow-soft border border-warmgray-100"
+                className="bg-white dark:bg-surface-dark-raised rounded-2xl p-5 shadow-soft border border-warmgray-100 dark:border-surface-dark-border"
               >
-                <h3 className="font-extrabold text-warmgray-900 mb-3 flex items-center gap-2">
+                <h3 className="font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-3 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-sky" /> Why our resources?
                 </h3>
-                <ul className="space-y-2.5 text-sm text-warmgray-700">
+                <ul className="space-y-2.5 text-sm text-warmgray-700 dark:text-warmgray-300">
                   {[
                     'Built by RCI-certified therapists',
                     'Age-appropriate & goal-aligned',
@@ -367,7 +367,7 @@ const ResourcesPage = () => {
                 transition={{ duration: 0.5, delay: 0.35 }}
                 className="relative bg-gradient-to-br from-coral to-coral-dark text-white rounded-2xl p-6 shadow-soft-md overflow-hidden"
               >
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-white dark:bg-surface-dark-raised/10 rounded-full blur-2xl pointer-events-none" />
                 <Sparkles className="w-8 h-8 text-sunshine mb-3" />
                 <h3 className="font-extrabold text-lg mb-1">Need more help?</h3>
                 <p className="text-sm text-white/85 mb-4">
@@ -375,7 +375,7 @@ const ResourcesPage = () => {
                 </p>
                 <Link
                   to="/book"
-                  className="inline-flex items-center gap-1.5 bg-white text-coral font-extrabold px-4 py-2 rounded-full shadow-soft hover:shadow-soft-md transition-all"
+                  className="inline-flex items-center gap-1.5 bg-white dark:bg-surface-dark-raised text-coral font-extrabold px-4 py-2 rounded-full shadow-soft hover:shadow-soft-md transition-all"
                 >
                   Book a Session <ArrowRight className="w-4 h-4" />
                 </Link>

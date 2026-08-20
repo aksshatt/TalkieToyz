@@ -58,7 +58,7 @@ const HeroSection = () => {
         transition={{ duration: 5.2, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
       />
       <motion.div
-        className="absolute top-1/2 right-12 w-6 h-6 rounded-full bg-white/20 hidden lg:block"
+        className="absolute top-1/2 right-12 w-6 h-6 rounded-full bg-white dark:bg-surface-dark-raised/20 hidden lg:block"
         animate={{ y: [0, -8, 0], x: [0, 5, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
       />
@@ -108,7 +108,7 @@ const HeroSection = () => {
             <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.96 }}>
               <Link
                 to="/assessments"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white/95 backdrop-blur-sm hover:bg-white text-black font-bold text-lg rounded-full border-2 border-white shadow-soft hover:shadow-lg transition-colors duration-300"
+                className="inline-flex items-center justify-center px-8 py-4 bg-white dark:bg-surface-dark-raised/95 backdrop-blur-sm hover:bg-white dark:hover:bg-surface-dark-raised text-black font-bold text-lg rounded-full border-2 border-white shadow-soft hover:shadow-lg transition-colors duration-300"
               >
                 <Sparkles className="w-5 h-5 mr-2 text-sunshine" />
                 Take the Development Quiz

@@ -15,7 +15,7 @@ const FaqAccordion: React.FC<FaqAccordionProps> = ({ faq }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-start justify-between text-left p-4"
       >
-        <span className="font-bold text-lg text-warmgray-800 pr-4">
+        <span className="font-bold text-lg text-warmgray-800 dark:text-warmgray-200 pr-4">
           {faq.question}
         </span>
         {isOpen ? (
@@ -26,8 +26,8 @@ const FaqAccordion: React.FC<FaqAccordionProps> = ({ faq }) => {
       </button>
 
       {isOpen && (
-        <div className="px-4 pb-4 pt-2 border-t border-warmgray-200 animate-slide-in">
-          <p className="text-warmgray-700 leading-relaxed whitespace-pre-line">
+        <div className="px-4 pb-4 pt-2 border-t border-warmgray-200 dark:border-surface-dark-border animate-slide-in">
+          <p className="text-warmgray-700 dark:text-warmgray-300 leading-relaxed whitespace-pre-line">
             {faq.answer}
           </p>
         </div>

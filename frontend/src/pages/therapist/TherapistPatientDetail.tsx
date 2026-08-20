@@ -279,7 +279,7 @@ const TherapistPatientDetail: React.FC = () => {
                     ) : (
                       templates.map(t => (
                         <button key={t.id} onClick={() => useTemplate(t)}
-                          className="w-full text-left px-3 py-2 rounded-xl hover:bg-white dark:bg-surface-dark-raised hover:shadow-soft transition-all mb-1">
+                          className="w-full text-left px-3 py-2 rounded-xl hover:bg-white dark:hover:bg-surface-dark-raised hover:shadow-soft transition-all mb-1">
                           <p className="text-xs font-bold text-warmgray-800 dark:text-warmgray-200">{t.title}</p>
                           <p className="text-xs text-warmgray-500 line-clamp-1">{t.content}</p>
                         </button>

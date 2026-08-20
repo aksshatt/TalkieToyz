@@ -62,7 +62,7 @@ const About = () => {
   if (isLoading) {
     return (
       <Layout>
-        <div className="min-h-screen py-12 bg-warmgray-50">
+        <div className="min-h-screen py-12 bg-warmgray-50 dark:bg-surface-dark">
           <div className="max-w-4xl mx-auto px-4">
             <LoadingSkeleton />
           </div>
@@ -74,7 +74,7 @@ const About = () => {
   if (error) {
     return (
       <Layout>
-        <div className="min-h-screen py-12 bg-warmgray-50">
+        <div className="min-h-screen py-12 bg-warmgray-50 dark:bg-surface-dark">
           <div className="max-w-4xl mx-auto px-4 text-center text-red-600">{error}</div>
         </div>
       </Layout>
@@ -119,7 +119,7 @@ const About = () => {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-coral-dark via-coral to-sunshine py-24 px-4">
         <motion.div
-          className="absolute w-[28rem] h-[28rem] rounded-full bg-white/10 blur-3xl pointer-events-none"
+          className="absolute w-[28rem] h-[28rem] rounded-full bg-white dark:bg-surface-dark-raised/10 blur-3xl pointer-events-none"
           animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
           transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
           style={{ top: '-20%', left: '-8%' }}
@@ -147,7 +147,7 @@ const About = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-            className="inline-flex items-center gap-2 bg-white/15 backdrop-blur px-4 py-2 rounded-full mb-5 border border-white/25"
+            className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised/15 backdrop-blur px-4 py-2 rounded-full mb-5 border border-white/25"
           >
             <HeroIcon className="w-4 h-4 text-sunshine" />
             <span className="text-sm font-semibold">Our Story</span>
@@ -187,7 +187,7 @@ const About = () => {
 
       {/* Stats band */}
       <section className="relative -mt-6 px-4 z-10">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 bg-white rounded-3xl shadow-soft-xl border border-warmgray-100 p-5 md:p-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft-xl border border-warmgray-100 dark:border-surface-dark-border p-5 md:p-6">
           {stats.map((s, i) => (
             <motion.div
               key={s.label}
@@ -200,14 +200,14 @@ const About = () => {
               <div className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-gradient-to-br from-coral/15 to-teal/15 mb-2">
                 <s.icon className="w-5 h-5 text-coral" />
               </div>
-              <div className="text-2xl md:text-3xl font-extrabold text-warmgray-900">{s.value}</div>
-              <div className="text-xs md:text-sm text-warmgray-600 font-semibold">{s.label}</div>
+              <div className="text-2xl md:text-3xl font-extrabold text-warmgray-900 dark:text-warmgray-100">{s.value}</div>
+              <div className="text-xs md:text-sm text-warmgray-600 dark:text-warmgray-400 font-semibold">{s.label}</div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      <div className="bg-cream-light py-16">
+      <div className="bg-cream-light dark:bg-surface-dark py-16">
         <div className="max-w-6xl mx-auto px-4">
           {/* Founder */}
           <motion.div
@@ -241,8 +241,8 @@ const About = () => {
                   }}
                 />
               </div>
-              <div className="mt-5 bg-white rounded-2xl shadow-soft p-4 text-center border border-warmgray-100">
-                <p className="font-extrabold text-warmgray-900">
+              <div className="mt-5 bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-4 text-center border border-warmgray-100 dark:border-surface-dark-border">
+                <p className="font-extrabold text-warmgray-900 dark:text-warmgray-100">
                   {content.founder_name || 'Swekchaa Tamrakar'}
                 </p>
                 <p className="text-coral text-sm font-semibold mt-0.5">
@@ -266,17 +266,17 @@ const About = () => {
               <div className="inline-flex items-center gap-2 bg-coral/10 text-coral text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4">
                 <Sparkles className="w-3.5 h-3.5" /> Meet the Founder
               </div>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-warmgray-900 mb-5 leading-tight">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-5 leading-tight">
                 {content.main_heading || 'Meet the Mind Behind Talkie Toyz'}
               </h2>
-              <div className="relative bg-white rounded-2xl p-6 shadow-soft border border-warmgray-100 mb-5">
-                <Quote className="absolute -top-3 -left-3 w-8 h-8 text-coral bg-white rounded-full p-1.5 border border-coral/20" />
-                <p className="text-warmgray-700 leading-relaxed italic">
+              <div className="relative bg-white dark:bg-surface-dark-raised rounded-2xl p-6 shadow-soft border border-warmgray-100 dark:border-surface-dark-border mb-5">
+                <Quote className="absolute -top-3 -left-3 w-8 h-8 text-coral bg-white dark:bg-surface-dark-raised rounded-full p-1.5 border border-coral/20" />
+                <p className="text-warmgray-700 dark:text-warmgray-300 leading-relaxed italic">
                   {content.founder_bio_1 ||
                     "I'm Swekchaa Tamrakar, a speech and hearing professional, founder of Talkie Toyz and Madhuram Multi Rehabilitation Centre, and a passionate believer in learning through play."}
                 </p>
               </div>
-              <p className="text-warmgray-700 leading-relaxed">
+              <p className="text-warmgray-700 dark:text-warmgray-300 leading-relaxed">
                 {content.founder_bio_2 ||
                   "That's how Talkie Toyz was born — to create toys that don't just entertain, but educate, empower, and encourage communication."}
               </p>
@@ -294,7 +294,7 @@ const About = () => {
               <div className="inline-flex items-center gap-2 bg-teal/10 text-teal text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mb-3">
                 <Heart className="w-3.5 h-3.5" /> What We Stand For
               </div>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-warmgray-900">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-warmgray-900 dark:text-warmgray-100">
                 Our <span className="text-coral">Values</span>
               </h2>
             </div>
@@ -307,11 +307,11 @@ const About = () => {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
                   whileHover={{ y: -4 }}
-                  className="bg-white rounded-2xl p-5 text-center shadow-soft border border-warmgray-100 hover:shadow-soft-md transition-all"
+                  className="bg-white dark:bg-surface-dark-raised rounded-2xl p-5 text-center shadow-soft border border-warmgray-100 dark:border-surface-dark-border hover:shadow-soft-md transition-all"
                 >
                   <div className="text-4xl mb-2">{v.icon}</div>
-                  <h3 className="font-extrabold text-warmgray-900 mb-1">{v.title}</h3>
-                  <p className="text-xs text-warmgray-600 leading-relaxed">{v.text}</p>
+                  <h3 className="font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-1">{v.title}</h3>
+                  <p className="text-xs text-warmgray-600 dark:text-warmgray-400 leading-relaxed">{v.text}</p>
                 </motion.div>
               ))}
             </div>
@@ -339,8 +339,8 @@ const About = () => {
                     >
                       <CardIcon className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="text-xl font-extrabold text-warmgray-900 mb-2">{card.title}</h3>
-                    <p className="text-warmgray-700 text-sm leading-relaxed">{card.description}</p>
+                    <h3 className="text-xl font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-2">{card.title}</h3>
+                    <p className="text-warmgray-700 dark:text-warmgray-300 text-sm leading-relaxed">{card.description}</p>
                   </motion.div>
                 );
               })}
@@ -356,21 +356,21 @@ const About = () => {
             className="mb-16"
           >
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 bg-sunshine/20 text-warmgray-800 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mb-3">
+              <div className="inline-flex items-center gap-2 bg-sunshine/20 text-warmgray-800 dark:text-warmgray-200 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mb-3">
                 <Award className="w-3.5 h-3.5" /> Professional Background
               </div>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-warmgray-900">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-warmgray-900 dark:text-warmgray-100">
                 {content.credentials_heading || 'Backed by Expertise'}
               </h2>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
               <motion.div
                 whileHover={{ y: -4 }}
-                className="relative bg-white rounded-3xl p-7 shadow-soft border-t-4 border-teal overflow-hidden"
+                className="relative bg-white dark:bg-surface-dark-raised rounded-3xl p-7 shadow-soft border-t-4 border-teal overflow-hidden"
               >
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-teal-light/30 rounded-full blur-2xl pointer-events-none" />
                 <div className="relative flex gap-5">
-                  <div className="flex-shrink-0 w-20 h-20 bg-white rounded-2xl shadow-soft border border-teal/15 flex items-center justify-center p-2">
+                  <div className="flex-shrink-0 w-20 h-20 bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft border border-teal/15 flex items-center justify-center p-2">
                     <img
                       src="/logo.png"
                       alt="Talkie Toyz logo"
@@ -382,7 +382,7 @@ const About = () => {
                     <h4 className="font-extrabold text-xl text-teal mb-2">
                       {content.talkie_toyz_title || 'Talkie Toyz'}
                     </h4>
-                    <p className="text-warmgray-700 text-sm leading-relaxed">
+                    <p className="text-warmgray-700 dark:text-warmgray-300 text-sm leading-relaxed">
                       {content.talkie_toyz_description ||
                         'Founder & Creator of therapeutic toys designed specifically for speech and communication development.'}
                     </p>
@@ -391,11 +391,11 @@ const About = () => {
               </motion.div>
               <motion.div
                 whileHover={{ y: -4 }}
-                className="relative bg-white rounded-3xl p-7 shadow-soft border-t-4 border-coral overflow-hidden"
+                className="relative bg-white dark:bg-surface-dark-raised rounded-3xl p-7 shadow-soft border-t-4 border-coral overflow-hidden"
               >
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-coral-light/30 rounded-full blur-2xl pointer-events-none" />
                 <div className="relative flex gap-5">
-                  <div className="flex-shrink-0 w-20 h-20 bg-white rounded-2xl shadow-soft border border-coral/15 flex items-center justify-center p-2">
+                  <div className="flex-shrink-0 w-20 h-20 bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft border border-coral/15 flex items-center justify-center p-2">
                     <img
                       src="/madhuram-logo.png"
                       alt="Madhuram Multi Rehabilitation Centre logo"
@@ -407,7 +407,7 @@ const About = () => {
                     <h4 className="font-extrabold text-xl text-coral mb-2">
                       {content.madhuram_title || 'Madhuram Multi Rehabilitation Centre'}
                     </h4>
-                    <p className="text-warmgray-700 text-sm leading-relaxed">
+                    <p className="text-warmgray-700 dark:text-warmgray-300 text-sm leading-relaxed">
                       {content.madhuram_description ||
                         'Founder & Speech-Hearing Professional providing comprehensive therapy services for children.'}
                     </p>
@@ -423,7 +423,7 @@ const About = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-3xl shadow-soft-xl overflow-hidden mb-16 border border-warmgray-100"
+            className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft-xl overflow-hidden mb-16 border border-warmgray-100 dark:border-surface-dark-border"
           >
             <div className="grid md:grid-cols-2">
               <div className="h-72 md:h-auto md:min-h-[400px]">
@@ -442,8 +442,8 @@ const About = () => {
                 <div className="inline-flex items-center gap-2 bg-teal/10 text-teal text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mb-3">
                   <MapPin className="w-3.5 h-3.5" /> Visit Us
                 </div>
-                <h3 className="text-3xl font-extrabold text-warmgray-900 mb-2">Come say hi in Jabalpur</h3>
-                <p className="text-warmgray-600 mb-7">
+                <h3 className="text-3xl font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-2">Come say hi in Jabalpur</h3>
+                <p className="text-warmgray-600 dark:text-warmgray-400 mb-7">
                   Drop by our centre or give us a call — we'd love to meet you.
                 </p>
 
@@ -453,8 +453,8 @@ const About = () => {
                       <MapPin className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <p className="font-extrabold text-warmgray-900 mb-0.5">Address</p>
-                      <p className="text-warmgray-600 text-sm leading-relaxed">
+                      <p className="font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-0.5">Address</p>
+                      <p className="text-warmgray-600 dark:text-warmgray-400 text-sm leading-relaxed">
                         4th Gate, Near Madan Mahal Railway Station Rd,
                         <br />
                         Wright Town, Jabalpur, Madhya Pradesh 482002
@@ -467,7 +467,7 @@ const About = () => {
                       <Phone className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <p className="font-extrabold text-warmgray-900 mb-0.5">Phone</p>
+                      <p className="font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-0.5">Phone</p>
                       <a href="tel:+917738922406" className="text-coral font-bold hover:underline">
                         +91 77389 22406
                       </a>
@@ -479,15 +479,15 @@ const About = () => {
                       <Clock className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <p className="font-extrabold text-warmgray-900 mb-0.5">Hours</p>
-                      <p className="text-warmgray-600 text-sm">Mon – Sat · 10:30 am onwards</p>
+                      <p className="font-extrabold text-warmgray-900 dark:text-warmgray-100 mb-0.5">Hours</p>
+                      <p className="text-warmgray-600 dark:text-warmgray-400 text-sm">Mon – Sat · 10:30 am onwards</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-7 pt-6 border-t border-warmgray-200 space-y-2">
+                <div className="mt-7 pt-6 border-t border-warmgray-200 dark:border-surface-dark-border space-y-2">
                   {['Free parking nearby', 'Wheelchair accessible', 'Welcoming child-safe space'].map((line) => (
-                    <div key={line} className="flex items-center gap-2 text-sm text-warmgray-700">
+                    <div key={line} className="flex items-center gap-2 text-sm text-warmgray-700 dark:text-warmgray-300">
                       <CheckCircle2 className="w-4 h-4 text-teal" /> {line}
                     </div>
                   ))}
@@ -504,7 +504,7 @@ const About = () => {
             className="relative overflow-hidden bg-gradient-to-br from-teal via-teal-dark to-sky rounded-3xl p-10 md:p-14 text-center text-white shadow-soft-xl"
           >
             <motion.div
-              className="absolute w-52 h-52 rounded-full bg-white/10 blur-3xl pointer-events-none"
+              className="absolute w-52 h-52 rounded-full bg-white dark:bg-surface-dark-raised/10 blur-3xl pointer-events-none"
               animate={{ scale: [1, 1.2, 1] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               style={{ top: '-20%', right: '10%' }}
@@ -519,7 +519,7 @@ const About = () => {
               <motion.div
                 animate={{ rotate: [0, 8, -8, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                className="inline-flex items-center justify-center w-14 h-14 bg-white/20 rounded-2xl mb-5"
+                className="inline-flex items-center justify-center w-14 h-14 bg-white dark:bg-surface-dark-raised/20 rounded-2xl mb-5"
               >
                 <Heart className="w-7 h-7 text-white" />
               </motion.div>
@@ -534,7 +534,7 @@ const About = () => {
                 <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
                   <Link
                     to={content.cta_button_1_link || '/products'}
-                    className="inline-flex items-center gap-2 bg-white text-teal font-extrabold px-7 py-3.5 rounded-full shadow-soft-lg hover:shadow-soft-xl transition-all"
+                    className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised text-teal font-extrabold px-7 py-3.5 rounded-full shadow-soft-lg hover:shadow-soft-xl transition-all"
                   >
                     {content.cta_button_1_text || 'Explore Our Toys'} <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -542,7 +542,7 @@ const About = () => {
                 <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
                   <Link
                     to={content.cta_button_2_link || '/contact'}
-                    className="inline-flex items-center gap-2 bg-white/15 backdrop-blur border-2 border-white/40 text-white font-extrabold px-7 py-3.5 rounded-full hover:bg-white/25 transition-all"
+                    className="inline-flex items-center gap-2 bg-white dark:bg-surface-dark-raised/15 backdrop-blur border-2 border-white/40 text-white font-extrabold px-7 py-3.5 rounded-full hover:bg-white dark:hover:bg-surface-dark-raised/25 transition-all"
                   >
                     {content.cta_button_2_text || 'Get in Touch'}
                   </Link>

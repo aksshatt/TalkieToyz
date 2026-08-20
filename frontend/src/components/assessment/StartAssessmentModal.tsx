@@ -39,20 +39,20 @@ const StartAssessmentModal = ({ assessment, isOpen, onClose }: StartAssessmentMo
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-soft-lg w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-in">
+      <div className="bg-white dark:bg-surface-dark-raised rounded-2xl sm:rounded-3xl shadow-soft-lg w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-in">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-warmgray-200">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-warmgray-200 dark:border-surface-dark-border">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-teal-gradient rounded-full shadow-soft">
               <ClipboardList className="h-5 w-5 text-white" />
             </div>
-            <h2 className="font-[var(--font-family-fun)] font-bold text-lg sm:text-xl text-warmgray-900">
+            <h2 className="font-[var(--font-family-fun)] font-bold text-lg sm:text-xl text-warmgray-900 dark:text-warmgray-100">
               Start Assessment
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="text-warmgray-500 hover:text-warmgray-700 transition-colors p-1"
+            className="text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300 transition-colors p-1"
             aria-label="Close modal"
           >
             <X className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -61,18 +61,18 @@ const StartAssessmentModal = ({ assessment, isOpen, onClose }: StartAssessmentMo
 
         {/* Body */}
         <div className="p-4 sm:p-6">
-          <h3 className="font-semibold text-warmgray-900 text-base sm:text-lg mb-1">
+          <h3 className="font-semibold text-warmgray-900 dark:text-warmgray-100 text-base sm:text-lg mb-1">
             {assessment.title}
           </h3>
           {assessment.description && (
-            <p className="text-xs sm:text-sm text-warmgray-600 mb-4">
+            <p className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-400 mb-4">
               {assessment.description}
             </p>
           )}
 
           {/* Assessment Info */}
           <div className="bg-teal-light/30 p-3 rounded-lg mb-4 sm:mb-5">
-            <ul className="space-y-1 text-xs sm:text-sm text-warmgray-700">
+            <ul className="space-y-1 text-xs sm:text-sm text-warmgray-700 dark:text-warmgray-300">
               {assessment.question_count && <li>• {assessment.question_count} questions</li>}
               {assessment.min_age != null && assessment.max_age != null && (
                 <li>• Recommended for ages {Math.floor(assessment.min_age / 12)}-{Math.ceil(assessment.max_age / 12)} years</li>
@@ -84,26 +84,26 @@ const StartAssessmentModal = ({ assessment, isOpen, onClose }: StartAssessmentMo
           {/* Form */}
           <div className="space-y-3 sm:space-y-4">
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-warmgray-700 mb-1.5">
+              <label className="block text-xs sm:text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                 Child's Name *
               </label>
               <input
                 type="text"
                 value={childName}
                 onChange={(e) => setChildName(e.target.value)}
-                className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
+                className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
                 placeholder="Enter child's name"
               />
             </div>
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-warmgray-700 mb-1.5">
+              <label className="block text-xs sm:text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                 Child's Age (years) *
               </label>
               <input
                 type="number"
                 value={childAge}
                 onChange={(e) => setChildAge(e.target.value)}
-                className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
+                className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
                 placeholder="Enter age in years"
                 min="0"
                 max="20"
@@ -111,13 +111,13 @@ const StartAssessmentModal = ({ assessment, isOpen, onClose }: StartAssessmentMo
               />
             </div>
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-warmgray-700 mb-1.5">
+              <label className="block text-xs sm:text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">
                 Mother Tongue
               </label>
               <select
                 value={selectedLanguage}
                 onChange={(e) => setSelectedLanguage(e.target.value)}
-                className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
+                className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
               >
                 <option value="English">English</option>
                 <option value="Hindi">Hindi (हिंदी)</option>
@@ -132,7 +132,7 @@ const StartAssessmentModal = ({ assessment, isOpen, onClose }: StartAssessmentMo
                   type="text"
                   value={otherLanguage}
                   onChange={(e) => setOtherLanguage(e.target.value)}
-                  className="mt-2 w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
+                  className="mt-2 w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
                   placeholder="Please specify your mother tongue"
                 />
               )}
@@ -141,10 +141,10 @@ const StartAssessmentModal = ({ assessment, isOpen, onClose }: StartAssessmentMo
         </div>
 
         {/* Footer */}
-        <div className="p-4 sm:p-6 border-t border-warmgray-200 flex flex-col sm:flex-row gap-3">
+        <div className="p-4 sm:p-6 border-t border-warmgray-200 dark:border-surface-dark-border flex flex-col sm:flex-row gap-3">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-warmgray-300 text-warmgray-700 rounded-xl hover:bg-warmgray-50 transition-colors font-semibold order-2 sm:order-1"
+            className="flex-1 px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-warmgray-300 dark:border-surface-dark-border text-warmgray-700 dark:text-warmgray-300 rounded-xl hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark transition-colors font-semibold order-2 sm:order-1"
           >
             Cancel
           </button>

@@ -39,10 +39,10 @@ const AssessmentResultsPage = () => {
   if (loading) {
     return (
       <Layout>
-        <div className="min-h-screen bg-cream-light flex items-center justify-center px-4">
+        <div className="min-h-screen bg-cream-light dark:bg-surface-dark flex items-center justify-center px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto mb-4"></div>
-            <p className="text-warmgray-600">Loading your results...</p>
+            <p className="text-warmgray-600 dark:text-warmgray-400">Loading your results...</p>
           </div>
         </div>
       </Layout>
@@ -52,11 +52,11 @@ const AssessmentResultsPage = () => {
   if (error || !result) {
     return (
       <Layout>
-        <div className="min-h-screen bg-cream-light flex items-center justify-center px-4">
+        <div className="min-h-screen bg-cream-light dark:bg-surface-dark flex items-center justify-center px-4">
           <div className="text-center max-w-md">
             <div className="bg-coral-light border-l-4 border-coral p-6 rounded-lg mb-6">
               <p className="text-coral-dark font-semibold mb-2">Error</p>
-              <p className="text-warmgray-700">{error || 'Result not found'}</p>
+              <p className="text-warmgray-700 dark:text-warmgray-300">{error || 'Result not found'}</p>
             </div>
             <button
               onClick={() => navigate('/assessments')}
@@ -72,7 +72,7 @@ const AssessmentResultsPage = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-cream-light py-6 sm:py-8 md:py-12 px-4">
+      <div className="min-h-screen bg-cream-light dark:bg-surface-dark py-6 sm:py-8 md:py-12 px-4">
         <div className="container-talkie">
           <AssessmentResults result={result} />
         </div>

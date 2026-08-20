@@ -81,7 +81,7 @@ const NotFound = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-3xl sm:text-4xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-3"
+            className="text-3xl sm:text-4xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200 mb-3"
           >
             Oops! Toy got lost 🔍
           </motion.h1>
@@ -120,7 +120,7 @@ const NotFound = () => {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
               <Link
                 to="/assessments"
-                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-warmgray-300 text-warmgray-700 font-bold rounded-full hover:bg-warmgray-50 transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-warmgray-300 dark:border-surface-dark-border text-warmgray-700 dark:text-warmgray-300 font-bold rounded-full hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark transition-colors"
               >
                 <BookOpen className="w-5 h-5" /> Take a Quiz
               </Link>

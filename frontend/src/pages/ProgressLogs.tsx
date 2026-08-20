@@ -100,7 +100,7 @@ export default function ProgressLogs() {
     <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-warmgray-900">Progress Logs</h1>
+          <h1 className="text-2xl font-bold text-warmgray-900 dark:text-warmgray-100">Progress Logs</h1>
           <p className="text-sm text-warmgray-500 mt-1">Track your child's therapy progress over time</p>
         </div>
         <button
@@ -113,51 +113,51 @@ export default function ProgressLogs() {
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-warmgray-100 shadow-soft p-5 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-surface-dark-raised rounded-2xl border border-warmgray-100 dark:border-surface-dark-border shadow-soft p-5 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-warmgray-600 mb-1">Child Name</label>
+              <label className="block text-sm text-warmgray-600 dark:text-warmgray-400 mb-1">Child Name</label>
               <input required value={form.child_name} onChange={e => setForm(f => ({ ...f, child_name: e.target.value }))}
-                className="w-full px-3 py-2 border border-warmgray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
+                className="w-full px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
             </div>
             <div>
-              <label className="block text-sm text-warmgray-600 mb-1">Age (months)</label>
+              <label className="block text-sm text-warmgray-600 dark:text-warmgray-400 mb-1">Age (months)</label>
               <input required type="number" min={0} value={form.child_age_months} onChange={e => setForm(f => ({ ...f, child_age_months: e.target.value }))}
-                className="w-full px-3 py-2 border border-warmgray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
+                className="w-full px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
             </div>
             <div>
-              <label className="block text-sm text-warmgray-600 mb-1">Date</label>
+              <label className="block text-sm text-warmgray-600 dark:text-warmgray-400 mb-1">Date</label>
               <input required type="date" value={form.log_date} onChange={e => setForm(f => ({ ...f, log_date: e.target.value }))}
-                className="w-full px-3 py-2 border border-warmgray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
+                className="w-full px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
             </div>
             <div>
-              <label className="block text-sm text-warmgray-600 mb-1">Category</label>
+              <label className="block text-sm text-warmgray-600 dark:text-warmgray-400 mb-1">Category</label>
               <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value as Category }))}
-                className="w-full px-3 py-2 border border-warmgray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal capitalize">
+                className="w-full px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal capitalize">
                 {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-sm text-warmgray-600 mb-1">Session Duration (min)</label>
+              <label className="block text-sm text-warmgray-600 dark:text-warmgray-400 mb-1">Session Duration (min)</label>
               <input type="number" min={0} value={form.session_duration_minutes} onChange={e => setForm(f => ({ ...f, session_duration_minutes: e.target.value }))}
-                className="w-full px-3 py-2 border border-warmgray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
+                className="w-full px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
             </div>
             <div>
-              <label className="block text-sm text-warmgray-600 mb-1">Progress Rating (1–5)</label>
+              <label className="block text-sm text-warmgray-600 dark:text-warmgray-400 mb-1">Progress Rating (1–5)</label>
               <input type="number" min={1} max={5} value={form.progress_rating} onChange={e => setForm(f => ({ ...f, progress_rating: e.target.value }))}
-                className="w-full px-3 py-2 border border-warmgray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
+                className="w-full px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
             </div>
           </div>
           <div>
-            <label className="block text-sm text-warmgray-600 mb-1">Goals Addressed (comma-separated)</label>
+            <label className="block text-sm text-warmgray-600 dark:text-warmgray-400 mb-1">Goals Addressed (comma-separated)</label>
             <input value={form.goals_addressed} onChange={e => setForm(f => ({ ...f, goals_addressed: e.target.value }))}
               placeholder="e.g. Articulation, Vocabulary, Turn-taking"
-              className="w-full px-3 py-2 border border-warmgray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
+              className="w-full px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
           </div>
           <div>
-            <label className="block text-sm text-warmgray-600 mb-1">Notes</label>
+            <label className="block text-sm text-warmgray-600 dark:text-warmgray-400 mb-1">Notes</label>
             <textarea required rows={3} value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-              className="w-full px-3 py-2 border border-warmgray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal resize-none" />
+              className="w-full px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal resize-none" />
           </div>
           <button type="submit" disabled={create.isPending}
             className="w-full py-2.5 bg-teal text-white rounded-xl font-medium text-sm hover:bg-teal-dark disabled:opacity-50">
@@ -169,37 +169,37 @@ export default function ProgressLogs() {
       {/* Filters */}
       <div className="flex gap-3 flex-wrap">
         <input value={filterChild} onChange={e => setFilterChild(e.target.value)} placeholder="Filter by child name"
-          className="px-3 py-2 border border-warmgray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
+          className="px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal" />
         <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)}
-          className="px-3 py-2 border border-warmgray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal capitalize">
+          className="px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal capitalize">
           <option value="">All categories</option>
           {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
       </div>
 
       {isLoading ? (
-        <div className="space-y-3">{[1, 2, 3].map(i => <div key={i} className="h-24 bg-white rounded-2xl animate-pulse border border-warmgray-100" />)}</div>
+        <div className="space-y-3">{[1, 2, 3].map(i => <div key={i} className="h-24 bg-white dark:bg-surface-dark-raised rounded-2xl animate-pulse border border-warmgray-100 dark:border-surface-dark-border" />)}</div>
       ) : logs.length === 0 ? (
         <div className="text-center py-16 text-warmgray-400">No progress logs yet. Add your first one!</div>
       ) : (
         <div className="space-y-3">
           {logs.map(log => (
-            <div key={log.id} className="bg-white rounded-2xl border border-warmgray-100 shadow-soft p-4">
+            <div key={log.id} className="bg-white dark:bg-surface-dark-raised rounded-2xl border border-warmgray-100 dark:border-surface-dark-border shadow-soft p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <span className="font-semibold text-warmgray-900">{log.child_name}</span>
+                    <span className="font-semibold text-warmgray-900 dark:text-warmgray-100">{log.child_name}</span>
                     <span className="text-xs text-warmgray-400">{log.child_age_months}mo</span>
-                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${categoryColor[log.category] || 'bg-gray-100 text-gray-600'}`}>{log.category}</span>
+                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${categoryColor[log.category] || 'bg-gray-100 text-gray-600 dark:text-warmgray-400'}`}>{log.category}</span>
                     {log.progress_rating && (
                       <span className="text-xs text-yellow-600 font-medium">{'★'.repeat(log.progress_rating)}{'☆'.repeat(5 - log.progress_rating)}</span>
                     )}
                   </div>
                   <p className="text-xs text-warmgray-400 mb-2">{new Date(log.log_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}{log.session_duration_minutes ? ` · ${log.session_duration_minutes} min` : ''}</p>
-                  <p className="text-sm text-warmgray-700">{log.notes}</p>
+                  <p className="text-sm text-warmgray-700 dark:text-warmgray-300">{log.notes}</p>
                   {log.goals_addressed && log.goals_addressed.length > 0 && (
                     <div className="mt-2 flex gap-1 flex-wrap">
-                      {log.goals_addressed.map((g, i) => <span key={i} className="px-2 py-0.5 bg-warmgray-100 text-warmgray-600 rounded-full text-xs">{g}</span>)}
+                      {log.goals_addressed.map((g, i) => <span key={i} className="px-2 py-0.5 bg-warmgray-100 text-warmgray-600 dark:text-warmgray-400 rounded-full text-xs">{g}</span>)}
                     </div>
                   )}
                 </div>

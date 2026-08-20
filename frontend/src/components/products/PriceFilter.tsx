@@ -32,7 +32,7 @@ const PriceFilter = ({ onPriceChange, minPrice = 0, maxPrice = 200 }: PriceFilte
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 mb-2">
+      <div className="flex items-center gap-2 text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">
         <IndianRupee className="h-4 w-4 text-teal" />
         <span>Price Range</span>
       </div>
@@ -46,7 +46,7 @@ const PriceFilter = ({ onPriceChange, minPrice = 0, maxPrice = 200 }: PriceFilte
             onChange={(e) => setMin(e.target.value)}
             placeholder="0"
             min="0"
-            className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-xl focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/10 text-sm"
+            className="w-full px-3 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/10 text-sm"
           />
         </div>
 
@@ -60,7 +60,7 @@ const PriceFilter = ({ onPriceChange, minPrice = 0, maxPrice = 200 }: PriceFilte
             onChange={(e) => setMax(e.target.value)}
             placeholder="200"
             min="0"
-            className="w-full px-3 py-2 border-2 border-warmgray-200 rounded-xl focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/10 text-sm"
+            className="w-full px-3 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/10 text-sm"
           />
         </div>
       </div>
@@ -74,7 +74,7 @@ const PriceFilter = ({ onPriceChange, minPrice = 0, maxPrice = 200 }: PriceFilte
         </button>
         <button
           onClick={handleReset}
-          className="px-4 py-2 border-2 border-warmgray-200 rounded-xl hover:bg-warmgray-50 transition-colors text-sm font-semibold text-warmgray-600"
+          className="px-4 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark transition-colors text-sm font-semibold text-warmgray-600 dark:text-warmgray-400"
         >
           Reset
         </button>

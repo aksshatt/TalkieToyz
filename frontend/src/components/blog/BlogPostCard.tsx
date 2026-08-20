@@ -24,7 +24,7 @@ const BlogPostCard = ({ post, featured = false }: BlogPostCardProps) => {
     return (
       <Link to={`/blog/${post.slug}`} className="block group">
         <motion.div
-          className="relative rounded-3xl overflow-hidden bg-white shadow-soft-lg border border-warmgray-100"
+          className="relative rounded-3xl overflow-hidden bg-white dark:bg-surface-dark-raised shadow-soft-lg border border-warmgray-100 dark:border-surface-dark-border"
           whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.13)' }}
           transition={{ type: 'spring', stiffness: 280, damping: 22 }}
         >
@@ -47,7 +47,7 @@ const BlogPostCard = ({ post, featured = false }: BlogPostCardProps) => {
                 {post.category_display_name}
               </span>
               {post.featured && (
-                <span className="bg-sunshine text-warmgray-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-soft">
+                <span className="bg-sunshine text-warmgray-900 dark:text-warmgray-100 text-xs font-bold px-3 py-1.5 rounded-full shadow-soft">
                   Featured
                 </span>
               )}
@@ -56,7 +56,7 @@ const BlogPostCard = ({ post, featured = false }: BlogPostCardProps) => {
 
           {/* Content */}
           <div className="p-6">
-            <h3 className="font-[var(--font-family-fun)] font-bold text-2xl text-warmgray-900 mb-2 line-clamp-2 group-hover:text-teal transition-colors">
+            <h3 className="font-[var(--font-family-fun)] font-bold text-2xl text-warmgray-900 dark:text-warmgray-100 mb-2 line-clamp-2 group-hover:text-teal transition-colors">
               {post.title}
             </h3>
             <p className="text-warmgray-500 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
@@ -81,7 +81,7 @@ const BlogPostCard = ({ post, featured = false }: BlogPostCardProps) => {
   return (
     <Link to={`/blog/${post.slug}`} className="block group">
       <motion.div
-        className="relative rounded-2xl overflow-hidden bg-white shadow-soft border border-warmgray-100 flex flex-col h-full"
+        className="relative rounded-2xl overflow-hidden bg-white dark:bg-surface-dark-raised shadow-soft border border-warmgray-100 dark:border-surface-dark-border flex flex-col h-full"
         whileHover={{ y: -5, boxShadow: '0 16px 32px rgba(0,0,0,0.12)' }}
         transition={{ type: 'spring', stiffness: 280, damping: 22 }}
       >
@@ -110,7 +110,7 @@ const BlogPostCard = ({ post, featured = false }: BlogPostCardProps) => {
 
         {/* Content */}
         <div className="p-5 flex-1 flex flex-col">
-          <h3 className="font-[var(--font-family-fun)] font-bold text-lg text-warmgray-900 mb-2 line-clamp-2 group-hover:text-teal transition-colors">
+          <h3 className="font-[var(--font-family-fun)] font-bold text-lg text-warmgray-900 dark:text-warmgray-100 mb-2 line-clamp-2 group-hover:text-teal transition-colors">
             {post.title}
           </h3>
           <p className="text-xs text-warmgray-500 mb-3 line-clamp-2 flex-1">{post.excerpt}</p>
@@ -119,14 +119,14 @@ const BlogPostCard = ({ post, featured = false }: BlogPostCardProps) => {
           {post.tags && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-3">
               {post.tags.slice(0, 2).map((tag) => (
-                <span key={tag} className="bg-warmgray-100 text-warmgray-600 text-xs px-2 py-0.5 rounded-full font-medium">
+                <span key={tag} className="bg-warmgray-100 text-warmgray-600 dark:text-warmgray-400 text-xs px-2 py-0.5 rounded-full font-medium">
                   #{tag}
                 </span>
               ))}
             </div>
           )}
 
-          <div className="flex items-center justify-between text-xs text-warmgray-400 pt-3 border-t border-warmgray-100">
+          <div className="flex items-center justify-between text-xs text-warmgray-400 pt-3 border-t border-warmgray-100 dark:border-surface-dark-border">
             <div className="flex items-center gap-2">
               {/* Author avatar */}
               <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center text-white text-xs font-bold`}>

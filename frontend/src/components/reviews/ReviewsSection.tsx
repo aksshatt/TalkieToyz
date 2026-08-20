@@ -75,10 +75,10 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({
     <div className="space-y-6">
       {/* Rating Summary */}
       {meta && (
-        <div className="bg-cream rounded-2xl p-6 border border-warmgray-200">
+        <div className="bg-cream rounded-2xl p-6 border border-warmgray-200 dark:border-surface-dark-border">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <div className="text-4xl font-bold text-warmgray-900 mb-2">
+              <div className="text-4xl font-bold text-warmgray-900 dark:text-warmgray-100 mb-2">
                 {meta.average_rating.toFixed(1)}
               </div>
               <StarRating
@@ -86,7 +86,7 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({
                 readonly
                 size="lg"
               />
-              <p className="text-sm text-warmgray-600 mt-2">
+              <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mt-2">
                 Based on {meta.total_reviews} review
                 {meta.total_reviews !== 1 ? 's' : ''}
               </p>
@@ -98,7 +98,7 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({
                 .reverse()
                 .map((item: any) => (
                   <div key={item.rating} className="flex items-center gap-2">
-                    <span className="text-sm w-12 text-warmgray-700">
+                    <span className="text-sm w-12 text-warmgray-700 dark:text-warmgray-300">
                       {item.rating} star
                     </span>
                     <div className="flex-1 bg-warmgray-200 rounded-full h-2">
@@ -113,7 +113,7 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({
                         }}
                       />
                     </div>
-                    <span className="text-sm w-8 text-warmgray-600">
+                    <span className="text-sm w-8 text-warmgray-600 dark:text-warmgray-400">
                       {item.count}
                     </span>
                   </div>
@@ -138,7 +138,7 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({
           onChange={(e) =>
             handleFilterChange({ sort: e.target.value as any })
           }
-          className="px-4 py-2 border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
+          className="px-4 py-2 border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20 transition-all"
         >
           <option value="recent">Most Recent</option>
           <option value="most_helpful">Most Helpful</option>
@@ -153,9 +153,9 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({
             onChange={(e) =>
               handleFilterChange({ verified: e.target.checked })
             }
-            className="rounded border-warmgray-300"
+            className="rounded border-warmgray-300 dark:border-surface-dark-border"
           />
-          <span className="text-sm text-warmgray-700">
+          <span className="text-sm text-warmgray-700 dark:text-warmgray-300">
             Verified Purchases Only
           </span>
         </label>
@@ -167,19 +167,19 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({
             onChange={(e) =>
               handleFilterChange({ with_photos: e.target.checked })
             }
-            className="rounded border-warmgray-300"
+            className="rounded border-warmgray-300 dark:border-surface-dark-border"
           />
-          <span className="text-sm text-warmgray-700">With Photos</span>
+          <span className="text-sm text-warmgray-700 dark:text-warmgray-300">With Photos</span>
         </label>
       </div>
 
       {/* Reviews List */}
       {loading ? (
-        <div className="text-center py-8 text-warmgray-600">
+        <div className="text-center py-8 text-warmgray-600 dark:text-warmgray-400">
           Loading reviews...
         </div>
       ) : reviews.length === 0 ? (
-        <div className="text-center py-8 text-warmgray-600">
+        <div className="text-center py-8 text-warmgray-600 dark:text-warmgray-400">
           No reviews yet. Be the first to review!
         </div>
       ) : (
@@ -197,7 +197,7 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({
                     className={`px-4 py-2 rounded-lg transition-all ${
                       filters.page === page
                         ? 'bg-teal text-white'
-                        : 'bg-warmgray-200 text-warmgray-700 hover:bg-warmgray-300'
+                        : 'bg-warmgray-200 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-300'
                     }`}
                   >
                     {page}

@@ -19,11 +19,11 @@ const AssessmentCard = ({ assessment, onStartAssessment }: AssessmentCardProps) 
           </span>
         </div>
 
-        <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 text-lg sm:text-xl mb-2">
+        <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100 text-lg sm:text-xl mb-2">
           {assessment.title}
         </h3>
 
-        <p className="text-xs sm:text-sm text-warmgray-600 mb-3 sm:mb-4 line-clamp-3 flex-1">
+        <p className="text-xs sm:text-sm text-warmgray-600 dark:text-warmgray-400 mb-3 sm:mb-4 line-clamp-3 flex-1">
           {assessment.description}
         </p>
 

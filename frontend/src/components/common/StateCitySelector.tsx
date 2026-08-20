@@ -53,7 +53,7 @@ const StateCitySelector: React.FC<StateCitySelectorProps> = ({
     <>
       {/* State Dropdown */}
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
+        <label className="block text-sm font-semibold text-gray-700 dark:text-warmgray-300 mb-2">
           State *
         </label>
         <select
@@ -63,8 +63,8 @@ const StateCitySelector: React.FC<StateCitySelectorProps> = ({
           className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none transition-colors ${
             stateTouched && stateError
               ? 'border-red-300 focus:border-red-500'
-              : 'border-gray-200 focus:border-purple-500'
-          } ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}`}
+              : 'border-gray-200 dark:border-surface-dark-border focus:border-purple-500'
+          } ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white dark:bg-surface-dark-raised'}`}
         >
           <option value="">Select State</option>
           {states.map((state) => (
@@ -80,7 +80,7 @@ const StateCitySelector: React.FC<StateCitySelectorProps> = ({
 
       {/* City Dropdown */}
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
+        <label className="block text-sm font-semibold text-gray-700 dark:text-warmgray-300 mb-2">
           City *
         </label>
         <select
@@ -90,9 +90,9 @@ const StateCitySelector: React.FC<StateCitySelectorProps> = ({
           className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none transition-colors ${
             cityTouched && cityError
               ? 'border-red-300 focus:border-red-500'
-              : 'border-gray-200 focus:border-purple-500'
+              : 'border-gray-200 dark:border-surface-dark-border focus:border-purple-500'
           } ${
-            disabled || !stateValue ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'
+            disabled || !stateValue ? 'bg-gray-100 cursor-not-allowed' : 'bg-white dark:bg-surface-dark-raised'
           }`}
         >
           <option value="">

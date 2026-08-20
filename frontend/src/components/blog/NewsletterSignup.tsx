@@ -32,10 +32,10 @@ const NewsletterSignup = ({ onSubmit }: NewsletterSignupProps) => {
         <div className="inline-flex items-center justify-center w-16 h-16 bg-teal-gradient rounded-full mb-4">
           <Check className="h-8 w-8 text-white" />
         </div>
-        <h3 className="font-[var(--font-family-fun)] font-bold text-2xl text-warmgray-900 mb-2">
+        <h3 className="font-[var(--font-family-fun)] font-bold text-2xl text-warmgray-900 dark:text-warmgray-100 mb-2">
           Almost There!
         </h3>
-        <p className="text-warmgray-700">
+        <p className="text-warmgray-700 dark:text-warmgray-300">
           Please check your email to confirm your subscription.
         </p>
       </div>
@@ -48,12 +48,12 @@ const NewsletterSignup = ({ onSubmit }: NewsletterSignupProps) => {
         <div className="p-3 bg-teal-gradient rounded-full">
           <Mail className="h-6 w-6 text-white" />
         </div>
-        <h3 className="font-[var(--font-family-fun)] font-bold text-2xl text-warmgray-900">
+        <h3 className="font-[var(--font-family-fun)] font-bold text-2xl text-warmgray-900 dark:text-warmgray-100">
           Join Our Newsletter
         </h3>
       </div>
 
-      <p className="text-warmgray-700 mb-6">
+      <p className="text-warmgray-700 dark:text-warmgray-300 mb-6">
         Get expert tips, resources, and updates delivered to your inbox weekly!
       </p>
 
@@ -64,7 +64,7 @@ const NewsletterSignup = ({ onSubmit }: NewsletterSignupProps) => {
             placeholder="Your name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full px-4 py-3 border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20"
+            className="w-full px-4 py-3 border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20"
           />
         </div>
 
@@ -75,7 +75,7 @@ const NewsletterSignup = ({ onSubmit }: NewsletterSignupProps) => {
             placeholder="Your email address"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full px-4 py-3 border-2 border-warmgray-300 rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20"
+            className="w-full px-4 py-3 border-2 border-warmgray-300 dark:border-surface-dark-border rounded-lg focus:border-teal focus:ring-2 focus:ring-teal/20"
           />
         </div>
 
