@@ -76,13 +76,13 @@ const OrderDetail = () => {
   if (isLoading) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gray-50 py-8">
+        <div className="min-h-screen bg-gray-50 dark:bg-surface-dark py-8">
           <div className="max-w-4xl mx-auto px-4">
             <div className="animate-pulse space-y-6">
-              <div className="h-6 bg-white rounded w-1/4" />
-              <div className="h-48 bg-white rounded-lg" />
-              <div className="h-32 bg-white rounded-lg" />
-              <div className="h-64 bg-white rounded-lg" />
+              <div className="h-6 bg-white dark:bg-surface-dark-raised rounded w-1/4" />
+              <div className="h-48 bg-white dark:bg-surface-dark-raised rounded-lg" />
+              <div className="h-32 bg-white dark:bg-surface-dark-raised rounded-lg" />
+              <div className="h-64 bg-white dark:bg-surface-dark-raised rounded-lg" />
             </div>
           </div>
         </div>
@@ -93,11 +93,11 @@ const OrderDetail = () => {
   if (error || !order) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gray-50 py-12">
+        <div className="min-h-screen bg-gray-50 dark:bg-surface-dark py-12">
           <div className="max-w-2xl mx-auto px-4 text-center">
-            <div className="bg-white rounded-lg p-12 shadow-sm border border-gray-200">
+            <div className="bg-white dark:bg-surface-dark-raised rounded-lg p-12 shadow-sm border border-gray-200 dark:border-surface-dark-border">
               <XCircle className="h-16 w-16 mx-auto mb-4 text-red-400" />
-              <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-warmgray-100 mb-2">
                 Order Not Found
               </h2>
               <p className="text-gray-600 mb-6">
@@ -121,7 +121,7 @@ const OrderDetail = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-50 dark:bg-surface-dark py-8">
         <div className="max-w-4xl mx-auto px-4">
           {/* Back Link */}
           <Link
@@ -133,10 +133,10 @@ const OrderDetail = () => {
           </Link>
 
           {/* Order Header */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-lg shadow-sm border border-gray-200 dark:border-surface-dark-border p-6 mb-6">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-semibold text-gray-900 mb-1">
+                <h1 className="text-2xl font-semibold text-gray-900 dark:text-warmgray-100 mb-1">
                   Order #{order.order_number}
                 </h1>
                 <p className="text-sm text-gray-600">
@@ -155,7 +155,7 @@ const OrderDetail = () => {
 
             <div className="mt-4 flex flex-wrap gap-6 text-sm">
               <div className="flex items-center gap-2">
-                <CreditCard className="h-4 w-4 text-gray-400" />
+                <CreditCard className="h-4 w-4 text-gray-400 dark:text-warmgray-500" />
                 <span className="text-gray-600">Payment:</span>
                 <span className="font-semibold">
                   {order.payment_method === 'razorpay' ? 'Online' : 'COD'}
@@ -171,7 +171,7 @@ const OrderDetail = () => {
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Package className="h-4 w-4 text-gray-400" />
+                <Package className="h-4 w-4 text-gray-400 dark:text-warmgray-500" />
                 <span className="text-gray-600">Items:</span>
                 <span className="font-semibold">{order.order_items.length}</span>
               </div>
@@ -186,9 +186,9 @@ const OrderDetail = () => {
 
           {/* Tracking Timeline */}
           {!isCancelled && (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <div className="bg-white dark:bg-surface-dark-raised rounded-lg shadow-sm border border-gray-200 dark:border-surface-dark-border p-6 mb-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-warmgray-100 flex items-center gap-2">
                   <Truck className="h-5 w-5 text-purple-600" />
                   Order Tracking
                 </h2>
@@ -243,7 +243,7 @@ const OrderDetail = () => {
                         {/* Label */}
                         <span
                           className={`text-xs text-center font-medium leading-tight ${
-                            isCompleted ? 'text-gray-900' : 'text-gray-400'
+                            isCompleted ? 'text-gray-900 dark:text-warmgray-100' : 'text-gray-400 dark:text-warmgray-500'
                           }`}
                         >
                           {step.label}
@@ -256,12 +256,12 @@ const OrderDetail = () => {
 
               {/* Shipment Details */}
               {order.shipment && (
-                <div className="mt-6 pt-6 border-t border-gray-100">
+                <div className="mt-6 pt-6 border-t border-gray-100 dark:border-surface-dark-border">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                     {order.shipment.awb_code && (
                       <div>
                         <span className="text-gray-500">AWB Code</span>
-                        <p className="font-mono font-semibold text-gray-900">
+                        <p className="font-mono font-semibold text-gray-900 dark:text-warmgray-100">
                           {order.shipment.awb_code}
                         </p>
                       </div>
@@ -269,7 +269,7 @@ const OrderDetail = () => {
                     {order.shipment.courier_name && (
                       <div>
                         <span className="text-gray-500">Courier</span>
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-gray-900 dark:text-warmgray-100">
                           {order.shipment.courier_name}
                         </p>
                       </div>
@@ -277,7 +277,7 @@ const OrderDetail = () => {
                     {order.shipment.status && (
                       <div>
                         <span className="text-gray-500">Shipment Status</span>
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-gray-900 dark:text-warmgray-100">
                           {order.shipment.status}
                         </p>
                       </div>
@@ -285,7 +285,7 @@ const OrderDetail = () => {
                     {order.shipment.estimated_delivery && (
                       <div>
                         <span className="text-gray-500">Estimated Delivery</span>
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-gray-900 dark:text-warmgray-100">
                           {order.shipment.estimated_delivery}
                         </p>
                       </div>
@@ -293,7 +293,7 @@ const OrderDetail = () => {
                     {order.shipped_at && (
                       <div>
                         <span className="text-gray-500">Shipped On</span>
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-gray-900 dark:text-warmgray-100">
                           {new Date(order.shipped_at).toLocaleDateString('en-IN', {
                             day: 'numeric',
                             month: 'long',
@@ -346,14 +346,14 @@ const OrderDetail = () => {
             <div className={`rounded-lg p-4 mb-6 border ${
               order.status === 'cancelled'
                 ? 'bg-red-50 border-red-200'
-                : 'bg-gray-50 border-gray-200'
+                : 'bg-gray-50 dark:bg-surface-dark border-gray-200 dark:border-surface-dark-border'
             }`}>
               <div className="flex items-center gap-3">
                 <XCircle className={`h-6 w-6 ${
                   order.status === 'cancelled' ? 'text-red-500' : 'text-gray-500'
                 }`} />
                 <div>
-                  <p className="font-semibold text-gray-900">
+                  <p className="font-semibold text-gray-900 dark:text-warmgray-100">
                     Order {order.status === 'cancelled' ? 'Cancelled' : 'Refunded'}
                   </p>
                   {order.cancelled_at && (
@@ -402,8 +402,8 @@ const OrderDetail = () => {
           )}
 
           {/* Order Items */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-lg shadow-sm border border-gray-200 dark:border-surface-dark-border p-6 mb-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-warmgray-100 mb-4">
               Order Items
             </h2>
             <div className="space-y-4">
@@ -415,7 +415,7 @@ const OrderDetail = () => {
                 return (
                   <div
                     key={item.id}
-                    className="flex items-center gap-4 p-3 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors"
+                    className="flex items-center gap-4 p-3 rounded-lg border border-gray-100 dark:border-surface-dark-border hover:border-gray-200 dark:border-surface-dark-border transition-colors"
                   >
                     <img
                       src={imageUrl}
@@ -453,7 +453,7 @@ const OrderDetail = () => {
             </div>
 
             {/* Price Breakdown */}
-            <div className="mt-6 pt-4 border-t border-gray-100 space-y-2 text-sm">
+            <div className="mt-6 pt-4 border-t border-gray-100 dark:border-surface-dark-border space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Subtotal</span>
                 <span>₹{parseFloat(order.subtotal).toFixed(2)}</span>
@@ -468,7 +468,7 @@ const OrderDetail = () => {
                   <span>-₹{parseFloat(order.discount).toFixed(2)}</span>
                 </div>
               )}
-              <div className="border-t border-gray-200 pt-2 flex justify-between font-bold text-lg">
+              <div className="border-t border-gray-200 dark:border-surface-dark-border pt-2 flex justify-between font-bold text-lg">
                 <span>Total</span>
                 <span className="text-purple-600">
                   ₹{parseFloat(order.total).toFixed(2)}
@@ -478,13 +478,13 @@ const OrderDetail = () => {
           </div>
 
           {/* Shipping Address */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-white dark:bg-surface-dark-raised rounded-lg shadow-sm border border-gray-200 dark:border-surface-dark-border p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-warmgray-100 mb-4 flex items-center gap-2">
               <MapPin className="h-5 w-5 text-purple-600" />
               Shipping Address
             </h2>
             <div className="text-sm space-y-1">
-              <p className="font-semibold text-gray-900">
+              <p className="font-semibold text-gray-900 dark:text-warmgray-100">
                 {order.shipping_address.name}
               </p>
               <p className="text-gray-600">{order.shipping_address.phone}</p>
@@ -513,7 +513,7 @@ function StatusBadge({ status }: { status: OrderStatus }) {
     shipped: 'bg-indigo-50 text-indigo-700 border-indigo-200',
     delivered: 'bg-green-50 text-green-700 border-green-200',
     cancelled: 'bg-red-50 text-red-700 border-red-200',
-    refunded: 'bg-gray-50 text-gray-700 border-gray-200',
+    refunded: 'bg-gray-50 dark:bg-surface-dark text-gray-700 dark:text-warmgray-300 border-gray-200 dark:border-surface-dark-border',
   };
 
   return (

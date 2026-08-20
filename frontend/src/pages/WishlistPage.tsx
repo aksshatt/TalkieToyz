@@ -86,7 +86,7 @@ const WishlistPage = () => {
         </div>
       </div>
 
-      <div className="bg-cream-light min-h-screen py-10 px-4">
+      <div className="bg-cream-light dark:bg-surface-dark min-h-screen py-10 px-4">
         <div className="max-w-5xl mx-auto">
           {isLoading ? (
             <div className="text-center py-16">
@@ -95,12 +95,12 @@ const WishlistPage = () => {
             </div>
           ) : items.length === 0 ? (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-              className="bg-white rounded-3xl shadow-soft p-14 text-center max-w-md mx-auto">
+              className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft p-14 text-center max-w-md mx-auto">
               <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                 className="inline-flex items-center justify-center w-20 h-20 bg-coral-light/30 rounded-full mb-5">
                 <Heart className="h-10 w-10 text-coral" />
               </motion.div>
-              <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-800 mb-3">Your wishlist is empty</h2>
+              <h2 className="text-2xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200 mb-3">Your wishlist is empty</h2>
               <p className="text-warmgray-500 mb-7">Save items you love and come back to them anytime.</p>
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
                 <Link to="/products"
@@ -121,7 +121,7 @@ const WishlistPage = () => {
                     exit={{ opacity: 0, scale: 0.85 }}
                     transition={{ delay: i * 0.06 }}
                     whileHover={{ y: -6, boxShadow: '0 16px 36px rgba(0,0,0,0.12)' }}
-                    className="bg-white rounded-2xl overflow-hidden shadow-soft border border-warmgray-100"
+                    className="bg-white dark:bg-surface-dark-raised rounded-2xl overflow-hidden shadow-soft border border-warmgray-100 dark:border-surface-dark-border"
                   >
                     {/* Image */}
                     <div className="relative overflow-hidden cursor-pointer"
@@ -150,7 +150,7 @@ const WishlistPage = () => {
 
                     {/* Content */}
                     <div className="p-4">
-                      <h3 className="font-semibold text-warmgray-800 text-sm mb-1 line-clamp-2 cursor-pointer hover:text-teal transition-colors"
+                      <h3 className="font-semibold text-warmgray-800 dark:text-warmgray-200 text-sm mb-1 line-clamp-2 cursor-pointer hover:text-teal transition-colors"
                         onClick={() => navigate(`/products/${item.product?.slug}`)}>
                         {item.product?.name}
                       </h3>
