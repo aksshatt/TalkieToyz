@@ -464,6 +464,70 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   }
 
+  /* Talkie Button/Layout Aliases */
+  .btn-primary-talkie {
+    background: linear-gradient(135deg, #B2EBF2 0%, #4DD0E1 50%, #26C6DA 100%);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.25s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary-talkie:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .btn-secondary-talkie {
+    background-color: #F5F5F4;
+    color: #44403C;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-secondary-talkie:hover {
+    background-color: #E7E5E4;
+  }
+
+  .dark .btn-primary-talkie:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .dark .btn-secondary-talkie {
+    background-color: #34343F;
+    color: #D6D3D1;
+  }
+
+  .dark .btn-secondary-talkie:hover {
+    background-color: #3f3f4d;
+  }
+
+  .heading-talkie {
+    font-family: var(--font-family-fun, 'Fredoka', 'Poppins', sans-serif);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #1C1917;
+  }
+
+  .dark .heading-talkie {
+    color: #F5F5F4;
+  }
+
+  .container-talkie {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem 1rem;
+  }
+
   /* Input Styles - Soft & Rounded */
   .input-talkie {
     width: 100%;

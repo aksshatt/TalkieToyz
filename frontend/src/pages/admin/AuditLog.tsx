@@ -97,6 +97,7 @@ const AuditLog = () => {
         <div className="card-talkie p-12 text-center text-warmgray-500 dark:text-warmgray-500">No activity logs found.</div>
       ) : (
         <div className="card-talkie overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-warmgray-50 dark:bg-surface-dark border-b-2 border-warmgray-200 dark:border-surface-dark-border">
@@ -141,6 +142,7 @@ const AuditLog = () => {
               ))}
             </tbody>
           </table>
+          </div>
 
           {meta && meta.total_pages > 1 && (
             <div className="px-4 py-3 border-t border-warmgray-100 flex items-center justify-between">

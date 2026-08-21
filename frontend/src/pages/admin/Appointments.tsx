@@ -126,7 +126,7 @@ const Appointments = () => {
         </div>
       ) : (
         <div className="bg-white dark:bg-surface-dark-raised rounded-xl shadow-soft-lg overflow-hidden">
-          <div className="max-h-[65vh] overflow-y-auto">
+          <div className="max-h-[65vh] overflow-y-auto overflow-x-auto">
           <table className="w-full">
             <thead className="bg-warmgray-50 dark:bg-surface-dark border-b border-warmgray-200 dark:border-surface-dark-border sticky top-0 z-10">
               <tr>

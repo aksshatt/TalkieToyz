@@ -90,6 +90,7 @@ const ContactSubmissions = () => {
         <TableSkeleton />
       ) : (
         <div className="card-talkie overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-warmgray-100">
               <tr>
@@ -130,6 +131,7 @@ const ContactSubmissions = () => {
               )}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 
