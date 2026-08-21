@@ -84,7 +84,7 @@ const ResourceFormPage = () => {
       <div className="card-talkie p-8">
         <h1 className="heading-talkie mb-6">{slug ? 'Edit' : 'New'} Resource</h1>
         {error && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-300 rounded-lg text-red-700 text-sm">
+          <div className="mb-4 p-4 bg-red-50 dark:bg-red-950/40 border border-red-300 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300 text-sm">
             {error}
           </div>
         )}

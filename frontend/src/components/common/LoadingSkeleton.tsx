@@ -84,6 +84,36 @@ export const FilterSidebarSkeleton = () => {
   );
 };
 
+export const TableSkeleton = ({ rows = 6 }: { rows?: number }) => {
+  return (
+    <div className="card-talkie bg-white dark:bg-surface-dark-raised animate-pulse divide-y divide-warmgray-100 dark:divide-surface-dark-border">
+      {[...Array(rows)].map((_, i) => (
+        <div key={i} className="flex items-center gap-4 py-4 px-2">
+          <div className="h-10 w-10 rounded-full bg-warmgray-200 dark:bg-surface-dark-border shrink-0" />
+          <div className="flex-1 space-y-2">
+            <div className="h-4 bg-warmgray-200 dark:bg-surface-dark-border rounded-full w-1/3" />
+            <div className="h-3 bg-warmgray-200 dark:bg-surface-dark-border rounded-full w-1/2" />
+          </div>
+          <div className="h-6 w-20 bg-warmgray-200 dark:bg-surface-dark-border rounded-full shrink-0" />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export const ListSkeleton = ({ rows = 4 }: { rows?: number }) => {
+  return (
+    <div className="space-y-3 animate-pulse">
+      {[...Array(rows)].map((_, i) => (
+        <div key={i} className="card-talkie bg-white dark:bg-surface-dark-raised p-4">
+          <div className="h-4 bg-warmgray-200 dark:bg-surface-dark-border rounded-full w-2/3 mb-3" />
+          <div className="h-3 bg-warmgray-200 dark:bg-surface-dark-border rounded-full w-full" />
+        </div>
+      ))}
+    </div>
+  );
+};
+
 interface LoadingSkeletonProps {
   count?: number;
   height?: number;
@@ -100,7 +130,7 @@ const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
       {[...Array(count)].map((_, i) => (
         <div
           key={i}
-          className="bg-gradient-to-r from-warmgray-200 via-warmgray-100 to-warmgray-200 rounded-2xl animate-pulse"
+          className="bg-gradient-to-r from-warmgray-200 via-warmgray-100 to-warmgray-200 dark:from-surface-dark-border dark:via-surface-dark-raised dark:to-surface-dark-border rounded-2xl animate-pulse"
           style={{ height: `${height}px` }}
         />
       ))}

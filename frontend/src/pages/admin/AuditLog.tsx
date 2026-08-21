@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Shield, Search, Filter } from 'lucide-react';
 import axios from '../../config/axios';
 import toast from 'react-hot-toast';
+import { TableSkeleton } from '../../components/common/LoadingSkeleton';
 
 interface ActivityLog {
   id: number;
@@ -91,9 +92,7 @@ const AuditLog = () => {
       </div>
 
       {isLoading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-        </div>
+        <TableSkeleton />
       ) : logs.length === 0 ? (
         <div className="card-talkie p-12 text-center text-warmgray-500 dark:text-warmgray-500">No activity logs found.</div>
       ) : (

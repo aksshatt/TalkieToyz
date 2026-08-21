@@ -5,6 +5,7 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import api from '../../config/axios';
 import toast from 'react-hot-toast';
+import { ListSkeleton } from '../../components/common/LoadingSkeleton';
 
 interface RevenuePoint { date: string; revenue: number; orders: number }
 interface PopularProduct { product_id: number; product_name: string; total_sold: number; revenue: number }
@@ -177,9 +178,7 @@ const Analytics = () => {
       </div>
 
       {loading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-        </div>
+        <ListSkeleton rows={4} />
       ) : (
         <div className="space-y-6">
           {/* Summary Cards */}

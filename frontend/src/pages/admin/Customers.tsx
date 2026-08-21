@@ -5,6 +5,7 @@ import type { Column } from '../../components/admin/DataTable';
 import Modal from '../../components/admin/Modal';
 import toast from 'react-hot-toast';
 import { adminService, type AdminCustomer } from '../../services/adminService';
+import { TableSkeleton } from '../../components/common/LoadingSkeleton';
 
 interface Customer {
   id: number;
@@ -220,10 +221,7 @@ const Customers: React.FC = () => {
 
       {/* Customers Table */}
       {isLoading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-          <p className="mt-4 text-warmgray-600 dark:text-warmgray-400">Loading customers...</p>
-        </div>
+        <TableSkeleton />
       ) : (
         <DataTable
           columns={columns}

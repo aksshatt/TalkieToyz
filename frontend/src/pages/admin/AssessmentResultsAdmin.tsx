@@ -3,6 +3,7 @@ import { Eye, Download, Search, Filter, X, ChevronDown, ChevronUp, BarChart2, Fi
 import toast from 'react-hot-toast';
 import { assessmentService } from '../../services/assessmentService';
 import type { AssessmentResult } from '../../types/assessment';
+import { TableSkeleton } from '../../components/common/LoadingSkeleton';
 
 const SCORE_LEVEL = (pct: number) => {
   if (pct >= 80) return { label: 'Excellent', color: 'bg-green-100 text-green-700' };
@@ -237,10 +238,7 @@ const AssessmentResultsAdmin = () => {
 
       {/* Table */}
       {isLoading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-          <p className="mt-4 text-warmgray-600 dark:text-warmgray-400">Loading...</p>
-        </div>
+        <TableSkeleton />
       ) : results.length === 0 ? (
         <div className="card-talkie p-12 text-center text-warmgray-500 dark:text-warmgray-500">No assessment results found.</div>
       ) : (

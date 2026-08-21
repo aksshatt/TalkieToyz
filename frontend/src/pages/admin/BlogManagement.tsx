@@ -4,6 +4,7 @@ import { Plus, Edit, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { blogService } from '../../services/blogService';
 import type { BlogPostSummary } from '../../types/blog';
+import { TableSkeleton } from '../../components/common/LoadingSkeleton';
 
 const BlogManagement = () => {
   const [posts, setPosts] = useState<BlogPostSummary[]>([]);
@@ -49,9 +50,7 @@ const BlogManagement = () => {
         </div>
 
         {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-          </div>
+          <TableSkeleton />
         ) : (
           <div className="card-talkie overflow-hidden">
             <table className="w-full">

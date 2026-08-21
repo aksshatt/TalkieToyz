@@ -9,6 +9,7 @@ import { assessmentService } from '../services/assessmentService';
 import { appointmentService } from '../services/appointmentService';
 import type { AssessmentSummary } from '../types/assessment';
 import Layout from '../components/layout/Layout';
+import { ListSkeleton } from '../components/common/LoadingSkeleton';
 
 const LANGUAGES = [
   { name: 'Hindi', native: 'हिंदी' },
@@ -123,12 +124,7 @@ const AssessmentList = () => {
       <div className="bg-cream-light dark:bg-surface-dark min-h-screen py-10 px-4">
         <div className="container-talkie">
 
-          {loading && (
-            <div className="text-center py-16">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto" />
-              <p className="mt-4 text-warmgray-600 dark:text-warmgray-400">Loading assessments...</p>
-            </div>
-          )}
+          {loading && <ListSkeleton rows={4} />}
 
           {error && (
             <div className="bg-coral-light border-l-4 border-coral p-4 rounded-xl mb-6">

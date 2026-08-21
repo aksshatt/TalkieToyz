@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Eye, X } from 'lucide-react';
 import api from '../../config/axios';
 import toast from 'react-hot-toast';
+import { TableSkeleton } from '../../components/common/LoadingSkeleton';
 
 interface ContactSubmission {
   id: number;
@@ -86,9 +87,7 @@ const ContactSubmissions = () => {
       </div>
 
       {loading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-        </div>
+        <TableSkeleton />
       ) : (
         <div className="card-talkie overflow-hidden">
           <table className="w-full">

@@ -4,6 +4,7 @@ import Layout from '../components/layout/Layout';
 import { assessmentService } from '../services/assessmentService';
 import { ClipboardList, Download, Eye, ArrowLeft } from 'lucide-react';
 import type { AssessmentResult } from '../types/assessment';
+import { ListSkeleton } from '../components/common/LoadingSkeleton';
 
 const SCORE_LEVEL = (pct: number) => {
   if (pct >= 80) return { label: 'Excellent', color: 'text-green-600', bg: 'bg-green-100' };
@@ -69,11 +70,7 @@ const AssessmentHistoryPage = () => {
             </div>
           </div>
 
-          {isLoading && (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-            </div>
-          )}
+          {isLoading && <ListSkeleton rows={4} />}
 
           {error && (
             <div className="card-talkie p-6 text-center text-coral">{error}</div>

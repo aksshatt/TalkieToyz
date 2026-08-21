@@ -3,6 +3,7 @@ import { Calendar, Filter, Mail, Phone, MessageCircle } from 'lucide-react';
 import { appointmentService } from '../../services/appointmentService';
 import toast from 'react-hot-toast';
 import type { Appointment } from '../../types/appointment';
+import { TableSkeleton } from '../../components/common/LoadingSkeleton';
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -117,10 +118,7 @@ const Appointments = () => {
 
       {/* Appointments List */}
       {isLoading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal mx-auto"></div>
-          <p className="mt-4 text-warmgray-600 dark:text-warmgray-400">Loading appointments...</p>
-        </div>
+        <TableSkeleton />
       ) : appointments.length === 0 ? (
         <div className="bg-white dark:bg-surface-dark-raised rounded-xl shadow-soft-lg p-12 text-center">
           <Calendar className="h-16 w-16 text-warmgray-300 mx-auto mb-4" />
