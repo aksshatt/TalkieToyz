@@ -290,7 +290,7 @@ const ProductDetail = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2 text-red-700 bg-red-50 px-3 py-2 rounded-md border border-red-200 w-fit">
+                  <div className="flex items-center gap-2 text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-950/40 px-3 py-2 rounded-md border border-red-200 dark:border-red-800 w-fit">
                     <span className="text-sm font-medium">Out of Stock</span>
                   </div>
                 )}

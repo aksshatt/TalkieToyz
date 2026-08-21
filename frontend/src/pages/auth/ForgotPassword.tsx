@@ -264,9 +264,9 @@ const ForgotPassword: React.FC = () => {
                   <motion.div
                     initial={{ opacity: 0, y: -8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-5 bg-red-50 border-l-4 border-red-400 p-4 rounded-xl"
+                    className="mb-5 bg-red-50 dark:bg-red-950/40 border-l-4 border-red-400 dark:border-red-700 p-4 rounded-xl"
                   >
-                    <p className="text-sm text-red-700">{error}</p>
+                    <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
                   </motion.div>
                 )}
 

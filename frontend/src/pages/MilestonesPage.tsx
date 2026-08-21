@@ -370,8 +370,8 @@ const MilestonesPage = () => {
               ))}
             </div>
           ) : error ? (
-            <div className="max-w-md mx-auto bg-red-50 border-l-4 border-red-500 p-6 rounded-xl">
-              <p className="text-red-700">{error}</p>
+            <div className="max-w-md mx-auto bg-red-50 dark:bg-red-950/40 border-l-4 border-red-500 p-6 rounded-xl">
+              <p className="text-red-700 dark:text-red-300">{error}</p>
             </div>
           ) : filtered.length === 0 ? (
             <motion.div

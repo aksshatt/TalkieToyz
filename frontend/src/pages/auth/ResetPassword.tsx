@@ -118,8 +118,8 @@ const ResetPassword: React.FC = () => {
           </div>
 
           {!token && (
-            <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-              <p className="text-sm text-red-700">
+            <div className="mb-6 bg-red-50 dark:bg-red-950/40 border-l-4 border-red-500 dark:border-red-700 p-4 rounded">
+              <p className="text-sm text-red-700 dark:text-red-300">
                 Invalid reset link.{' '}
                 <Link to="/forgot-password" className="underline font-medium">
                   Request a new one
@@ -129,8 +129,8 @@ const ResetPassword: React.FC = () => {
           )}
 
           {serverError && (
-            <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-              <p className="text-sm text-red-700">{serverError}</p>
+            <div className="mb-6 bg-red-50 dark:bg-red-950/40 border-l-4 border-red-500 dark:border-red-700 p-4 rounded">
+              <p className="text-sm text-red-700 dark:text-red-300">{serverError}</p>
             </div>
           )}
 

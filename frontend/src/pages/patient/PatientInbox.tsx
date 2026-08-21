@@ -18,7 +18,7 @@ const PatientInbox: React.FC = () => {
     refetchInterval: 30000,
   });
 
-  const { data: convData } = useQuery({
+  const { data: convData, isLoading: convLoading } = useQuery({
     queryKey: ['patient_conversation', selectedConvId],
     queryFn: () => patientConversationService.getConversation(selectedConvId!),
     enabled: !!selectedConvId,
@@ -68,7 +68,7 @@ const PatientInbox: React.FC = () => {
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
           {selectedConvId && (
-            <button onClick={() => setSelectedConvId(null)} className="p-2 rounded-xl hover:bg-warmgray-200 transition-colors">
+            <button onClick={() => setSelectedConvId(null)} aria-label="Back to conversations" className="p-2 rounded-xl hover:bg-warmgray-200 transition-colors">
               <ArrowLeft className="w-5 h-5 text-warmgray-600 dark:text-warmgray-400" />
             </button>
           )}
@@ -84,7 +84,7 @@ const PatientInbox: React.FC = () => {
           /* Conversation List */
           convsLoading ? (
             <div className="space-y-3">
-              {[...Array(3)].map((_, i) => <div key={i} className="animate-pulse bg-warmgray-200 rounded-2xl h-20" />)}
+              {[...Array(3)].map((_, i) => <div key={i} className="animate-pulse bg-warmgray-200 dark:bg-surface-dark-border rounded-2xl h-20" />)}
             </div>
           ) : conversations.length === 0 ? (
             <div className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft p-12 text-center">
@@ -131,7 +131,15 @@ const PatientInbox: React.FC = () => {
           <div className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft border border-warmgray-100 dark:border-surface-dark-border flex flex-col" style={{ height: 'calc(100vh - 180px)' }}>
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-5 space-y-4">
-              {messages.length === 0 ? (
+              {convLoading ? (
+                <div className="space-y-4 animate-pulse">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className={`flex ${i % 2 ? 'justify-end' : 'justify-start'}`}>
+                      <div className="h-10 w-2/3 rounded-2xl bg-warmgray-200 dark:bg-surface-dark-border" />
+                    </div>
+                  ))}
+                </div>
+              ) : messages.length === 0 ? (
                 <div className="text-center py-10">
                   <MessageSquare className="w-10 h-10 text-warmgray-300 mx-auto mb-2" />
                   <p className="text-warmgray-500 text-sm">No messages yet. Say hello!</p>
@@ -183,6 +191,7 @@ const PatientInbox: React.FC = () => {
                 disabled={sendMutation.isPending}
               />
               <motion.button type="submit" disabled={!newMessage.trim() || sendMutation.isPending}
+                aria-label="Send message"
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                 className="w-11 h-11 bg-teal-gradient rounded-2xl flex items-center justify-center shadow-soft disabled:opacity-50">
                 <Send className="w-4 h-4 text-white" />
