@@ -59,6 +59,9 @@ const Orders: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
+  const [bulkStatus, setBulkStatus] = useState('processing');
+  const [isBulkUpdating, setIsBulkUpdating] = useState(false);
   const PER_PAGE = 25;
 
   useEffect(() => {
@@ -75,7 +78,24 @@ const Orders: React.FC = () => {
 
   useEffect(() => {
     loadOrders();
+    setSelectedOrders([]);
   }, [statusFilter, dateFilter, page, searchTerm]);
+
+  const handleBulkStatusUpdate = async () => {
+    if (selectedOrders.length === 0) return;
+    if (!window.confirm(`Update ${selectedOrders.length} order(s) to "${bulkStatus}"?`)) return;
+    setIsBulkUpdating(true);
+    try {
+      await adminService.bulkUpdateOrderStatus(selectedOrders, bulkStatus);
+      toast.success(`${selectedOrders.length} order(s) updated`);
+      setSelectedOrders([]);
+      loadOrders();
+    } catch {
+      toast.error('Bulk update failed');
+    } finally {
+      setIsBulkUpdating(false);
+    }
+  };
 
   const getDateRange = () => {
     const now = new Date();
@@ -397,6 +417,34 @@ const Orders: React.FC = () => {
       </div>
 
       {/* Filters */}
+      {selectedOrders.length > 0 && (
+        <div className="bg-warmgray-100 dark:bg-surface-dark-raised border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl p-4 flex items-center justify-between flex-wrap gap-3">
+          <span className="font-semibold text-warmgray-700 dark:text-warmgray-300">
+            {selectedOrders.length} order(s) selected
+          </span>
+          <div className="flex items-center gap-2">
+            <select
+              value={bulkStatus}
+              onChange={(e) => setBulkStatus(e.target.value)}
+              className="px-3 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:border-teal"
+            >
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <button
+              onClick={handleBulkStatusUpdate}
+              disabled={isBulkUpdating}
+              className="px-4 py-2 bg-teal text-white font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+            >
+              {isBulkUpdating ? 'Updating…' : 'Update Status'}
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="card-talkie bg-white dark:bg-surface-dark-raised">
         <div className="flex items-center space-x-4">
           <Filter className="h-5 w-5 text-warmgray-600 dark:text-warmgray-400" />
@@ -463,6 +511,9 @@ const Orders: React.FC = () => {
             columns={columns}
             data={filteredOrders}
             emptyMessage="No orders found"
+            selectable
+            selectedIds={selectedOrders}
+            onSelectionChange={(ids) => setSelectedOrders(ids as number[])}
           />
 
           {totalCount > 0 && (

@@ -339,6 +339,11 @@ export const adminService = {
     return response.data;
   },
 
+  bulkUpdateOrderStatus: async (orderIds: number[], status: string): Promise<{ success: boolean; message: string }> => {
+    const response = await axios.post('/admin/orders/bulk_update_status', { order_ids: orderIds, status });
+    return response.data;
+  },
+
   createShipment: async (id: number, courier_id?: number): Promise<any> => {
     const response = await axios.post(`/admin/orders/${id}/create_shipment`, courier_id ? { courier_id } : {});
     return response.data;

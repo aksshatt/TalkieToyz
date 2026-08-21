@@ -45,6 +45,7 @@ const Products: React.FC = () => {
   // Fetch on page or searchTerm change
   useEffect(() => {
     loadProducts(page, searchTerm);
+    setSelectedProducts([]);
   }, [page, searchTerm]);
 
   const loadProducts = async (pageNum: number = page, search: string = searchTerm) => {
@@ -231,7 +232,7 @@ const Products: React.FC = () => {
             </button>
             <button
               onClick={() => handleBulkAction('deactivate')}
-              className="flex items-center space-x-2 px-4 py-2 bg-warmgray-50 dark:bg-surface-dark0 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+              className="flex items-center space-x-2 px-4 py-2 bg-warmgray-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
             >
               <EyeOff className="h-4 w-4" />
               <span>Deactivate</span>
@@ -268,6 +269,9 @@ const Products: React.FC = () => {
             columns={columns}
             data={products}
             emptyMessage="No products found"
+            selectable
+            selectedIds={selectedProducts}
+            onSelectionChange={(ids) => setSelectedProducts(ids as number[])}
           />
 
           {/* Pagination */}

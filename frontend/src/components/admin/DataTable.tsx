@@ -15,6 +15,9 @@ export interface DataTableProps<T> {
   searchPlaceholder?: string;
   onRowClick?: (item: T) => void;
   emptyMessage?: string;
+  selectable?: boolean;
+  selectedIds?: (number | string)[];
+  onSelectionChange?: (ids: (number | string)[]) => void;
 }
 
 function DataTable<T extends { id: number | string }>({
@@ -24,6 +27,9 @@ function DataTable<T extends { id: number | string }>({
   searchPlaceholder = 'Search...',
   onRowClick,
   emptyMessage = 'No data found',
+  selectable = false,
+  selectedIds = [],
+  onSelectionChange,
 }: DataTableProps<T>) {
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -62,6 +68,21 @@ function DataTable<T extends { id: number | string }>({
     );
   }, [sortedData, searchTerm]);
 
+  const allSelected = filteredData.length > 0 && filteredData.every((item) => selectedIds.includes(item.id));
+  const someSelected = filteredData.some((item) => selectedIds.includes(item.id));
+
+  const toggleAll = () => {
+    if (!onSelectionChange) return;
+    onSelectionChange(allSelected ? [] : filteredData.map((item) => item.id));
+  };
+
+  const toggleOne = (id: number | string) => {
+    if (!onSelectionChange) return;
+    onSelectionChange(
+      selectedIds.includes(id) ? selectedIds.filter((sid) => sid !== id) : [...selectedIds, id]
+    );
+  };
+
   return (
     <div className="space-y-4">
       {/* Search */}
@@ -84,6 +105,18 @@ function DataTable<T extends { id: number | string }>({
           <table className="w-full">
             <thead className="bg-warmgray-50 dark:bg-surface-dark border-b-2 border-warmgray-200 dark:border-surface-dark-border sticky top-0 z-10">
               <tr>
+                {selectable && (
+                  <th className="px-6 py-4 w-10">
+                    <input
+                      type="checkbox"
+                      aria-label="Select all rows"
+                      checked={allSelected}
+                      ref={(el) => { if (el) el.indeterminate = !allSelected && someSelected; }}
+                      onChange={toggleAll}
+                      className="w-4 h-4 rounded border-warmgray-300 dark:border-surface-dark-border text-teal focus:ring-teal"
+                    />
+                  </th>
+                )}
                 {columns.map((column) => (
                   <th
                     key={column.key}
@@ -114,7 +147,7 @@ function DataTable<T extends { id: number | string }>({
               {filteredData.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={columns.length}
+                    colSpan={columns.length + (selectable ? 1 : 0)}
                     className="px-6 py-12 text-center text-warmgray-500 dark:text-warmgray-500"
                   >
                     {emptyMessage}
@@ -131,6 +164,17 @@ function DataTable<T extends { id: number | string }>({
                         : ''
                     }
                   >
+                    {selectable && (
+                      <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          aria-label={`Select row ${item.id}`}
+                          checked={selectedIds.includes(item.id)}
+                          onChange={() => toggleOne(item.id)}
+                          className="w-4 h-4 rounded border-warmgray-300 dark:border-surface-dark-border text-teal focus:ring-teal"
+                        />
+                      </td>
+                    )}
                     {columns.map((column) => (
                       <td
                         key={column.key}
