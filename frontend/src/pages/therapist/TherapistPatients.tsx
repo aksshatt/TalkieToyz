@@ -5,17 +5,34 @@ import { Users, MessageSquare, ChevronRight, Search, ClipboardList } from 'lucid
 import { motion } from 'framer-motion';
 import therapistService from '../../services/therapistService';
 
+type FilterKey = 'all' | 'unread' | 'recent';
+
+const FILTERS: { key: FilterKey; label: string }[] = [
+  { key: 'all', label: 'All' },
+  { key: 'unread', label: 'Unread' },
+  { key: 'recent', label: 'Recently active' },
+];
+
 const TherapistPatients: React.FC = () => {
   const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState<FilterKey>('all');
   const { data, isLoading } = useQuery({
     queryKey: ['therapist_patients'],
     queryFn: therapistService.getPatients,
   });
 
-  const patients = (data?.data || []).filter(p =>
-    p.name.toLowerCase().includes(search.toLowerCase()) ||
-    p.email.toLowerCase().includes(search.toLowerCase())
-  );
+  const patients = (data?.data || [])
+    .filter(p =>
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      p.email.toLowerCase().includes(search.toLowerCase())
+    )
+    .filter(p => filter !== 'unread' || p.unread_messages > 0)
+    .sort((a, b) => {
+      if (filter !== 'recent') return 0;
+      return new Date(b.last_message_at || 0).getTime() - new Date(a.last_message_at || 0).getTime();
+    });
+
+  const unreadCount = (data?.data || []).filter(p => p.unread_messages > 0).length;
 
   return (
     <div>
@@ -25,13 +42,26 @@ const TherapistPatients: React.FC = () => {
       </div>
 
       {/* Search */}
-      <div className="relative mb-6 max-w-sm">
+      <div className="relative mb-4 max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-500" />
         <input
           value={search} onChange={e => setSearch(e.target.value)}
           placeholder="Search patients…"
           className="w-full pl-9 pr-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-teal focus:outline-none"
         />
+      </div>
+
+      {/* Filters */}
+      <div className="flex gap-2 flex-wrap mb-6">
+        {FILTERS.map(f => (
+          <button key={f.key} onClick={() => setFilter(f.key)}
+            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${filter === f.key ? 'bg-teal-gradient text-white shadow-soft' : 'bg-white dark:bg-surface-dark-raised border-2 border-warmgray-200 dark:border-surface-dark-border text-warmgray-500 hover:border-teal'}`}>
+            {f.label}
+            {f.key === 'unread' && unreadCount > 0 && (
+              <span className={`ml-1.5 ${filter === 'unread' ? 'text-white/90' : 'text-coral'}`}>({unreadCount})</span>
+            )}
+          </button>
+        ))}
       </div>
 
       {isLoading ? (
@@ -41,8 +71,12 @@ const TherapistPatients: React.FC = () => {
       ) : patients.length === 0 ? (
         <div className="text-center py-20 bg-white dark:bg-surface-dark-raised rounded-3xl border-2 border-dashed border-warmgray-200 dark:border-surface-dark-border">
           <Users className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />
-          <p className="font-semibold text-warmgray-600 dark:text-warmgray-400">{search ? 'No patients match your search' : 'No patients assigned yet'}</p>
-          <p className="text-warmgray-500 text-sm mt-1">Ask the admin to assign patients to you.</p>
+          <p className="font-semibold text-warmgray-600 dark:text-warmgray-400">
+            {search ? 'No patients match your search' : filter === 'unread' ? 'No unread messages' : 'No patients assigned yet'}
+          </p>
+          <p className="text-warmgray-500 text-sm mt-1">
+            {filter === 'unread' && !search ? "You're all caught up." : 'Ask the admin to assign patients to you.'}
+          </p>
         </div>
       ) : (
         <div className="space-y-3">
