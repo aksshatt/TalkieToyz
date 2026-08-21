@@ -66,7 +66,7 @@ export default function ReferralPage() {
           <div className="flex-1 bg-white dark:bg-surface-dark-raised rounded-xl px-4 py-3 font-mono font-bold text-xl text-teal tracking-widest border border-teal/20">
             {data?.referral_code || '—'}
           </div>
-          <button onClick={copy} className="p-3 bg-teal text-white rounded-xl hover:bg-teal-dark">
+          <button onClick={copy} aria-label={copied ? 'Copied' : 'Copy referral code'} className="p-3 bg-teal text-white rounded-xl hover:bg-teal-dark">
             {copied ? <Check className="h-5 w-5" /> : <Copy className="h-5 w-5" />}
           </button>
         </div>

@@ -48,6 +48,7 @@ const TiptapEditor = ({ content, onChange }: TiptapEditorProps) => {
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
+          aria-label="Bold"
           className={`p-2 rounded hover:bg-warmgray-200 ${editor.isActive('bold') ? 'bg-warmgray-200' : ''}`}
         >
           <Bold className="h-4 w-4" />
@@ -56,6 +57,7 @@ const TiptapEditor = ({ content, onChange }: TiptapEditorProps) => {
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
+          aria-label="Italic"
           className={`p-2 rounded hover:bg-warmgray-200 ${editor.isActive('italic') ? 'bg-warmgray-200' : ''}`}
         >
           <Italic className="h-4 w-4" />
@@ -66,6 +68,7 @@ const TiptapEditor = ({ content, onChange }: TiptapEditorProps) => {
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
+          aria-label="Bullet list"
           className={`p-2 rounded hover:bg-warmgray-200 ${editor.isActive('bulletList') ? 'bg-warmgray-200' : ''}`}
         >
           <List className="h-4 w-4" />
@@ -74,6 +77,7 @@ const TiptapEditor = ({ content, onChange }: TiptapEditorProps) => {
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          aria-label="Ordered list"
           className={`p-2 rounded hover:bg-warmgray-200 ${editor.isActive('orderedList') ? 'bg-warmgray-200' : ''}`}
         >
           <ListOrdered className="h-4 w-4" />
@@ -82,6 +86,7 @@ const TiptapEditor = ({ content, onChange }: TiptapEditorProps) => {
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          aria-label="Blockquote"
           className={`p-2 rounded hover:bg-warmgray-200 ${editor.isActive('blockquote') ? 'bg-warmgray-200' : ''}`}
         >
           <Quote className="h-4 w-4" />
@@ -92,6 +97,7 @@ const TiptapEditor = ({ content, onChange }: TiptapEditorProps) => {
         <button
           type="button"
           onClick={addLink}
+          aria-label="Insert link"
           className={`p-2 rounded hover:bg-warmgray-200 ${editor.isActive('link') ? 'bg-warmgray-200' : ''}`}
         >
           <LinkIcon className="h-4 w-4" />
@@ -100,6 +106,7 @@ const TiptapEditor = ({ content, onChange }: TiptapEditorProps) => {
         <button
           type="button"
           onClick={addImage}
+          aria-label="Insert image"
           className="p-2 rounded hover:bg-warmgray-200"
         >
           <ImageIcon className="h-4 w-4" />
@@ -110,6 +117,7 @@ const TiptapEditor = ({ content, onChange }: TiptapEditorProps) => {
         <button
           type="button"
           onClick={() => editor.chain().focus().undo().run()}
+          aria-label="Undo"
           className="p-2 rounded hover:bg-warmgray-200"
         >
           <Undo className="h-4 w-4" />
@@ -118,6 +126,7 @@ const TiptapEditor = ({ content, onChange }: TiptapEditorProps) => {
         <button
           type="button"
           onClick={() => editor.chain().focus().redo().run()}
+          aria-label="Redo"
           className="p-2 rounded hover:bg-warmgray-200"
         >
           <Redo className="h-4 w-4" />

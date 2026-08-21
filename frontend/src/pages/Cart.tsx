@@ -192,7 +192,7 @@ const Cart = () => {
                           <p className="text-xs text-teal">-₹{couponDiscount.toFixed(2)} off</p>
                         </div>
                       </div>
-                      <button onClick={removeCoupon} className="p-1 hover:bg-teal-light/40 rounded-full text-teal">
+                      <button onClick={removeCoupon} aria-label="Remove coupon" className="p-1 hover:bg-teal-light/40 rounded-full text-teal">
                         <X className="h-4 w-4" />
                       </button>
                     </div>

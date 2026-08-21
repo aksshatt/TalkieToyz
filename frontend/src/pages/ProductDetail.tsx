@@ -212,7 +212,7 @@ const ProductDetail = () => {
                     </Link>
                   )}
                 </div>
-                <button className="p-2.5 rounded-lg border border-gray-200 dark:border-surface-dark-border hover:border-pink-300 hover:bg-pink-50 transition-all">
+                <button aria-label="Add to wishlist" className="p-2.5 rounded-lg border border-gray-200 dark:border-surface-dark-border hover:border-pink-300 hover:bg-pink-50 transition-all">
                   <Heart className="h-5 w-5 text-gray-400 hover:text-pink-500" />
                 </button>
               </div>

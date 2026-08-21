@@ -257,10 +257,10 @@ const ContentManagement = () => {
           />
         </td>
         <td className="px-4 py-3 text-right space-x-2">
-          <button onClick={handleSaveEdit} className="text-green-600 hover:text-green-700" title="Save">
+          <button onClick={handleSaveEdit} aria-label="Save" className="text-green-600 hover:text-green-700" title="Save">
             <Save size={18} />
           </button>
-          <button onClick={handleCancelEdit} className="text-red-500 hover:text-red-700" title="Cancel">
+          <button onClick={handleCancelEdit} aria-label="Cancel" className="text-red-500 hover:text-red-700" title="Cancel">
             <X size={18} />
           </button>
         </td>

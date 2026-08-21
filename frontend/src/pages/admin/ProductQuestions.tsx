@@ -112,6 +112,7 @@ export default function ProductQuestions() {
           />
           <button
             type="submit"
+            aria-label="Search"
             className="p-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
           >
             <Search className="h-4 w-4" />

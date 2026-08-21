@@ -55,6 +55,7 @@ const Modal: React.FC<ModalProps> = ({
           </h2>
           <button
             onClick={onClose}
+            aria-label="Close"
             className="p-2 rounded-lg hover:bg-warmgray-100 transition-colors"
           >
             <X className="h-6 w-6 text-warmgray-600 dark:text-warmgray-400" />

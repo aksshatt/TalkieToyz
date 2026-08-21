@@ -52,12 +52,14 @@ const ImageGallery = ({ images, productName }: ImageGalleryProps) => {
           <>
             <button
               onClick={handlePrevious}
+              aria-label="Previous image"
               className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-surface-dark-raised p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <ChevronLeft className="h-6 w-6 text-gray-700 dark:text-warmgray-300" />
             </button>
             <button
               onClick={handleNext}
+              aria-label="Next image"
               className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-surface-dark-raised p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <ChevronRight className="h-6 w-6 text-gray-700 dark:text-warmgray-300" />

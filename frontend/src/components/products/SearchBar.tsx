@@ -51,6 +51,7 @@ const SearchBar = ({
         {query && (
           <button
             onClick={handleClear}
+            aria-label="Clear search"
             className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-600 transition-all hover:scale-110 active:scale-95"
           >
             <X className="h-6 w-6" />

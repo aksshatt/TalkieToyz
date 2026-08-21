@@ -106,6 +106,7 @@ const FilterSidebar = ({
         {isMobile && (
           <button
             onClick={onClose}
+            aria-label="Close filters"
             className="text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300 p-1.5 rounded-lg hover:bg-warmgray-100 transition-all"
           >
             <X className="h-5 w-5" />

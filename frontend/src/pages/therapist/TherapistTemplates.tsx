@@ -98,7 +98,7 @@ const TherapistTemplates: React.FC = () => {
             className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft-xl p-6 mb-6 border border-warmgray-100 dark:border-surface-dark-border">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100">{editing ? 'Edit Template' : 'New Template'}</h3>
-              <button onClick={closeForm} className="p-2 rounded-xl hover:bg-warmgray-100 transition-colors"><X className="w-4 h-4" /></button>
+              <button onClick={closeForm} aria-label="Close form" className="p-2 rounded-xl hover:bg-warmgray-100 transition-colors"><X className="w-4 h-4" /></button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">

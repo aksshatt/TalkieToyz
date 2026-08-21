@@ -192,7 +192,7 @@ const ServiceForm: React.FC<{
       >
         <div className="flex items-center justify-between p-6 border-b border-warmgray-100 sticky top-0 bg-white dark:bg-surface-dark-raised rounded-t-3xl">
           <h2 className="text-xl font-bold text-warmgray-900 dark:text-warmgray-100">{service ? 'Edit Service' : 'New Service'}</h2>
-          <button type="button" onClick={onClose} className="p-2 hover:bg-warmgray-100 rounded-lg">
+          <button type="button" onClick={onClose} aria-label="Close" className="p-2 hover:bg-warmgray-100 rounded-lg">
             <X className="w-5 h-5" />
           </button>
         </div>
