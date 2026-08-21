@@ -82,7 +82,7 @@ const FAQ = () => {
           {/* Search bar in hero */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
             className="relative max-w-lg mx-auto">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-warmgray-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-warmgray-500" />
             <input
               type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search FAQs..."
@@ -138,7 +138,7 @@ const FAQ = () => {
               className="bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft p-12 text-center">
               <HelpCircle className="h-16 w-16 text-warmgray-300 mx-auto mb-4" />
               <p className="text-xl text-warmgray-600 dark:text-warmgray-400 font-semibold mb-2">No FAQs found</p>
-              <p className="text-warmgray-400">Try a different search term or category.</p>
+              <p className="text-warmgray-500">Try a different search term or category.</p>
             </motion.div>
           ) : (
             <AnimatePresence mode="wait">

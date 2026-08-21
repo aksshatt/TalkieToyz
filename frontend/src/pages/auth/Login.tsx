@@ -252,7 +252,7 @@ const Login: React.FC = () => {
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-warmgray-400 group-focus-within:text-teal transition-colors" />
+                    <Mail className="h-5 w-5 text-warmgray-500 group-focus-within:text-teal transition-colors" />
                   </div>
                   <input
                     type="email"
@@ -279,7 +279,7 @@ const Login: React.FC = () => {
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-warmgray-400 group-focus-within:text-teal transition-colors" />
+                    <Lock className="h-5 w-5 text-warmgray-500 group-focus-within:text-teal transition-colors" />
                   </div>
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -301,8 +301,8 @@ const Login: React.FC = () => {
                     className="absolute inset-y-0 right-0 pr-4 flex items-center"
                   >
                     {showPassword
-                      ? <EyeOff className="h-5 w-5 text-warmgray-400 hover:text-teal transition-colors" />
-                      : <Eye className="h-5 w-5 text-warmgray-400 hover:text-teal transition-colors" />
+                      ? <EyeOff className="h-5 w-5 text-warmgray-500 hover:text-teal transition-colors" />
+                      : <Eye className="h-5 w-5 text-warmgray-500 hover:text-teal transition-colors" />
                     }
                   </button>
                 </div>
@@ -360,7 +360,7 @@ const Login: React.FC = () => {
             {/* Divider */}
             <div className="my-6 flex items-center gap-3">
               <div className="flex-1 h-px bg-warmgray-200" />
-              <span className="text-xs text-warmgray-400 font-medium">New to TalkieToys?</span>
+              <span className="text-xs text-warmgray-500 font-medium">New to TalkieToys?</span>
               <div className="flex-1 h-px bg-warmgray-200" />
             </div>
 

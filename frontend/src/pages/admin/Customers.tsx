@@ -73,12 +73,12 @@ const Customers: React.FC = () => {
       render: (customer) => (
         <div>
           <div className="flex items-center space-x-2">
-            <Mail className="h-4 w-4 text-warmgray-400" />
+            <Mail className="h-4 w-4 text-warmgray-500" />
             <span className="text-sm">{customer.email}</span>
           </div>
           {customer.phone && (
             <div className="flex items-center space-x-2 mt-1">
-              <Phone className="h-4 w-4 text-warmgray-400" />
+              <Phone className="h-4 w-4 text-warmgray-500" />
               <span className="text-sm">{customer.phone}</span>
             </div>
           )}
@@ -267,7 +267,7 @@ const Customers: React.FC = () => {
                   Email Address
                 </p>
                 <div className="flex items-center space-x-2">
-                  <Mail className="h-4 w-4 text-warmgray-400" />
+                  <Mail className="h-4 w-4 text-warmgray-500" />
                   <p className="text-warmgray-800 dark:text-warmgray-200">{selectedCustomer.email}</p>
                 </div>
               </div>
@@ -276,7 +276,7 @@ const Customers: React.FC = () => {
                   Phone Number
                 </p>
                 <div className="flex items-center space-x-2">
-                  <Phone className="h-4 w-4 text-warmgray-400" />
+                  <Phone className="h-4 w-4 text-warmgray-500" />
                   <p className="text-warmgray-800 dark:text-warmgray-200">
                     {selectedCustomer.phone || 'Not provided'}
                   </p>

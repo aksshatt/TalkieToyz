@@ -300,7 +300,7 @@ const ProductList = () => {
               </div>
             ) : products.length === 0 ? (
               <div className="text-center py-16 card-talkie">
-                <div className="text-6xl mb-6 text-warmgray-400">
+                <div className="text-6xl mb-6 text-warmgray-500">
                   <svg className="w-20 h-20 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>

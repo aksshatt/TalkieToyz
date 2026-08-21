@@ -67,7 +67,7 @@ const AuditLog = () => {
       {/* Filters */}
       <div className="card-talkie p-4 flex flex-wrap gap-3 items-center">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-warmgray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-warmgray-500" />
           <input
             type="text"
             placeholder="Search resource type..."
@@ -117,14 +117,14 @@ const AuditLog = () => {
                   </td>
                   <td className="px-4 py-3">
                     <div className="font-medium text-warmgray-800 dark:text-warmgray-200">{log.resource_type}</div>
-                    <div className="text-xs text-warmgray-400">ID: {log.resource_id}</div>
+                    <div className="text-xs text-warmgray-500">ID: {log.resource_id}</div>
                   </td>
                   <td className="px-4 py-3 max-w-[220px]">
                     {log.details && Object.keys(log.details).length > 0 ? (
                       <div className="space-y-0.5">
                         {Object.entries(log.details).map(([k, v]) => (
                           <div key={k} className="flex gap-1 text-xs">
-                            <span className="text-warmgray-400 shrink-0">{k}:</span>
+                            <span className="text-warmgray-500 shrink-0">{k}:</span>
                             <span className="text-warmgray-700 dark:text-warmgray-300 truncate">{String(v)}</span>
                           </div>
                         ))}

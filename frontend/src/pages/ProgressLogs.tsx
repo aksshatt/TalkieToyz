@@ -180,7 +180,7 @@ export default function ProgressLogs() {
       {isLoading ? (
         <div className="space-y-3">{[1, 2, 3].map(i => <div key={i} className="h-24 bg-white dark:bg-surface-dark-raised rounded-2xl animate-pulse border border-warmgray-100 dark:border-surface-dark-border" />)}</div>
       ) : logs.length === 0 ? (
-        <div className="text-center py-16 text-warmgray-400">No progress logs yet. Add your first one!</div>
+        <div className="text-center py-16 text-warmgray-500">No progress logs yet. Add your first one!</div>
       ) : (
         <div className="space-y-3">
           {logs.map(log => (
@@ -189,13 +189,13 @@ export default function ProgressLogs() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
                     <span className="font-semibold text-warmgray-900 dark:text-warmgray-100">{log.child_name}</span>
-                    <span className="text-xs text-warmgray-400">{log.child_age_months}mo</span>
+                    <span className="text-xs text-warmgray-500">{log.child_age_months}mo</span>
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${categoryColor[log.category] || 'bg-gray-100 text-gray-600 dark:text-warmgray-400'}`}>{log.category}</span>
                     {log.progress_rating && (
                       <span className="text-xs text-yellow-600 font-medium">{'★'.repeat(log.progress_rating)}{'☆'.repeat(5 - log.progress_rating)}</span>
                     )}
                   </div>
-                  <p className="text-xs text-warmgray-400 mb-2">{new Date(log.log_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}{log.session_duration_minutes ? ` · ${log.session_duration_minutes} min` : ''}</p>
+                  <p className="text-xs text-warmgray-500 mb-2">{new Date(log.log_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}{log.session_duration_minutes ? ` · ${log.session_duration_minutes} min` : ''}</p>
                   <p className="text-sm text-warmgray-700 dark:text-warmgray-300">{log.notes}</p>
                   {log.goals_addressed && log.goals_addressed.length > 0 && (
                     <div className="mt-2 flex gap-1 flex-wrap">

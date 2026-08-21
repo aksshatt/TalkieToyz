@@ -202,7 +202,7 @@ const AssessmentResultsAdmin = () => {
       {/* Filters */}
       <div className="card-talkie p-4 flex flex-wrap gap-3 items-center">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-warmgray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-warmgray-500" />
           <input
             type="text"
             placeholder="Search by child name..."
@@ -283,7 +283,7 @@ const AssessmentResultsAdmin = () => {
                       </td>
                       <td className="px-4 py-3 text-warmgray-500 text-xs">
                         <div>{result.user_name || '—'}</div>
-                        <div className="text-warmgray-400">{result.user_email || ''}</div>
+                        <div className="text-warmgray-500">{result.user_email || ''}</div>
                       </td>
                       <td className="px-4 py-3 text-warmgray-500 text-xs whitespace-nowrap">
                         {result.completed_at

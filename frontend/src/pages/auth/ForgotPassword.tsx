@@ -222,7 +222,7 @@ const ForgotPassword: React.FC = () => {
                   {email}
                 </motion.p>
                 <motion.p
-                  className="text-xs text-warmgray-400 mb-8"
+                  className="text-xs text-warmgray-500 mb-8"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.6 }}
@@ -281,7 +281,7 @@ const ForgotPassword: React.FC = () => {
                     </label>
                     <div className="relative group">
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Mail className="h-5 w-5 text-warmgray-400 group-focus-within:text-sky transition-colors" />
+                        <Mail className="h-5 w-5 text-warmgray-500 group-focus-within:text-sky transition-colors" />
                       </div>
                       <input
                         type="email"

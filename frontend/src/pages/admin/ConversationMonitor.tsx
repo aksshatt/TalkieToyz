@@ -95,7 +95,7 @@ const ConversationMonitor: React.FC = () => {
                   )}
                 </div>
                 <div className="flex-shrink-0 text-right">
-                  {conv.last_message_at && <p className="text-xs text-warmgray-400">{formatDate(conv.last_message_at)}</p>}
+                  {conv.last_message_at && <p className="text-xs text-warmgray-500">{formatDate(conv.last_message_at)}</p>}
                   <ChevronRight className="w-4 h-4 text-warmgray-300 mt-1 ml-auto" />
                 </div>
               </motion.button>
@@ -118,17 +118,17 @@ const ConversationMonitor: React.FC = () => {
             <div>
               <p className="font-bold text-warmgray-900 dark:text-warmgray-100 text-sm">
                 <span className="text-teal">{selectedConv?.therapist_name}</span>
-                <span className="text-warmgray-400 mx-1.5">↔</span>
+                <span className="text-warmgray-500 mx-1.5">↔</span>
                 <span className="text-coral">{selectedConv?.patient_name}</span>
               </p>
-              <p className="text-xs text-warmgray-400 flex items-center gap-1"><Eye className="w-3 h-3" /> Admin view only — therapist is unaware</p>
+              <p className="text-xs text-warmgray-500 flex items-center gap-1"><Eye className="w-3 h-3" /> Admin view only — therapist is unaware</p>
             </div>
           </div>
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
             {messages.length === 0 ? (
-              <div className="text-center py-10 text-warmgray-400 text-sm">No messages yet</div>
+              <div className="text-center py-10 text-warmgray-500 text-sm">No messages yet</div>
             ) : messages.map(msg => {
               const isTherapist = msg.sender_role === 'therapist';
               return (
@@ -154,10 +154,10 @@ const ConversationMonitor: React.FC = () => {
                             <p className="text-sm font-bold text-warmgray-800 dark:text-warmgray-200">{msg.metadata?.assessment_title}</p>
                           </div>
                         ) : null}
-                        <p className={`text-xs text-warmgray-400 mt-1 ${isTherapist ? 'text-left' : 'text-right'}`}>{formatTime(msg.created_at)}</p>
+                        <p className={`text-xs text-warmgray-500 mt-1 ${isTherapist ? 'text-left' : 'text-right'}`}>{formatTime(msg.created_at)}</p>
                       </div>
                     </div>
-                    <p className={`text-xs text-warmgray-400 mt-0.5 px-1 ${isTherapist ? 'text-left' : 'text-right'}`}>
+                    <p className={`text-xs text-warmgray-500 mt-0.5 px-1 ${isTherapist ? 'text-left' : 'text-right'}`}>
                       {msg.sender_name} · {isTherapist ? 'Therapist' : 'Patient'}
                     </p>
                   </div>
@@ -169,7 +169,7 @@ const ConversationMonitor: React.FC = () => {
 
           {/* Read-only notice */}
           <div className="px-6 py-3 border-t border-warmgray-100 bg-warmgray-50 dark:bg-surface-dark rounded-b-3xl">
-            <p className="text-xs text-warmgray-400 text-center flex items-center justify-center gap-1.5">
+            <p className="text-xs text-warmgray-500 text-center flex items-center justify-center gap-1.5">
               <Eye className="w-3.5 h-3.5" /> Read-only monitoring — you cannot send messages from this view
             </p>
           </div>

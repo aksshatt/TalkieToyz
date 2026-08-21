@@ -141,7 +141,7 @@ const ResetPassword: React.FC = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-warmgray-400" />
+                  <Lock className="h-5 w-5 text-warmgray-500" />
                 </div>
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -160,7 +160,7 @@ const ResetPassword: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-warmgray-400 dark:text-warmgray-500 hover:text-warmgray-600 dark:text-warmgray-400"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-warmgray-500 dark:text-warmgray-500 hover:text-warmgray-600 dark:text-warmgray-400"
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
@@ -174,7 +174,7 @@ const ResetPassword: React.FC = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-warmgray-400" />
+                  <Lock className="h-5 w-5 text-warmgray-500" />
                 </div>
                 <input
                   type={showConfirm ? 'text' : 'password'}
@@ -193,7 +193,7 @@ const ResetPassword: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-warmgray-400 dark:text-warmgray-500 hover:text-warmgray-600 dark:text-warmgray-400"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-warmgray-500 dark:text-warmgray-500 hover:text-warmgray-600 dark:text-warmgray-400"
                 >
                   {showConfirm ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>

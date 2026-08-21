@@ -70,7 +70,7 @@ const TherapistManagement: React.FC = () => {
 
       {/* Search */}
       <div className="relative mb-5 max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-500" />
         <input value={therapistSearch} onChange={e => setTherapistSearch(e.target.value)} placeholder="Search therapists…"
           className="w-full pl-9 pr-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-teal focus:outline-none" />
       </div>
@@ -110,7 +110,7 @@ const TherapistManagement: React.FC = () => {
                       <Plus className="w-4 h-4" /> Assign Patient
                     </motion.button>
                     <button onClick={() => setExpandedTherapist(isExpanded ? null : therapist.id)}
-                      className="p-2 rounded-xl hover:bg-warmgray-100 transition-colors text-warmgray-400">
+                      className="p-2 rounded-xl hover:bg-warmgray-100 transition-colors text-warmgray-500">
                       {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </button>
                   </div>
@@ -122,7 +122,7 @@ const TherapistManagement: React.FC = () => {
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
                       className="border-t border-warmgray-100 px-5 pb-4">
                       {assignments.length === 0 ? (
-                        <p className="text-sm text-warmgray-400 py-4 text-center">No patients assigned yet</p>
+                        <p className="text-sm text-warmgray-500 py-4 text-center">No patients assigned yet</p>
                       ) : (
                         <div className="space-y-2 pt-3">
                           {assignments.map(a => (
@@ -132,10 +132,10 @@ const TherapistManagement: React.FC = () => {
                               </div>
                               <div className="flex-1 min-w-0">
                                 <p className="font-semibold text-warmgray-800 dark:text-warmgray-200 text-sm">{a.patient_name}</p>
-                                <p className="text-xs text-warmgray-400">{a.patient_email}</p>
+                                <p className="text-xs text-warmgray-500">{a.patient_email}</p>
                               </div>
                               <button onClick={() => { if (confirm('Remove this assignment?')) unassignMutation.mutate(a.id); }}
-                                className="p-1.5 rounded-lg hover:bg-coral-light/20 text-warmgray-400 hover:text-coral transition-colors">
+                                className="p-1.5 rounded-lg hover:bg-coral-light/20 text-warmgray-500 hover:text-coral transition-colors">
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
                             </div>
@@ -165,7 +165,7 @@ const TherapistManagement: React.FC = () => {
                 </button>
               </div>
               <div className="relative mb-3">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-500" />
                 <input value={patientSearch} onChange={e => setPatientSearch(e.target.value)} placeholder="Search patients…"
                   className="w-full pl-9 pr-4 py-2.5 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-teal focus:outline-none" />
               </div>
@@ -173,7 +173,7 @@ const TherapistManagement: React.FC = () => {
                 {patientsLoading ? (
                   [...Array(3)].map((_, i) => <div key={i} className="animate-pulse bg-warmgray-200 rounded-xl h-14" />)
                 ) : availablePatients.length === 0 ? (
-                  <p className="text-center text-warmgray-400 py-6 text-sm">No available patients</p>
+                  <p className="text-center text-warmgray-500 py-6 text-sm">No available patients</p>
                 ) : availablePatients.map(p => (
                   <motion.button key={p.id} whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
                     onClick={() => assignMutation.mutate({ therapistId: assignModal.therapistId, patientId: p.id })}
@@ -184,7 +184,7 @@ const TherapistManagement: React.FC = () => {
                     </div>
                     <div className="min-w-0">
                       <p className="font-semibold text-warmgray-800 dark:text-warmgray-200 text-sm">{p.name}</p>
-                      <p className="text-xs text-warmgray-400 truncate">{p.email}</p>
+                      <p className="text-xs text-warmgray-500 truncate">{p.email}</p>
                     </div>
                     <Plus className="w-4 h-4 text-teal ml-auto flex-shrink-0" />
                   </motion.button>

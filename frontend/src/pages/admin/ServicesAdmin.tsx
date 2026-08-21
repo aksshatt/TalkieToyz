@@ -101,7 +101,7 @@ const ServicesAdmin: React.FC = () => {
                   <p className="text-xs text-warmgray-500 mt-0.5">#{s.display_order} · {s.slug}</p>
                 </div>
                 <button onClick={() => toggleActive(s)} title="Toggle active" className="text-teal">
-                  {s.active ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6 text-warmgray-400" />}
+                  {s.active ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6 text-warmgray-500" />}
                 </button>
               </div>
               <p className="text-sm text-warmgray-600 dark:text-warmgray-400 mt-2 line-clamp-2">{s.description}</p>

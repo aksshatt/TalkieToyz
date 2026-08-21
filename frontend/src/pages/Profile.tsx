@@ -158,7 +158,7 @@ const Profile: React.FC = () => {
               className="lg:col-span-1 space-y-4">
               {/* Quick Links */}
               <div className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-5">
-                <p className="text-xs font-bold text-warmgray-400 uppercase tracking-wider mb-3">Quick Links</p>
+                <p className="text-xs font-bold text-warmgray-500 uppercase tracking-wider mb-3">Quick Links</p>
                 <div className="space-y-1">
                   {quickLinks.map(({ to, icon: Icon, label, color, bg }) => (
                     <Link key={to} to={to}
@@ -172,7 +172,7 @@ const Profile: React.FC = () => {
 
               {/* Member Since */}
               <div className="bg-white dark:bg-surface-dark-raised rounded-2xl shadow-soft p-5 text-center">
-                <p className="text-xs text-warmgray-400 mb-1">Member since</p>
+                <p className="text-xs text-warmgray-500 mb-1">Member since</p>
                 <p className="font-bold text-warmgray-700 dark:text-warmgray-300">
                   {user.created_at ? new Date(user.created_at).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) : 'N/A'}
                 </p>
@@ -227,7 +227,7 @@ const Profile: React.FC = () => {
                         <Mail className="h-4 w-4 text-teal" /> Email Address
                       </label>
                       <div className="px-4 py-3 bg-warmgray-50 dark:bg-surface-dark rounded-xl border border-warmgray-200 dark:border-surface-dark-border text-warmgray-500 text-sm">{user.email}</div>
-                      <p className="mt-1 text-xs text-warmgray-400">Email cannot be changed</p>
+                      <p className="mt-1 text-xs text-warmgray-500">Email cannot be changed</p>
                     </div>
 
                     {/* Name */}
@@ -286,7 +286,7 @@ const Profile: React.FC = () => {
                         <div className="mt-2 flex items-center gap-2">
                           <img src={formData.avatar_url} alt="Preview" className="w-10 h-10 rounded-full object-cover border-2 border-warmgray-200 dark:border-surface-dark-border"
                             onError={e => { e.currentTarget.style.display = 'none'; }} />
-                          <span className="text-xs text-warmgray-400">Preview</span>
+                          <span className="text-xs text-warmgray-500">Preview</span>
                         </div>
                       )}
                     </div>
@@ -327,7 +327,7 @@ const Profile: React.FC = () => {
                 <span className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100">Change Password</span>
               </div>
               <motion.div animate={{ rotate: showPasswordSection ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                <X className={`h-4 w-4 transition-colors ${showPasswordSection ? 'text-warmgray-600 dark:text-warmgray-400' : 'text-warmgray-400 rotate-45'}`} />
+                <X className={`h-4 w-4 transition-colors ${showPasswordSection ? 'text-warmgray-600 dark:text-warmgray-400' : 'text-warmgray-500 rotate-45'}`} />
               </motion.div>
             </button>
 
@@ -349,7 +349,7 @@ const Profile: React.FC = () => {
                           placeholder="Enter current password"
                           className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.current_password ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'}`}
                         />
-                        <button type="button" onClick={() => setShowCurrentPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300">
+                        <button type="button" onClick={() => setShowCurrentPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300">
                           {showCurrentPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                       </div>
@@ -369,7 +369,7 @@ const Profile: React.FC = () => {
                           placeholder="Minimum 8 characters"
                           className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.password ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'}`}
                         />
-                        <button type="button" onClick={() => setShowNewPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300">
+                        <button type="button" onClick={() => setShowNewPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300">
                           {showNewPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                       </div>
@@ -389,7 +389,7 @@ const Profile: React.FC = () => {
                           placeholder="Repeat new password"
                           className={`w-full px-4 py-3 pr-12 border-2 rounded-xl text-sm focus:outline-none focus:ring-4 transition-all ${pwErrors.password_confirmation ? 'border-coral focus:border-coral focus:ring-coral/10' : 'border-warmgray-200 dark:border-surface-dark-border focus:border-teal focus:ring-teal/10'}`}
                         />
-                        <button type="button" onClick={() => setShowConfirmPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300">
+                        <button type="button" onClick={() => setShowConfirmPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300">
                           {showConfirmPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                       </div>

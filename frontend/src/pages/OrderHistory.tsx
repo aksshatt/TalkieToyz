@@ -153,7 +153,7 @@ const OrderHistory = () => {
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <h3 className="font-[var(--font-family-fun)] font-bold text-warmgray-900 dark:text-warmgray-100">Order #{order.order_number}</h3>
-                          <p className="text-xs text-warmgray-400 mt-0.5">
+                          <p className="text-xs text-warmgray-500 mt-0.5">
                             {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
                           </p>
                         </div>
@@ -199,7 +199,7 @@ const OrderHistory = () => {
                                       <Link to={`/products/${item.product.slug}`} className="font-semibold text-warmgray-800 dark:text-warmgray-200 hover:text-teal transition-colors text-sm line-clamp-1">
                                         {item.product.name}
                                       </Link>
-                                      <p className="text-xs text-warmgray-400">Qty: {item.quantity} × ₹{parseFloat(item.unit_price).toFixed(2)}</p>
+                                      <p className="text-xs text-warmgray-500">Qty: {item.quantity} × ₹{parseFloat(item.unit_price).toFixed(2)}</p>
                                     </div>
                                     <p className="font-bold text-teal text-sm">₹{parseFloat(item.total_price).toFixed(2)}</p>
                                   </div>

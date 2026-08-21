@@ -13,7 +13,7 @@ const RecentlyViewed = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <Clock className="h-5 w-5 text-warmgray-400" />
+            <Clock className="h-5 w-5 text-warmgray-500" />
             <h2 className="text-xl font-[var(--font-family-fun)] font-bold text-warmgray-800 dark:text-warmgray-200">Recently Viewed</h2>
           </div>
           <Link to="/products" className="flex items-center gap-1 text-teal font-semibold text-sm hover:text-teal-dark transition-colors">

@@ -61,7 +61,7 @@ const BlogPostCard = ({ post, featured = false }: BlogPostCardProps) => {
             </h3>
             <p className="text-warmgray-500 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 text-xs text-warmgray-400">
+              <div className="flex items-center gap-3 text-xs text-warmgray-500">
                 <span className="flex items-center gap-1"><User className="w-3 h-3" />{post.author.name}</span>
                 <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{post.reading_time_minutes} min read</span>
               </div>
@@ -126,7 +126,7 @@ const BlogPostCard = ({ post, featured = false }: BlogPostCardProps) => {
             </div>
           )}
 
-          <div className="flex items-center justify-between text-xs text-warmgray-400 pt-3 border-t border-warmgray-100 dark:border-surface-dark-border">
+          <div className="flex items-center justify-between text-xs text-warmgray-500 pt-3 border-t border-warmgray-100 dark:border-surface-dark-border">
             <div className="flex items-center gap-2">
               {/* Author avatar */}
               <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center text-white text-xs font-bold`}>

@@ -22,7 +22,7 @@ const MessageBubble: React.FC<{ msg: Message; isMine: boolean }> = ({ msg, isMin
   return (
     <div className={`flex ${isMine ? 'justify-end' : 'justify-start'} mb-3`}>
       <div className={`max-w-[75%] ${isMine ? 'items-end' : 'items-start'} flex flex-col`}>
-        {!isMine && <p className="text-xs text-warmgray-400 mb-1 ml-1">{msg.sender_name}</p>}
+        {!isMine && <p className="text-xs text-warmgray-500 mb-1 ml-1">{msg.sender_name}</p>}
 
         {isProduct && msg.metadata ? (
           <Link to={`/products/${msg.metadata.product_slug}`}
@@ -61,7 +61,7 @@ const MessageBubble: React.FC<{ msg: Message; isMine: boolean }> = ({ msg, isMin
           </div>
         )}
 
-        <p className="text-xs text-warmgray-400 mt-1 mx-1">
+        <p className="text-xs text-warmgray-500 mt-1 mx-1">
           {new Date(msg.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
         </p>
       </div>
@@ -252,7 +252,7 @@ const TherapistPatientDetail: React.FC = () => {
                 <div>
                   <MessageSquare className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />
                   <p className="text-warmgray-500 font-semibold">No messages yet</p>
-                  <p className="text-warmgray-400 text-sm">Start the conversation with {patient.name}</p>
+                  <p className="text-warmgray-500 text-sm">Start the conversation with {patient.name}</p>
                 </div>
               </div>
             ) : (
@@ -275,7 +275,7 @@ const TherapistPatientDetail: React.FC = () => {
                       placeholder="Search templates…"
                       className="w-full px-3 py-2 border border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm mb-2 focus:border-teal focus:outline-none" />
                     {templates.length === 0 ? (
-                      <p className="text-xs text-warmgray-400 text-center py-3">No templates found</p>
+                      <p className="text-xs text-warmgray-500 text-center py-3">No templates found</p>
                     ) : (
                       templates.map(t => (
                         <button key={t.id} onClick={() => useTemplate(t)}
@@ -292,7 +292,7 @@ const TherapistPatientDetail: React.FC = () => {
 
             <div className="flex items-end gap-2">
               <button onClick={() => setShowTemplates(v => !v)}
-                className={`p-2.5 rounded-xl border-2 transition-colors flex-shrink-0 ${showTemplates ? 'border-teal bg-teal-light/20 text-teal' : 'border-warmgray-200 dark:border-surface-dark-border text-warmgray-400 hover:border-teal hover:text-teal'}`}>
+                className={`p-2.5 rounded-xl border-2 transition-colors flex-shrink-0 ${showTemplates ? 'border-teal bg-teal-light/20 text-teal' : 'border-warmgray-200 dark:border-surface-dark-border text-warmgray-500 hover:border-teal hover:text-teal'}`}>
                 <BookOpen className="w-4 h-4" />
               </button>
               <textarea
@@ -334,7 +334,7 @@ const TherapistPatientDetail: React.FC = () => {
             <div className="text-center py-16 bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft">
               <ClipboardList className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />
               <p className="text-warmgray-500 font-semibold">No assessment results yet</p>
-              <p className="text-warmgray-400 text-sm mt-1">Share an assessment with {patient.name} to get started.</p>
+              <p className="text-warmgray-500 text-sm mt-1">Share an assessment with {patient.name} to get started.</p>
             </div>
           ) : (
             patient.assessment_results.map(r => (
@@ -349,7 +349,7 @@ const TherapistPatientDetail: React.FC = () => {
                   </div>
                   <div className="text-right flex-shrink-0">
                     <p className="text-2xl font-bold text-teal">{Math.round(r.percentage_score)}%</p>
-                    <p className="text-xs text-warmgray-400">Score: {r.total_score}</p>
+                    <p className="text-xs text-warmgray-500">Score: {r.total_score}</p>
                   </div>
                 </div>
 
@@ -410,10 +410,10 @@ const TherapistPatientDetail: React.FC = () => {
               </div>
             )}
             {productSearch.length > 1 && !productSearchData?.data?.length && (
-              <p className="text-sm text-warmgray-400 text-center py-4">No products found</p>
+              <p className="text-sm text-warmgray-500 text-center py-4">No products found</p>
             )}
             {productSearch.length <= 1 && (
-              <p className="text-sm text-warmgray-400 text-center py-2">Type at least 2 characters to search</p>
+              <p className="text-sm text-warmgray-500 text-center py-2">Type at least 2 characters to search</p>
             )}
           </div>
 
@@ -437,7 +437,7 @@ const TherapistPatientDetail: React.FC = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-warmgray-900 dark:text-warmgray-100 text-sm line-clamp-1">{a.title}</p>
-                      {a.age_range && <p className="text-xs text-warmgray-400">{a.age_range}</p>}
+                      {a.age_range && <p className="text-xs text-warmgray-500">{a.age_range}</p>}
                     </div>
                     <div className="flex items-center gap-1 text-xs text-coral font-semibold px-3 py-1.5 bg-coral-light/20 rounded-full">
                       <Send className="w-3 h-3" /> Share

@@ -175,7 +175,7 @@ const ShopByGoalQuiz: React.FC = () => {
                       <div className={`w-8 h-8 rounded-full ${STEP_COLORS[step % STEP_COLORS.length]} flex items-center justify-center text-white text-sm font-bold shadow-soft`}>
                         {step + 1}
                       </div>
-                      <p className="text-xs font-bold text-warmgray-400 uppercase tracking-wide">
+                      <p className="text-xs font-bold text-warmgray-500 uppercase tracking-wide">
                         Question {step + 1} of {questions.length}
                       </p>
                     </div>

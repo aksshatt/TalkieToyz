@@ -109,14 +109,14 @@ export default function ReferralPage() {
       {data?.referrals?.length > 0 && (
         <div className="bg-white dark:bg-surface-dark-raised rounded-2xl border border-warmgray-100 dark:border-surface-dark-border shadow-soft p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Users className="h-5 w-5 text-warmgray-400" />
+            <Users className="h-5 w-5 text-warmgray-500" />
             <h2 className="font-bold text-warmgray-900 dark:text-warmgray-100">Friends You've Referred</h2>
           </div>
           <div className="space-y-2">
             {data.referrals.map((r: any, i: number) => (
               <div key={i} className="flex items-center justify-between py-2 border-b border-warmgray-50 last:border-0">
                 <span className="text-sm text-warmgray-700 dark:text-warmgray-300">{r.name || r.email}</span>
-                <span className="text-xs text-warmgray-400">{new Date(r.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                <span className="text-xs text-warmgray-500">{new Date(r.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
               </div>
             ))}
           </div>

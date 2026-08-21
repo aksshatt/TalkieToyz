@@ -84,7 +84,7 @@ const TherapistApprovals: React.FC = () => {
           ))}
         </div>
         <div className="relative ml-auto">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-500" />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search therapists…"
             className="pl-9 pr-4 py-2 border-2 border-warmgray-200 dark:border-surface-dark-border rounded-xl text-sm focus:border-teal focus:outline-none" />
         </div>
@@ -121,7 +121,7 @@ const TherapistApprovals: React.FC = () => {
                   <p className="text-sm text-warmgray-500 flex items-center gap-1.5 mt-0.5">
                     <Mail className="w-3.5 h-3.5" /> {t.email}
                   </p>
-                  <p className="text-xs text-warmgray-400 mt-0.5">
+                  <p className="text-xs text-warmgray-500 mt-0.5">
                     Registered {new Date(t.created_at).toLocaleDateString('en-IN')}
                   </p>
                 </div>

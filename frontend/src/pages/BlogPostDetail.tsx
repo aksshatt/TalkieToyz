@@ -237,7 +237,7 @@ const BlogPostDetail = () => {
 
               {/* Share buttons */}
               <div className="flex items-center gap-1">
-                <Share2 className="h-4 w-4 text-warmgray-400 mr-1" />
+                <Share2 className="h-4 w-4 text-warmgray-500 mr-1" />
                 <SocialShareButtons url={window.location.href} title={post.title} />
               </div>
             </div>
@@ -250,7 +250,7 @@ const BlogPostDetail = () => {
             {/* Tags footer */}
             {post.tags && post.tags.length > 0 && (
               <div className="px-8 py-5 border-t border-warmgray-100 dark:border-surface-dark-border flex flex-wrap items-center gap-2">
-                <Tag className="h-4 w-4 text-warmgray-400" />
+                <Tag className="h-4 w-4 text-warmgray-500" />
                 {post.tags.map((tag: string, i: number) => (
                   <motion.span key={i} whileHover={{ scale: 1.05 }}
                     className="bg-teal-light/30 text-teal-dark text-xs font-semibold px-3 py-1 rounded-full border border-teal/20">

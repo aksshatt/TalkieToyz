@@ -47,7 +47,7 @@ const TherapistLayout: React.FC = () => {
             </div>
             <div className="min-w-0">
               <p className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200 truncate">{user?.name}</p>
-              <p className="text-xs text-warmgray-400 truncate">{user?.email}</p>
+              <p className="text-xs text-warmgray-500 truncate">{user?.email}</p>
             </div>
           </div>
         </div>

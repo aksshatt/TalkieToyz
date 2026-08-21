@@ -139,15 +139,15 @@ const ProductDetail = () => {
         {/* Breadcrumbs */}
         <nav className="mb-4 text-sm text-warmgray-600 dark:text-warmgray-400 flex items-center gap-1.5 flex-wrap" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-teal">Home</Link>
-          <span className="text-warmgray-400">/</span>
+          <span className="text-warmgray-500">/</span>
           <Link to="/products" className="hover:text-teal">Products</Link>
           {product.category && (
             <>
-              <span className="text-warmgray-400">/</span>
+              <span className="text-warmgray-500">/</span>
               <Link to={`/products?category=${product.category.slug}`} className="hover:text-teal">{product.category.name}</Link>
             </>
           )}
-          <span className="text-warmgray-400">/</span>
+          <span className="text-warmgray-500">/</span>
           <span className="text-warmgray-900 dark:text-warmgray-100 font-semibold truncate max-w-[12rem] md:max-w-md">{product.name}</span>
         </nav>
         {/* Breadcrumb */}
@@ -559,7 +559,7 @@ const ProductDetail = () => {
             className={`flex-1 inline-flex items-center justify-center gap-2 py-3.5 rounded-full font-extrabold transition-all ${
               product.in_stock && !isAddingToCart
                 ? 'bg-teal-gradient text-white shadow-soft-md'
-                : 'bg-warmgray-200 text-warmgray-400 cursor-not-allowed'
+                : 'bg-warmgray-200 text-warmgray-500 cursor-not-allowed'
             }`}
           >
             <ShoppingCart className="h-5 w-5" />

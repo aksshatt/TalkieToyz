@@ -90,7 +90,7 @@ const BundleCard: React.FC<{ bundle: Bundle; index: number }> = ({ bundle, index
                 <Link to={`/products/${product.slug}`} className="text-sm font-semibold text-warmgray-800 dark:text-warmgray-200 hover:text-teal transition-colors line-clamp-1">
                   {product.name}
                 </Link>
-                <p className="text-xs text-warmgray-400">₹{product.price}</p>
+                <p className="text-xs text-warmgray-500">₹{product.price}</p>
               </div>
               {product.stock_quantity > 0 ? (
                 <CheckCircle className="w-4 h-4 text-teal flex-shrink-0" />
@@ -103,7 +103,7 @@ const BundleCard: React.FC<{ bundle: Bundle; index: number }> = ({ bundle, index
 
         <div className="flex items-center justify-between pt-4 border-t border-warmgray-100 dark:border-surface-dark-border">
           <div>
-            <p className="text-xs text-warmgray-400">You save</p>
+            <p className="text-xs text-warmgray-500">You save</p>
             <p className="font-bold text-teal">₹{bundle.savings}</p>
           </div>
           <motion.button
@@ -202,7 +202,7 @@ const BundleBuilderPage: React.FC = () => {
               className="text-center py-20 bg-white dark:bg-surface-dark-raised rounded-3xl border-2 border-dashed border-warmgray-200 dark:border-surface-dark-border shadow-soft">
               <Package className="w-14 h-14 text-warmgray-300 mx-auto mb-4" />
               <h3 className="font-[var(--font-family-fun)] font-bold text-xl text-warmgray-700 dark:text-warmgray-300 mb-2">No Speech Kits Yet</h3>
-              <p className="text-warmgray-400 mb-6">Our therapist team is curating bundles for you. Check back soon!</p>
+              <p className="text-warmgray-500 mb-6">Our therapist team is curating bundles for you. Check back soon!</p>
               <Link to="/products" className="inline-flex items-center gap-2 text-teal font-bold hover:underline">
                 Browse all products <ChevronRight className="w-4 h-4" />
               </Link>

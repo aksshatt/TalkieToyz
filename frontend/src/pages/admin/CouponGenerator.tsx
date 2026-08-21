@@ -233,7 +233,7 @@ export default function CouponGenerator() {
           <h2 className="text-base font-bold text-warmgray-800 dark:text-warmgray-200 flex-1">All Coupons ({coupons.length})</h2>
           <form onSubmit={handleSearch} className="flex gap-2">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-warmgray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-warmgray-500" />
               <input type="text" value={search} onChange={e => setSearch(e.target.value)}
                 placeholder="Search codes…"
                 className="pl-9 pr-3 py-1.5 border border-warmgray-300 dark:border-surface-dark-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
@@ -243,9 +243,9 @@ export default function CouponGenerator() {
         </div>
 
         {loading ? (
-          <div className="py-12 text-center text-warmgray-400">Loading…</div>
+          <div className="py-12 text-center text-warmgray-500">Loading…</div>
         ) : coupons.length === 0 ? (
-          <div className="py-12 text-center text-warmgray-400">No coupons found</div>
+          <div className="py-12 text-center text-warmgray-500">No coupons found</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -265,14 +265,14 @@ export default function CouponGenerator() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <span className="font-mono font-semibold text-warmgray-800 dark:text-warmgray-200">{c.code}</span>
-                        <button onClick={() => handleCopy(c.code)} className="text-warmgray-400 hover:text-teal-500 transition-colors">
+                        <button onClick={() => handleCopy(c.code)} className="text-warmgray-500 hover:text-teal-500 transition-colors">
                           <Copy className="h-3.5 w-3.5" />
                         </button>
                       </div>
                     </td>
                     <td className="px-4 py-3 text-warmgray-700 dark:text-warmgray-300">
                       {c.discount_type === 'percentage' ? `${c.discount_value}%` : `₹${c.discount_value}`}
-                      {c.min_order_amount && <span className="text-xs text-warmgray-400 ml-1">(min ₹{c.min_order_amount})</span>}
+                      {c.min_order_amount && <span className="text-xs text-warmgray-500 ml-1">(min ₹{c.min_order_amount})</span>}
                     </td>
                     <td className="px-4 py-3 text-warmgray-600 dark:text-warmgray-400">
                       {c.usage_count} / {c.usage_limit === 0 ? '∞' : c.usage_limit}
@@ -292,7 +292,7 @@ export default function CouponGenerator() {
                           {c.active ? <ToggleRight className="h-4 w-4 text-teal-500" /> : <ToggleLeft className="h-4 w-4" />}
                         </button>
                         <button onClick={() => handleDelete(c.id)} title="Delete"
-                          className="p-1.5 rounded-lg hover:bg-red-50 transition-colors text-warmgray-400 hover:text-red-600">
+                          className="p-1.5 rounded-lg hover:bg-red-50 transition-colors text-warmgray-500 hover:text-red-600">
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>

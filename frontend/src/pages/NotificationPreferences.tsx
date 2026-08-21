@@ -73,7 +73,7 @@ export default function NotificationPreferences() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-medium text-warmgray-900 dark:text-warmgray-100 text-sm">{label}</p>
-              <p className="text-xs text-warmgray-400 mt-0.5">{desc}</p>
+              <p className="text-xs text-warmgray-500 mt-0.5">{desc}</p>
             </div>
             <button
               onClick={() => toggle(key as keyof Prefs)}
@@ -85,7 +85,7 @@ export default function NotificationPreferences() {
         ))}
       </div>
 
-      <p className="text-xs text-center text-warmgray-400">Transactional notifications (like OTP) are always sent regardless of these settings.</p>
+      <p className="text-xs text-center text-warmgray-500">Transactional notifications (like OTP) are always sent regardless of these settings.</p>
     </div>
   );
 }

@@ -50,7 +50,7 @@ const PriceFilter = ({ onPriceChange, minPrice = 0, maxPrice = 200 }: PriceFilte
           />
         </div>
 
-        <span className="text-warmgray-400 mt-5">–</span>
+        <span className="text-warmgray-500 mt-5">–</span>
 
         <div className="flex-1">
           <label className="block text-xs text-warmgray-500 mb-1">Max</label>

@@ -107,7 +107,7 @@ const ResourceForm = ({ initialData, categories, onSubmit, onCancel, saving }: R
       <div>
         <label className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-2">File</label>
         <div className="border-2 border-dashed border-warmgray-300 rounded-lg p-8 text-center">
-          <Upload className="h-12 w-12 text-warmgray-400 mx-auto mb-4" />
+          <Upload className="h-12 w-12 text-warmgray-500 mx-auto mb-4" />
           <input
             type="file"
             onChange={(e) => setFile(e.target.files?.[0] || null)}

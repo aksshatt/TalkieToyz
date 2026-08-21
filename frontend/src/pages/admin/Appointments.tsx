@@ -193,11 +193,11 @@ const Appointments = () => {
                         )}
                       </div>
                     ) : (
-                      <span className="text-xs text-warmgray-400">—</span>
+                      <span className="text-xs text-warmgray-500">—</span>
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-warmgray-700 dark:text-warmgray-300">
-                    {appointment.preferred_date ? formatDate(appointment.preferred_date) : <span className="text-warmgray-400">—</span>}
+                    {appointment.preferred_date ? formatDate(appointment.preferred_date) : <span className="text-warmgray-500">—</span>}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-sm text-warmgray-900 dark:text-warmgray-100">{appointment.preferred_language}</span>

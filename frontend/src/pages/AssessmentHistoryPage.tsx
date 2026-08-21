@@ -104,7 +104,7 @@ const AssessmentHistoryPage = () => {
                         )}
                       </div>
                       <p className="text-sm text-warmgray-600 dark:text-warmgray-400">{result.assessment?.title}</p>
-                      <p className="text-xs text-warmgray-400 mt-1">
+                      <p className="text-xs text-warmgray-500 mt-1">
                         {result.completed_at
                           ? new Date(result.completed_at).toLocaleDateString('en-IN', {
                               day: 'numeric', month: 'long', year: 'numeric'

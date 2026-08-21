@@ -120,7 +120,7 @@ const PatientInbox: React.FC = () => {
                     )}
                   </div>
                   {conv.last_message_at && (
-                    <p className="text-xs text-warmgray-400 flex-shrink-0">{formatDate(conv.last_message_at)}</p>
+                    <p className="text-xs text-warmgray-500 flex-shrink-0">{formatDate(conv.last_message_at)}</p>
                   )}
                 </motion.button>
               ))}
@@ -134,7 +134,7 @@ const PatientInbox: React.FC = () => {
               {messages.length === 0 ? (
                 <div className="text-center py-10">
                   <MessageSquare className="w-10 h-10 text-warmgray-300 mx-auto mb-2" />
-                  <p className="text-warmgray-400 text-sm">No messages yet. Say hello!</p>
+                  <p className="text-warmgray-500 text-sm">No messages yet. Say hello!</p>
                 </div>
               ) : messages.map(msg => {
                 const isPatient = msg.sender_role === 'customer';
@@ -164,7 +164,7 @@ const PatientInbox: React.FC = () => {
                             <p className="text-xs text-sky mt-1 font-semibold">Take assessment →</p>
                           </Link>
                         ) : null}
-                        <p className={`text-xs text-warmgray-400 mt-1 ${isPatient ? 'text-right' : 'text-left'}`}>{formatTime(msg.created_at)}</p>
+                        <p className={`text-xs text-warmgray-500 mt-1 ${isPatient ? 'text-right' : 'text-left'}`}>{formatTime(msg.created_at)}</p>
                       </div>
                     </div>
                   </div>

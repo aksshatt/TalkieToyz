@@ -95,7 +95,7 @@ const BlogCommentForm = ({ onSubmit }: BlogCommentFormProps) => {
           </div>
 
           <div className="flex items-center justify-between">
-            <p className="text-xs text-warmgray-400">Your comment will be reviewed before being published.</p>
+            <p className="text-xs text-warmgray-500">Your comment will be reviewed before being published.</p>
             <motion.button
               type="submit" disabled={isSubmitting}
               whileHover={{ scale: isSubmitting ? 1 : 1.03, y: isSubmitting ? 0 : -1 }}

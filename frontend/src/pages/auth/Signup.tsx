@@ -269,7 +269,7 @@ const Signup: React.FC = () => {
                     >
                       <div className="flex flex-col items-center gap-1">
                         <span className="text-2xl">{emoji}</span>
-                        <Icon className={`h-5 w-5 ${formData.role === role ? 'text-coral' : 'text-warmgray-400'}`} />
+                        <Icon className={`h-5 w-5 ${formData.role === role ? 'text-coral' : 'text-warmgray-500'}`} />
                         <span className={`text-sm font-semibold ${formData.role === role ? 'text-coral' : 'text-warmgray-600 dark:text-warmgray-400'}`}>
                           {label}
                         </span>
@@ -295,7 +295,7 @@ const Signup: React.FC = () => {
                 <label htmlFor="name" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Full name</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
+                    <User className="h-5 w-5 text-warmgray-500 group-focus-within:text-coral transition-colors" />
                   </div>
                   <input
                     type="text" id="name" name="name"
@@ -315,7 +315,7 @@ const Signup: React.FC = () => {
                 <label htmlFor="email" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Email address</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
+                    <Mail className="h-5 w-5 text-warmgray-500 group-focus-within:text-coral transition-colors" />
                   </div>
                   <input
                     type="email" id="email" name="email"
@@ -335,7 +335,7 @@ const Signup: React.FC = () => {
                 <label htmlFor="password" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Password</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
+                    <Lock className="h-5 w-5 text-warmgray-500 group-focus-within:text-coral transition-colors" />
                   </div>
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -348,8 +348,8 @@ const Signup: React.FC = () => {
                     placeholder="At least 6 characters" disabled={isLoading}
                   />
                   <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-4 flex items-center">
-                    {showPassword ? <EyeOff className="h-5 w-5 text-warmgray-400 hover:text-coral transition-colors" />
-                      : <Eye className="h-5 w-5 text-warmgray-400 hover:text-coral transition-colors" />}
+                    {showPassword ? <EyeOff className="h-5 w-5 text-warmgray-500 hover:text-coral transition-colors" />
+                      : <Eye className="h-5 w-5 text-warmgray-500 hover:text-coral transition-colors" />}
                   </button>
                 </div>
                 {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password}</p>}
@@ -360,7 +360,7 @@ const Signup: React.FC = () => {
                 <label htmlFor="password_confirmation" className="block text-sm font-semibold text-warmgray-700 dark:text-warmgray-300 mb-1.5">Confirm password</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-warmgray-400 group-focus-within:text-coral transition-colors" />
+                    <Lock className="h-5 w-5 text-warmgray-500 group-focus-within:text-coral transition-colors" />
                   </div>
                   <input
                     type={showConfirmPassword ? 'text' : 'password'}
@@ -373,8 +373,8 @@ const Signup: React.FC = () => {
                     placeholder="Re-enter your password" disabled={isLoading}
                   />
                   <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-4 flex items-center">
-                    {showConfirmPassword ? <EyeOff className="h-5 w-5 text-warmgray-400 hover:text-coral transition-colors" />
-                      : <Eye className="h-5 w-5 text-warmgray-400 hover:text-coral transition-colors" />}
+                    {showConfirmPassword ? <EyeOff className="h-5 w-5 text-warmgray-500 hover:text-coral transition-colors" />
+                      : <Eye className="h-5 w-5 text-warmgray-500 hover:text-coral transition-colors" />}
                   </button>
                 </div>
                 {errors.password_confirmation && <p className="mt-1 text-xs text-red-600">{errors.password_confirmation}</p>}
@@ -419,7 +419,7 @@ const Signup: React.FC = () => {
 
             <div className="my-5 flex items-center gap-3">
               <div className="flex-1 h-px bg-warmgray-200" />
-              <span className="text-xs text-warmgray-400 font-medium">Already have an account?</span>
+              <span className="text-xs text-warmgray-500 font-medium">Already have an account?</span>
               <div className="flex-1 h-px bg-warmgray-200" />
             </div>
 

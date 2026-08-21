@@ -290,7 +290,7 @@ const MilestonesPage = () => {
               </div>
             </div>
             <div className="relative md:w-80">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-400" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-500" />
               <input
                 type="text"
                 value={search}
@@ -301,7 +301,7 @@ const MilestonesPage = () => {
               {search && (
                 <button
                   onClick={() => setSearch('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300"
                   aria-label="Clear"
                 >
                   <X className="w-4 h-4" />

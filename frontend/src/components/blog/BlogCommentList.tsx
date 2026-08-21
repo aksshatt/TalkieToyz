@@ -22,7 +22,7 @@ const BlogCommentList = ({ comments }: BlogCommentListProps) => {
           <MessageCircle className="h-7 w-7 text-warmgray-300" />
         </div>
         <p className="text-warmgray-600 dark:text-warmgray-400 font-medium">No comments yet.</p>
-        <p className="text-warmgray-400 text-sm mt-1">Be the first to share your thoughts!</p>
+        <p className="text-warmgray-500 text-sm mt-1">Be the first to share your thoughts!</p>
       </div>
     );
   }
@@ -49,7 +49,7 @@ const BlogCommentList = ({ comments }: BlogCommentListProps) => {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="font-semibold text-warmgray-900 dark:text-warmgray-100 text-sm">{comment.author_name}</span>
-                  <span className="text-xs text-warmgray-400 bg-warmgray-100 px-2 py-0.5 rounded-full">
+                  <span className="text-xs text-warmgray-500 bg-warmgray-100 px-2 py-0.5 rounded-full">
                     {new Date(comment.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </span>
                 </div>

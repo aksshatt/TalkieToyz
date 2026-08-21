@@ -202,7 +202,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               ₹{parseFloat(product.price).toFixed(2)}
             </span>
             {product.compare_at_price && (
-              <span className="text-xs text-warmgray-400 line-through ml-1.5">
+              <span className="text-xs text-warmgray-500 line-through ml-1.5">
                 ₹{parseFloat(product.compare_at_price).toFixed(2)}
               </span>
             )}
@@ -216,7 +216,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             className={`relative p-3 rounded-full transition-all overflow-hidden ${
               product.in_stock && !isAddingToCart
                 ? 'bg-teal-gradient text-white shadow-soft hover:shadow-soft-md'
-                : 'bg-warmgray-200 text-warmgray-400 cursor-not-allowed'
+                : 'bg-warmgray-200 text-warmgray-500 cursor-not-allowed'
             }`}
           >
             <AnimatePresence mode="wait">

@@ -167,11 +167,11 @@ const TherapistTemplates: React.FC = () => {
                 </div>
                 <div className="flex gap-1 flex-shrink-0">
                   <button onClick={() => openEdit(t)}
-                    className="p-1.5 rounded-lg hover:bg-warmgray-100 transition-colors text-warmgray-400 hover:text-teal">
+                    className="p-1.5 rounded-lg hover:bg-warmgray-100 transition-colors text-warmgray-500 hover:text-teal">
                     <Pencil className="w-3.5 h-3.5" />
                   </button>
                   <button onClick={() => { if (confirm('Delete this template?')) deleteMutation.mutate(t.id); }}
-                    className="p-1.5 rounded-lg hover:bg-coral-light/20 transition-colors text-warmgray-400 hover:text-coral">
+                    className="p-1.5 rounded-lg hover:bg-coral-light/20 transition-colors text-warmgray-500 hover:text-coral">
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>

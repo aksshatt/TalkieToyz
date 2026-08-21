@@ -267,7 +267,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
                   {groups.map((g) => (
                     <div key={g.label}>
-                      <p className="text-[10px] font-bold text-warmgray-400 uppercase tracking-wider mb-1 px-3">{g.label}</p>
+                      <p className="text-[10px] font-bold text-warmgray-500 uppercase tracking-wider mb-1 px-3">{g.label}</p>
                       <div className="space-y-1">
                         {g.items.map((item) => {
                           const Icon = item.icon;

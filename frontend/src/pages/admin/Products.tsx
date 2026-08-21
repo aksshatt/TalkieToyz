@@ -92,7 +92,7 @@ const Products: React.FC = () => {
             <img src={product.image_url} alt={product.name} className="w-10 h-10 rounded-lg object-cover" />
           ) : (
             <div className="w-10 h-10 bg-warmgray-100 rounded-lg flex items-center justify-center">
-              <ImageIcon className="h-5 w-5 text-warmgray-400" />
+              <ImageIcon className="h-5 w-5 text-warmgray-500" />
             </div>
           )}
           <span className="font-semibold">{product.name}</span>
@@ -249,7 +249,7 @@ const Products: React.FC = () => {
 
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-warmgray-400" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-warmgray-500" />
         <input
           type="text"
           value={searchInput}
@@ -623,11 +623,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onSaved }) 
                 : 'border-warmgray-300 dark:border-surface-dark-border hover:border-teal hover:bg-warmgray-50 dark:hover:bg-white/5 dark:bg-surface-dark'
             }`}
           >
-            <Upload className="h-8 w-8 text-warmgray-400 mx-auto mb-2" />
+            <Upload className="h-8 w-8 text-warmgray-500 mx-auto mb-2" />
             <p className="text-sm text-warmgray-600 dark:text-warmgray-400">
               Drag & drop images here, or <span className="text-teal font-semibold">browse</span>
             </p>
-            <p className="text-xs text-warmgray-400 mt-1">PNG, JPG up to 5MB each</p>
+            <p className="text-xs text-warmgray-500 mt-1">PNG, JPG up to 5MB each</p>
           </div>
           <input
             ref={fileInputRef}

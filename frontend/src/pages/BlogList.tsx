@@ -125,7 +125,7 @@ const BlogList = () => {
             transition={{ delay: 0.35 }}
             className="relative max-w-xl mx-auto"
           >
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-warmgray-400" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-warmgray-500" />
             <input
               type="text"
               value={search}
@@ -136,7 +136,7 @@ const BlogList = () => {
             {search && (
               <button
                 onClick={() => setSearch('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300 p-1 rounded-full hover:bg-warmgray-100"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300 p-1 rounded-full hover:bg-warmgray-100"
                 aria-label="Clear search"
               >
                 <X className="w-4 h-4" />

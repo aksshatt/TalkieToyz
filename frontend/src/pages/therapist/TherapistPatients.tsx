@@ -26,7 +26,7 @@ const TherapistPatients: React.FC = () => {
 
       {/* Search */}
       <div className="relative mb-6 max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warmgray-500" />
         <input
           value={search} onChange={e => setSearch(e.target.value)}
           placeholder="Search patients…"
@@ -42,7 +42,7 @@ const TherapistPatients: React.FC = () => {
         <div className="text-center py-20 bg-white dark:bg-surface-dark-raised rounded-3xl border-2 border-dashed border-warmgray-200 dark:border-surface-dark-border">
           <Users className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />
           <p className="font-semibold text-warmgray-600 dark:text-warmgray-400">{search ? 'No patients match your search' : 'No patients assigned yet'}</p>
-          <p className="text-warmgray-400 text-sm mt-1">Ask the admin to assign patients to you.</p>
+          <p className="text-warmgray-500 text-sm mt-1">Ask the admin to assign patients to you.</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -65,17 +65,17 @@ const TherapistPatients: React.FC = () => {
                   </div>
                   <p className="text-sm text-warmgray-500 dark:text-warmgray-500">{patient.email}</p>
                   {patient.last_message_at && (
-                    <p className="text-xs text-warmgray-400 mt-0.5">
+                    <p className="text-xs text-warmgray-500 mt-0.5">
                       Last message: {new Date(patient.last_message_at).toLocaleDateString('en-IN')}
                     </p>
                   )}
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
-                  <div className="flex items-center gap-1 text-xs text-warmgray-400">
+                  <div className="flex items-center gap-1 text-xs text-warmgray-500">
                     <MessageSquare className="w-3.5 h-3.5" />
                     Chat
                   </div>
-                  <div className="flex items-center gap-1 text-xs text-warmgray-400">
+                  <div className="flex items-center gap-1 text-xs text-warmgray-500">
                     <ClipboardList className="w-3.5 h-3.5" />
                     Results
                   </div>

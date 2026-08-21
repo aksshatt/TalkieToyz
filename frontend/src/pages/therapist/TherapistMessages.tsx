@@ -28,7 +28,7 @@ const TherapistMessages: React.FC = () => {
         <div className="text-center py-20 bg-white dark:bg-surface-dark-raised rounded-3xl border-2 border-dashed border-warmgray-200 dark:border-surface-dark-border">
           <MessageSquare className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />
           <p className="font-semibold text-warmgray-600 dark:text-warmgray-400">No conversations yet</p>
-          <p className="text-warmgray-400 text-sm mt-1">Open a patient's profile to start chatting.</p>
+          <p className="text-warmgray-500 text-sm mt-1">Open a patient's profile to start chatting.</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -53,7 +53,7 @@ const TherapistMessages: React.FC = () => {
               </div>
               <div className="flex-shrink-0 text-right">
                 {conv.last_message_at && (
-                  <p className="text-xs text-warmgray-400">{new Date(conv.last_message_at).toLocaleDateString('en-IN')}</p>
+                  <p className="text-xs text-warmgray-500">{new Date(conv.last_message_at).toLocaleDateString('en-IN')}</p>
                 )}
                 <ChevronRight className="w-4 h-4 text-warmgray-300 group-hover:text-teal mt-1 ml-auto" />
               </div>

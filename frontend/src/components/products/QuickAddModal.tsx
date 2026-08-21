@@ -73,7 +73,7 @@ const QuickAddModal = ({ product, onClose }: Props) => {
             <div className="flex items-baseline gap-2 mb-5">
               <span className="text-2xl font-extrabold text-teal">₹{product.price}</span>
               {product.on_sale && product.compare_at_price && (
-                <span className="text-sm line-through text-warmgray-400">₹{product.compare_at_price}</span>
+                <span className="text-sm line-through text-warmgray-500">₹{product.compare_at_price}</span>
               )}
             </div>
 
@@ -107,7 +107,7 @@ const QuickAddModal = ({ product, onClose }: Props) => {
                 className={`flex-1 inline-flex items-center justify-center gap-2 py-3.5 rounded-full font-extrabold transition-all ${
                   product.in_stock && !adding
                     ? 'bg-teal-gradient text-white shadow-soft-md hover:shadow-soft-lg'
-                    : 'bg-warmgray-200 text-warmgray-400 cursor-not-allowed'
+                    : 'bg-warmgray-200 text-warmgray-500 cursor-not-allowed'
                 }`}
               >
                 <ShoppingCart className="w-5 h-5" />

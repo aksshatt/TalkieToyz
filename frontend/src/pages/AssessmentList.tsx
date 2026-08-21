@@ -211,7 +211,7 @@ const AssessmentList = () => {
                           <h3 className="font-[var(--font-family-fun)] font-bold text-xl text-warmgray-900 dark:text-warmgray-100">Book an Appointment</h3>
                           <button
                             onClick={() => { setShowBookingModal(false); setSubmitError(null); setSubmitSuccess(false); }}
-                            className="text-warmgray-400 hover:text-warmgray-700 dark:text-warmgray-300 transition-colors p-1 rounded-lg hover:bg-warmgray-100"
+                            className="text-warmgray-500 hover:text-warmgray-700 dark:text-warmgray-300 transition-colors p-1 rounded-lg hover:bg-warmgray-100"
                           >
                             <X className="w-5 h-5" />
                           </button>
