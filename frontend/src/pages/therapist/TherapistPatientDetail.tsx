@@ -89,7 +89,7 @@ const TherapistPatientDetail: React.FC = () => {
   });
   const patient = patientData?.data;
 
-  const { data: convData, refetch: refetchConv } = useQuery({
+  const { data: convData, refetch: refetchConv, isLoading: convLoading } = useQuery({
     queryKey: ['therapist_conversation', conversationId],
     queryFn: () => therapistService.getConversation(conversationId!),
     enabled: !!conversationId,
@@ -247,7 +247,15 @@ const TherapistPatientDetail: React.FC = () => {
         <div className="flex-1 flex flex-col bg-white dark:bg-surface-dark-raised rounded-3xl shadow-soft overflow-hidden">
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-5 min-h-0" style={{ maxHeight: 'calc(100vh - 340px)' }}>
-            {messages.length === 0 ? (
+            {convLoading ? (
+              <div className="space-y-4 animate-pulse">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className={`flex ${i % 2 ? 'justify-end' : 'justify-start'}`}>
+                    <div className="h-10 w-2/3 rounded-2xl bg-warmgray-200 dark:bg-surface-dark-border" />
+                  </div>
+                ))}
+              </div>
+            ) : messages.length === 0 ? (
               <div className="h-full flex items-center justify-center text-center">
                 <div>
                   <MessageSquare className="w-12 h-12 text-warmgray-300 mx-auto mb-3" />

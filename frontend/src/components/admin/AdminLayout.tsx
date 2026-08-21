@@ -184,6 +184,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 <button
                   onClick={logout}
                   title="Logout"
+                  aria-label="Logout"
                   className="p-2 rounded-full text-coral hover:bg-coral/10 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
