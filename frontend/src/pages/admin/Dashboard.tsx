@@ -185,24 +185,29 @@ const Dashboard: React.FC = () => {
           icon={DollarSign}
           trend={stats.salesTrend}
           iconColor="text-teal"
+          accent="#26C6DA"
+          sparkline={salesData.length > 1 ? salesData.map((d) => d.sales) : undefined}
         />
         <StatsCard
           title="Total Orders"
           value={stats.totalOrders}
           icon={ShoppingBag}
           iconColor="text-coral"
+          accent="#FF69B4"
         />
         <StatsCard
           title="Total Customers"
           value={stats.totalCustomers}
           icon={Users}
-          iconColor="text-sunshine"
+          iconColor="text-sunshine-dark"
+          accent="#FFA000"
         />
         <StatsCard
           title="Total Products"
           value={stats.totalProducts}
           icon={Package}
-          iconColor="text-sky"
+          iconColor="text-sky-dark"
+          accent="#0277BD"
         />
       </div>
 
@@ -227,6 +232,7 @@ const Dashboard: React.FC = () => {
                   border: '2px solid #E7E5E4',
                   borderRadius: '12px',
                   padding: '12px',
+                  color: '#1C1917',
                 }}
               />
               <Line

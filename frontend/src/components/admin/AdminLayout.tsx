@@ -48,9 +48,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'Analytics', href: '/admin/analytics', icon: BarChart2 },
   ];
 
-  const groups: { label: string; items: NavItem[] }[] = [
+  const groups: { label: string; color: string; items: NavItem[] }[] = [
     {
       label: 'Shop',
+      color: 'var(--color-bin-shop)',
       items: [
         { name: 'Products', href: '/admin/products', icon: Package },
         { name: 'Orders', href: '/admin/orders', icon: ShoppingBag },
@@ -62,6 +63,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     },
     {
       label: 'Therapy',
+      color: 'var(--color-bin-therapy)',
       items: [
         { name: 'Appointments', href: '/admin/appointments', icon: Calendar },
         { name: 'Services', href: '/admin/services', icon: HelpingHand },
@@ -73,6 +75,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     },
     {
       label: 'Content',
+      color: 'var(--color-bin-content)',
       items: [
         { name: 'Blog', href: '/admin/blog', icon: Newspaper },
         { name: 'Resources', href: '/admin/resources', icon: BookOpen },
@@ -83,6 +86,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     },
     {
       label: 'System',
+      color: 'var(--color-bin-system)',
       items: [
         { name: 'Contact', href: '/admin/contact', icon: MessageSquare },
         { name: 'Audit Log', href: '/admin/audit-log', icon: Shield },
@@ -159,10 +163,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                   <div key={g.label} className="relative">
                     <button
                       onClick={() => setOpenGroup(isOpen ? null : g.label)}
+                      style={active || isOpen ? { backgroundColor: `${g.color}1a`, color: g.color } : undefined}
                       className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-semibold transition-colors ${
-                        active || isOpen ? 'bg-teal/10 text-teal' : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-white/10'
+                        active || isOpen ? '' : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-white/10'
                       }`}
                     >
+                      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: g.color }} />
                       {g.label}
                       <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                     </button>
@@ -211,26 +217,26 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 className="hidden lg:block overflow-hidden border-t border-warmgray-100"
               >
                 <div className="py-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                  {groups
-                    .find((g) => g.label === openGroup)
-                    ?.items.map((item) => {
+                  {(() => {
+                    const activeGroup = groups.find((g) => g.label === openGroup);
+                    if (!activeGroup) return null;
+                    return activeGroup.items.map((item) => {
                       const Icon = item.icon;
                       const active = isActive(item.href);
                       return (
                         <Link
                           key={item.name}
                           to={item.href}
-                          className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                            active
-                              ? 'bg-teal-gradient text-white shadow-soft'
-                              : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-white/10'
-                          }`}
+                          style={{ borderLeftColor: active ? activeGroup.color : 'transparent' }}
+                          className="flex items-center gap-3 pl-3 pr-4 py-3 rounded-xl text-sm font-semibold transition-all border-l-4 text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-white/10 data-[active=true]:bg-warmgray-100 dark:data-[active=true]:bg-white/10 data-[active=true]:text-warmgray-900 dark:data-[active=true]:text-warmgray-100 data-[active=true]:shadow-soft"
+                          data-active={active}
                         >
                           <Icon className="w-4 h-4 flex-shrink-0" />
                           <span className="truncate">{item.name}</span>
                         </Link>
                       );
-                    })}
+                    });
+                  })()}
                 </div>
               </motion.div>
             )}
@@ -268,7 +274,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
                   {groups.map((g) => (
                     <div key={g.label}>
-                      <p className="text-[10px] font-bold text-warmgray-500 uppercase tracking-wider mb-1 px-3">{g.label}</p>
+                      <p className="text-[10px] font-bold uppercase tracking-wider mb-1 px-3 flex items-center gap-1.5" style={{ color: g.color }}>
+                        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: g.color }} />
+                        {g.label}
+                      </p>
                       <div className="space-y-1">
                         {g.items.map((item) => {
                           const Icon = item.icon;
@@ -277,8 +286,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                             <Link
                               key={item.name}
                               to={item.href}
-                              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold ${
-                                active ? 'bg-teal-gradient text-white' : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-white/10'
+                              style={{ borderLeftColor: active ? g.color : 'transparent' }}
+                              className={`flex items-center gap-3 pl-2.5 pr-3 py-2.5 rounded-xl text-sm font-semibold border-l-4 ${
+                                active ? 'bg-warmgray-100 dark:bg-white/10 text-warmgray-900 dark:text-warmgray-100' : 'text-warmgray-700 dark:text-warmgray-300 hover:bg-warmgray-100 dark:hover:bg-white/10'
                               }`}
                             >
                               <Icon className="w-4 h-4" />

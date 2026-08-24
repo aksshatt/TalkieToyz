@@ -49,6 +49,13 @@
   --color-warmgray-800: #292524;
   --color-warmgray-900: #1C1917;
 
+  /* Admin "Therapy Shelf" bin colors — one per admin section, reused
+     across nav accents, stat-card labels, and category chips */
+  --color-bin-shop: #26C6DA;
+  --color-bin-therapy: #8B7FD6;
+  --color-bin-content: #F0A93A;
+  --color-bin-system: #78716C;
+
   /* Custom Font Families - Rounded & Friendly */
   --font-family-sans: 'Quicksand', 'Fredoka', system-ui, sans-serif;
   --font-family-fun: 'Fredoka', 'Quicksand', system-ui, sans-serif;
@@ -526,6 +533,30 @@
     margin-left: auto;
     margin-right: auto;
     padding: 2rem 1rem;
+  }
+
+  /* Admin "Therapy Shelf" system — data gets an instrument-panel
+     numeral treatment against the otherwise warm/rounded brand type */
+  .data-numeral {
+    font-family: 'SF Mono', 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* Shelf-label chip: a small tag that overlaps a card's top edge,
+     like a label clipped to a labeled storage bin */
+  .bin-label {
+    position: absolute;
+    top: -0.65rem;
+    left: 1.25rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
 
   /* Input Styles - Soft & Rounded */
