@@ -2,8 +2,6 @@ module Api
   module V1
     module Admin
       class CouponsController < BaseController
-        before_action :require_admin
-
         # GET /api/v1/admin/coupons
         def index
           @coupons = Coupon.order(created_at: :desc)

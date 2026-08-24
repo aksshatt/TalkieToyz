@@ -190,7 +190,7 @@ module Api
           counts = User.where(role: 'customer')
                        .select('COUNT(*) as total, COUNT(DISTINCT orders.id) FILTER (WHERE orders.id IS NOT NULL) as with_orders')
                        .joins('LEFT OUTER JOIN orders ON orders.user_id = users.id')
-                       .first
+                       .take
           total_customers = counts.total.to_i
           customers_with_orders = counts.with_orders.to_i
 
@@ -380,13 +380,14 @@ module Api
         end
 
         def calculate_average_time_to_first_purchase
-          result = User.where(role: 'customer')
-                       .joins(:orders)
-                       .select("AVG(EXTRACT(EPOCH FROM (MIN(orders.created_at) - users.created_at)) / 86400) as avg_days")
-                       .group('users.id')
-                       .first
-          return 0 if result.nil?
-          result.avg_days.to_f.round(2)
+          rows = User.where(role: 'customer')
+                     .joins(:orders)
+                     .group('users.id')
+                     .select('users.created_at as signup_at, MIN(orders.created_at) as first_order_at')
+          return 0 if rows.empty?
+
+          days = rows.map { |r| (r.first_order_at - r.signup_at) / 86400.0 }
+          (days.sum / days.size).round(2)
         end
       end
     end
