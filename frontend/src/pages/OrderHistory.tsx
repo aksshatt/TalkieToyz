@@ -105,8 +105,8 @@ const OrderHistory = () => {
           </motion.div>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 36C240 12 480 0 720 0C960 0 1200 12 1440 36H0Z" fill="#fdf8f0" />
+          <svg viewBox="0 0 1440 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full text-[#fdf8f0] dark:text-surface-dark">
+            <path d="M0 36C240 12 480 0 720 0C960 0 1200 12 1440 36H0Z" fill="currentColor" />
           </svg>
         </div>
       </div>

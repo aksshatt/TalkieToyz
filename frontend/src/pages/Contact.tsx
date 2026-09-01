@@ -181,8 +181,8 @@ const Contact = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-              <path d="M0 48C240 16 480 0 720 0C960 0 1200 16 1440 48H0Z" fill="white" />
+            <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full text-white dark:text-surface-dark">
+              <path d="M0 48C240 16 480 0 720 0C960 0 1200 16 1440 48H0Z" fill="currentColor" />
             </svg>
           </motion.div>
         </div>
