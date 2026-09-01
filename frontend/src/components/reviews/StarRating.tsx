@@ -19,24 +19,43 @@ const StarRating: React.FC<StarRatingProps> = ({
     lg: 'h-6 w-6',
   };
 
+  // Read-only display: expose a single label, hide the individual icons.
+  if (readonly) {
+    return (
+      <div
+        className="flex items-center gap-1"
+        role="img"
+        aria-label={`Rated ${rating} out of 5 stars`}
+      >
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            aria-hidden
+            className={`${sizeClasses[size]} ${
+              star <= rating ? 'text-sunshine fill-sunshine' : 'text-warmgray-200 fill-warmgray-200'
+            }`}
+          />
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1" role="radiogroup" aria-label="Rating">
       {[1, 2, 3, 4, 5].map((star) => (
         <button
           key={star}
           type="button"
-          onClick={() => !readonly && onRatingChange?.(star)}
-          disabled={readonly}
-          className={`${
-            readonly ? 'cursor-default' : 'cursor-pointer hover:scale-110'
-          } transition-transform`}
-          aria-label={`Rate ${star} stars`}
+          role="radio"
+          aria-checked={star === rating}
+          onClick={() => onRatingChange?.(star)}
+          className="cursor-pointer hover:scale-110 transition-transform"
+          aria-label={`${star} star${star === 1 ? '' : 's'}`}
         >
           <Star
+            aria-hidden
             className={`${sizeClasses[size]} ${
-              star <= rating
-                ? 'text-yellow-400 fill-yellow-400'
-                : 'text-gray-300'
+              star <= rating ? 'text-sunshine fill-sunshine' : 'text-warmgray-200 fill-warmgray-200'
             }`}
           />
         </button>

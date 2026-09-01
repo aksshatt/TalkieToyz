@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Star, ShoppingCart, Heart, Eye } from 'lucide-react';
+import { Star, ShoppingCart, Eye } from 'lucide-react';
 import type { ProductSummary } from '../../types/product';
 import { useAppDispatch } from '../../store/hooks';
 import { addToCart } from '../../store/slices/cartSlice';
@@ -101,6 +101,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
         >
           <motion.button
             type="button"
+            aria-label={`Quick add ${product.name} to cart`}
+            onFocus={() => setIsHovered(true)}
+            onBlur={() => setIsHovered(false)}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -111,7 +114,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             transition={{ duration: 0.2, delay: 0.05 }}
             className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-1.5 text-sm font-bold text-warmgray-800 shadow-soft-lg hover:bg-white"
           >
-            <Eye className="w-4 h-4" />
+            <Eye aria-hidden className="w-4 h-4" />
             Quick Add
           </motion.button>
         </motion.div>
@@ -154,7 +157,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
         {!product.in_stock && (
           <div className="absolute inset-0 bg-warmgray-800/70 flex items-center justify-center backdrop-blur-sm">
-            <span className="bg-warmgray-700 text-white px-5 py-3 rounded-full font-bold text-lg shadow-soft-lg">
+            <span className="bg-warmgray-800 text-white px-5 py-3 rounded-full font-bold text-lg shadow-soft-lg">
               Sold Out
             </span>
           </div>
@@ -186,13 +189,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
 
         {/* Stars */}
-        <div className="flex items-center gap-1 mb-4">
-          <div className="flex items-center">
+        <div
+          className="flex items-center gap-1 mb-4"
+          role="img"
+          aria-label={`Rated ${Number(product.average_rating ?? 0).toFixed(1)} out of 5 stars, ${product.review_count ?? 0} review${(product.review_count ?? 0) === 1 ? '' : 's'}`}
+        >
+          <div className="flex items-center" aria-hidden>
             {[...Array(5)].map((_, i) => (
               <Star key={i} className={`h-4 w-4 ${i < Math.floor(product.average_rating) ? 'text-sunshine fill-sunshine' : 'text-warmgray-200 fill-warmgray-200'}`} />
             ))}
           </div>
-          <span className="text-xs font-semibold text-warmgray-500 dark:text-warmgray-500">({product.review_count ?? 0})</span>
+          <span className="text-xs font-semibold text-warmgray-500 dark:text-warmgray-500" aria-hidden>({product.review_count ?? 0})</span>
         </div>
 
         {/* Price + Cart */}
@@ -211,6 +218,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <motion.button
             disabled={!product.in_stock || isAddingToCart}
             onClick={handleAddToCart}
+            aria-label={
+              !product.in_stock
+                ? `${product.name} is sold out`
+                : addedFeedback
+                ? `${product.name} added to cart`
+                : isAddingToCart
+                ? `Adding ${product.name} to cart`
+                : `Add ${product.name} to cart`
+            }
             whileHover={{ scale: product.in_stock ? 1.1 : 1 }}
             whileTap={{ scale: product.in_stock ? 0.92 : 1 }}
             className={`relative p-3 rounded-full transition-all overflow-hidden ${

@@ -43,21 +43,25 @@ const HeroSection = () => {
 
       {/* Floating decorative blobs */}
       <motion.div
+        aria-hidden
         className="absolute top-14 right-20 w-20 h-20 rounded-full bg-sunshine/25 hidden md:block"
         animate={{ y: [0, -18, 0], rotate: [0, 12, 0] }}
         transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
+        aria-hidden
         className="absolute bottom-28 right-36 w-12 h-12 rounded-full bg-coral/25 hidden md:block"
         animate={{ y: [0, 14, 0], rotate: [0, -10, 0] }}
         transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 0.7 }}
       />
       <motion.div
+        aria-hidden
         className="absolute top-36 right-52 w-9 h-9 rounded-full bg-teal/25 hidden md:block"
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 5.2, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
       />
       <motion.div
+        aria-hidden
         className="absolute top-1/2 right-12 w-6 h-6 rounded-full bg-white dark:bg-surface-dark-raised/20 hidden lg:block"
         animate={{ y: [0, -8, 0], x: [0, 5, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
@@ -154,7 +158,7 @@ const HeroSection = () => {
       </div>
 
       {/* Bottom Soft Fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+      <div aria-hidden className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
       <BookAppointmentModal isOpen={showBooking} onClose={() => setShowBooking(false)} />
     </section>
   );

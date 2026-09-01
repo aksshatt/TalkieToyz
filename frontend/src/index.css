@@ -42,8 +42,8 @@
   --color-warmgray-100: #F5F5F4;
   --color-warmgray-200: #E7E5E4;
   --color-warmgray-300: #D6D3D1;
-  --color-warmgray-400: #A8A29E;
-  --color-warmgray-500: #78716C;
+  --color-warmgray-400: #7D7671; /* darkened for AA text contrast on light bg (was #A8A29E) */
+  --color-warmgray-500: #6E6762; /* darkened for AA text contrast on light bg (was #78716C) */
   --color-warmgray-600: #57534E;
   --color-warmgray-700: #44403C;
   --color-warmgray-800: #292524;
@@ -639,6 +639,51 @@
 
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #44403C;
+}
+
+/* Dark mode: lift the muted/secondary gray rungs so body and secondary text
+   keep AA contrast on dark surfaces (#1B1B22 / #24242E). Components that pair
+   these with an explicit dark:text-* override are unaffected. */
+.dark {
+  --color-warmgray-400: #B4ADA7;
+  --color-warmgray-500: #A29B95;
+  --color-warmgray-600: #B4ADA7;
+  --color-warmgray-700: #C9C3BD;
+}
+
+/* Global keyboard-focus ring - visible for keyboard users, hidden for mouse */
+:focus-visible {
+  outline: 3px solid #26C6DA;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.dark :focus-visible {
+  outline-color: #4DD0E1;
+}
+
+/* Never suppress the focus ring for keyboard users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Skip-to-content link: off-screen until focused */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: #26C6DA;
+  color: #1C1917;
+  font-weight: 700;
+  border-radius: 0 0 0.75rem 0;
+  transform: translateY(-120%);
+  transition: transform 0.15s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 /* Respect prefers-reduced-motion */

@@ -83,11 +83,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen pb-16 lg:pb-0 overflow-x-hidden w-full">
 
+      <a href="#main-content" className="skip-link">Skip to main content</a>
+
       {/* ── Festival Banner ── */}
       <FestivalBanner />
 
       {/* ── Scroll Progress Bar ── */}
-      <div className="fixed top-0 left-0 right-0 h-1 z-[70] bg-warmgray-100 dark:bg-surface-dark-border">
+      <div aria-hidden className="fixed top-0 left-0 right-0 h-1 z-[70] bg-warmgray-100 dark:bg-surface-dark-border">
         <motion.div
           className="h-full bg-gradient-to-r from-teal via-coral to-sunshine origin-left"
           style={{ scaleX: scrollProgress / 100 }}
@@ -159,6 +161,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   <Link
                     key={to}
                     to={to}
+                    aria-current={isActive ? 'page' : undefined}
                     className={`relative px-3 py-2 rounded-lg font-semibold text-sm transition-colors whitespace-nowrap ${
                       isActive ? 'text-teal' : 'text-warmgray-700 dark:text-warmgray-200 hover:text-teal hover:bg-teal-light/20'
                     }`}
@@ -193,6 +196,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 onClick={toggleTheme}
                 className="p-2.5 hover:bg-teal-light/30 dark:hover:bg-white/10 rounded-full transition-all"
                 title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 {theme === 'dark' ? (
                   <Sun className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
@@ -206,8 +210,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 to="/cart"
                 className="relative p-2.5 hover:bg-teal-light/30 rounded-full transition-all"
                 title="Shopping Cart"
+                aria-label={cartItemsCount > 0 ? `Shopping cart, ${cartItemsCount} item${cartItemsCount === 1 ? '' : 's'}` : 'Shopping cart, empty'}
               >
-                <ShoppingCart className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
+                <ShoppingCart aria-hidden className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                 <AnimatePresence>
                   {cartItemsCount > 0 && (
                     <motion.span
@@ -216,6 +221,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       animate={cartBounce ? { scale: [0, 1.4, 0.9, 1.1, 1] } : { scale: 1 }}
                       exit={{ scale: 0 }}
                       transition={{ duration: 0.5 }}
+                      aria-hidden
                       className="absolute -top-1 -right-1 bg-coral text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-soft"
                     >
                       {cartItemsCount}
@@ -227,26 +233,27 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               {isAuthenticated ? (
                 <>
                   {!(user?.role === 'therapist' && user?.approval_status === 'approved') && (
-                    <Link to="/messages" className="relative p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Messages">
-                      <MessageSquare className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
+                    <Link to="/messages" className="relative p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Messages"
+                      aria-label={unreadMessages > 0 ? `Messages, ${unreadMessages} unread` : 'Messages'}>
+                      <MessageSquare aria-hidden className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                       {unreadMessages > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-coral text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-soft">
+                        <span aria-hidden className="absolute -top-1 -right-1 bg-coral text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-soft">
                           {unreadMessages > 9 ? '9+' : unreadMessages}
                         </span>
                       )}
                     </Link>
                   )}
-                  <Link to="/wishlist" className="p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Wishlist">
-                    <Heart className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
+                  <Link to="/wishlist" className="p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Wishlist" aria-label="Wishlist">
+                    <Heart aria-hidden className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                   </Link>
-                  <Link to="/my-assessments" className="hidden sm:block p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="My Assessments">
-                    <ClipboardList className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
+                  <Link to="/my-assessments" className="hidden sm:block p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="My Assessments" aria-label="My assessments">
+                    <ClipboardList aria-hidden className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                   </Link>
-                  <Link to="/profile" className="p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Profile">
-                    <User className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
+                  <Link to="/profile" className="p-2.5 hover:bg-teal-light/30 rounded-full transition-all" title="Profile" aria-label="Profile">
+                    <User aria-hidden className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                   </Link>
-                  <button onClick={logout} className="hidden sm:block p-2.5 hover:bg-coral-light/30 rounded-full transition-all" title="Logout">
-                    <LogOut className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
+                  <button onClick={logout} className="hidden sm:block p-2.5 hover:bg-coral-light/30 rounded-full transition-all" title="Logout" aria-label="Log out">
+                    <LogOut aria-hidden className="h-6 w-6 text-warmgray-700 dark:text-warmgray-200" />
                   </button>
                 </>
               ) : (
@@ -264,7 +271,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <motion.button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="lg:hidden p-2.5 hover:bg-warmgray-100 dark:hover:bg-white/10 rounded-full transition-all"
-                aria-label="Toggle menu"
+                aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="mobile-menu"
                 whileTap={{ scale: 0.9 }}
               >
                 <AnimatePresence mode="wait" initial={false}>
@@ -286,6 +295,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <AnimatePresence>
             {isMobileMenuOpen && (
               <motion.div
+                id="mobile-menu"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
@@ -365,12 +375,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* ── Main Content ── */}
-      <main className="relative z-10">{children}</main>
+      <main id="main-content" tabIndex={-1} className="relative z-10 focus:outline-none">{children}</main>
 
       {/* ── Footer ── */}
       <footer className="bg-gradient-to-br from-warmgray-900 via-warmgray-800 to-warmgray-900 text-white mt-20 relative overflow-hidden">
         {/* Footer bg blobs */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+        <div aria-hidden className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
           <motion.div className="absolute w-80 h-80 rounded-full bg-teal/30 blur-3xl"
             animate={{ x: [0, 20, 0], y: [0, -20, 0] }}
             transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
@@ -469,13 +479,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
 
           {/* Wave divider */}
-          <div className="border-t border-white/10 mt-6 pt-6 text-center text-warmgray-500">
+          <div className="border-t border-white/10 mt-6 pt-6 text-center text-warmgray-300">
             <p className="font-medium">&copy; 2025 Talkie Toyz. All rights reserved. Made with ❤️ for growing minds.</p>
             <div className="flex flex-wrap justify-center gap-4 mt-2 text-sm">
-              <Link to="/terms" className="text-warmgray-500 hover:text-teal-light transition-colors">Terms &amp; Conditions</Link>
-              <Link to="/privacy" className="text-warmgray-500 hover:text-teal-light transition-colors">Privacy Policy</Link>
+              <Link to="/terms" className="text-warmgray-300 hover:text-teal-light transition-colors">Terms &amp; Conditions</Link>
+              <Link to="/privacy" className="text-warmgray-300 hover:text-teal-light transition-colors">Privacy Policy</Link>
             </div>
-            <p className="text-sm text-warmgray-500 mt-2">Designed &amp; developed by Akshat</p>
+            <p className="text-sm text-warmgray-300 mt-2">Designed &amp; developed by Akshat</p>
           </div>
         </div>
       </footer>
@@ -500,7 +510,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </AnimatePresence>
 
       {/* ── Bottom Mobile Nav ── */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-surface-dark-raised/95 backdrop-blur-md border-t border-warmgray-200 dark:border-surface-dark-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+      <nav aria-label="Primary" className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-surface-dark-raised/95 backdrop-blur-md border-t border-warmgray-200 dark:border-surface-dark-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
         <div className="flex items-center justify-around px-2 py-2 safe-area-pb">
           {mobileNavItems.map(({ to, Icon, label, badge }) => {
             const isActive = location.pathname === to || (to !== '/' && location.pathname.startsWith(to));
@@ -508,6 +518,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Link
                 key={to}
                 to={to}
+                aria-current={isActive ? 'page' : undefined}
+                aria-label={badge != null && badge > 0 ? `${label}, ${badge} item${badge === 1 ? '' : 's'}` : label}
                 className={`relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${
                   isActive ? 'text-teal' : 'text-warmgray-500'
                 }`}
@@ -515,14 +527,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {isActive && (
                   <motion.div
                     layoutId="bottom-nav-bg"
+                    aria-hidden
                     className="absolute inset-0 bg-teal-light/20 rounded-xl"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
                 <div className="relative">
-                  <Icon className={`w-5 h-5 relative z-10 transition-transform ${isActive ? 'scale-110' : ''}`} />
+                  <Icon aria-hidden className={`w-5 h-5 relative z-10 transition-transform ${isActive ? 'scale-110' : ''}`} />
                   {badge != null && badge > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 bg-coral text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                    <span aria-hidden className="absolute -top-1.5 -right-1.5 bg-coral text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                       {badge}
                     </span>
                   )}
