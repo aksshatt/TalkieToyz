@@ -104,3 +104,8 @@ group :development do
   gem 'rubocop-rails', require: false
   gem 'bullet'
 end
+
+group :development, :test do
+  gem 'brakeman', require: false
+  gem 'bundler-audit', require: false
+end

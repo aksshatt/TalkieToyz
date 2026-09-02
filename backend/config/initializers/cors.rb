@@ -8,7 +8,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
       origins ENV.fetch('FRONTEND_URL', '').split(','),
               'https://talkietoyz.shop',
               'https://www.talkietoyz.shop',
-              /https:\/\/.*\.talkietoyz\.shop/
+              %r{\Ahttps://([a-z0-9-]+\.)+talkietoyz\.shop\z}
     end
 
     resource '*',

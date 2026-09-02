@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import type { AssessmentResult } from '../../types/assessment';
 import BookAppointmentModal from '../common/BookAppointmentModal';
+import axiosInstance from '../../config/axios';
 
 interface AssessmentResultsProps {
   result: AssessmentResult;
@@ -68,22 +69,12 @@ const AssessmentResults = ({ result }: AssessmentResultsProps) => {
 
   const handleDownload = async () => {
     try {
-      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
-      const token = localStorage.getItem('access_token');
-      const response = await fetch(`${baseUrl}/assessment_results/${result.id}/download_pdf`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/pdf',
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-        },
-      });
+      const response = await axiosInstance.get(
+        `/assessment_results/${result.id}/download_pdf`,
+        { responseType: 'blob', headers: { Accept: 'application/pdf' } }
+      );
 
-      if (!response.ok) {
-        throw new Error('Failed to download PDF');
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      const url = window.URL.createObjectURL(response.data);
       const a = document.createElement('a');
       a.href = url;
       a.download = `assessment_result_${result.child_name}_${new Date().toISOString().split('T')[0]}.pdf`;

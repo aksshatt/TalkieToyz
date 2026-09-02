@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import { assessmentService } from '../services/assessmentService';
+import axiosInstance from '../config/axios';
 import { ClipboardList, Download, Eye, ArrowLeft } from 'lucide-react';
 import type { AssessmentResult } from '../types/assessment';
 import { ListSkeleton } from '../components/common/LoadingSkeleton';
@@ -27,14 +28,11 @@ const AssessmentHistoryPage = () => {
   }, []);
 
   const handleDownloadPdf = async (result: AssessmentResult) => {
-    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
-    const token = localStorage.getItem('access_token');
-    const response = await fetch(`${baseUrl}/assessment_results/${result.id}/download_pdf`, {
-      headers: { ...(token ? { 'Authorization': `Bearer ${token}` } : {}) },
-    });
-    if (!response.ok) return;
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
+    const response = await axiosInstance.get(
+      `/assessment_results/${result.id}/download_pdf`,
+      { responseType: 'blob' }
+    );
+    const url = window.URL.createObjectURL(response.data);
     const a = document.createElement('a');
     a.href = url;
     a.download = `assessment_${result.child_name}_${result.id}.pdf`;

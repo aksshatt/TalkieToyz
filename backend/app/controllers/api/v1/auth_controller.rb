@@ -4,7 +4,11 @@ module Api
       # POST /api/v1/auth/signup
       def signup
         user = User.new(signup_params)
-        user.role ||= :customer
+
+        # Never trust a client-supplied role — self-registration is limited to
+        # customer/therapist. Anything else (e.g. "admin") falls back to customer.
+        requested_role = requested_signup_role
+        user.role = %w[customer therapist].include?(requested_role) ? requested_role : 'customer'
 
         # Therapists start as pending until admin approves
         if user.therapist?
@@ -278,12 +282,18 @@ module Api
       end
 
       def signup_params
-        # Accept both formats: {user: {...}} or {...} directly
+        # Accept both formats: {user: {...}} or {...} directly.
+        # :role is deliberately NOT permitted here — it is sanitized separately
+        # in #signup to prevent privilege escalation via mass assignment.
         if params[:user].present?
-          params.require(:user).permit(:email, :password, :password_confirmation, :name, :phone, :role)
+          params.require(:user).permit(:email, :password, :password_confirmation, :name, :phone)
         else
-          params.permit(:email, :password, :password_confirmation, :name, :phone, :role)
+          params.permit(:email, :password, :password_confirmation, :name, :phone)
         end
+      end
+
+      def requested_signup_role
+        (params.dig(:user, :role) || params[:role]).to_s
       end
 
       def login_params
